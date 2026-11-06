@@ -1,114 +1,195 @@
 
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>משחקים לומדים בכיף</title>
+  <title>English Games | Learn & Play</title>
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f3f6ff;
-      color: #24304a;
+      background: #f5f7ff;
+      color: #26324b;
     }
+
     header {
-      background: linear-gradient(135deg, #6558d3, #398bd6);
+      background: linear-gradient(135deg, #6255d9, #42a5df);
       color: white;
       text-align: center;
-      padding: 45px 20px;
+      padding: 55px 20px 65px;
+      border-radius: 0 0 35px 35px;
     }
-    header h1 { font-size: 36px; margin: 0 0 12px; }
-    header p { font-size: 19px; margin: 0; }
+
+    header .star {
+      font-size: 40px;
+    }
+
+    header h1 {
+      font-size: clamp(32px, 6vw, 52px);
+      margin: 12px 0;
+    }
+
+    header p {
+      font-size: 20px;
+      margin: 0;
+    }
+
     main {
-      max-width: 1000px;
-      margin: 30px auto;
-      padding: 0 18px;
+      max-width: 1050px;
+      margin: 35px auto;
+      padding: 0 20px;
     }
+
     .welcome {
-      background: white;
-      border-radius: 18px;
-      padding: 25px;
       text-align: center;
-      box-shadow: 0 4px 15px #00000010;
+      margin-bottom: 35px;
     }
-    .subjects {
+
+    .welcome h2 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .welcome p {
+      color: #68738b;
+      font-size: 17px;
+    }
+
+    .levels {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 18px;
-      margin-top: 25px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
     }
-    .subject {
+
+    .level {
+      text-decoration: none;
+      color: inherit;
       background: white;
-      border-radius: 18px;
-      padding: 25px 15px;
+      border-radius: 25px;
+      padding: 30px 20px;
       text-align: center;
-      box-shadow: 0 4px 15px #00000010;
+      box-shadow: 0 7px 22px #26324b12;
+      transition: transform .2s, box-shadow .2s;
+      border: 3px solid transparent;
     }
-    .subject .emoji { font-size: 42px; }
-    .subject h2 { margin: 12px 0 8px; }
-    .subject p { color: #667085; }
-    .soon {
-      display: inline-block;
-      background: #eeeaff;
-      color: #6558d3;
-      padding: 8px 15px;
-      border-radius: 20px;
-      font-size: 14px;
+
+    .level:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 28px #26324b20;
     }
+
+    .level-icon {
+      font-size: 48px;
+    }
+
+    .level h2 {
+      font-size: 27px;
+      margin: 12px 0 8px;
+    }
+
+    .level p {
+      color: #68738b;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .level button {
+      border: none;
+      border-radius: 25px;
+      padding: 12px 25px;
+      font-size: 16px;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .one { border-color: #b9dcff; }
+    .one button { background: #398bd6; }
+
+    .two { border-color: #bce9c5; }
+    .two button { background: #36a66a; }
+
+    .three { border-color: #ffe0a3; }
+    .three button { background: #e9a52e; }
+
+    .four { border-color: #ddc6ff; }
+    .four button { background: #9061ce; }
+
     footer {
       text-align: center;
-      padding: 30px;
-      color: #667085;
+      padding: 35px 15px;
+      color: #7a8499;
+    }
+
+    @media (max-width: 600px) {
+      .levels {
+        grid-template-columns: 1fr;
+      }
+
+      header {
+        padding: 40px 15px 50px;
+      }
     }
   </style>
 </head>
+
 <body>
+
   <header>
-    <h1>🎮 משחקים לומדים בכיף!</h1>
-    <p>לומדים, משחקים, מצליחים!</p>
+    <div class="star">⭐ 🎮 ⭐</div>
+    <h1>English Games</h1>
+    <p>Learn, Play & Have Fun!</p>
   </header>
 
   <main>
+
     <section class="welcome">
-      <h2>ברוכים הבאים למרחב הלמידה שלנו 🌟</h2>
-      <p>כאן תוכלו לתרגל, לשחק ולגלות כמה כיף ללמוד!</p>
+      <h2>Choose Your Level!</h2>
+      <p>Pick your level and start your English adventure!</p>
     </section>
 
-    <section class="subjects">
-      <div class="subject">
-        <div class="emoji">📚</div>
-        <h2>עברית</h2>
-        <p>משחקים ופעילויות בשפה</p>
-        <span class="soon">בקרוב משחקים!</span>
-      </div>
+    <section class="levels">
 
-      <div class="subject">
-        <div class="emoji">🔢</div>
-        <h2>חשבון</h2>
-        <p>מתרגלים מספרים ופעולות</p>
-        <span class="soon">בקרוב משחקים!</span>
-      </div>
+      <a class="level one" href="level1.html">
+        <div class="level-icon">🌱</div>
+        <h2>Level 1</h2>
+        <p>Let's start!<br>Letters, colors and first words.</p>
+        <button type="button">Let's Play!</button>
+      </a>
 
-      <div class="subject">
-        <div class="emoji">🌍</div>
-        <h2>אנגלית</h2>
-        <p>לומדים מילים ומשחקים</p>
-        <span class="soon">בקרוב משחקים!</span>
-      </div>
+      <a class="level two" href="level2.html">
+        <div class="level-icon">🦋</div>
+        <h2>Level 2</h2>
+        <p>Learn more!<br>Animals, food and vocabulary.</p>
+        <button type="button">Let's Play!</button>
+      </a>
 
-      <div class="subject">
-        <div class="emoji">🔬</div>
-        <h2>מדעים</h2>
-        <p>חוקרים ומגלים דברים חדשים</p>
-        <span class="soon">בקרוב משחקים!</span>
-      </div>
+      <a class="level three" href="level3.html">
+        <div class="level-icon">🚀</div>
+        <h2>Level 3</h2>
+        <p>Keep going!<br>Sentences, verbs and questions.</p>
+        <button type="button">Let's Play!</button>
+      </a>
+
+      <a class="level four" href="level4.html">
+        <div class="level-icon">🏆</div>
+        <h2>Level 4</h2>
+        <p>Challenge yourself!<br>Grammar, reading and more.</p>
+        <button type="button">Let's Play!</button>
+      </a>
+
     </section>
   </main>
 
   <footer>
-    מרחב המשחקים הלימודיים שלנו ❤️
+    <p>💜 English Games – Every day is a chance to learn!</p>
   </footer>
+
 </body>
 </html>
