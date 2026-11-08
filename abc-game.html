@@ -27,6 +27,12 @@ button{cursor:pointer;border:none}
 .letter{background:#fff;color:#21132b;cursor:grab;touch-action:none;box-shadow:0 2px 5px #ddd}
 .letter.selected{background:#ffe49d;border-color:#df9c00}
 .letter.done{visibility:hidden;pointer-events:none}
+.letter.lowercase{background:#c9f3ff;border-color:#1684b4;color:#064e72}
+.slot.matching{background:#e1f6ff;border-color:#1684b4}
+.slot.matched{background:#c7f5dc;border-color:#31a565}
+.slot.matched::before{content:attr(data-small);position:absolute;left:2px;bottom:0;font-size:clamp(14px,3vmin,30px);color:#0675a0;font-weight:900}
+.slot.matched::after{content:"🔊";position:absolute;right:2px;top:50%;transform:translateY(-50%);font-size:clamp(15px,2.8vmin,25px)}
+
 .dragging{position:fixed;z-index:1000;pointer-events:none;opacity:.92;background:#fff1ae;box-shadow:0 4px 15px #999}
 footer{text-align:center;flex-shrink:0;color:#6b249a;font-weight:bold;font-size:13px;padding:4px}
 #message{color:#16832e}
@@ -65,31 +71,34 @@ footer{text-align:center;flex-shrink:0;color:#6b249a;font-weight:bold;font-size:
 
 <script>
 const alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-let placed=new Set(),selected=null,drag=null;
+let placed=new Set(),selected=null,drag=null,phase="upper",matched=new Set();
 function shuffle(array){const a=[...array];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function cell(el,col,row){el.style.gridColumn=col;el.style.gridRow=row}
 function startGame(){
- placed=new Set();selected=null;if(drag){drag.ghost.remove();drag=null}
+ placed=new Set();matched=new Set();phase="upper";selected=null;if(drag){drag.ghost.remove();drag=null}
  document.getElementById("message").textContent="";
+ document.querySelector(".instructions").textContent="גררו את האותיות הגדולות למשבצות לפי הסדר A עד Z";
  document.getElementById("progress").textContent="0 מתוך 26 אותיות";
  const board=document.getElementById("board");board.innerHTML="";
  // 28 cells: start star, A-Z, finish trophy. Nine columns across, four rows.
  const sequence=["⭐",...alphabet,"🏆"];
  sequence.forEach((letter,i)=>{
   const slot=document.createElement("div");slot.className="slot"+(i===0||i===27?" star":"");
-  if(i>0&&i<27){slot.dataset.letter=letter;slot.setAttribute("aria-label","מקום לאות "+letter);slot.addEventListener("click",()=>{if(placed.has(letter))sayLetterName(letter)});slot.addEventListener("keydown",e=>{if(placed.has(letter)&&(e.key==="Enter"||e.key===" ")){e.preventDefault();sayLetterName(letter)}})}
+  if(i>0&&i<27){slot.dataset.letter=letter;slot.setAttribute("aria-label","מקום לאות "+letter);slot.addEventListener("click",()=>{if(phase==="upper"&&placed.has(letter)||phase==="lower"&&matched.has(letter))sayLetterName(letter)});slot.addEventListener("keydown",e=>{if(placed.has(letter)&&(e.key==="Enter"||e.key===" ")){e.preventDefault();sayLetterName(letter)}})}
   else slot.textContent=letter;
   cell(slot,2+(i%9),2+Math.floor(i/9));board.appendChild(slot);
  });
- // Perimeter: 7 across top, 6 down right, 7 across bottom, 6 up left.
+ makeTiles(alphabet,false);
+}
+function makeTiles(letters,lowercase){
+ const board=document.getElementById("board");
  const positions=[];
- // 26 letter tiles around the wide 9-column center board.
  for(let col=2;col<=10;col++)positions.push([col,1]);
  for(let row=2;row<=6;row++)positions.push([11,row]);
  for(let col=10;col>=2;col--)positions.push([col,7]);
  for(let row=6;row>=4;row--)positions.push([1,row]);
- shuffle(alphabet).forEach((letter,i)=>{
-  const tile=document.createElement("div");tile.className="letter";tile.textContent=letter;tile.dataset.letter=letter;
+ shuffle(letters).forEach((letter,i)=>{
+  const tile=document.createElement("div");tile.className="letter"+(lowercase?" lowercase":"");tile.textContent=letter;tile.dataset.letter=letter;
   tile.setAttribute("role","button");tile.setAttribute("tabindex","0");tile.setAttribute("aria-label","אות "+letter);
   cell(tile,...positions[i]);tile.addEventListener("pointerdown",pointerDown);
   tile.addEventListener("click",()=>chooseLetter(tile));
@@ -98,20 +107,36 @@ function startGame(){
  });
 }
 function sayLetterName(letter){if(!("speechSynthesis" in window))return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(letter);u.lang="en-US";u.rate=.8;const voices=window.speechSynthesis.getVoices();const voice=voices.find(v=>v.lang==="en-US")||voices.find(v=>v.lang.startsWith("en"));if(voice)u.voice=voice;window.speechSynthesis.speak(u)}
-function chooseLetter(tile){if(placed.has(tile.dataset.letter))return;document.querySelectorAll(".letter").forEach(e=>e.classList.remove("selected"));selected=tile.dataset.letter;tile.classList.add("selected")}
+function chooseLetter(tile){if(tile.classList.contains("done"))return;document.querySelectorAll(".letter").forEach(e=>e.classList.remove("selected"));selected=tile.dataset.letter;tile.classList.add("selected")}
 function placeLetter(letter,slot){
- if(!slot||!slot.classList.contains("slot")||!slot.dataset.letter||placed.has(letter))return;
- if(slot.dataset.letter!==letter){slot.style.background="#ffd0d0";setTimeout(()=>{if(!slot.classList.contains("filled"))slot.style.background=""},350);return}
+ if(!slot||!slot.classList.contains("slot")||!slot.dataset.letter)return;
+ if(phase==="upper"&&placed.has(letter)||phase==="lower"&&matched.has(letter.toUpperCase()))return;
+ if(slot.dataset.letter!==(phase==="lower"?letter.toUpperCase():letter)){slot.style.background="#ffd0d0";setTimeout(()=>{if(!slot.classList.contains("filled"))slot.style.background=""},350);return}
+ if(phase==="lower"){
+  const upper=letter.toUpperCase();matched.add(upper);slot.dataset.small=letter;slot.classList.add("matched");
+  const lowerTile=[...document.querySelectorAll(".letter")].find(e=>e.dataset.letter===letter);if(lowerTile)lowerTile.classList.add("done");selected=null;
+  document.getElementById("progress").textContent=matched.size+" מתוך 26 זוגות";
+  document.getElementById("message").textContent=matched.size===26?"🎉 כל הכבוד! התאמתם את כל האותיות!":"🔊 לחצו על האות הירוקה לשמיעת שמה";
+  return;
+ }
  slot.textContent=letter;slot.classList.add("filled");slot.style.background="";slot.setAttribute("role","button");slot.setAttribute("tabindex","0");slot.setAttribute("title","🔊 לחצו לשמיעת שם האות "+letter);slot.setAttribute("aria-label","השמעת שם האות "+letter);
  placed.add(letter);const tile=[...document.querySelectorAll(".letter")].find(e=>e.dataset.letter===letter);
  if(tile)tile.classList.add("done");selected=null;
  document.getElementById("progress").textContent=placed.size+" מתוך 26 אותיות";
  document.getElementById("message").textContent=" 🔊 לחצו על האות הירוקה כדי לשמוע את שמה";
- if(placed.size===26)document.getElementById("message").textContent=" 🎉 כל הכבוד! השלמתם את האלפבית! ⭐";
+ if(placed.size===26){
+  phase="lower";selected=null;
+  document.querySelectorAll(".letter").forEach(e=>e.remove());
+  document.querySelectorAll(".slot.filled").forEach(e=>e.classList.add("matching"));
+  document.querySelector(".instructions").textContent="עכשיו התאימו כל אות קטנה בצבע תכלת לאות הגדולה שלה!";
+  document.getElementById("progress").textContent="0 מתוך 26 זוגות";
+  document.getElementById("message").textContent="🎉 מצוין! מתחילים להתאים אותיות קטנות";
+  makeTiles(alphabet.map(x=>x.toLowerCase()),true);
+ }
 }
 function pointerDown(event){
  if(event.pointerType==="mouse"&&event.button!==0)return;
- const tile=event.currentTarget,letter=tile.dataset.letter;if(placed.has(letter))return;
+ const tile=event.currentTarget,letter=tile.dataset.letter;if(tile.classList.contains("done"))return;
  event.preventDefault();const rect=tile.getBoundingClientRect(),ghost=tile.cloneNode(true);
  ghost.classList.add("dragging");ghost.style.width=rect.width+"px";ghost.style.height=rect.height+"px";
  ghost.style.left=(event.clientX-rect.width/2)+"px";ghost.style.top=(event.clientY-rect.height/2)+"px";
