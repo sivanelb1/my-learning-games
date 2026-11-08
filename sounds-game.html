@@ -37,7 +37,7 @@ footer{display:flex;align-items:center;justify-content:center;gap:14px;font-weig
 <section class="work"><div class="prompt">בונים מילה באנגלית!</div><div class="slots" id="slots"></div><div class="hint">אפשר ללחוץ על אות כדי לשמוע את הצליל שלה 🔊</div><div class="tiles" id="tiles"></div><div class="feedback" id="feedback" aria-live="polite"></div><button class="next" id="next" onclick="nextWord()" disabled>המילה הבאה ←</button></section>
 </main><footer><span id="stars">⭐ 0 כוכבים</span></footer></div>
 <script>
-const words=[{word:"CAT",emoji:"🐱"},{word:"DOG",emoji:"🐶"},{word:"SUN",emoji:"☀️"},{word:"PEN",emoji:"🖊️"},{word:"BED",emoji:"🛏️"},{word:"PIG",emoji:"🐷"},{word:"HAT",emoji:"🎩"},{word:"BUS",emoji:"🚌"},{word:"FOX",emoji:"🦊"},{word:"WOLF",emoji:"🐺"},{word:"KING",emoji:"👑"},{word:"VEST",emoji:"🦺"},{word:"JEEP",emoji:"🚙"},{word:"YARD",emoji:"🏡"},{word:"QUIZ",emoji:"❓"}];
+const words=[{word:"CAT",emoji:"🐱"},{word:"DOG",emoji:"🐶"},{word:"SUN",emoji:"☀️"},{word:"PEN",emoji:"🖊️"},{word:"BED",emoji:"🛏️"},{word:"PIG",emoji:"🐷"},{word:"HAT",emoji:"🎩"},{word:"BUS",emoji:"🚌"},{word:"FOX",emoji:"🦊"},{word:"WOLF",emoji:"🐺"},{word:"MILK",emoji:"🥛"},{word:"VEST",emoji:"🦺"},{word:"JEEP",emoji:"🚙"},{word:"YARD",emoji:"🏡"},{word:"QUIZ",emoji:"❓"}];
 const phonics={A:"a",B:"buh",C:"kuh",D:"duh",E:"eh",F:"fff",G:"guh",H:"hhh",I:"in",J:"juh",K:"kuh",L:"lll",M:"mmm",N:"nnn",O:"o",P:"puh",Q:"kwuh",R:"rrr",S:"sss",T:"tuh",U:"uh",V:"vvv",W:"wuh",X:"ks",Y:"yuh",Z:"zzz"};
 let index=0,placed=[],active=null,completed=false,voiceUnlocked=false;
 function speak(text,rate=.75){if(!("speechSynthesis" in window)){document.getElementById("feedback").textContent="הדפדפן אינו תומך בהשמעת קול";return}
