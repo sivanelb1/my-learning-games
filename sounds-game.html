@@ -4,9 +4,13 @@
 <style>
 *{box-sizing:border-box}html,body{margin:0;height:100%;overflow:hidden;font-family:Arial,sans-serif;background:#f6efff;color:#542080}
 .game{height:100dvh;display:flex;flex-direction:column;gap:clamp(5px,1vh,12px);padding:clamp(7px,1.4vmin,15px);border:4px solid #8e39d1;border-radius:20px;background:white}
-header{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-shrink:0}
+header{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-shrink:0;position:relative;padding-right:55px}
 h1{margin:0;background:#eee0ff;border-radius:40px;padding:8px 16px;font-size:clamp(17px,2.7vw,32px);text-align:center}
 button,a{font-family:inherit}button{cursor:pointer}.round{border:0;border-radius:50%;background:#8c31d2;color:white;width:clamp(36px,5vw,55px);height:clamp(36px,5vw,55px);font-size:clamp(20px,2.8vw,28px);flex-shrink:0;text-decoration:none;display:grid;place-items:center}
+.skip{position:absolute;right:0;top:0;border:2px solid #a85bd6;border-radius:12px;background:#f2e5ff;color:#682094;font-size:clamp(12px,1.5vw,17px);font-weight:bold;padding:8px;cursor:pointer}.skip:disabled{opacity:.45;cursor:default}
+.ee-line{position:absolute;left:0;right:0;top:-16px;height:13px;border-top:4px solid #8b36cc;border-left:4px solid #8b36cc;border-right:4px solid #8b36cc;border-radius:9px 9px 0 0;pointer-events:none}
+.slot.ee-first{position:relative}.slot.ee-first::after{content:"";position:absolute;top:-17px;left:50%;width:calc(200% + clamp(4px,1vw,15px));height:12px;border:4px solid #9c3ce0;border-bottom:0;border-radius:12px 12px 0 0;z-index:2;pointer-events:none}
+.ee-label{position:absolute;top:-37px;left:50%;transform:translateX(-50%);font-size:clamp(12px,1.7vw,20px);color:#7425ac;background:#fff;padding:0 5px;white-space:nowrap}
 .status{text-align:center;font-weight:bold;font-size:clamp(13px,1.8vw,20px)}
 .play{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:clamp(8px,2vw,24px);align-items:stretch;direction:ltr}
 .picture{border:3px solid #e2baf7;border-radius:25px;background:#fbf6ff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(5px,1.6vh,18px);min-height:0;padding:8px;direction:rtl}
@@ -30,54 +34,93 @@ footer{display:flex;align-items:center;justify-content:center;gap:14px;font-weig
 @media(max-width:650px){.game{border-width:2px;padding:5px;gap:4px}.play{grid-template-columns:1fr;grid-template-rows:minmax(0,0.8fr) minmax(0,1.2fr);gap:4px}.emoji{font-size:clamp(40px,11vh,90px)}.picture{gap:3px;border-width:2px}.slot,.tile{width:clamp(45px,15vw,78px);height:clamp(45px,15vw,78px);font-size:clamp(26px,8vw,46px)}.work{gap:3px}.speak,.next{padding:7px 14px;font-size:14px}.hint{font-size:12px}}
 </style></head>
 <body><div class="game">
-<header><a class="round" href="level1.html" title="חזרה למפה">⌂</a><h1>⭐ מפעל המילים הקסומות ⭐</h1><button class="round" onclick="restart()" title="התחלה מחדש">↻</button></header>
-<div class="status" id="status">מילה 1 מתוך 8 · ⭐ 0</div>
+<header><button class="skip" id="skip" onclick="skipWord()" title="למילה הבאה ללא כוכב">דלגי ←</button><a class="round" href="level1.html" title="חזרה למפה">⌂</a><h1>⭐ מפעל המילים הקסומות ⭐</h1><button class="round" onclick="restart()" title="התחלה מחדש">↻</button></header>
+<div class="status" id="status">מילה 1 מתוך 15 · ⭐ 0</div>
 <main class="play">
 <section class="picture"><div class="emoji" id="picture" aria-label="תמונת המילה">🐱</div><button class="speak" onclick="sayWord()">🔊 השמיעו לי את המילה</button><div class="hint">הקשיבו למילה וגררו את האותיות</div></section>
-<section class="work"><div class="prompt">בונים מילה באנגלית!</div><div class="slots" id="slots"></div><div class="hint">אפשר ללחוץ על אות כדי לשמוע את הצליל שלה 🔊</div><div class="tiles" id="tiles"></div><div class="feedback" id="feedback" aria-live="polite"></div><button class="next" id="next" onclick="nextWord()" disabled>המילה הבאה ←</button></section>
+<section class="work"><div class="prompt">בונים מילה באנגלית!</div><div class="slots" id="slots"></div><div class="hint">לחצו על אות לשמיעת דוגמת צליל 🔊 · ב־JEEP מחברים EE</div><div class="tiles" id="tiles"></div><div class="feedback" id="feedback" aria-live="polite"></div><button class="next" id="next" onclick="nextWord()" disabled>המילה הבאה ←</button></section>
 </main><footer><span id="stars">⭐ 0 כוכבים</span></footer></div>
 <script>
 const words=[{word:"CAT",emoji:"🐱"},{word:"DOG",emoji:"🐶"},{word:"SUN",emoji:"☀️"},{word:"PEN",emoji:"🖊️"},{word:"BED",emoji:"🛏️"},{word:"PIG",emoji:"🐷"},{word:"HAT",emoji:"🎩"},{word:"BUS",emoji:"🚌"},{word:"FOX",emoji:"🦊"},{word:"WOLF",emoji:"🐺"},{word:"MILK",emoji:"🥛"},{word:"VEST",emoji:"🦺"},{word:"JEEP",emoji:"🚙"},{word:"YARD",emoji:"🏡"},{word:"QUIZ",emoji:"❓"}];
-const phonics={A:"a",B:"buh",C:"kuh",D:"duh",E:"eh",F:"fff",G:"guh",H:"hhh",I:"in",J:"juh",K:"kuh",L:"lll",M:"mmm",N:"nnn",O:"o",P:"puh",Q:"kwuh",R:"rrr",S:"sss",T:"tuh",U:"uh",V:"vvv",W:"wuh",X:"ks",Y:"yuh",Z:"zzz"};
-let index=0,placed=[],active=null,completed=false,voiceUnlocked=false;
-function speak(text,rate=.75){if(!("speechSynthesis" in window)){document.getElementById("feedback").textContent="הדפדפן אינו תומך בהשמעת קול";return}
- speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="en-US";u.rate=rate;u.pitch=1;const voices=speechSynthesis.getVoices();const en=voices.find(v=>v.lang==="en-US")||voices.find(v=>v.lang.startsWith("en"));if(en)u.voice=en;speechSynthesis.speak(u)}
+// Real words are more reliable with browser text-to-speech than invented phonetic syllables.
+const examples={A:"apple",B:"ball",C:"cat",D:"dog",E:"eat",F:"fish",G:"go",H:"hat",I:"eat",J:"jam",K:"kite",L:"lamp",M:"moon",N:"nose",O:"ox",P:"pen",Q:"queen",R:"red",S:"sun",T:"top",U:"up",V:"van",W:"wet",X:"fox",Y:"yes",Z:"zoo"};
+let index=0,completed=false,active=null,dragging=null;
+const solved=new Set();
+let filled=new Set(),currentTiles=[];
+function speak(text,rate=.78){
+ if(!("speechSynthesis" in window)){document.getElementById("feedback").textContent="הדפדפן אינו תומך בהשמעת קול";return}
+ speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="en-US";u.rate=rate;u.pitch=1;
+ const voices=speechSynthesis.getVoices(),en=voices.find(v=>v.lang==="en-US")||voices.find(v=>v.lang.startsWith("en"));if(en)u.voice=en;
+ speechSynthesis.speak(u);
+}
 function sayWord(){speak(words[index].word.toLowerCase(),.7)}
-function sayLetter(letter){speak(phonics[letter]||letter.toLowerCase(),letter==="I"?.85:.65)}
+function sayLetter(letter){speak(examples[letter]||letter.toLowerCase(),.73)}
 function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function render(){
- const item=words[index];placed=[];completed=false;active=null;
+ if(dragging){dragging.ghost.remove();dragging=null}
+ speechSynthesis?.cancel?.();
+ const item=words[index];filled=new Set();completed=solved.has(index);active=null;
  document.getElementById("picture").textContent=item.emoji;
- document.getElementById("status").textContent="מילה "+(index+1)+" מתוך "+words.length+" · ⭐ "+index;
- document.getElementById("stars").textContent="⭐ "+index+" כוכבים";
- document.getElementById("feedback").textContent="";
- const next=document.getElementById("next");next.disabled=true;next.textContent=index===words.length-1?"סיום המשחק 🏆":"המילה הבאה ←";
- const slots=document.getElementById("slots"),tiles=document.getElementById("tiles");slots.innerHTML="";tiles.innerHTML="";
- for(let i=0;i<item.word.length;i++){const slot=document.createElement("div");slot.className="slot";slot.dataset.pos=i;slot.addEventListener("click",()=>{if(active)drop(active,slot)});slots.appendChild(slot)}
- shuffle(item.word.split("")).forEach((letter,i)=>{const tile=document.createElement("div");tile.className="tile";tile.textContent=letter;tile.dataset.letter=letter;tile.dataset.id=i;tile.setAttribute("role","button");tile.setAttribute("tabindex","0");tile.addEventListener("pointerdown",startDrag);tile.addEventListener("click",()=>select(tile));tile.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();select(tile)}});tiles.appendChild(tile)});
+ document.getElementById("status").textContent="מילה "+(index+1)+" מתוך "+words.length+" · ⭐ "+solved.size;
+ document.getElementById("stars").textContent="⭐ "+solved.size+" כוכבים";
+ document.getElementById("feedback").textContent=completed?"⭐ כבר פתרתם את המילה הזו!":"";
+ document.getElementById("skip").disabled=index===words.length-1;
+ const next=document.getElementById("next");next.disabled=!completed;next.textContent=index===words.length-1?"סיום המשחק 🏆":"המילה הבאה ←";
+ const slots=document.getElementById("slots"),tiles=document.getElementById("tiles");slots.innerHTML="";tiles.innerHTML="";currentTiles=[];
+ for(let i=0;i<item.word.length;i++){
+  const slot=document.createElement("div");slot.className="slot";slot.dataset.pos=i;slot.setAttribute("aria-label","משבצת "+(i+1));
+  slot.addEventListener("click",()=>{if(active)drop(active,slot)});slots.appendChild(slot);
+ }
+ shuffle(item.word.split("")).forEach((letter,i)=>{
+  const tile=document.createElement("div");tile.className="tile";tile.textContent=letter;tile.dataset.letter=letter;tile.dataset.id=i;
+  tile.setAttribute("role","button");tile.setAttribute("tabindex","0");tile.setAttribute("aria-label","אות "+letter);
+  tile.addEventListener("pointerdown",startDrag);tile.addEventListener("click",()=>select(tile));
+  tile.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();select(tile)}});tiles.appendChild(tile);currentTiles.push(tile);
+ });
 }
 function select(tile){if(tile.classList.contains("used")||completed)return;active=tile;sayLetter(tile.dataset.letter);document.querySelectorAll(".tile").forEach(t=>t.style.background="");tile.style.background="#fff1b6"}
 function drop(tile,slot){
  if(!tile||!slot||completed||tile.classList.contains("used")||slot.classList.contains("filled"))return;
- const letter=tile.dataset.letter,expected=words[index].word[Number(slot.dataset.pos)];
- if(letter!==expected){document.getElementById("feedback").textContent="נסו שוב 💜";document.getElementById("feedback").style.color="#a0447d";return}
- slot.textContent=letter;slot.classList.add("filled");tile.classList.add("used");tile.style.background="";active=null;placed.push(letter);
- document.getElementById("feedback").textContent="כל הכבוד! ⭐";document.getElementById("feedback").style.color="#168333";
- if(placed.length===words[index].word.length){completed=true;document.getElementById("feedback").textContent="🎉 "+words[index].word+" — הצלחתם!";document.getElementById("next").disabled=false;sayWord()}
+ const letter=tile.dataset.letter,pos=Number(slot.dataset.pos),word=words[index].word;
+ if(letter!==word[pos]){const feedback=document.getElementById("feedback");feedback.textContent="נסו שוב 💜";feedback.style.color="#a0447d";return}
+ slot.textContent=letter;slot.classList.add("filled");tile.classList.add("used");tile.style.background="";active=null;filled.add(pos);
+ const feedback=document.getElementById("feedback");feedback.textContent="יופי! ⭐";feedback.style.color="#168333";
+ // In JEEP the two adjacent E letters form the long /ee/ sound.
+ if(word==="JEEP"&&filled.has(1)&&filled.has(2)){
+  const first=document.querySelector('.slot[data-pos="1"]');
+  if(!first.classList.contains("ee-first")){first.classList.add("ee-first");const label=document.createElement("span");label.className="ee-label";label.textContent="EE = אי";first.appendChild(label)}
+  feedback.textContent="✨ EE ביחד נשמע כמו אי!";
+  speak("ee",.7);
+ }
+ if(filled.size===word.length){
+  completed=true;solved.add(index);feedback.textContent="🎉 "+word+" — הצלחתם!";
+  document.getElementById("next").disabled=false;
+  document.getElementById("stars").textContent="⭐ "+solved.size+" כוכבים";
+  document.getElementById("status").textContent="מילה "+(index+1)+" מתוך "+words.length+" · ⭐ "+solved.size;
+  // Let the digraph sound finish before replaying the whole word.
+  if(word==="JEEP"){setTimeout(()=>{if(index===12)sayWord()},1400)}else sayWord();
+ }
 }
-let dragging=null;
 function startDrag(e){
- if(e.pointerType==="mouse"&&e.button!==0||completed||e.currentTarget.classList.contains("used"))return;
+ if((e.pointerType==="mouse"&&e.button!==0)||completed||e.currentTarget.classList.contains("used"))return;
  e.preventDefault();const tile=e.currentTarget;select(tile);const r=tile.getBoundingClientRect(),ghost=tile.cloneNode(true);
  ghost.classList.add("dragging");ghost.style.width=r.width+"px";ghost.style.height=r.height+"px";ghost.style.left=(e.clientX-r.width/2)+"px";ghost.style.top=(e.clientY-r.height/2)+"px";document.body.appendChild(ghost);
  dragging={tile,ghost,id:e.pointerId};tile.setPointerCapture(e.pointerId);
 }
-document.addEventListener("pointermove",e=>{if(!dragging||e.pointerId!==dragging.id)return;const g=dragging.ghost;g.style.left=(e.clientX-g.offsetWidth/2)+"px";g.style.top=(e.clientY-g.offsetHeight/2)+"px";document.querySelectorAll(".slot").forEach(s=>s.classList.remove("over"));const t=document.elementFromPoint(e.clientX,e.clientY)?.closest(".slot");if(t&&!t.classList.contains("filled"))t.classList.add("over")});
-document.addEventListener("pointerup",e=>{if(!dragging||e.pointerId!==dragging.id)return;const {tile,ghost}=dragging;ghost.remove();const slot=document.elementFromPoint(e.clientX,e.clientY)?.closest(".slot");document.querySelectorAll(".slot").forEach(s=>s.classList.remove("over"));if(slot)drop(tile,slot);dragging=null});
+document.addEventListener("pointermove",e=>{
+ if(!dragging||e.pointerId!==dragging.id)return;const g=dragging.ghost;
+ g.style.left=(e.clientX-g.offsetWidth/2)+"px";g.style.top=(e.clientY-g.offsetHeight/2)+"px";
+ document.querySelectorAll(".slot").forEach(s=>s.classList.remove("over"));
+ const t=document.elementFromPoint(e.clientX,e.clientY)?.closest(".slot");if(t&&!t.classList.contains("filled"))t.classList.add("over");
+});
+document.addEventListener("pointerup",e=>{
+ if(!dragging||e.pointerId!==dragging.id)return;const {tile,ghost}=dragging;ghost.remove();
+ const slot=document.elementFromPoint(e.clientX,e.clientY)?.closest(".slot");
+ document.querySelectorAll(".slot").forEach(s=>s.classList.remove("over"));if(slot)drop(tile,slot);dragging=null;
+});
 document.addEventListener("pointercancel",()=>{if(dragging){dragging.ghost.remove();dragging=null}});
-function nextWord(){if(!completed)return;if(index===words.length-1){document.getElementById("feedback").textContent="🏆 אלופים! השלמתם את כל המילים!";document.getElementById("next").disabled=true;document.getElementById("stars").textContent="⭐ "+words.length+" כוכבים";return}index++;render()}
-function restart(){index=0;render()}
+function skipWord(){if(index<words.length-1){index++;render()}}
+function nextWord(){if(!completed)return;if(index===words.length-1){document.getElementById("feedback").textContent="🏆 סיימתם! ⭐ "+solved.size+" מתוך "+words.length+" מילים נפתרו";document.getElementById("next").disabled=true;return}index++;render()}
+function restart(){index=0;solved.clear();render()}
 render();
-// Audio starts after a real interaction to respect browser autoplay restrictions.
-document.addEventListener("pointerdown",function firstSound(e){if(e.target.closest(".tile,.speak,.round"))return;sayWord();document.removeEventListener("pointerdown",firstSound)},{once:true});
 </script></body></html>
