@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>מפעל המילים הקסומות | Magic Word Factory</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;height:100%;overflow:hidden;font-family:Arial,sans-serif;background:#f6efff;color:#542080}
+.game{height:100dvh;display:flex;flex-direction:column;gap:clamp(5px,1vh,12px);padding:clamp(7px,1.4vmin,15px);border:4px solid #8e39d1;border-radius:20px;background:white}
+header{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-shrink:0}
+h1{margin:0;background:#eee0ff;border-radius:40px;padding:8px 16px;font-size:clamp(17px,2.7vw,32px);text-align:center}
+button,a{font-family:inherit}button{cursor:pointer}.round{border:0;border-radius:50%;background:#8c31d2;color:white;width:clamp(36px,5vw,55px);height:clamp(36px,5vw,55px);font-size:clamp(20px,2.8vw,28px);flex-shrink:0;text-decoration:none;display:grid;place-items:center}
+.status{text-align:center;font-weight:bold;font-size:clamp(13px,1.8vw,20px)}
+.play{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:clamp(8px,2vw,24px);align-items:stretch;direction:ltr}
+.picture{border:3px solid #e2baf7;border-radius:25px;background:#fbf6ff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(5px,1.6vh,18px);min-height:0;padding:8px;direction:rtl}
+.emoji{font-size:clamp(70px,19vmin,180px);line-height:1}
+.speak,.next{border:0;border-radius:24px;background:#8d32ce;color:white;font-weight:bold;padding:clamp(9px,1.5vh,15px) clamp(14px,2vw,25px);font-size:clamp(15px,2vw,23px)}
+.speak:active,.next:active{transform:scale(.97)}
+.work{display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;gap:8px;min-height:0;direction:rtl}
+.prompt{text-align:center;font-weight:bold;font-size:clamp(17px,2.3vw,26px)}
+.slots,.tiles{direction:ltr;display:flex;align-items:center;justify-content:center;gap:clamp(7px,1.4vw,22px);width:100%}
+.slot,.tile{width:clamp(64px,10vw,125px);height:clamp(64px,10vw,125px);border-radius:20%;display:grid;place-items:center;font-size:clamp(32px,5.4vw,65px);font-weight:800;user-select:none;-webkit-user-select:none}
+.slot{background:#e7b6f1;border:3px solid #813a9b;color:#562178}
+.slot.over{background:#d1ffd2;outline:3px dashed #28a64a}
+.slot.filled{background:#d5f6d6;border-color:#39a34b}
+.tile{background:#fff;border:3px solid #823c9b;box-shadow:0 5px 10px #dfd0e8;cursor:grab;touch-action:none;color:#211329}
+.tile.used{visibility:hidden}
+.tile.dragging{position:fixed;z-index:99;pointer-events:none;background:#fff1b6;opacity:.95}
+.hint{font-size:clamp(13px,1.5vw,19px);text-align:center}
+.feedback{font-size:clamp(17px,2.3vw,27px);font-weight:bold;color:#168333;text-align:center;min-height:1.4em}
+footer{display:flex;align-items:center;justify-content:center;gap:14px;font-weight:bold;font-size:clamp(14px,1.8vw,20px);flex-shrink:0}
+.next:disabled{background:#c5a7d7;cursor:default}
+@media(max-width:650px){.game{border-width:2px;padding:5px;gap:4px}.play{grid-template-columns:1fr;grid-template-rows:minmax(0,0.8fr) minmax(0,1.2fr);gap:4px}.emoji{font-size:clamp(40px,11vh,90px)}.picture{gap:3px;border-width:2px}.slot,.tile{width:clamp(54px,17vw,86px);height:clamp(54px,17vw,86px);font-size:clamp(26px,8vw,46px)}.work{gap:3px}.speak,.next{padding:7px 14px;font-size:14px}.hint{font-size:12px}}
+</style></head>
+<body><div class="game">
+<header><a class="round" href="level1.html" title="חזרה למפה">⌂</a><h1>⭐ מפעל המילים הקסומות ⭐</h1><button class="round" onclick="restart()" title="התחלה מחדש">↻</button></header>
+<div class="status" id="status">מילה 1 מתוך 8 · ⭐ 0</div>
+<main class="play">
+<section class="picture"><div class="emoji" id="picture" aria-label="תמונת המילה">🐱</div><button class="speak" onclick="sayWord()">🔊 השמיעו לי את המילה</button><div class="hint">הקשיבו למילה וגררו את האותיות</div></section>
+<section class="work"><div class="prompt">בונים מילה באנגלית!</div><div class="slots" id="slots"></div><div class="hint">אפשר ללחוץ על אות כדי לשמוע את הצליל שלה 🔊</div><div class="tiles" id="tiles"></div><div class="feedback" id="feedback" aria-live="polite"></div><button class="next" id="next" onclick="nextWord()" disabled>המילה הבאה ←</button></section>
+</main><footer><span id="stars">⭐ 0 כוכבים</span></footer></div>
+<script>
+const words=[{word:"CAT",emoji:"🐱"},{word:"DOG",emoji:"🐶"},{word:"SUN",emoji:"☀️"},{word:"PEN",emoji:"🖊️"},{word:"BED",emoji:"🛏️"},{word:"PIG",emoji:"🐷"},{word:"HAT",emoji:"🎩"},{word:"BUS",emoji:"🚌"}];
+const phonics={A:"a",B:"buh",C:"kuh",D:"duh",E:"eh",F:"fff",G:"guh",H:"hhh",I:"ih",J:"juh",K:"kuh",L:"lll",M:"mmm",N:"nnn",O:"o",P:"puh",Q:"kwuh",R:"rrr",S:"sss",T:"tuh",U:"uh",V:"vvv",W:"wuh",X:"ks",Y:"yuh",Z:"zzz"};
+let index=0,placed=[],active=null,completed=false,voiceUnlocked=false;
+function speak(text,rate=.75){if(!("speechSynthesis" in window)){document.getElementById("feedback").textContent="הדפדפן אינו תומך בהשמעת קול";return}
+ speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="en-US";u.rate=rate;u.pitch=1;const voices=speechSynthesis.getVoices();const en=voices.find(v=>v.lang==="en-US")||voices.find(v=>v.lang.startsWith("en"));if(en)u.voice=en;speechSynthesis.speak(u)}
+function sayWord(){speak(words[index].word.toLowerCase(),.7)}
+function sayLetter(letter){speak(phonics[letter]||letter.toLowerCase(),.65)}
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function render(){
+ const item=words[index];placed=[];completed=false;active=null;
+ document.getElementById("picture").textContent=item.emoji;
+ document.getElementById("status").textContent="מילה "+(index+1)+" מתוך "+words.length+" · ⭐ "+index;
+ document.getElementById("stars").textContent="⭐ "+index+" כוכבים";
+ document.getElementById("feedback").textContent="";
+ const next=document.getElementById("next");next.disabled=true;next.textContent=index===words.length-1?"סיום המשחק 🏆":"המילה הבאה ←";
+ const slots=document.getElementById("slots"),tiles=document.getElementById("tiles");slots.innerHTML="";tiles.innerHTML="";
+ for(let i=0;i<3;i++){const slot=document.createElement("div");slot.className="slot";slot.dataset.pos=i;slot.addEventListener("click",()=>{if(active)drop(active,slot)});slots.appendChild(slot)}
+ shuffle(item.word.split("")).forEach((letter,i)=>{const tile=document.createElement("div");tile.className="tile";tile.textContent=letter;tile.dataset.letter=letter;tile.dataset.id=i;tile.setAttribute("role","button");tile.setAttribute("tabindex","0");tile.addEventListener("pointerdown",startDrag);tile.addEventListener("click",()=>select(tile));tile.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();select(tile)}});tiles.appendChild(tile)});
+}
+function select(tile){if(tile.classList.contains("used")||completed)return;active=tile;sayLetter(tile.dataset.letter);document.querySelectorAll(".tile").forEach(t=>t.style.background="");tile.style.background="#fff1b6"}
+function drop(tile,slot){
+ if(!tile||!slot||completed||tile.classList.contains("used")||slot.classList.contains("filled"))return;
+ const letter=tile.dataset.letter,expected=words[index].word[Number(slot.dataset.pos)];
+ if(letter!==expected){document.getElementById("feedback").textContent="נסו שוב 💜";document.getElementById("feedback").style.color="#a0447d";return}
+ slot.textContent=letter;slot.classList.add("filled");tile.classList.add("used");tile.style.background="";active=null;placed.push(letter);
+ document.getElementById("feedback").textContent="כל הכבוד! ⭐";document.getElementById("feedback").style.color="#168333";
+ if(placed.length===3){completed=true;document.getElementById("feedback").textContent="🎉 "+words[index].word+" — הצלחתם!";document.getElementById("next").disabled=false;sayWord()}
+}
+let dragging=null;
+function startDrag(e){
+ if(e.pointerType==="mouse"&&e.button!==0||completed||e.currentTarget.classList.contains("used"))return;
+ e.preventDefault();const tile=e.currentTarget;select(tile);const r=tile.getBoundingClientRect(),ghost=tile.cloneNode(true);
+ ghost.classList.add("dragging");ghost.style.width=r.width+"px";ghost.style.height=r.height+"px";ghost.style.left=(e.clientX-r.width/2)+"px";ghost.style.top=(e.clientY-r.height/2)+"px";document.body.appendChild(ghost);
+ dragging={tile,ghost,id:e.pointerId};tile.setPointerCapture(e.pointerId);
+}
+document.addEventListener("pointermove",e=>{if(!dragging||e.pointerId!==dragging.id)return;const g=dragging.ghost;g.style.left=(e.clientX-g.offsetWidth/2)+"px";g.style.top=(e.clientY-g.offsetHeight/2)+"px";document.querySelectorAll(".slot").forEach(s=>s.classList.remove("over"));const t=document.elementFromPoint(e.clientX,e.clientY)?.closest(".slot");if(t&&!t.classList.contains("filled"))t.classList.add("over")});
+document.addEventListener("pointerup",e=>{if(!dragging||e.pointerId!==dragging.id)return;const {tile,ghost}=dragging;ghost.remove();const slot=document.elementFromPoint(e.clientX,e.clientY)?.closest(".slot");document.querySelectorAll(".slot").forEach(s=>s.classList.remove("over"));if(slot)drop(tile,slot);dragging=null});
+document.addEventListener("pointercancel",()=>{if(dragging){dragging.ghost.remove();dragging=null}});
+function nextWord(){if(!completed)return;if(index===words.length-1){document.getElementById("feedback").textContent="🏆 אלופים! השלמתם את כל המילים!";document.getElementById("next").disabled=true;document.getElementById("stars").textContent="⭐ "+words.length+" כוכבים";return}index++;render()}
+function restart(){index=0;render()}
+render();
+// Audio starts after a real interaction to respect browser autoplay restrictions.
+document.addEventListener("pointerdown",function firstSound(e){if(e.target.closest(".tile,.speak,.round"))return;sayWord();document.removeEventListener("pointerdown",firstSound)},{once:true});
+</script></body></html>
