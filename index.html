@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="he" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>English Games | Learn & Play</title>
+  <title>משחקים באנגלית | English Games</title>
+
   <style>
     * {
       box-sizing: border-box;
@@ -13,128 +14,87 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f5f7ff;
-      color: #26324b;
+      background: linear-gradient(135deg, #e0f7fa, #f3e5f5);
+      color: #263238;
+      text-align: center;
     }
 
     header {
-      background: linear-gradient(135deg, #6255d9, #42a5df);
-      color: white;
-      text-align: center;
-      padding: 55px 20px 65px;
-      border-radius: 0 0 35px 35px;
+      padding: 45px 20px 30px;
     }
 
-    header .star {
-      font-size: 40px;
+    h1 {
+      font-size: 42px;
+      color: #3949ab;
+      margin-bottom: 12px;
     }
 
-    header h1 {
-      font-size: clamp(32px, 6vw, 52px);
-      margin: 12px 0;
-    }
-
-    header p {
-      font-size: 20px;
-      margin: 0;
-    }
-
-    main {
-      max-width: 1050px;
-      margin: 35px auto;
-      padding: 0 20px;
-    }
-
-    .welcome {
-      text-align: center;
-      margin-bottom: 35px;
-    }
-
-    .welcome h2 {
-      font-size: 28px;
-      margin-bottom: 10px;
-    }
-
-    .welcome p {
-      color: #68738b;
-      font-size: 17px;
+    .subtitle {
+      font-size: 22px;
+      line-height: 1.8;
+      color: #455a64;
     }
 
     .levels {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
       gap: 22px;
+      max-width: 1100px;
+      margin: 20px auto 50px;
+      padding: 20px;
     }
 
-    .level {
-      text-decoration: none;
-      color: inherit;
+    .card {
       background: white;
-      border-radius: 25px;
-      padding: 30px 20px;
-      text-align: center;
-      box-shadow: 0 7px 22px #26324b12;
-      transition: transform .2s, box-shadow .2s;
-      border: 3px solid transparent;
+      border-radius: 22px;
+      padding: 28px 18px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.10);
+      transition: transform 0.2s;
     }
 
-    .level:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 28px #26324b20;
+    .card:hover {
+      transform: translateY(-6px);
     }
 
-    .level-icon {
+    .card h2 {
+      font-size: 25px;
+      margin: 12px 0;
+    }
+
+    .card p {
+      font-size: 17px;
+      line-height: 1.7;
+      min-height: 75px;
+    }
+
+    .emoji {
       font-size: 48px;
     }
 
-    .level h2 {
-      font-size: 27px;
-      margin: 12px 0 8px;
-    }
+    .level1 { border-top: 9px solid #66bb6a; }
+    .level2 { border-top: 9px solid #42a5f5; }
+    .level3 { border-top: 9px solid #ffa726; }
+    .level4 { border-top: 9px solid #ab47bc; }
 
-    .level p {
-      color: #68738b;
-      font-size: 16px;
-      line-height: 1.5;
-    }
-
-    .level button {
-      border: none;
-      border-radius: 25px;
-      padding: 12px 25px;
-      font-size: 16px;
-      font-weight: bold;
+    a.button {
+      display: inline-block;
+      background: #3949ab;
       color: white;
-      cursor: pointer;
+      padding: 12px 24px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-size: 17px;
       margin-top: 10px;
     }
 
-    .one { border-color: #b9dcff; }
-    .one button { background: #398bd6; }
-
-    .two { border-color: #bce9c5; }
-    .two button { background: #36a66a; }
-
-    .three { border-color: #ffe0a3; }
-    .three button { background: #e9a52e; }
-
-    .four { border-color: #ddc6ff; }
-    .four button { background: #9061ce; }
-
-    footer {
-      text-align: center;
-      padding: 35px 15px;
-      color: #7a8499;
+    a.button:hover {
+      background: #283593;
     }
 
-    @media (max-width: 600px) {
-      .levels {
-        grid-template-columns: 1fr;
-      }
-
-      header {
-        padding: 40px 15px 50px;
-      }
+    footer {
+      padding: 20px;
+      color: #546e7a;
+      font-size: 15px;
     }
   </style>
 </head>
@@ -142,53 +102,70 @@
 <body>
 
   <header>
-    <div class="star">⭐ 🎮 ⭐</div>
-    <h1>English Games</h1>
-    <p>Learn, Play & Have Fun!</p>
+    <h1>🎮 משחקים באנגלית | English Games</h1>
+
+    <div class="subtitle">
+      ברוכים הבאים לעולם של למידה ומשחק!<br>
+      Welcome to a world of learning and fun!<br>
+      <strong>לומדים, משחקים ונהנים | Learn, Play & Have Fun!</strong>
+    </div>
   </header>
 
-  <main>
+  <main class="levels">
 
-    <section class="welcome">
-      <h2>Choose Your Level!</h2>
-      <p>Pick your level and start your English adventure!</p>
+    <section class="card level1">
+      <div class="emoji">🌱</div>
+      <h2>רמה 1 | Level 1</h2>
+      <p>
+        מתחילים – אותיות, צבעים, מספרים ומילים ראשונות.<br>
+        Beginners – Letters, Colors, Numbers & First Words.
+      </p>
+      <a class="button" href="level1.html">
+        בואו לשחק | Let's Play
+      </a>
     </section>
 
-    <section class="levels">
-
-      <a class="level one" href="level1.html">
-        <div class="level-icon">🌱</div>
-        <h2>Level 1</h2>
-        <p>Let's start!<br>Letters, colors and first words.</p>
-        <button type="button">Let's Play!</button>
+    <section class="card level2">
+      <div class="emoji">🐬</div>
+      <h2>רמה 2 | Level 2</h2>
+      <p>
+        בסיסי – אוצר מילים בנושאים שונים.<br>
+        Basic – Vocabulary, Animals, Food & Family.
+      </p>
+      <a class="button" href="level2.html">
+        בואו לשחק | Let's Play
       </a>
-
-      <a class="level two" href="level2.html">
-        <div class="level-icon">🦋</div>
-        <h2>Level 2</h2>
-        <p>Learn more!<br>Animals, food and vocabulary.</p>
-        <button type="button">Let's Play!</button>
-      </a>
-
-      <a class="level three" href="level3.html">
-        <div class="level-icon">🚀</div>
-        <h2>Level 3</h2>
-        <p>Keep going!<br>Sentences, verbs and questions.</p>
-        <button type="button">Let's Play!</button>
-      </a>
-
-      <a class="level four" href="level4.html">
-        <div class="level-icon">🏆</div>
-        <h2>Level 4</h2>
-        <p>Challenge yourself!<br>Grammar, reading and more.</p>
-        <button type="button">Let's Play!</button>
-      </a>
-
     </section>
+
+    <section class="card level3">
+      <div class="emoji">🚀</div>
+      <h2>רמה 3 | Level 3</h2>
+      <p>
+        בינוני – משפטים, פעלים, שאלות וקריאה.<br>
+        Intermediate – Sentences, Verbs, Questions & Reading.
+      </p>
+      <a class="button" href="level3.html">
+        בואו לשחק | Let's Play
+      </a>
+    </section>
+
+    <section class="card level4">
+      <div class="emoji">🏆</div>
+      <h2>רמה 4 | Level 4</h2>
+      <p>
+        אתגר – דקדוק, הבנת הנקרא ואוצר מילים מתקדם.<br>
+        Challenge – Grammar, Reading Comprehension & Vocabulary.
+      </p>
+      <a class="button" href="level4.html">
+        בואו לשחק | Let's Play
+      </a>
+    </section>
+
   </main>
 
   <footer>
-    <p>💜 English Games – Every day is a chance to learn!</p>
+    כל הכבוד על הלמידה! 🌟<br>
+    Keep learning and having fun!
   </footer>
 
 </body>
