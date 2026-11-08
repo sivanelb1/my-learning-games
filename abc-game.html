@@ -20,8 +20,9 @@ button{cursor:pointer;border:none}
 .slot{background:#e6b4f2;color:#5c137e}
 .slot.over{background:#c8ffce;outline:3px dashed #30a853}
 .slot.filled{background:#d6f7d5;border-color:#42a64b;cursor:pointer;position:relative}
-.slot.filled::after{content:"🔊";position:absolute;right:1px;bottom:0;font-size:clamp(9px,1.7vmin,17px);line-height:1}
+.slot.filled::after{content:"🔊";position:absolute;right:2px;top:50%;transform:translateY(-50%);font-size:clamp(15px,2.8vmin,25px);line-height:1;filter:drop-shadow(0 1px 1px #ffffffaa)}
 .slot.filled:focus-visible{outline:3px solid #e6a700}
+.slot.filled{padding-right:clamp(14px,2.6vmin,25px)}
 .slot.star{background:#fff0ae;border-color:#d9a321}
 .letter{background:#fff;color:#21132b;cursor:grab;touch-action:none;box-shadow:0 2px 5px #ddd}
 .letter.selected{background:#ffe49d;border-color:#df9c00}
