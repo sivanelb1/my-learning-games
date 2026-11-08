@@ -79,8 +79,8 @@ header p {
   min-height: max(185vh, 1100px);
   aspect-ratio: auto;
   background-image: url("ממלכת הפנטזיה הזוהרת והטירה הקסומה.png");
-  background-size: 100% 100%;
-  background-position: center;
+  background-size: cover;
+  background-position: center center;
   background-repeat: no-repeat;
   transform-origin: center center;
 }
@@ -130,7 +130,7 @@ header p {
   border: 2px solid #d8a94d;
   border-radius: 12px;
   padding: 7px 9px;
-  width: 26%;
+  width: 20%;
   font-size: clamp(10px, 2.5vw, 14px);
   font-weight: bold;
   line-height: 1.4;
@@ -165,11 +165,11 @@ header p {
 @media (min-width: 700px) {
   .world { width: 100%; max-width: none; margin: 0; }
   .level { font-size: clamp(22px, 2.5vw, 40px); border-width: 4px; }
-  .level-name { font-size: clamp(15px, 1.3vw, 22px); padding: 12px 16px; width: 23%; }
+  .level-name { font-size: clamp(14px, 1.15vw, 20px); padding: 10px 12px; width: 18%; }
 }
 @media (min-width: 1100px) {
   .world { width: 100%; min-width: 0; }
-  .level { width: 6.5%; }
+  .level { width: 5.5%; }
 }
 </style>
 </head>
@@ -187,47 +187,47 @@ header p {
   <main class="world" id="world">
 
   
-<button class="level current" style="top:84%;left:41%"
+<button class="level current" style="top:84%;left:45%"
   onclick="window.location.href='abc-game.html'">1</button>
 
-<div class="level-name" style="top:84%;left:61%">
+<div class="level-name" style="top:84%;left:65%">
   תרגול ABC <small>ABC Practice</small>
 </div>
 
 
-    <button class="level" style="top:73%;left:42%"
+    <button class="level" style="top:73%;left:52%"
       onclick="window.location.href='sounds-game.html'">2</button>
-    <div class="level-name" style="top:73%;left:12%">
+    <div class="level-name" style="top:73%;left:15%">
       צלילים ומילים <small>Sounds &amp; Words</small>
     </div>
 
-    <button class="level" style="top:63%;left:44%"
+    <button class="level" style="top:63%;left:48%"
       onclick="window.location.href='sound-maze.html'">3</button>
-    <div class="level-name" style="top:63%;left:61%">
+    <div class="level-name" style="top:63%;left:65%">
       מבוך הצלילים <small>Sound Maze</small>
     </div>
 
-    <button class="level" style="top:54%;left:42%"
+    <button class="level" style="top:54%;left:53%"
       onclick="openLevel(4)">4</button>
-    <div class="level-name" style="top:54%;left:12%">
+    <div class="level-name" style="top:54%;left:15%">
       מילים ראשונות <small>First Words</small>
     </div>
 
-    <button class="level locked" style="top:45%;left:47%"
+    <button class="level locked" style="top:45%;left:48%"
       onclick="openLevel(5)">5</button>
-    <div class="level-name" style="top:45%;left:61%">
+    <div class="level-name" style="top:45%;left:65%">
       חיות <small>Animals</small>
     </div>
 
-    <button class="level locked" style="top:37%;left:44%"
+    <button class="level locked" style="top:37%;left:53%"
       onclick="openLevel(6)">6</button>
-    <div class="level-name" style="top:37%;left:12%">
+    <div class="level-name" style="top:37%;left:15%">
       אוכל <small>Food</small>
     </div>
 
-    <button class="level locked" style="top:29%;left:46%"
+    <button class="level locked" style="top:29%;left:50%"
       onclick="openLevel(7)">7</button>
-    <div class="level-name" style="top:29%;left:61%">
+    <div class="level-name" style="top:29%;left:65%">
       משפחה <small>Family</small>
     </div>
 
