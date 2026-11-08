@@ -22,19 +22,22 @@ button{cursor:pointer;border:none}
 .slot.filled{background:#d6f7d5;border-color:#42a64b;cursor:pointer;position:relative}
 .slot.filled::after{content:"🔊";position:absolute;right:2px;top:50%;transform:translateY(-50%);font-size:clamp(15px,2.8vmin,25px);line-height:1;filter:drop-shadow(0 1px 1px #ffffffaa)}
 .slot.filled:focus-visible{outline:3px solid #e6a700}
-.slot.filled{padding-right:clamp(14px,2.6vmin,25px)}
+.slot.filled{padding-right:clamp(19px,3vmin,30px);direction:ltr;gap:2px}
 .slot.star{background:#fff0ae;border-color:#d9a321}
+.slot.start{border:3px solid #ffc400;box-shadow:0 0 12px 3px #ffdc54,inset 0 0 8px #fff3a3;animation:startGlow 1.5s ease-in-out infinite alternate}
+@keyframes startGlow{to{box-shadow:0 0 18px 5px #ffbd00,inset 0 0 10px #fff2a1}}
+.slot.error{background:#ffd0d0!important;border-color:#e34c65!important}
 .letter{background:#fff;color:#21132b;cursor:grab;touch-action:none;box-shadow:0 2px 5px #ddd}
 .letter.selected{background:#ffe49d;border-color:#df9c00}
 .letter.done{visibility:hidden;pointer-events:none}
-.letter.lowercase{background:#c9f3ff;border-color:#1684b4;color:#064e72}
-.slot.matching{background:#e1f6ff;border-color:#1684b4}
+.letter.lowercase{background:#ffe1a3;border-color:#e18417;color:#763600}
+.slot.matching{background:#d6f7d5;border-color:#42a64b}
 .slot.matched{background:#c7f5dc;border-color:#31a565}
-.slot.matched::before{content:attr(data-small);position:absolute;left:2px;bottom:0;font-size:clamp(14px,3vmin,30px);color:#0675a0;font-weight:900}
+.slot.matched::before{content:attr(data-small);position:static;order:1;font-size:clamp(15px,3.1vmin,30px);color:#c05a00;font-weight:900}
 .slot.matched::after{content:"🔊";position:absolute;right:2px;top:50%;transform:translateY(-50%);font-size:clamp(15px,2.8vmin,25px)}
 
 .dragging{position:fixed;z-index:1000;pointer-events:none;opacity:.92;background:#fff1ae;box-shadow:0 4px 15px #999}
-footer{text-align:center;flex-shrink:0;color:#6b249a;font-weight:bold;font-size:13px;padding:4px}
+.success-overlay{position:fixed;inset:0;background:#1d0c3bc9;display:grid;place-items:center;z-index:1100;padding:18px}.success-overlay[hidden]{display:none}.success-card{width:min(460px,96vw);background:white;border:5px solid #b47bed;border-radius:28px;padding:30px 20px;text-align:center;color:#562184;box-shadow:0 10px 35px #16052a}.success-card h2{font-size:clamp(25px,5vw,38px)}.success-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}.success-actions a{background:#7833c5;color:white;padding:14px 17px;border-radius:15px;text-decoration:none;font-weight:bold}.success-actions a:last-child{background:#ffcf42;color:#341550}footer{text-align:center;flex-shrink:0;color:#6b249a;font-weight:bold;font-size:13px;padding:4px}
 #message{color:#16832e}
 @media(max-width:600px){.game{padding:3px;border-width:2px;border-radius:10px}.icon-button{width:31px;height:31px;font-size:18px}.board{width:100%;gap:2px}.slot,.letter{border-width:1.5px;font-size:clamp(13px,3.2vw,23px)}footer{font-size:11px}}
 </style>
@@ -68,6 +71,7 @@ footer{text-align:center;flex-shrink:0;color:#6b249a;font-weight:bold;font-size:
   </footer>
 
 </div>
+<div class="success-overlay" id="success" hidden><div class="success-card"><h2>🏆 כל הכבוד!</h2><p>השלמתם את המשימה בהצלחה! 🎉</p><div class="success-actions"><a href="level1.html">🗺️ חזרה למפה</a><a href="sounds-game.html">🚀 מעבר לשלב הבא</a></div></div></div>
 
 <script>
 const alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
@@ -76,15 +80,16 @@ function shuffle(array){const a=[...array];for(let i=a.length-1;i>0;i--){const j
 function cell(el,col,row){el.style.gridColumn=col;el.style.gridRow=row}
 function startGame(){
  placed=new Set();matched=new Set();phase="upper";selected=null;if(drag){drag.ghost.remove();drag=null}
+ document.getElementById("success").hidden=true;
  document.getElementById("message").textContent="";
  document.querySelector(".instructions").textContent="גררו את האותיות הגדולות למשבצות לפי הסדר A עד Z";
  document.getElementById("progress").textContent="0 מתוך 26 אותיות";
  const board=document.getElementById("board");board.innerHTML="";
- // 28 cells: start star, A-Z, finish trophy. Nine columns across, four rows.
- const sequence=["⭐",...alphabet,"🏆"];
+ // 27 cells: A-Z followed by trophy. A is highlighted as the start.
+ const sequence=[...alphabet,"🏆"];
  sequence.forEach((letter,i)=>{
-  const slot=document.createElement("div");slot.className="slot"+(i===0||i===27?" star":"");
-  if(i>0&&i<27){slot.dataset.letter=letter;slot.setAttribute("aria-label","מקום לאות "+letter);slot.addEventListener("click",()=>{if(phase==="upper"&&placed.has(letter)||phase==="lower"&&matched.has(letter))sayLetterName(letter)});slot.addEventListener("keydown",e=>{if(placed.has(letter)&&(e.key==="Enter"||e.key===" ")){e.preventDefault();sayLetterName(letter)}})}
+  const slot=document.createElement("div");slot.className="slot"+(i===0?" start":i===26?" star":"");
+  if(i<26){slot.dataset.letter=letter;slot.setAttribute("aria-label","מקום לאות "+letter);slot.addEventListener("click",()=>{if(phase==="upper"&&placed.has(letter)||phase==="lower"&&matched.has(letter))sayLetterName(letter)});slot.addEventListener("keydown",e=>{if(placed.has(letter)&&(e.key==="Enter"||e.key===" ")){e.preventDefault();sayLetterName(letter)}})}
   else slot.textContent=letter;
   cell(slot,2+(i%9),2+Math.floor(i/9));board.appendChild(slot);
  });
@@ -111,15 +116,16 @@ function chooseLetter(tile){if(tile.classList.contains("done"))return;document.q
 function placeLetter(letter,slot){
  if(!slot||!slot.classList.contains("slot")||!slot.dataset.letter)return;
  if(phase==="upper"&&placed.has(letter)||phase==="lower"&&matched.has(letter.toUpperCase()))return;
- if(slot.dataset.letter!==(phase==="lower"?letter.toUpperCase():letter)){slot.style.background="#ffd0d0";setTimeout(()=>{if(!slot.classList.contains("filled"))slot.style.background=""},350);return}
+ if(slot.dataset.letter!==(phase==="lower"?letter.toUpperCase():letter)){slot.classList.add("error");setTimeout(()=>slot.classList.remove("error"),450);return}
  if(phase==="lower"){
-  const upper=letter.toUpperCase();matched.add(upper);slot.dataset.small=letter;slot.classList.add("matched");
+  const upper=letter.toUpperCase();matched.add(upper);slot.dataset.small=letter;slot.classList.remove("error");slot.classList.add("matched");
   const lowerTile=[...document.querySelectorAll(".letter")].find(e=>e.dataset.letter===letter);if(lowerTile)lowerTile.classList.add("done");selected=null;
   document.getElementById("progress").textContent=matched.size+" מתוך 26 זוגות";
   document.getElementById("message").textContent=matched.size===26?"🎉 כל הכבוד! התאמתם את כל האותיות!":"🔊 לחצו על האות הירוקה לשמיעת שמה";
+  if(matched.size===26)document.getElementById("success").hidden=false;
   return;
  }
- slot.textContent=letter;slot.classList.add("filled");slot.style.background="";slot.setAttribute("role","button");slot.setAttribute("tabindex","0");slot.setAttribute("title","🔊 לחצו לשמיעת שם האות "+letter);slot.setAttribute("aria-label","השמעת שם האות "+letter);
+ slot.textContent=letter;slot.classList.remove("error");slot.classList.add("filled");slot.style.background="";slot.setAttribute("role","button");slot.setAttribute("tabindex","0");slot.setAttribute("title","🔊 לחצו לשמיעת שם האות "+letter);slot.setAttribute("aria-label","השמעת שם האות "+letter);
  placed.add(letter);const tile=[...document.querySelectorAll(".letter")].find(e=>e.dataset.letter===letter);
  if(tile)tile.classList.add("done");selected=null;
  document.getElementById("progress").textContent=placed.size+" מתוך 26 אותיות";
@@ -128,7 +134,7 @@ function placeLetter(letter,slot){
   phase="lower";selected=null;
   document.querySelectorAll(".letter").forEach(e=>e.remove());
   document.querySelectorAll(".slot.filled").forEach(e=>e.classList.add("matching"));
-  document.querySelector(".instructions").textContent="עכשיו התאימו כל אות קטנה בצבע תכלת לאות הגדולה שלה!";
+  document.querySelector(".instructions").textContent="עכשיו התאימו כל אות קטנה בצבע כתום לאות הגדולה שלה!";
   document.getElementById("progress").textContent="0 מתוך 26 זוגות";
   document.getElementById("message").textContent="🎉 מצוין! מתחילים להתאים אותיות קטנות";
   makeTiles(alphabet.map(x=>x.toLowerCase()),true);
