@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>משחקים באנגלית | English Games</title>
+  <title>PLAYWISE | לומדים, משחקים ונהנים</title>
 
   <style>
     * {
@@ -23,11 +23,24 @@
       padding: 45px 20px 30px;
     }
 
-    h1 {
-      font-size: 42px;
-      color: #3949ab;
-      margin-bottom: 12px;
+    .brand-mark {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 22px 48px 19px;
+      border-radius: 32px;
+      background: linear-gradient(145deg,#101e58,#17275d 65%,#29206b);
+      box-shadow: 0 12px 30px rgba(26,31,91,.20), inset 0 1px 0 #ffffff30;
+      border: 2px solid #ffffff55;
+      margin-bottom: 17px;
     }
+    .brand-icon { font-size: 52px; line-height: 1; filter: drop-shadow(0 3px 6px #ffba4680); margin-bottom: 7px; }
+    h1 { direction: ltr; font-family: Arial,sans-serif; font-size: clamp(48px,7vw,82px); line-height: .98; font-weight: 1000; letter-spacing: -3px; margin: 0; text-shadow: 0 3px 0 #00000030; }
+    .brand-play { color: #ffae3b; }
+    .brand-wise { color: #ff6754; }
+    .brand-tagline { color: #e5e7ff; font-weight: 700; font-size: clamp(13px,1.7vw,17px); margin-top: 10px; letter-spacing: .3px; }
+    .welcome-heading { color:#3645a2; font-weight:800; font-size:clamp(20px,2.5vw,27px); margin: 0 0 5px; }
 
     .subtitle {
       font-size: 22px;
@@ -85,7 +98,7 @@
     .level3 { border: 9px solid #ffa726; }
     .level4 { border: 9px solid #ab47bc; }
 
-    @media(max-width:440px){.card{width:min(92vw,350px);padding:24px}.card h2{font-size:23px}.card p{font-size:14px;line-height:1.5}.emoji{font-size:40px}header{padding:24px 14px 12px}h1{font-size:30px}.subtitle{font-size:17px}}
+    @media(max-width:440px){.brand-mark{padding:20px 24px;border-radius:25px}.brand-icon{font-size:43px}h1{letter-spacing:-2px}.brand-tagline{font-size:12px}.card{width:min(92vw,350px);padding:24px}.card h2{font-size:23px}.card p{font-size:14px;line-height:1.5}.emoji{font-size:40px}header{padding:24px 14px 12px}h1{font-size:30px}.subtitle{font-size:17px}}
 
     a.button {
       display: inline-block;
@@ -113,7 +126,12 @@
 <body>
 
   <header>
-    <h1>🎮 משחקים באנגלית | English Games</h1>
+    <div class="brand-mark" aria-label="PLAYWISE">
+      <div class="brand-icon" aria-hidden="true">💡</div>
+      <h1><span class="brand-play">PLAY</span><span class="brand-wise">WISE</span></h1>
+      <div class="brand-tagline">מיומנות · ביטחון · חיבור</div>
+    </div>
+    <div class="welcome-heading">🎮 משחקים באנגלית | English Games</div>
 
     <div class="subtitle">
       ברוכים הבאים לעולם של למידה ומשחק!<br>
