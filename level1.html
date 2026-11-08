@@ -89,7 +89,7 @@ header p {
 .level {
   position: absolute;
   z-index: 3;
-  width: 9%;
+  width: 8%;
   aspect-ratio: 1;
   transform: translate(-50%,-50%);
   border-radius: 50%;
@@ -126,13 +126,14 @@ header p {
   border: 2px solid #d8a94d;
   border-radius: 12px;
   padding: 7px 9px;
-  width: 29%;
+  width: 26%;
   font-size: clamp(10px, 2.5vw, 14px);
   font-weight: bold;
   line-height: 1.4;
   text-align: center;
   box-shadow: 0 3px 8px #16082f;
   transform: translateY(-50%);
+  pointer-events: none;
 }
 
 .level-name small {
@@ -179,44 +180,44 @@ header p {
 <button class="level current" style="top:84%;left:41%"
   onclick="window.location.href='abc-game.html'">1</button>
 
-<div class="level-name" style="top:85%;left:55%">
+<div class="level-name" style="top:84%;left:61%">
   תרגול ABC <small>ABC Practice</small>
 </div>
 
 
     <button class="level" style="top:73%;left:42%"
       onclick="window.location.href='sounds-game.html'">2</button>
-    <div class="level-name" style="top:74%;left:13%">
+    <div class="level-name" style="top:73%;left:12%">
       צלילים ומילים <small>Sounds &amp; Words</small>
     </div>
 
     <button class="level" style="top:63%;left:44%"
       onclick="window.location.href='sound-maze.html'">3</button>
-    <div class="level-name" style="top:64%;left:57%">
+    <div class="level-name" style="top:63%;left:61%">
       מבוך הצלילים <small>Sound Maze</small>
     </div>
 
     <button class="level" style="top:54%;left:42%"
       onclick="openLevel(4)">4</button>
-    <div class="level-name" style="top:55%;left:13%">
+    <div class="level-name" style="top:54%;left:12%">
       מילים ראשונות <small>First Words</small>
     </div>
 
     <button class="level locked" style="top:45%;left:47%"
       onclick="openLevel(5)">5</button>
-    <div class="level-name" style="top:47%;left:57%">
+    <div class="level-name" style="top:45%;left:61%">
       חיות <small>Animals</small>
     </div>
 
     <button class="level locked" style="top:37%;left:44%"
       onclick="openLevel(6)">6</button>
-    <div class="level-name" style="top:39%;left:13%">
+    <div class="level-name" style="top:37%;left:12%">
       אוכל <small>Food</small>
     </div>
 
     <button class="level locked" style="top:29%;left:46%"
       onclick="openLevel(7)">7</button>
-    <div class="level-name" style="top:31%;left:57%">
+    <div class="level-name" style="top:29%;left:61%">
       משפחה <small>Family</small>
     </div>
 
