@@ -76,11 +76,11 @@ header p {
   max-width: none;
   margin: 0;
   position: relative;
-  min-height: max(185vh, 1100px);
-  aspect-ratio: auto;
+  min-height: 0;
+  aspect-ratio: 1672 / 941;
   background-image: url("ממלכת הפנטזיה הזוהרת והטירה הקסומה.png");
-  background-size: cover;
-  background-position: center center;
+  background-size: 100% auto;
+  background-position: center top;
   background-repeat: no-repeat;
   transform-origin: center center;
 }
@@ -93,14 +93,14 @@ header p {
 .level {
   position: absolute;
   z-index: 3;
-  width: 8%;
+  width: 5.1%;
   aspect-ratio: 1;
   transform: translate(-50%,-50%);
   border-radius: 50%;
   border: 3px solid #ffd76a;
   background: radial-gradient(circle, #a45bff, #45117e);
   color: white;
-  font-size: clamp(16px, 3vw, 25px);
+  font-size: clamp(16px, 2.3vw, 32px);
   font-weight: bold;
   box-shadow: 0 0 15px #e6aaff;
   cursor: pointer;
@@ -130,7 +130,7 @@ header p {
   border: 2px solid #d8a94d;
   border-radius: 12px;
   padding: 7px 9px;
-  width: 20%;
+  width: 14%;
   font-size: clamp(10px, 2.5vw, 14px);
   font-weight: bold;
   line-height: 1.4;
@@ -164,12 +164,12 @@ header p {
 @media (max-width: 600px) {.home{font-size:12px;padding:7px 10px}.level-name{padding:4px 5px;font-size:clamp(9px,2.2vw,12px)}.level{border-width:2px}}
 @media (min-width: 700px) {
   .world { width: 100%; max-width: none; margin: 0; }
-  .level { font-size: clamp(22px, 2.5vw, 40px); border-width: 4px; }
-  .level-name { font-size: clamp(14px, 1.15vw, 20px); padding: 10px 12px; width: 18%; }
+  .level { font-size: clamp(20px, 2.3vw, 36px); border-width: 4px; }
+  .level-name { font-size: clamp(13px, 1.1vw, 19px); padding: 10px 12px; width: 14%; }
 }
 @media (min-width: 1100px) {
   .world { width: 100%; min-width: 0; }
-  .level { width: 5.5%; }
+  .level { width: 5%; }
 }
 </style>
 </head>
@@ -187,51 +187,33 @@ header p {
   <main class="world" id="world">
 
   
-<button class="level current" style="top:84%;left:45%"
+<button class="level current" style="top:76%;left:44%"
   onclick="window.location.href='abc-game.html'">1</button>
 
-<div class="level-name" style="top:84%;left:65%">
+<div class="level-name" style="top:76%;left:49%">
   תרגול ABC <small>ABC Practice</small>
 </div>
 
 
-    <button class="level" style="top:73%;left:52%"
+    <button class="level" style="top:61%;left:46%"
       onclick="window.location.href='sounds-game.html'">2</button>
-    <div class="level-name" style="top:73%;left:15%">
+    <div class="level-name" style="top:61%;left:28%">
       צלילים ומילים <small>Sounds &amp; Words</small>
     </div>
 
-    <button class="level" style="top:63%;left:48%"
+    <button class="level" style="top:47%;left:53%"
       onclick="window.location.href='sound-maze.html'">3</button>
-    <div class="level-name" style="top:63%;left:65%">
+    <div class="level-name" style="top:47%;left:59%">
       מבוך הצלילים <small>Sound Maze</small>
     </div>
 
-    <button class="level" style="top:54%;left:53%"
+    <button class="level" style="top:32%;left:50%"
       onclick="openLevel(4)">4</button>
-    <div class="level-name" style="top:54%;left:15%">
+    <div class="level-name" style="top:32%;left:30%">
       מילים ראשונות <small>First Words</small>
     </div>
 
-    <button class="level locked" style="top:45%;left:48%"
-      onclick="openLevel(5)">5</button>
-    <div class="level-name" style="top:45%;left:65%">
-      חיות <small>Animals</small>
-    </div>
-
-    <button class="level locked" style="top:37%;left:53%"
-      onclick="openLevel(6)">6</button>
-    <div class="level-name" style="top:37%;left:15%">
-      אוכל <small>Food</small>
-    </div>
-
-    <button class="level locked" style="top:29%;left:50%"
-      onclick="openLevel(7)">7</button>
-    <div class="level-name" style="top:29%;left:65%">
-      משפחה <small>Family</small>
-    </div>
-
-  </main>
+    </main>
 </div>
 
 <div class="message">
@@ -242,7 +224,7 @@ header p {
 function openLevel(level) {
   alert("שלב " + level + " עדיין בהכנה ⭐");
 }
-window.addEventListener("load",()=>{const pane=document.getElementById("mapWindow"),world=document.getElementById("world"),first=world.querySelector(".level.current");if(first){const center=first.offsetTop+first.offsetHeight/2;pane.scrollTop=Math.max(0,center-pane.clientHeight*.76)}});
+window.addEventListener("load",()=>{const pane=document.getElementById("mapWindow");pane.scrollTop=0;});
 </script>
 
 </body>
