@@ -7,247 +7,27 @@
 <title>משחק ABC</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
-
-html, body {
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  font-family: Arial, sans-serif;
-  background: #f7f1ff;
-}
-
-.game {
-  height: 100dvh;
-  width: 100%;
-  border: 4px solid #8531d1;
-  border-radius: 22px;
-  background: white;
-  display: flex;
-  flex-direction: column;
-  padding: 8px;
-  overflow: hidden;
-}
-
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-h1 {
-  margin: 0;
-  padding: 8px 12px;
-  text-align: center;
-  font-size: clamp(15px, 2.6vw, 30px);
-  color: #65129c;
-  background: #eee0ff;
-  border-radius: 40px;
-}
-
-button {
-  cursor: pointer;
-  border: none;
-}
-
-.icon-button {
-  background: #8529cb;
-  color: white;
-  border-radius: 50%;
-  width: 43px;
-  height: 43px;
-  font-size: 23px;
-  flex-shrink: 0;
-}
-
-.instructions {
-  text-align: center;
-  color: #682094;
-  font-weight: bold;
-  font-size: clamp(12px, 1.7vw, 17px);
-  margin: 6px 0;
-  flex-shrink: 0;
-}
-
-.board {
-  direction: ltr;
-  flex: 1;
-  min-height: 0;
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) minmax(0, 3fr) minmax(0, 1fr);
-  gap: 5px;
-  width: 100%;
-  max-width: 1100px;
-  margin: auto;
-}
-
-.letters {
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  gap: 3px;
-  min-height: 0;
-}
-
-.middle {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 4fr) minmax(0, 1fr);
-  gap: 5px;
-  min-height: 0;
-}
-
-.side {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-rows: repeat(4, minmax(0, 1fr));
-  gap: 4px;
-  place-items: center;
-  min-height: 0;
-}
-
-.slots {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  grid-template-rows: repeat(4, minmax(0, 1fr));
-  gap: clamp(3px, 0.7vw, 10px);
-  padding: 4px;
-  min-height: 0;
-}
-
-.slot {
-  background: #e6b4f2;
-  border: 2px solid #7b3797;
-  border-radius: 20%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: clamp(11px, 2vw, 25px);
-  font-weight: bold;
-  color: #5c137e;
-  min-width: 0;
-  min-height: 0;
-  position: relative;
-}
-
-.slot.over {
-  background: #c8ffce;
-  outline: 3px dashed #30a853;
-}
-
-.slot.filled {
-  background: #d6f7d5;
-  border-color: #42a64b;
-}
-
-.slot.star {
-  background: #fff0ae;
-  border-color: #d9a321;
-  font-size: clamp(16px, 2.4vw, 30px);
-}
-
-.letter {
-  width: min(100%, 48px);
-  aspect-ratio: 1;
-  max-height: 100%;
-  border-radius: 50%;
-  border: 2px solid #793c99;
-  background: white;
-  color: #151515;
-  font-size: clamp(12px, 2vw, 24px);
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: grab;
-  touch-action: none;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.letter.selected {
-  background: #ffe49d;
-  border-color: #df9c00;
-}
-
-.letter.done {
-  visibility: hidden;
-  pointer-events: none;
-}
-
-.dragging {
-  position: fixed;
-  z-index: 1000;
-  pointer-events: none;
-  opacity: 0.9;
-  background: #fff1ae;
-  box-shadow: 0 4px 15px #999;
-}
-
-footer {
-  text-align: center;
-  flex-shrink: 0;
-  color: #6b249a;
-  font-weight: bold;
-  font-size: 13px;
-  padding: 4px;
-}
-
-#message {
-  color: #16832e;
-}
-
-@media (max-width: 600px) {
-  .game {
-    padding: 4px;
-    border-width: 2px;
-    border-radius: 12px;
-  }
-
-  .icon-button {
-    width: 32px;
-    height: 32px;
-    font-size: 18px;
-  }
-
-  .board {
-    grid-template-rows: minmax(0, 1fr) minmax(0, 4fr) minmax(0, 1fr);
-  }
-
-  .middle {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 5fr) minmax(0, 1fr);
-    gap: 2px;
-  }
-
-  .side {
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(8, minmax(0, 1fr));
-    gap: 2px;
-  }
-
-  .letter {
-    border-width: 1.5px;
-    font-size: clamp(9px, 2.7vw, 16px);
-  }
-
-  .slot {
-    border-width: 1.5px;
-    font-size: clamp(9px, 2.8vw, 16px);
-  }
-
-  .slots {
-    gap: 3px;
-    padding: 1px;
-  }
-
-  footer {
-    font-size: 11px;
-  }
-}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,sans-serif;background:#f7f1ff}
+.game{height:100dvh;width:100%;border:3px solid #8531d1;border-radius:18px;background:white;display:flex;flex-direction:column;padding:7px;overflow:hidden}
+header{display:flex;align-items:center;justify-content:space-between;gap:6px;flex-shrink:0}
+h1{margin:0;padding:6px 12px;text-align:center;font-size:clamp(14px,2.4vw,28px);color:#65129c;background:#eee0ff;border-radius:40px}
+button{cursor:pointer;border:none}
+.icon-button{background:#8529cb;color:white;border-radius:50%;width:40px;height:40px;font-size:23px;flex-shrink:0}
+.instructions{text-align:center;color:#682094;font-weight:bold;font-size:clamp(12px,1.6vw,17px);margin:5px 0;flex-shrink:0}
+.board{direction:ltr;flex:1;min-height:0;min-width:0;display:grid;grid-template-columns:repeat(9,minmax(0,1fr));grid-template-rows:repeat(8,minmax(0,1fr));gap:clamp(3px,.65vmin,8px);width:min(100%,calc((100dvh - 125px)*1.15));max-width:1050px;margin:auto;padding:3px}
+.slot,.letter{min-width:0;min-height:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;border:2px solid #7b3797;border-radius:18%;font-size:clamp(14px,3.4vmin,35px);font-weight:bold;user-select:none;-webkit-user-select:none}
+.slot{background:#e6b4f2;color:#5c137e}
+.slot.over{background:#c8ffce;outline:3px dashed #30a853}
+.slot.filled{background:#d6f7d5;border-color:#42a64b}
+.slot.star{background:#fff0ae;border-color:#d9a321}
+.letter{background:#fff;color:#21132b;cursor:grab;touch-action:none;box-shadow:0 2px 5px #ddd}
+.letter.selected{background:#ffe49d;border-color:#df9c00}
+.letter.done{visibility:hidden;pointer-events:none}
+.dragging{position:fixed;z-index:1000;pointer-events:none;opacity:.92;background:#fff1ae;box-shadow:0 4px 15px #999}
+footer{text-align:center;flex-shrink:0;color:#6b249a;font-weight:bold;font-size:13px;padding:4px}
+#message{color:#16832e}
+@media(max-width:600px){.game{padding:3px;border-width:2px;border-radius:10px}.icon-button{width:31px;height:31px;font-size:18px}.board{width:100%;gap:2px}.slot,.letter{border-width:1.5px;font-size:clamp(13px,3.2vw,23px)}footer{font-size:11px}}
 </style>
 </head>
 
@@ -271,17 +51,7 @@ footer {
     גררו את האותיות למשבצות לפי הסדר A עד Z
   </div>
 
-  <main class="board">
-    <div class="letters" id="topLetters"></div>
-
-    <div class="middle">
-      <div class="side" id="leftLetters"></div>
-      <div class="slots" id="slots"></div>
-      <div class="side" id="rightLetters"></div>
-    </div>
-
-    <div class="letters" id="bottomLetters"></div>
-  </main>
+  <main class="board" id="board" aria-label="לוח המשחק"></main>
 
   <footer>
     <span id="progress">0 מתוך 26 אותיות</span>
@@ -291,233 +61,75 @@ footer {
 </div>
 
 <script>
-const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-
-let placed = new Set();
-let selected = null;
-let drag = null;
-
-function shuffle(array) {
-  const copy = [...array];
-
-  for (let i = copy.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [copy[i], copy[j]] = [copy[j], copy[i]];
-  }
-
-  return copy;
+const alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+let placed=new Set(),selected=null,drag=null;
+function shuffle(array){const a=[...array];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function cell(el,col,row){el.style.gridColumn=col;el.style.gridRow=row}
+function startGame(){
+ placed=new Set();selected=null;if(drag){drag.ghost.remove();drag=null}
+ document.getElementById("message").textContent="";
+ document.getElementById("progress").textContent="0 מתוך 26 אותיות";
+ const board=document.getElementById("board");board.innerHTML="";
+ // 28 cells: start star, A-Z, finish star. Seven columns, four rows.
+ const sequence=["⭐",...alphabet,"🏆"];
+ sequence.forEach((letter,i)=>{
+  const slot=document.createElement("div");slot.className="slot"+(i===0||i===27?" star":"");
+  if(i>0&&i<27){slot.dataset.letter=letter;slot.setAttribute("aria-label","מקום לאות "+letter)}
+  else slot.textContent=letter;
+  cell(slot,2+(i%7),3+Math.floor(i/7));board.appendChild(slot);
+ });
+ // Perimeter: 7 across top, 6 down right, 7 across bottom, 6 up left.
+ const positions=[];
+ for(let col=2;col<=8;col++)positions.push([col,1]);
+ for(let row=2;row<=7;row++)positions.push([9,row]);
+ for(let col=8;col>=2;col--)positions.push([col,8]);
+ for(let row=7;row>=2;row--)positions.push([1,row]);
+ shuffle(alphabet).forEach((letter,i)=>{
+  const tile=document.createElement("div");tile.className="letter";tile.textContent=letter;tile.dataset.letter=letter;
+  tile.setAttribute("role","button");tile.setAttribute("tabindex","0");tile.setAttribute("aria-label","אות "+letter);
+  cell(tile,...positions[i]);tile.addEventListener("pointerdown",pointerDown);
+  tile.addEventListener("click",()=>chooseLetter(tile));
+  tile.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();chooseLetter(tile)}});
+  board.appendChild(tile);
+ });
 }
-
-function startGame() {
-  placed = new Set();
-  selected = null;
-  drag = null;
-
-  document.getElementById("message").textContent = "";
-  document.getElementById("progress").textContent =
-    "0 מתוך 26 אותיות";
-
-  const slots = document.getElementById("slots");
-  slots.innerHTML = "";
-
-  // כוכב בתחילת המסלול
-  const startStar = document.createElement("div");
-  startStar.className = "slot star";
-  startStar.textContent = "⭐";
-  slots.appendChild(startStar);
-
-  // 26 משבצות לפי סדר האלפבית
-  alphabet.forEach(letter => {
-    const slot = document.createElement("div");
-    slot.className = "slot";
-    slot.dataset.letter = letter;
-    slot.setAttribute("aria-label", "מקום לאות " + letter);
-    slots.appendChild(slot);
-  });
-
-  // כוכב בסיום המסלול
-  const endStar = document.createElement("div");
-  endStar.className = "slot star";
-  endStar.textContent = "🏆";
-  slots.appendChild(endStar);
-
-  const shuffled = shuffle(alphabet);
-
-  const groups = {
-    topLetters: shuffled.slice(0, 5),
-    rightLetters: shuffled.slice(5, 13),
-    bottomLetters: shuffled.slice(13, 18),
-    leftLetters: shuffled.slice(18, 26)
-  };
-
-  Object.entries(groups).forEach(([id, letters]) => {
-    const container = document.getElementById(id);
-    container.innerHTML = "";
-
-    letters.forEach(letter => {
-      const circle = document.createElement("div");
-      circle.className = "letter";
-      circle.textContent = letter;
-      circle.dataset.letter = letter;
-
-      circle.addEventListener("pointerdown", pointerDown);
-      circle.addEventListener("click", () => chooseLetter(circle));
-
-      container.appendChild(circle);
-    });
-  });
+function chooseLetter(tile){if(placed.has(tile.dataset.letter))return;document.querySelectorAll(".letter").forEach(e=>e.classList.remove("selected"));selected=tile.dataset.letter;tile.classList.add("selected")}
+function placeLetter(letter,slot){
+ if(!slot||!slot.classList.contains("slot")||!slot.dataset.letter||placed.has(letter))return;
+ if(slot.dataset.letter!==letter){slot.style.background="#ffd0d0";setTimeout(()=>{if(!slot.classList.contains("filled"))slot.style.background=""},350);return}
+ slot.textContent=letter;slot.classList.add("filled");slot.style.background="";
+ placed.add(letter);const tile=[...document.querySelectorAll(".letter")].find(e=>e.dataset.letter===letter);
+ if(tile)tile.classList.add("done");selected=null;
+ document.getElementById("progress").textContent=placed.size+" מתוך 26 אותיות";
+ if(placed.size===26)document.getElementById("message").textContent=" 🎉 כל הכבוד! השלמתם את האלפבית! ⭐";
 }
-
-function chooseLetter(circle) {
-  if (placed.has(circle.dataset.letter)) return;
-
-  document.querySelectorAll(".letter").forEach(el => {
-    el.classList.remove("selected");
-  });
-
-  selected = circle.dataset.letter;
-  circle.classList.add("selected");
+function pointerDown(event){
+ if(event.pointerType==="mouse"&&event.button!==0)return;
+ const tile=event.currentTarget,letter=tile.dataset.letter;if(placed.has(letter))return;
+ event.preventDefault();const rect=tile.getBoundingClientRect(),ghost=tile.cloneNode(true);
+ ghost.classList.add("dragging");ghost.style.width=rect.width+"px";ghost.style.height=rect.height+"px";
+ ghost.style.left=(event.clientX-rect.width/2)+"px";ghost.style.top=(event.clientY-rect.height/2)+"px";
+ document.body.appendChild(ghost);drag={letter,ghost,pointerId:event.pointerId,original:tile};
+ tile.setPointerCapture(event.pointerId);
 }
-
-function placeLetter(letter, slot) {
-  if (!slot || !slot.classList.contains("slot")) return;
-  if (!slot.dataset.letter) return;
-  if (placed.has(letter)) return;
-
-  if (slot.dataset.letter !== letter) {
-    slot.style.background = "#ffd0d0";
-
-    setTimeout(() => {
-      if (!slot.classList.contains("filled")) {
-        slot.style.background = "";
-      }
-    }, 350);
-
-    return;
-  }
-
-  slot.textContent = letter;
-  slot.classList.add("filled");
-  slot.style.background = "";
-
-  placed.add(letter);
-
-  const circle = [...document.querySelectorAll(".letter")]
-    .find(el => el.dataset.letter === letter);
-
-  if (circle) circle.classList.add("done");
-
-  selected = null;
-
-  document.getElementById("progress").textContent =
-    placed.size + " מתוך 26 אותיות";
-
-  if (placed.size === 26) {
-    document.getElementById("message").textContent =
-      " 🎉 כל הכבוד! השלמתם את האלפבית! ⭐";
-  }
-}
-
-function pointerDown(event) {
-  if (event.button !== 0 && event.pointerType === "mouse") return;
-
-  const original = event.currentTarget;
-  const letter = original.dataset.letter;
-
-  if (placed.has(letter)) return;
-
-  event.preventDefault();
-
-  const rect = original.getBoundingClientRect();
-
-  const ghost = original.cloneNode(true);
-  ghost.classList.add("dragging");
-
-  ghost.style.width = rect.width + "px";
-  ghost.style.height = rect.height + "px";
-  ghost.style.left = (event.clientX - rect.width / 2) + "px";
-  ghost.style.top = (event.clientY - rect.height / 2) + "px";
-
-  document.body.appendChild(ghost);
-
-  drag = {
-    letter,
-    ghost,
-    pointerId: event.pointerId,
-    original
-  };
-
-  original.setPointerCapture(event.pointerId);
-}
-
-document.addEventListener("pointermove", event => {
-  if (!drag || drag.pointerId !== event.pointerId) return;
-
-  const ghost = drag.ghost;
-
-  ghost.style.left =
-    (event.clientX - ghost.offsetWidth / 2) + "px";
-
-  ghost.style.top =
-    (event.clientY - ghost.offsetHeight / 2) + "px";
-
-  document.querySelectorAll(".slot").forEach(slot => {
-    slot.classList.remove("over");
-  });
-
-  const target = document.elementFromPoint(
-    event.clientX,
-    event.clientY
-  );
-
-  const slot = target && target.closest(".slot");
-
-  if (slot && slot.dataset.letter) {
-    slot.classList.add("over");
-  }
+document.addEventListener("pointermove",event=>{
+ if(!drag||drag.pointerId!==event.pointerId)return;
+ const ghost=drag.ghost;ghost.style.left=(event.clientX-ghost.offsetWidth/2)+"px";ghost.style.top=(event.clientY-ghost.offsetHeight/2)+"px";
+ document.querySelectorAll(".slot").forEach(e=>e.classList.remove("over"));
+ const target=document.elementFromPoint(event.clientX,event.clientY),slot=target&&target.closest(".slot");
+ if(slot&&slot.dataset.letter)slot.classList.add("over");
 });
-
-document.addEventListener("pointerup", event => {
-  if (!drag || drag.pointerId !== event.pointerId) return;
-
-  const letter = drag.letter;
-
-  drag.ghost.remove();
-
-  const target = document.elementFromPoint(
-    event.clientX,
-    event.clientY
-  );
-
-  const slot = target && target.closest(".slot");
-
-  document.querySelectorAll(".slot").forEach(el => {
-    el.classList.remove("over");
-  });
-
-  if (slot) {
-    placeLetter(letter, slot);
-  }
-
-  drag = null;
+document.addEventListener("pointerup",event=>{
+ if(!drag||drag.pointerId!==event.pointerId)return;
+ const {letter,ghost,original}=drag;ghost.remove();
+ const target=document.elementFromPoint(event.clientX,event.clientY),slot=target&&target.closest(".slot");
+ document.querySelectorAll(".slot").forEach(e=>e.classList.remove("over"));
+ if(slot)placeLetter(letter,slot);
+ else if(!placed.has(letter))chooseLetter(original);
+ drag=null;
 });
-
-document.addEventListener("pointercancel", () => {
-  if (drag) {
-    drag.ghost.remove();
-    drag = null;
-  }
-});
-
-// אפשר גם ללחוץ על אות ואז על המשבצת
-document.getElementById("slots").addEventListener("click", event => {
-  const slot = event.target.closest(".slot");
-
-  if (slot && selected) {
-    placeLetter(selected, slot);
-  }
-});
-
+document.addEventListener("pointercancel",()=>{if(drag){drag.ghost.remove();drag=null}});
+document.getElementById("board").addEventListener("click",event=>{const slot=event.target.closest(".slot");if(slot&&selected)placeLetter(selected,slot)});
 startGame();
 </script>
 
