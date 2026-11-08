@@ -28,7 +28,7 @@ button,a{font-family:inherit}button{cursor:pointer}.round{border:0;border-radius
 .tile{background:#fff;border:3px solid #823c9b;box-shadow:0 5px 10px #dfd0e8;cursor:grab;touch-action:none;color:#211329}
 .tile.used{visibility:hidden}
 .tile.dragging{position:fixed;z-index:99;pointer-events:none;background:#fff1b6;opacity:.95}
-.hint{font-size:clamp(13px,1.5vw,19px);text-align:center}
+.translation{font-size:clamp(19px,2.5vw,29px);font-weight:800;color:#5d258e;text-align:center;background:#f1e5ff;padding:6px 20px;border-radius:16px}.hint{font-size:clamp(13px,1.5vw,19px);text-align:center}
 .feedback{font-size:clamp(17px,2.3vw,27px);font-weight:bold;color:#168333;text-align:center;min-height:1.4em}
 footer{display:flex;align-items:center;justify-content:center;gap:14px;font-weight:bold;font-size:clamp(14px,1.8vw,20px);flex-shrink:0}
 .next:disabled{background:#c5a7d7;cursor:default}
@@ -39,10 +39,11 @@ footer{display:flex;align-items:center;justify-content:center;gap:14px;font-weig
 <header><div class="scoreboard"><span class="hearts" id="hearts">❤️❤️❤️</span><span id="score">0 נק׳</span></div><button class="skip" id="skip" onclick="skipWord()" title="למילה הבאה ללא כוכב">דלגי ←</button><a class="round" href="level1.html" title="חזרה למפה">⌂</a><h1>מפעל המילים הקסומות</h1><button class="round" onclick="restart()" title="התחלה מחדש">↻</button></header>
 <div class="status" id="status">מילה 1 מתוך 15 · ⭐ 0</div>
 <main class="play">
-<section class="picture"><div class="emoji" id="picture" aria-label="תמונת המילה">🐱</div><button class="speak" onclick="sayWord()">🔊 השמיעו לי את המילה</button><div class="hint">הקשיבו למילה וגררו את האותיות</div></section>
+<section class="picture"><div class="emoji" id="picture" aria-label="תמונת המילה">🐱</div><button class="speak" onclick="sayWord()">🔊 השמיעו לי את המילה</button><div class="translation" id="translation" aria-label="פירוש המילה בעברית">חתול</div><div class="hint">הקשיבו למילה וגררו את האותיות</div></section>
 <section class="work"><div class="prompt">בונים מילה באנגלית!</div><div class="slots" id="slots"></div><div class="tiles" id="tiles"></div><div class="feedback" id="feedback" aria-live="polite"></div><button class="next" id="next" onclick="nextWord()" disabled>המילה הבאה ←</button></section>
 </main><div class="game-over" id="gameOver" hidden><div class="game-over-card" role="dialog" aria-modal="true" aria-labelledby="gameOverTitle"><h2 id="gameOverTitle">💜 לא נורא, נסו שוב!</h2><p>נגמרו הלבבות. אפשר להתחיל מחדש!</p><button class="retry" onclick="restart()">מתחילים מחדש ↻</button></div></div><footer><span id="stars">⭐ 0 כוכבים</span></footer></div>
 <div class="game-over" id="success" hidden><div class="game-over-card"><h2>🏆 כל הכבוד!</h2><p>השלמתם את המשימה בהצלחה! 🎉</p><div class="success-actions"><a href="level1.html">🗺️ חזרה למפה</a><a href="sound-maze.html">🚀 מעבר לשלב הבא</a></div></div></div><script>
+const translations={"CAT":"חתול","DOG":"כלב","SUN":"שמש","PEN":"עט","BED":"מיטה","PIG":"חזיר","HAT":"כובע","BUS":"אוטובוס","FOX":"שועל","WOLF":"זאב","MILK":"חלב","VEST":"אפוד","JEEP":"ג׳יפ","YARD":"חצר","QUIZ":"חידון"};
 const words=[{word:"CAT",emoji:"🐱"},{word:"DOG",emoji:"🐶"},{word:"SUN",emoji:"☀️"},{word:"PEN",emoji:"🖊️"},{word:"BED",emoji:"🛏️"},{word:"PIG",emoji:"🐷"},{word:"HAT",emoji:"🎩"},{word:"BUS",emoji:"🚌"},{word:"FOX",emoji:"🦊"},{word:"WOLF",emoji:"🐺"},{word:"MILK",emoji:"🥛"},{word:"VEST",emoji:"🦺"},{word:"JEEP",emoji:"🚙"},{word:"YARD",emoji:"🏡"},{word:"QUIZ",emoji:"❓"}];
 // Real words are more reliable with browser text-to-speech than invented phonetic syllables.
 // These are spoken Hebrew phonetic approximations, not English letter names or example words.
@@ -65,6 +66,7 @@ function render(){
  if("speechSynthesis" in window)window.speechSynthesis.cancel();
  const item=words[index];filled=new Set();completed=false;active=null;updateScore();
  document.getElementById("picture").textContent=item.emoji;
+ document.getElementById("translation").textContent=translations[item.word];
  document.getElementById("status").textContent="מילה "+(index+1)+" מתוך "+words.length+" · ⭐ "+solved.size;
  document.getElementById("stars").textContent="⭐ "+solved.size+" כוכבים";
  document.getElementById("feedback").textContent="";
