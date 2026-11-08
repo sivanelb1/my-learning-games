@@ -1,0 +1,249 @@
+
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>מפת ההרפתקה - תצוגת מסך מלא</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #16082f;
+  color: white;
+  overflow-x: hidden;
+}
+
+header {
+  display:none;
+  position: fixed;
+  top: 10px;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  text-align: center;
+  pointer-events: none;
+}
+
+header h1 {
+  display: inline-block;
+  background: #54218b;
+  border: 2px solid #e5b95c;
+  border-radius: 20px;
+  padding: 10px 22px;
+  margin: 0;
+  font-size: 23px;
+  box-shadow: 0 0 20px #a34bff;
+}
+
+header p {
+  margin: 7px;
+  text-shadow: 0 2px 5px black;
+}
+
+.home {
+  position: fixed;
+  top: 15px;
+  right: 12px;
+  z-index: 20;
+  background: #54218b;
+  color: white;
+  padding: 10px 14px;
+  border-radius: 15px;
+  text-decoration: none;
+}
+
+.map-window {
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+  scroll-behavior: smooth;
+  touch-action: pan-y;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+
+.map-window::-webkit-scrollbar { display: none; }
+
+.world {
+  width: 100vw;
+  min-width: 100vw;
+  max-width: none;
+  margin: 0;
+  position: relative;
+  aspect-ratio: 1024 / 1536;
+  background-image: url("91b83f92-3cae-4dd2-926e-9780405de6b5.png");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform-origin: center center;
+}
+
+@keyframes arrive {
+  from { transform: scale(0.85); }
+  to { transform: scale(1.18); }
+}
+
+.level {
+  position: absolute;
+  z-index: 3;
+  width: 8%;
+  aspect-ratio: 1;
+  transform: translate(-50%,-50%);
+  border-radius: 50%;
+  border: 3px solid #ffd76a;
+  background: radial-gradient(circle, #a45bff, #45117e);
+  color: white;
+  font-size: clamp(16px, 3vw, 25px);
+  font-weight: bold;
+  box-shadow: 0 0 15px #e6aaff;
+  cursor: pointer;
+}
+
+.level.current {
+  animation: glow 1.5s infinite alternate;
+  background: radial-gradient(circle, #ffda72, #8d36d8);
+  color: #32104e;
+}
+
+.level.locked {
+  filter: grayscale(0.7);
+  opacity: 0.75;
+}
+
+@keyframes glow {
+  from { box-shadow: 0 0 10px #ffdf7a; }
+  to { box-shadow: 0 0 30px #ffdf7a, 0 0 45px #bd6aff; }
+}
+
+.level-name {
+  position: absolute;
+  z-index: 5;
+  background: #fff0c9;
+  color: #38174e;
+  border: 2px solid #d8a94d;
+  border-radius: 12px;
+  padding: 7px 9px;
+  width: 26%;
+  font-size: clamp(10px, 2.5vw, 14px);
+  font-weight: bold;
+  line-height: 1.4;
+  text-align: center;
+  box-shadow: 0 3px 8px #16082f;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.level-name small {
+  display: block;
+  direction: ltr;
+}
+
+.message {
+  display:none;
+  position: fixed;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  background: #54218b;
+  border: 2px solid #e5b95c;
+  padding: 10px 16px;
+  border-radius: 18px;
+  text-align: center;
+  width: max-content;
+  max-width: 90%;
+}
+
+@media (max-width: 600px) {.home{font-size:12px;padding:7px 10px}.level-name{padding:4px 5px;font-size:clamp(9px,2.2vw,12px)}.level{border-width:2px}}
+@media (min-width: 700px) {
+  .world { width: 100%; max-width: none; }
+  .level { font-size: clamp(22px, 2.5vw, 40px); border-width: 4px; }
+  .level-name { font-size: clamp(15px, 1.3vw, 22px); padding: 12px 16px; width: 23%; }
+}
+@media (min-width: 1100px) {
+  .world { min-width: 100%; }
+  .level { width: 6.5%; }
+}
+</style>
+</head>
+
+<body>
+
+<a class="home" href="index.html">🏠 חזרה | Home</a>
+
+<header>
+  <h1>🌌 המסע הקוסמי | Cosmic Adventure</h1>
+  <p>בחרו שלב והתחילו לשחק | Choose a level and play</p>
+</header>
+
+<div class="map-window" id="mapWindow">
+  <main class="world" id="world">
+
+  
+<button class="level current" style="top:84%;left:41%"
+  onclick="window.location.href='abc-game.html'">1</button>
+
+<div class="level-name" style="top:84%;left:61%">
+  תרגול ABC <small>ABC Practice</small>
+</div>
+
+
+    <button class="level" style="top:73%;left:42%"
+      onclick="window.location.href='sounds-game.html'">2</button>
+    <div class="level-name" style="top:73%;left:12%">
+      צלילים ומילים <small>Sounds &amp; Words</small>
+    </div>
+
+    <button class="level" style="top:63%;left:44%"
+      onclick="window.location.href='sound-maze.html'">3</button>
+    <div class="level-name" style="top:63%;left:61%">
+      מבוך הצלילים <small>Sound Maze</small>
+    </div>
+
+    <button class="level" style="top:54%;left:42%"
+      onclick="openLevel(4)">4</button>
+    <div class="level-name" style="top:54%;left:12%">
+      מילים ראשונות <small>First Words</small>
+    </div>
+
+    <button class="level locked" style="top:45%;left:47%"
+      onclick="openLevel(5)">5</button>
+    <div class="level-name" style="top:45%;left:61%">
+      חיות <small>Animals</small>
+    </div>
+
+    <button class="level locked" style="top:37%;left:44%"
+      onclick="openLevel(6)">6</button>
+    <div class="level-name" style="top:37%;left:12%">
+      אוכל <small>Food</small>
+    </div>
+
+    <button class="level locked" style="top:29%;left:46%"
+      onclick="openLevel(7)">7</button>
+    <div class="level-name" style="top:29%;left:61%">
+      משפחה <small>Family</small>
+    </div>
+
+  </main>
+</div>
+
+<div class="message">
+  ⭐ אוספים כוכבים ומתקדמים! | Collect stars and progress!
+</div>
+
+<script>
+function openLevel(level) {
+  alert("שלב " + level + " עדיין בהכנה ⭐");
+}
+window.addEventListener("load",()=>{const pane=document.getElementById("mapWindow"),world=document.getElementById("world"),first=world.querySelector(".level.current");if(first){const center=first.offsetTop+first.offsetHeight/2;pane.scrollTop=Math.max(0,center-pane.clientHeight*.76)}});
+</script>
+
+</body>
+</html>
