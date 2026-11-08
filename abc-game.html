@@ -19,7 +19,9 @@ button{cursor:pointer;border:none}
 .slot,.letter{min-width:0;min-height:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;border:2px solid #7b3797;border-radius:18%;font-size:clamp(17px,4.5vmin,45px);font-weight:bold;user-select:none;-webkit-user-select:none}
 .slot{background:#e6b4f2;color:#5c137e}
 .slot.over{background:#c8ffce;outline:3px dashed #30a853}
-.slot.filled{background:#d6f7d5;border-color:#42a64b}
+.slot.filled{background:#d6f7d5;border-color:#42a64b;cursor:pointer;position:relative}
+.slot.filled::after{content:"🔊";position:absolute;right:1px;bottom:0;font-size:clamp(9px,1.7vmin,17px);line-height:1}
+.slot.filled:focus-visible{outline:3px solid #e6a700}
 .slot.star{background:#fff0ae;border-color:#d9a321}
 .letter{background:#fff;color:#21132b;cursor:grab;touch-action:none;box-shadow:0 2px 5px #ddd}
 .letter.selected{background:#ffe49d;border-color:#df9c00}
@@ -74,7 +76,7 @@ function startGame(){
  const sequence=["⭐",...alphabet,"🏆"];
  sequence.forEach((letter,i)=>{
   const slot=document.createElement("div");slot.className="slot"+(i===0||i===27?" star":"");
-  if(i>0&&i<27){slot.dataset.letter=letter;slot.setAttribute("aria-label","מקום לאות "+letter)}
+  if(i>0&&i<27){slot.dataset.letter=letter;slot.setAttribute("aria-label","מקום לאות "+letter);slot.addEventListener("click",()=>{if(placed.has(letter))sayLetterName(letter)});slot.addEventListener("keydown",e=>{if(placed.has(letter)&&(e.key==="Enter"||e.key===" ")){e.preventDefault();sayLetterName(letter)}})}
   else slot.textContent=letter;
   cell(slot,2+(i%9),2+Math.floor(i/9));board.appendChild(slot);
  });
@@ -94,14 +96,16 @@ function startGame(){
   board.appendChild(tile);
  });
 }
+function sayLetterName(letter){if(!("speechSynthesis" in window))return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(letter);u.lang="en-US";u.rate=.8;const voices=window.speechSynthesis.getVoices();const voice=voices.find(v=>v.lang==="en-US")||voices.find(v=>v.lang.startsWith("en"));if(voice)u.voice=voice;window.speechSynthesis.speak(u)}
 function chooseLetter(tile){if(placed.has(tile.dataset.letter))return;document.querySelectorAll(".letter").forEach(e=>e.classList.remove("selected"));selected=tile.dataset.letter;tile.classList.add("selected")}
 function placeLetter(letter,slot){
  if(!slot||!slot.classList.contains("slot")||!slot.dataset.letter||placed.has(letter))return;
  if(slot.dataset.letter!==letter){slot.style.background="#ffd0d0";setTimeout(()=>{if(!slot.classList.contains("filled"))slot.style.background=""},350);return}
- slot.textContent=letter;slot.classList.add("filled");slot.style.background="";
+ slot.textContent=letter;slot.classList.add("filled");slot.style.background="";slot.setAttribute("role","button");slot.setAttribute("tabindex","0");slot.setAttribute("title","🔊 לחצו לשמיעת שם האות "+letter);slot.setAttribute("aria-label","השמעת שם האות "+letter);
  placed.add(letter);const tile=[...document.querySelectorAll(".letter")].find(e=>e.dataset.letter===letter);
  if(tile)tile.classList.add("done");selected=null;
  document.getElementById("progress").textContent=placed.size+" מתוך 26 אותיות";
+ document.getElementById("message").textContent=" 🔊 לחצו על האות הירוקה כדי לשמוע את שמה";
  if(placed.size===26)document.getElementById("message").textContent=" 🎉 כל הכבוד! השלמתם את האלפבית! ⭐";
 }
 function pointerDown(event){
