@@ -33,14 +33,15 @@ button,a{font-family:inherit}button{cursor:pointer}.round{border:0;border-radius
 footer{display:flex;align-items:center;justify-content:center;gap:14px;font-weight:bold;font-size:clamp(14px,1.8vw,20px);flex-shrink:0}
 .next:disabled{background:#c5a7d7;cursor:default}
 @media(max-width:650px){header{padding-left:102px;padding-right:46px}.scoreboard{padding:4px;font-size:11px;gap:3px;flex-direction:column}.hearts{letter-spacing:0}.skip{padding:5px;font-size:11px}.game{border-width:2px;padding:5px;gap:4px}.play{grid-template-columns:1fr;grid-template-rows:minmax(0,0.8fr) minmax(0,1.2fr);gap:4px}.emoji{font-size:clamp(40px,11vh,90px)}.picture{gap:3px;border-width:2px}.slot,.tile{width:clamp(45px,15vw,78px);height:clamp(45px,15vw,78px);font-size:clamp(26px,8vw,46px)}.work{gap:3px}.speak,.next{padding:7px 14px;font-size:14px}.hint{font-size:12px}}
+.game-over{position:fixed;inset:0;background:rgba(32,12,59,.62);z-index:200;display:grid;place-items:center;padding:20px}.game-over[hidden]{display:none}.game-over-card{width:min(90vw,420px);background:white;border:5px solid #a04bd7;border-radius:28px;padding:35px 20px;box-shadow:0 14px 40px #32113e55;display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center}.game-over-card h2{margin:0;font-size:clamp(25px,5vw,40px);color:#6c249b}.game-over-card p{margin:0;font-size:20px}.retry{background:#8d32ce;color:white;border:0;border-radius:20px;padding:16px 28px;font-size:22px;font-weight:bold;cursor:pointer}
 </style></head>
 <body><div class="game">
 <header><div class="scoreboard"><span class="hearts" id="hearts">❤️❤️❤️</span><span id="score">0 נק׳</span></div><button class="skip" id="skip" onclick="skipWord()" title="למילה הבאה ללא כוכב">דלגי ←</button><a class="round" href="level1.html" title="חזרה למפה">⌂</a><h1>מפעל המילים הקסומות</h1><button class="round" onclick="restart()" title="התחלה מחדש">↻</button></header>
 <div class="status" id="status">מילה 1 מתוך 15 · ⭐ 0</div>
 <main class="play">
 <section class="picture"><div class="emoji" id="picture" aria-label="תמונת המילה">🐱</div><button class="speak" onclick="sayWord()">🔊 השמיעו לי את המילה</button><div class="hint">הקשיבו למילה וגררו את האותיות</div></section>
-<section class="work"><div class="prompt">בונים מילה באנגלית!</div><div class="slots" id="slots"></div><div class="hint">לחצו על אות לשמיעת דוגמת צליל 🔊 · ב־JEEP מחברים EE</div><div class="tiles" id="tiles"></div><div class="feedback" id="feedback" aria-live="polite"></div><button class="next" id="next" onclick="nextWord()" disabled>המילה הבאה ←</button></section>
-</main><footer><span id="stars">⭐ 0 כוכבים</span></footer></div>
+<section class="work"><div class="prompt">בונים מילה באנגלית!</div><div class="slots" id="slots"></div><div class="hint">גררו את האותיות למקומן · ב־JEEP מחברים EE</div><div class="tiles" id="tiles"></div><div class="feedback" id="feedback" aria-live="polite"></div><button class="next" id="next" onclick="nextWord()" disabled>המילה הבאה ←</button></section>
+</main><div class="game-over" id="gameOver" hidden><div class="game-over-card" role="dialog" aria-modal="true" aria-labelledby="gameOverTitle"><h2 id="gameOverTitle">💜 לא נורא, נסו שוב!</h2><p>נגמרו הלבבות. אפשר להתחיל מחדש!</p><button class="retry" onclick="restart()">מתחילים מחדש ↻</button></div></div><footer><span id="stars">⭐ 0 כוכבים</span></footer></div>
 <script>
 const words=[{word:"CAT",emoji:"🐱"},{word:"DOG",emoji:"🐶"},{word:"SUN",emoji:"☀️"},{word:"PEN",emoji:"🖊️"},{word:"BED",emoji:"🛏️"},{word:"PIG",emoji:"🐷"},{word:"HAT",emoji:"🎩"},{word:"BUS",emoji:"🚌"},{word:"FOX",emoji:"🦊"},{word:"WOLF",emoji:"🐺"},{word:"MILK",emoji:"🥛"},{word:"VEST",emoji:"🦺"},{word:"JEEP",emoji:"🚙"},{word:"YARD",emoji:"🏡"},{word:"QUIZ",emoji:"❓"}];
 // Real words are more reliable with browser text-to-speech than invented phonetic syllables.
@@ -56,7 +57,7 @@ function speak(text,rate=.78,lang="en-US"){
  speechSynthesis.speak(u);
 }
 function sayWord(){speak(words[index].word.toLowerCase(),.7)}
-function sayLetter(letter){speak(sounds[letter]||letter,.7,"he-IL")}
+
 function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function updateScore(){document.getElementById("hearts").textContent="❤️".repeat(lives)+"♡".repeat(3-lives);document.getElementById("score").textContent=(solved.size*10)+" נק׳"}
 function render(){
@@ -81,11 +82,11 @@ function render(){
   tile.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();select(tile)}});tiles.appendChild(tile);currentTiles.push(tile);
  });
 }
-function select(tile){if(tile.classList.contains("used")||completed)return;active=tile;sayLetter(tile.dataset.letter);document.querySelectorAll(".tile").forEach(t=>t.style.background="");tile.style.background="#fff1b6"}
+function select(tile){if(tile.classList.contains("used")||completed)return;active=tile;document.querySelectorAll(".tile").forEach(t=>t.style.background="");tile.style.background="#fff1b6"}
 function drop(tile,slot){
- if(!tile||!slot||completed||tile.classList.contains("used")||slot.classList.contains("filled"))return;
+ if(lives<=0||!tile||!slot||completed||tile.classList.contains("used")||slot.classList.contains("filled"))return;
  const letter=tile.dataset.letter,pos=Number(slot.dataset.pos),word=words[index].word;
- if(letter!==word[pos]){lives--;updateScore();const feedback=document.getElementById("feedback");feedback.style.color="#a0447d";if(lives<=0){feedback.textContent="נגמרו הלבבות — מתחילים מחדש!";setTimeout(()=>{restart()},1100)}else feedback.textContent="נסו שוב 💜 ירד לב אחד";return}
+ if(letter!==word[pos]){lives--;updateScore();const feedback=document.getElementById("feedback");feedback.style.color="#a0447d";if(lives<=0){feedback.textContent="";showGameOver()}else feedback.textContent="נסו שוב 💜 ירד לב אחד";return}
  slot.textContent=letter;slot.classList.add("filled");tile.classList.add("used");tile.style.background="";active=null;filled.add(pos);
  const feedback=document.getElementById("feedback");feedback.textContent="יופי! ⭐";feedback.style.color="#168333";
  // In JEEP the two adjacent E letters form the long /ee/ sound.
@@ -105,6 +106,7 @@ function drop(tile,slot){
  }
 }
 function startDrag(e){
+ if(lives<=0)return;
  if((e.pointerType==="mouse"&&e.button!==0)||completed||e.currentTarget.classList.contains("used"))return;
  e.preventDefault();const tile=e.currentTarget;select(tile);const r=tile.getBoundingClientRect(),ghost=tile.cloneNode(true);
  ghost.classList.add("dragging");ghost.style.width=r.width+"px";ghost.style.height=r.height+"px";ghost.style.left=(e.clientX-r.width/2)+"px";ghost.style.top=(e.clientY-r.height/2)+"px";document.body.appendChild(ghost);
@@ -122,8 +124,9 @@ document.addEventListener("pointerup",e=>{
  document.querySelectorAll(".slot").forEach(s=>s.classList.remove("over"));if(slot)drop(tile,slot);dragging=null;
 });
 document.addEventListener("pointercancel",()=>{if(dragging){dragging.ghost.remove();dragging=null}});
-function skipWord(){if(index<words.length-1){index++;render()}}
-function nextWord(){if(!completed)return;if(index===words.length-1){document.getElementById("feedback").textContent="🏆 סיימתם! ⭐ "+solved.size+" מתוך "+words.length+" מילים נפתרו";document.getElementById("next").disabled=true;return}index++;render()}
-function restart(){index=0;lives=3;solved.clear();render()}
+function skipWord(){if(lives<=0)return;if(index<words.length-1){index++;render()}}
+function nextWord(){if(lives<=0||!completed)return;if(index===words.length-1){document.getElementById("feedback").textContent="🏆 סיימתם! ⭐ "+solved.size+" מתוך "+words.length+" מילים נפתרו";document.getElementById("next").disabled=true;return}index++;render()}
+function showGameOver(){if("speechSynthesis" in window)window.speechSynthesis.cancel();document.getElementById("gameOver").hidden=false;document.getElementById("gameOver").querySelector("button").focus()}
+function restart(){document.getElementById("gameOver").hidden=true;index=0;lives=3;solved.clear();render()}
 render();
 </script></body></html>
