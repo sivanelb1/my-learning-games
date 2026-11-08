@@ -17,18 +17,18 @@ const tasks=[
 {word:"TREE",emoji:"🌳",sound:"EE",options:["TREE","MOON","TRAIN"]},
 {word:"MOON",emoji:"🌙",sound:"OO",options:["MOON","BOOK","SPOON"]},
 {word:"FISH",emoji:"🐟",sound:"SH",options:["FISH","DISH","SHELL"]},
-{word:"CHEESE",emoji:"🧀",sound:"CH",options:["CHEESE","CHAIR","SHEEP"]},
-{word:"SHEEP",emoji:"🐑",sound:"EE",options:["SHEEP","SHIP","SHOE"]},
+{word:"CHEESE",emoji:"🧀",sound:"CH",options:["CHEESE","CHAIR","FEET"]},
+{word:"FEET",emoji:"👣",sound:"EE",options:["FEET","SHIP","SHOE"]},
 {word:"SPOON",emoji:"🥄",sound:"OO",options:["SPOON","MOON","BOOK"]},
 {word:"SHOE",emoji:"👟",sound:"SH",options:["SHOE","SHIP","CHAIR"]},
 {word:"CHICK",emoji:"🐥",sound:"CH",options:["CHICK","FISH","CHEESE"]},
-{word:"BEE",emoji:"🐝",sound:"EE",options:["BEE","TREE","SHEEP"]},
+{word:"BEE",emoji:"🐝",sound:"EE",options:["BEE","TREE","FEET"]},
 {word:"ZOO",emoji:"🦓",sound:"OO",options:["ZOO","MOON","SPOON"]}
 ];
-const emojis={SHIP:"🚢",CHIP:"🍟",SHEEP:"🐑",CHAIR:"🪑",CHEESE:"🧀",SHOE:"👟",TREE:"🌳",MOON:"🌙",TRAIN:"🚂",BOOK:"📖",SPOON:"🥄",FISH:"🐟",DISH:"🍽️",SHELL:"🐚",CHICK:"🐥",BEE:"🐝",ZOO:"🦓"};
+const emojis={SHIP:"🚢",CHIP:"🍟",FEET:"👣",CHAIR:"🪑",CHEESE:"🧀",SHOE:"👟",TREE:"🌳",MOON:"🌙",TRAIN:"🚂",BOOK:"📖",SPOON:"🥄",FISH:"🐟",DISH:"🍽️",SHELL:"🐚",CHICK:"🐥",BEE:"🐝",ZOO:"🦓"};
 let index=0,phase=0,lives=3,points=0,locked=false,selected=null;
 function speak(t){if(!("speechSynthesis" in window)){document.getElementById("message").textContent="הדפדפן לא תומך בהשמעת קול";return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t.toLowerCase());u.lang="en-US";u.rate=.76;const v=speechSynthesis.getVoices().find(v=>v.lang==="en-US")||speechSynthesis.getVoices().find(v=>v.lang.startsWith("en"));if(v)u.voice=v;speechSynthesis.speak(u)}
-function sayCurrent(){speak(tasks[index].word)}
+function sayCurrent(){const w=tasks[index].word;if(w==="SHIP")speak("a ship");else if(w==="SHOE")speak("a shoe");else speak(w)}
 function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function render(){
  locked=false;selected=null;document.getElementById("hearts").textContent="❤️".repeat(lives)+"♡".repeat(3-lives);
