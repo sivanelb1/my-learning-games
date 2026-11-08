@@ -4,495 +4,519 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>הרפתקת האותיות | ABC Adventure</title>
+<title>משחק ABC</title>
 
 <style>
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
-body {
+html, body {
   margin: 0;
-  min-height: 100vh;
-  font-family: Arial, sans-serif;
-  color: white;
-  background:
-    radial-gradient(circle at 15% 15%, #7139a8 0, transparent 30%),
-    radial-gradient(circle at 85% 70%, #4d267c 0, transparent 35%),
-    linear-gradient(145deg, #16072f, #321052 55%, #19072f);
-  overflow-x: hidden;
-}
-
-body::before {
-  content: "✦  ·  ✧  ·  ✦     ·     ✧  ·  ✦";
-  position: fixed;
-  top: 8%;
-  left: 0;
   width: 100%;
-  text-align: center;
-  color: #f5d98b;
-  opacity: .35;
-  font-size: 25px;
-  pointer-events: none;
+  height: 100%;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  background: #f7f1ff;
 }
 
-.topbar {
-  max-width: 1000px;
-  margin: auto;
-  padding: 14px;
+.game {
+  height: 100dvh;
+  width: 100%;
+  border: 4px solid #8531d1;
+  border-radius: 22px;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  overflow: hidden;
+}
+
+header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-}
-
-.home, .restart {
-  border: 1px solid #e9c46a;
-  border-radius: 15px;
-  padding: 10px 14px;
-  color: white;
-  background: #542580;
-  text-decoration: none;
-  font-size: 15px;
-  cursor: pointer;
-}
-
-.hearts {
-  direction: ltr;
-  font-size: 25px;
-  letter-spacing: 3px;
-  white-space: nowrap;
-}
-
-main {
-  max-width: 1050px;
-  margin: auto;
-  padding: 5px 14px 35px;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 h1 {
+  margin: 0;
+  padding: 8px 12px;
   text-align: center;
-  color: #ffe19a;
-  font-size: clamp(25px, 5vw, 38px);
-  margin: 5px 0;
-  text-shadow: 0 0 16px #bd82ff;
+  font-size: clamp(15px, 2.6vw, 30px);
+  color: #65129c;
+  background: #eee0ff;
+  border-radius: 40px;
 }
 
-.subtitle {
-  text-align: center;
-  line-height: 1.7;
-  color: #eadbff;
-  margin-bottom: 18px;
+button {
+  cursor: pointer;
+  border: none;
 }
 
-.panel {
-  background: rgba(35, 14, 67, .88);
-  border: 2px solid #9b6ac6;
-  border-radius: 22px;
-  padding: 16px;
-  margin: 15px 0;
-  box-shadow: 0 0 22px rgba(180, 113, 255, .16);
+.icon-button {
+  background: #8529cb;
+  color: white;
+  border-radius: 50%;
+  width: 43px;
+  height: 43px;
+  font-size: 23px;
+  flex-shrink: 0;
 }
 
-.panel-title {
+.instructions {
   text-align: center;
-  color: #ffdc91;
+  color: #682094;
   font-weight: bold;
-  margin-bottom: 13px;
-  line-height: 1.6;
+  font-size: clamp(12px, 1.7vw, 17px);
+  margin: 6px 0;
+  flex-shrink: 0;
+}
+
+.board {
+  direction: ltr;
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) minmax(0, 3fr) minmax(0, 1fr);
+  gap: 5px;
+  width: 100%;
+  max-width: 1100px;
+  margin: auto;
+}
+
+.letters {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 3px;
+  min-height: 0;
+}
+
+.middle {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 4fr) minmax(0, 1fr);
+  gap: 5px;
+  min-height: 0;
+}
+
+.side {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(4, minmax(0, 1fr));
+  gap: 4px;
+  place-items: center;
+  min-height: 0;
 }
 
 .slots {
-  direction: ltr;
   display: grid;
-  grid-template-columns: repeat(13, minmax(0, 1fr));
-  gap: 6px;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-template-rows: repeat(4, minmax(0, 1fr));
+  gap: clamp(3px, 0.7vw, 10px);
+  padding: 4px;
+  min-height: 0;
 }
 
 .slot {
-  min-width: 0;
-  aspect-ratio: 1;
-  border: 2px dashed #b99bd5;
-  border-radius: 10px;
-  background: rgba(255,255,255,.08);
-  color: white;
-  font-size: clamp(13px, 2.5vw, 22px);
-  font-weight: bold;
-  cursor: pointer;
-  padding: 0;
-}
-
-.slot.first, .slot.last {
-  border: 3px solid #ffd45c;
-  box-shadow: 0 0 12px #ffd45c;
-}
-
-.slot.done {
-  background: linear-gradient(145deg, #4cbf86, #21845c);
-  border: 2px solid #a5ffd1;
-  color: white;
-  animation: pop .25s ease;
-}
-
-.slot.next {
-  background: rgba(255, 213, 92, .18);
-  border-color: #ffe08a;
-}
-
-@keyframes pop {
-  50% { transform: scale(1.12); }
-}
-
-.tiles {
-  direction: ltr;
-  display: grid;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
-  gap: 9px;
-}
-
-.tile {
-  aspect-ratio: 1;
-  min-width: 0;
-  border: 2px solid #e7c7ff;
-  border-radius: 13px;
-  background: linear-gradient(145deg, #fff5ff, #d9b9f5);
-  color: #48216e;
-  font-size: clamp(19px, 3.5vw, 30px);
-  font-weight: bold;
-  cursor: grab;
-  box-shadow: 0 4px 0 #8a59ad;
-  transition: transform .15s, opacity .15s;
-}
-
-.tile:active { transform: scale(.94); }
-
-.tile.selected {
-  outline: 4px solid #ffd45c;
-  transform: translateY(-5px);
-}
-
-.tile.used {
-  opacity: .15;
-  pointer-events: none;
-  box-shadow: none;
-}
-
-.status {
-  text-align: center;
-  min-height: 32px;
-  color: #ffe39c;
-  font-weight: bold;
-  line-height: 1.5;
-}
-
-.progress {
-  height: 12px;
-  background: #28113f;
-  border-radius: 20px;
-  overflow: hidden;
-  margin-top: 12px;
-}
-
-.progress-fill {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, #f7bd55, #ffeb9b);
-  transition: width .3s;
-}
-
-.overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 20;
-  background: rgba(16, 5, 35, .9);
-  align-items: center;
+  background: #e6b4f2;
+  border: 2px solid #7b3797;
+  border-radius: 20%;
+  display: flex;
   justify-content: center;
-  padding: 20px;
-}
-
-.overlay.show { display: flex; }
-
-.result {
-  width: min(430px, 100%);
-  background: linear-gradient(145deg, #5a2a89, #291047);
-  border: 3px solid #f4d17c;
-  border-radius: 25px;
-  padding: 30px 20px;
-  text-align: center;
-  box-shadow: 0 0 35px #a86be8;
-}
-
-.result h2 {
-  color: #ffe19a;
-  font-size: 30px;
-}
-
-.result button {
-  background: #f2ca69;
-  color: #32104e;
-  border: 0;
-  padding: 13px 24px;
-  border-radius: 15px;
-  font-size: 18px;
+  align-items: center;
+  font-size: clamp(11px, 2vw, 25px);
   font-weight: bold;
-  cursor: pointer;
+  color: #5c137e;
+  min-width: 0;
+  min-height: 0;
+  position: relative;
 }
 
-@media(max-width: 600px) {
-  .slots { grid-template-columns: repeat(7, minmax(0, 1fr)); }
-  .tiles { grid-template-columns: repeat(6, minmax(0, 1fr)); }
-  .panel { padding: 10px; }
-  .topbar { flex-wrap: wrap; justify-content: center; }
+.slot.over {
+  background: #c8ffce;
+  outline: 3px dashed #30a853;
+}
+
+.slot.filled {
+  background: #d6f7d5;
+  border-color: #42a64b;
+}
+
+.slot.star {
+  background: #fff0ae;
+  border-color: #d9a321;
+  font-size: clamp(16px, 2.4vw, 30px);
+}
+
+.letter {
+  width: min(100%, 48px);
+  aspect-ratio: 1;
+  max-height: 100%;
+  border-radius: 50%;
+  border: 2px solid #793c99;
+  background: white;
+  color: #151515;
+  font-size: clamp(12px, 2vw, 24px);
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.letter.selected {
+  background: #ffe49d;
+  border-color: #df9c00;
+}
+
+.letter.done {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.dragging {
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+  opacity: 0.9;
+  background: #fff1ae;
+  box-shadow: 0 4px 15px #999;
+}
+
+footer {
+  text-align: center;
+  flex-shrink: 0;
+  color: #6b249a;
+  font-weight: bold;
+  font-size: 13px;
+  padding: 4px;
+}
+
+#message {
+  color: #16832e;
+}
+
+@media (max-width: 600px) {
+  .game {
+    padding: 4px;
+    border-width: 2px;
+    border-radius: 12px;
+  }
+
+  .icon-button {
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+  }
+
+  .board {
+    grid-template-rows: minmax(0, 1fr) minmax(0, 4fr) minmax(0, 1fr);
+  }
+
+  .middle {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 5fr) minmax(0, 1fr);
+    gap: 2px;
+  }
+
+  .side {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(8, minmax(0, 1fr));
+    gap: 2px;
+  }
+
+  .letter {
+    border-width: 1.5px;
+    font-size: clamp(9px, 2.7vw, 16px);
+  }
+
+  .slot {
+    border-width: 1.5px;
+    font-size: clamp(9px, 2.8vw, 16px);
+  }
+
+  .slots {
+    gap: 3px;
+    padding: 1px;
+  }
+
+  footer {
+    font-size: 11px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="topbar">
-  <a class="home" href="level1.html">🏰 חזרה למפה | Back to Map</a>
-  <div class="hearts" id="hearts" aria-label="5 lives">❤️ ❤️ ❤️ ❤️ ❤️</div>
-  <button class="restart" onclick="startGame()">↻ התחלה מחדש | Restart</button>
-</div>
+<div class="game">
 
-<main>
-  <h1>✨ ABC Adventure ✨</h1>
-  <div class="subtitle">
-    הרפתקת האותיות – מסדרים את האותיות לפי הסדר!<br>
-    Letter Adventure – Put the letters in the correct order!
+  <header>
+    <button class="icon-button"
+      onclick="history.back()"
+      title="חזרה">⌂</button>
+
+    <h1>⭐ ABC – גררו את האותיות למקום הנכון ⭐</h1>
+
+    <button class="icon-button"
+      onclick="startGame()"
+      title="משחק חדש">↻</button>
+  </header>
+
+  <div class="instructions">
+    גררו את האותיות למשבצות לפי הסדר A עד Z
   </div>
 
-  <section class="panel">
-    <div class="panel-title">
-      🏰 סדרו את האותיות במשבצות<br>
-      Arrange the letters in the boxes
-    </div>
-    <div class="slots" id="slots"></div>
-    <div class="progress">
-      <div class="progress-fill" id="progress"></div>
-    </div>
-    <div class="status" id="status" aria-live="polite">
-      בחרו אות ואז משבצת | Choose a letter, then a box
-    </div>
-  </section>
+  <main class="board">
+    <div class="letters" id="topLetters"></div>
 
-  <section class="panel">
-    <div class="panel-title">
-      🌟 מצאו את האותיות הנכונות<br>
-      Find the correct letters
+    <div class="middle">
+      <div class="side" id="leftLetters"></div>
+      <div class="slots" id="slots"></div>
+      <div class="side" id="rightLetters"></div>
     </div>
-    <div class="tiles" id="tiles"></div>
-  </section>
-</main>
 
-<div class="overlay" id="overlay">
-  <div class="result">
-    <div style="font-size:55px" id="resultIcon">🏆</div>
-    <h2 id="resultTitle">כל הכבוד!</h2>
-    <p id="resultText">השלמתם את המשחק!</p>
-    <p id="resultStars" style="font-size:30px">⭐⭐⭐</p>
-    <button onclick="startGame()">לשחק שוב | Play Again</button>
-    <p><a href="level1.html" style="color:#ffe19a">חזרה למפה | Back to Map</a></p>
-  </div>
+    <div class="letters" id="bottomLetters"></div>
+  </main>
+
+  <footer>
+    <span id="progress">0 מתוך 26 אותיות</span>
+    <span id="message"></span>
+  </footer>
+
 </div>
 
 <script>
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-const sequence = alphabet.flatMap(letter => [letter, letter.toLowerCase()]);
 
-let nextIndex = 0;
-let lives = 5;
-let mistakes = 0;
-let selectedTile = null;
-let gameOver = false;
-
-const slotsElement = document.getElementById("slots");
-const tilesElement = document.getElementById("tiles");
-const heartsElement = document.getElementById("hearts");
-const statusElement = document.getElementById("status");
-const progressElement = document.getElementById("progress");
+let placed = new Set();
+let selected = null;
+let drag = null;
 
 function shuffle(array) {
   const copy = [...array];
+
   for (let i = copy.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [copy[i], copy[j]] = [copy[j], copy[i]];
   }
+
   return copy;
 }
 
 function startGame() {
-  nextIndex = 0;
-  lives = 5;
-  mistakes = 0;
-  selectedTile = null;
-  gameOver = false;
+  placed = new Set();
+  selected = null;
+  drag = null;
 
-  document.getElementById("overlay").classList.remove("show");
-  slotsElement.innerHTML = "";
-  tilesElement.innerHTML = "";
+  document.getElementById("message").textContent = "";
+  document.getElementById("progress").textContent =
+    "0 מתוך 26 אותיות";
 
-  sequence.forEach((letter, index) => {
-    const slot = document.createElement("button");
+  const slots = document.getElementById("slots");
+  slots.innerHTML = "";
+
+  // כוכב בתחילת המסלול
+  const startStar = document.createElement("div");
+  startStar.className = "slot star";
+  startStar.textContent = "⭐";
+  slots.appendChild(startStar);
+
+  // 26 משבצות לפי סדר האלפבית
+  alphabet.forEach(letter => {
+    const slot = document.createElement("div");
     slot.className = "slot";
-    slot.type = "button";
-    slot.dataset.index = index;
-
-    if (index === 0 || index === 51) {
-      slot.classList.add(index === 0 ? "first" : "last");
-    }
-
-    if (index === 0) slot.classList.add("next");
-
-    slot.textContent = index === 0 ? "★" : index === 51 ? "🏆" : "?";
-    slot.setAttribute("aria-label", "משבצת " + (index + 1));
-    slot.addEventListener("click", () => placeInSlot(index));
-    slot.addEventListener("dragover", event => event.preventDefault());
-    slot.addEventListener("drop", event => {
-      event.preventDefault();
-      const id = event.dataTransfer.getData("text/plain");
-      chooseTile(id);
-      placeInSlot(index);
-    });
-
-    slotsElement.appendChild(slot);
+    slot.dataset.letter = letter;
+    slot.setAttribute("aria-label", "מקום לאות " + letter);
+    slots.appendChild(slot);
   });
 
-  shuffle(sequence).forEach((letter, index) => {
-    const tile = document.createElement("button");
-    tile.className = "tile";
-    tile.type = "button";
-    tile.textContent = letter;
-    tile.dataset.letter = letter;
-    tile.id = "tile-" + index;
-    tile.draggable = true;
-    tile.setAttribute("aria-label", "אות " + letter);
+  // כוכב בסיום המסלול
+  const endStar = document.createElement("div");
+  endStar.className = "slot star";
+  endStar.textContent = "🏆";
+  slots.appendChild(endStar);
 
-    tile.addEventListener("click", () => chooseTile(tile.id));
-    tile.addEventListener("dragstart", event => {
-      event.dataTransfer.setData("text/plain", tile.id);
+  const shuffled = shuffle(alphabet);
+
+  const groups = {
+    topLetters: shuffled.slice(0, 5),
+    rightLetters: shuffled.slice(5, 13),
+    bottomLetters: shuffled.slice(13, 18),
+    leftLetters: shuffled.slice(18, 26)
+  };
+
+  Object.entries(groups).forEach(([id, letters]) => {
+    const container = document.getElementById(id);
+    container.innerHTML = "";
+
+    letters.forEach(letter => {
+      const circle = document.createElement("div");
+      circle.className = "letter";
+      circle.textContent = letter;
+      circle.dataset.letter = letter;
+
+      circle.addEventListener("pointerdown", pointerDown);
+      circle.addEventListener("click", () => chooseLetter(circle));
+
+      container.appendChild(circle);
     });
+  });
+}
 
-    tilesElement.appendChild(tile);
+function chooseLetter(circle) {
+  if (placed.has(circle.dataset.letter)) return;
+
+  document.querySelectorAll(".letter").forEach(el => {
+    el.classList.remove("selected");
   });
 
-  updateDisplay();
-  statusElement.textContent = "בחרו אות ואז משבצת | Choose a letter, then a box";
+  selected = circle.dataset.letter;
+  circle.classList.add("selected");
 }
 
-function chooseTile(id) {
-  if (gameOver) return;
+function placeLetter(letter, slot) {
+  if (!slot || !slot.classList.contains("slot")) return;
+  if (!slot.dataset.letter) return;
+  if (placed.has(letter)) return;
 
-  const tile = document.getElementById(id);
-  if (!tile || tile.classList.contains("used")) return;
+  if (slot.dataset.letter !== letter) {
+    slot.style.background = "#ffd0d0";
 
-  document.querySelectorAll(".tile").forEach(item =>
-    item.classList.remove("selected")
-  );
+    setTimeout(() => {
+      if (!slot.classList.contains("filled")) {
+        slot.style.background = "";
+      }
+    }, 350);
 
-  selectedTile = id;
-  tile.classList.add("selected");
-  statusElement.textContent = "עכשיו בחרו את המשבצת המתאימה | Choose its box";
-}
-
-function placeInSlot(index) {
-  if (gameOver || selectedTile === null) return;
-
-  if (index !== nextIndex) {
-    statusElement.textContent =
-      "מתחילים מהמשבצת הזוהרת! | Start with the glowing box!";
     return;
   }
 
-  const tile = document.getElementById(selectedTile);
-  const expected = sequence[nextIndex];
+  slot.textContent = letter;
+  slot.classList.add("filled");
+  slot.style.background = "";
 
-  if (tile.dataset.letter === expected) {
-    const slot = slotsElement.children[nextIndex];
+  placed.add(letter);
 
-    slot.textContent = expected;
-    slot.classList.remove("next");
-    slot.classList.add("done");
+  const circle = [...document.querySelectorAll(".letter")]
+    .find(el => el.dataset.letter === letter);
 
-    tile.classList.add("used");
-    tile.classList.remove("selected");
+  if (circle) circle.classList.add("done");
 
-    nextIndex++;
-    selectedTile = null;
+  selected = null;
 
-    speakLetter(expected);
-    statusElement.textContent =
-      "כל הכבוד! " + expected + " – תשובה נכונה! | Correct!";
+  document.getElementById("progress").textContent =
+    placed.size + " מתוך 26 אותיות";
 
-    if (nextIndex < sequence.length) {
-      slotsElement.children[nextIndex].classList.add("next");
-    }
-
-    updateDisplay();
-
-    if (nextIndex === sequence.length) {
-      setTimeout(() => finishGame(true), 700);
-    }
-  } else {
-    mistakes++;
-    lives--;
-    tile.classList.remove("selected");
-    selectedTile = null;
-
-    statusElement.textContent =
-      "לא בדיוק! נסו שוב ❤️ | Not quite! Try again!";
-
-    updateDisplay();
-
-    if (lives <= 0) {
-      setTimeout(() => finishGame(false), 500);
-    }
+  if (placed.size === 26) {
+    document.getElementById("message").textContent =
+      " 🎉 כל הכבוד! השלמתם את האלפבית! ⭐";
   }
 }
 
-function speakLetter(letter) {
-  if (!("speechSynthesis" in window)) return;
+function pointerDown(event) {
+  if (event.button !== 0 && event.pointerType === "mouse") return;
 
-  window.speechSynthesis.cancel();
-  const speech = new SpeechSynthesisUtterance(letter);
-  speech.lang = "en-US";
-  speech.rate = 0.75;
-  window.speechSynthesis.speak(speech);
+  const original = event.currentTarget;
+  const letter = original.dataset.letter;
+
+  if (placed.has(letter)) return;
+
+  event.preventDefault();
+
+  const rect = original.getBoundingClientRect();
+
+  const ghost = original.cloneNode(true);
+  ghost.classList.add("dragging");
+
+  ghost.style.width = rect.width + "px";
+  ghost.style.height = rect.height + "px";
+  ghost.style.left = (event.clientX - rect.width / 2) + "px";
+  ghost.style.top = (event.clientY - rect.height / 2) + "px";
+
+  document.body.appendChild(ghost);
+
+  drag = {
+    letter,
+    ghost,
+    pointerId: event.pointerId,
+    original
+  };
+
+  original.setPointerCapture(event.pointerId);
 }
 
-function updateDisplay() {
-  heartsElement.textContent =
-    "❤️ ".repeat(lives) + "🖤 ".repeat(5 - lives);
+document.addEventListener("pointermove", event => {
+  if (!drag || drag.pointerId !== event.pointerId) return;
 
-  progressElement.style.width =
-    (nextIndex / sequence.length * 100) + "%";
-}
+  const ghost = drag.ghost;
 
-function finishGame(won) {
-  gameOver = true;
+  ghost.style.left =
+    (event.clientX - ghost.offsetWidth / 2) + "px";
 
-  const overlay = document.getElementById("overlay");
-  const title = document.getElementById("resultTitle");
-  const text = document.getElementById("resultText");
-  const icon = document.getElementById("resultIcon");
-  const stars = document.getElementById("resultStars");
+  ghost.style.top =
+    (event.clientY - ghost.offsetHeight / 2) + "px";
 
-  if (won) {
-    icon.textContent = "🏆";
-    title.textContent = "אלופי האותיות! | ABC Champions!";
-    text.textContent =
-      "סידרתם את כל 52 האותיות! איזה מסע מדהים! | You completed all 52 letters!";
-    stars.textContent = mistakes === 0 ? "⭐⭐⭐" :
-                        mistakes <= 3 ? "⭐⭐" : "⭐";
-  } else {
-    icon.textContent = "💜";
-    title.textContent = "אל תוותרו! | Keep Trying!";
-    text.textContent =
-      "נגמרו החיים. אפשר לנסות שוב! | Out of lives. Try again!";
-    stars.textContent = "🌟";
+  document.querySelectorAll(".slot").forEach(slot => {
+    slot.classList.remove("over");
+  });
+
+  const target = document.elementFromPoint(
+    event.clientX,
+    event.clientY
+  );
+
+  const slot = target && target.closest(".slot");
+
+  if (slot && slot.dataset.letter) {
+    slot.classList.add("over");
+  }
+});
+
+document.addEventListener("pointerup", event => {
+  if (!drag || drag.pointerId !== event.pointerId) return;
+
+  const letter = drag.letter;
+
+  drag.ghost.remove();
+
+  const target = document.elementFromPoint(
+    event.clientX,
+    event.clientY
+  );
+
+  const slot = target && target.closest(".slot");
+
+  document.querySelectorAll(".slot").forEach(el => {
+    el.classList.remove("over");
+  });
+
+  if (slot) {
+    placeLetter(letter, slot);
   }
 
-  overlay.classList.add("show");
-}
+  drag = null;
+});
+
+document.addEventListener("pointercancel", () => {
+  if (drag) {
+    drag.ghost.remove();
+    drag = null;
+  }
+});
+
+// אפשר גם ללחוץ על אות ואז על המשבצת
+document.getElementById("slots").addEventListener("click", event => {
+  const slot = event.target.closest(".slot");
+
+  if (slot && selected) {
+    placeLetter(selected, slot);
+  }
+});
 
 startGame();
 </script>
