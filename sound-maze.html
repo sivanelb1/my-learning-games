@@ -1,67 +1,23 @@
-<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>פקמן הצלילים</title><style>
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#090824;color:white;font-family:Arial,sans-serif}button,a{font:inherit;cursor:pointer}.app{min-height:100dvh;max-width:1120px;margin:auto;padding:10px 15px;display:flex;flex-direction:column;gap:8px;background:radial-gradient(ellipse at 50% 100%,#30237b 0%,#0b092d 70%)}header{display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:monospace;direction:ltr}.home{color:white;text-decoration:none;border:2px solid #9279f8;border-radius:7px;padding:8px}.score{font-size:clamp(14px,2vw,22px);font-weight:bold}.score span{color:#ffd94a}.hearts{color:#ff547d;letter-spacing:3px}h1{font-size:clamp(19px,3vw,30px);text-align:center;margin:0;color:#f5e9ff}.sub{text-align:center;color:#d5c8ff;font-size:14px}.area{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;gap:15px}canvas{display:block;width:min(100%,850px,calc((100dvh - 205px)*1.36));max-height:calc(100dvh - 205px);aspect-ratio:19/14;background:#08051f;border:4px solid #aa8cff;border-radius:9px;box-shadow:0 0 30px #6d42c077;touch-action:none}.pad{display:grid;grid-template-columns:repeat(3,52px);grid-template-rows:repeat(3,50px);gap:5px;direction:ltr}.pad button{border:2px solid #a88cf7;border-radius:12px;background:#54399b;color:#fff;font-size:25px}.pad .up{grid-column:2;grid-row:1}.pad .left{grid-column:1;grid-row:2}.pad .right{grid-column:3;grid-row:2}.pad .down{grid-column:2;grid-row:3}.bottom{text-align:center;color:#f3e7ff;font-size:14px}.overlay{position:fixed;inset:0;background:#050319c9;z-index:10;display:grid;place-items:center;padding:18px}.overlay[hidden]{display:none}.modal{background:#fff;color:#422579;border:5px solid #aa7ae9;border-radius:25px;padding:28px 20px;width:min(440px,95vw);text-align:center;display:flex;flex-direction:column;align-items:center;gap:15px}.modal h2{font-size:clamp(25px,5vw,38px);margin:0}.modal p{font-size:20px;margin:0}.example{font-size:clamp(25px,6vw,44px);font-weight:900;direction:ltr}.action{border:0;border-radius:15px;background:#7839c3;color:#fff;padding:14px 25px;font-weight:bold;font-size:20px;text-decoration:none}.secondary{background:#e6d7ff;color:#49267b}
-@media(max-width:760px){.area{flex-direction:column;gap:5px}canvas{width:min(100%,calc((100dvh - 315px)*1.36));max-height:calc(100dvh - 315px)}.pad{grid-template-columns:repeat(3,44px);grid-template-rows:repeat(3,36px)}.sub{font-size:12px}.app{gap:5px;padding:7px}}
-</style></head><body><div class="app"><header><a href="level1.html" class="home">⌂</a><div class="score">POINTS <span id="score">0</span> · SOUNDS <span id="found">0/10</span></div><div class="hearts" id="hearts">♥ ♥ ♥</div></header><h1>👾 פקמן הצלילים המיוחדים</h1><div class="sub">אכלו נקודות, התחמקו מהרוחות ואספו את כל הצלילים! החזיקו חץ לתנועה.</div><div class="area"><canvas id="game" width="760" height="560" aria-label="מבוך פקמן"></canvas><div class="pad"><button class="up" onpointerdown="setDir(0,-1)" aria-label="למעלה">↑</button><button class="left" onpointerdown="setDir(-1,0)" aria-label="שמאלה">←</button><button class="right" onpointerdown="setDir(1,0)" aria-label="ימינה">→</button><button class="down" onpointerdown="setDir(0,1)" aria-label="למטה">↓</button></div></div><div class="bottom">אוספים 10 צלילים מיוחדים → עוברים לבלשי הצלילים 🔎</div></div>
-<div class="overlay" id="overlay"><div class="modal"><h2 id="title">מוכנים לצאת לדרך?</h2><div class="example" id="example">🟡 👻</div><p id="description">אספו נקודות וצלילים מיוחדים. היזהרו מהרוחות!</p><button class="action" id="continue" onclick="resume()">מתחילים לשחק ▶</button><a id="detectives" href="sound-detectives.html" class="action" hidden>לבלשי הצלילים 🔎</a></div></div>
-<script>
-const map=[
-"###################",
-"#........#........#",
-"#.##.###.#.###.##.#",
-"#.................#",
-"#.##.#.#####.#.##.#",
-"#....#...#...#....#",
-"####.###.#.###.####",
-"#......#...#......#",
-"#.####.#.#.#.####.#",
-"#.................#",
-"#.##.###.#.###.##.#",
-"#..#.....#.....#..#",
-"##.#.##.....##.#.##",
-"#.................#",
-"###################"];
-const COLS=19,ROWS=15,SIZE=40,W=COLS*SIZE,H=ROWS*SIZE;
-const canvas=document.getElementById("game"),ctx=canvas.getContext("2d");
-canvas.width=W;canvas.height=H;
-const tokens=[
-{x:2,y:1,s:"SH",word:"SHIP",emoji:"🚢",desc:"SH נשמע שׁ, כמו במילה SHIP"},
-{x:7,y:1,s:"CH",word:"CHAIR",emoji:"🪑",desc:"CH נשמע צ׳, כמו במילה CHAIR"},
-{x:13,y:1,s:"TH",word:"THINK",emoji:"💭",desc:"TH הוא צליל מיוחד באנגלית, כמו THINK"},
-{x:3,y:3,s:"EE",word:"TREE",emoji:"🌳",desc:"EE נשמע אי ארוך, כמו TREE"},
-{x:15,y:3,s:"OO",word:"MOON",emoji:"🌙",desc:"OO נשמע אוּ, כמו MOON"},
-{x:4,y:5,s:"AI",word:"RAIN",emoji:"🌧️",desc:"AI נשמע אֵיי, כמו RAIN"},
-{x:14,y:5,s:"OA",word:"BOAT",emoji:"⛵",desc:"OA נשמע אוֹ, כמו BOAT"},
-{x:2,y:9,s:"PH",word:"PHONE",emoji:"📱",desc:"PH נשמע כמו F, למשל PHONE"},
-{x:8,y:13,s:"CK",word:"DUCK",emoji:"🦆",desc:"CK נשמע ק, כמו DUCK"},
-{x:16,y:13,s:"NG",word:"RING",emoji:"💍",desc:"NG יוצר צליל אף מיוחד, כמו RING"}
-];
-const dirs=[[1,0],[-1,0],[0,1],[0,-1]];
-let dots,player,ghosts,hearts,score,found,paused=true,mode="start",last=0,acc=0,ghostAcc=0,mouth=0,invuln=0;
-function open(x,y){return !!map[y]&&map[y][x]==="."}
-function initial(){dots=new Set();for(let y=0;y<ROWS;y++)for(let x=0;x<COLS;x++)if(open(x,y))dots.add(x+","+y);
- player={x:9,y:9,dx:0,dy:0,wantX:0,wantY:0};ghosts=[{x:1,y:1,c:"#ff648c",last:null},{x:17,y:1,c:"#66e2ff",last:null},{x:17,y:13,c:"#ffad50",last:null}];hearts=3;score=0;found=new Set();invuln=0;update()}
-function update(){document.getElementById("score").textContent=score;document.getElementById("found").textContent=found.size+"/"+tokens.length;document.getElementById("hearts").textContent="♥ ".repeat(hearts)}
-function setDir(dx,dy){player.wantX=dx;player.wantY=dy}
-document.addEventListener("keydown",e=>{const d={ArrowRight:[1,0],ArrowLeft:[-1,0],ArrowUp:[0,-1],ArrowDown:[0,1],d:[1,0],a:[-1,0],w:[0,-1],s:[0,1]};if(d[e.key]){e.preventDefault();setDir(...d[e.key])}});
-let touch=null;canvas.addEventListener("touchstart",e=>{touch=[e.touches[0].clientX,e.touches[0].clientY]},{passive:true});canvas.addEventListener("touchend",e=>{if(!touch)return;let dx=e.changedTouches[0].clientX-touch[0],dy=e.changedTouches[0].clientY-touch[1];if(Math.max(Math.abs(dx),Math.abs(dy))>15){Math.abs(dx)>Math.abs(dy)?setDir(Math.sign(dx),0):setDir(0,Math.sign(dy))}touch=null},{passive:true});
-function movePlayer(){if(open(player.x+player.wantX,player.y+player.wantY)&&(player.wantX||player.wantY)){player.dx=player.wantX;player.dy=player.wantY}if(open(player.x+player.dx,player.y+player.dy)){player.x+=player.dx;player.y+=player.dy}
- const k=player.x+","+player.y;if(dots.delete(k)){score+=5;update()}
- if(invuln>0)invuln--;if(checkHit())return;
- const i=tokens.findIndex(t=>t.x===player.x&&t.y===player.y);if(i>=0&&!found.has(i)){found.add(i);score+=50;update();const t=tokens[i];speak(t.word);if(found.size===tokens.length)show("🏆 אספתם את כל הצלילים!", "10 / 10","מעולה! עכשיו עוברים לבלשי הצלילים.","win");else show("מצאתם "+t.s+"! "+t.emoji,t.s+" → "+t.word,t.desc,"token")}
-}
-function moveGhosts(){for(const g of ghosts){const choices=dirs.map(([dx,dy])=>({x:g.x+dx,y:g.y+dy})).filter(p=>open(p.x,p.y));if(!choices.length)continue;const noReverse=choices.filter(p=>!g.last||p.x!==g.last.x||p.y!==g.last.y);const opts=noReverse.length?noReverse:choices;opts.sort((a,b)=>(Math.abs(a.x-player.x)+Math.abs(a.y-player.y))-(Math.abs(b.x-player.x)+Math.abs(b.y-player.y)));const p=Math.random()<.72?opts[0]:opts[Math.floor(Math.random()*opts.length)];g.last={x:g.x,y:g.y};g.x=p.x;g.y=p.y}checkHit()}
-function checkHit(){if(invuln>0)return false;if(!ghosts.some(g=>g.x===player.x&&g.y===player.y))return false;hearts--;update();if(hearts<=0)show("💜 לא נורא, נסו שוב","נגמרו הלבבות","אפשר להתחיל מחדש ולנסות לאסוף את כל הצלילים.","lose");else{player={x:9,y:9,dx:0,dy:0,wantX:0,wantY:0};invuln=12;show("אוי! רוח תפסה אתכם","♥ ".repeat(hearts),"נשארו לכם "+hearts+" לבבות. ממשיכים!","hit")}return true}
-function speak(t){if(!("speechSynthesis" in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t.toLowerCase());u.lang="en-US";u.rate=.8;const v=speechSynthesis.getVoices().find(v=>v.lang==="en-US")||speechSynthesis.getVoices().find(v=>v.lang.startsWith("en"));if(v)u.voice=v;speechSynthesis.speak(u)}
-function show(title,example,description,next){paused=true;mode=next;document.getElementById("title").textContent=title;document.getElementById("example").textContent=example;document.getElementById("description").textContent=description;document.getElementById("overlay").hidden=false;document.getElementById("continue").hidden=next==="win";document.getElementById("detectives").hidden=next!=="win";document.getElementById("continue").textContent=next==="lose"?"↻ משחק חדש":next==="start"?"מתחילים לשחק ▶":"ממשיכים ▶"}
-function resume(){if(mode==="lose")initial();document.getElementById("overlay").hidden=true;paused=false;last=performance.now();acc=0;ghostAcc=0}
-function rounded(x,y,w,h,r,color){ctx.fillStyle=color;ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fill()}
-function draw(){
- ctx.fillStyle="#08051f";ctx.fillRect(0,0,W,H);
- for(let y=0;y<ROWS;y++)for(let x=0;x<COLS;x++){const px=x*SIZE,py=y*SIZE;if(map[y][x]==="#"){rounded(px+1,py+1,SIZE-2,SIZE-2,5,"#6342b5");rounded(px+5,py+5,SIZE-10,SIZE-10,3,"#8365df")}else if(dots.has(x+","+y)){ctx.fillStyle="#ffd15e";ctx.beginPath();ctx.arc(px+SIZE/2,py+SIZE/2,3.3,0,Math.PI*2);ctx.fill()}}
- tokens.forEach((t,i)=>{if(found.has(i))return;const x=t.x*SIZE+SIZE/2,y=t.y*SIZE+SIZE/2;rounded(x-18,y-14,36,28,7,"#ffcf54");ctx.font="bold 16px Arial";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="#392164";ctx.fillText(t.s,x,y+1)});
- ghosts.forEach(g=>{const x=g.x*SIZE+SIZE/2,y=g.y*SIZE+SIZE/2;ctx.fillStyle=g.c;ctx.beginPath();ctx.arc(x,y-3,15,Math.PI,0);ctx.lineTo(x+15,y+13);for(let i=0;i<4;i++)ctx.lineTo(x+15-i*10,y+9+(i%2?5:0));ctx.lineTo(x-15,y+13);ctx.closePath();ctx.fill();ctx.fillStyle="white";ctx.beginPath();ctx.ellipse(x-6,y-3,5,7,0,0,Math.PI*2);ctx.ellipse(x+6,y-3,5,7,0,0,Math.PI*2);ctx.fill();ctx.fillStyle="#202056";ctx.beginPath();ctx.arc(x-4,y-2,2.5,0,Math.PI*2);ctx.arc(x+8,y-2,2.5,0,Math.PI*2);ctx.fill()});
- if(invuln===0||Math.floor(performance.now()/130)%2===0){const x=player.x*SIZE+SIZE/2,y=player.y*SIZE+SIZE/2;let a=0;if(player.dx<0)a=Math.PI;else if(player.dy<0)a=-Math.PI/2;else if(player.dy>0)a=Math.PI/2;const gap=.13+Math.abs(Math.sin(mouth))*.42;ctx.fillStyle="#ffe62f";ctx.beginPath();ctx.moveTo(x,y);ctx.arc(x,y,16,a+gap,a+Math.PI*2-gap);ctx.closePath();ctx.fill()}
-}
-function loop(now){const dt=Math.min(now-last,80);last=now;if(!paused){acc+=dt;ghostAcc+=dt;mouth+=dt*.018;if(acc>=115){acc-=115;movePlayer()}if(!paused&&ghostAcc>=235){ghostAcc-=235;moveGhosts()}}draw();requestAnimationFrame(loop)}
-initial();last=performance.now();requestAnimationFrame(loop);
-</script></body></html>
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>מבוך הצלילים – שלב 3</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:#100c2d;color:white;font-family:Arial,sans-serif}
+body{display:flex;flex-direction:column;min-height:100dvh;overflow:hidden}
+header{height:52px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:5px 14px;background:#1b1242;gap:10px}
+h1{font-size:clamp(16px,2.8vw,24px);margin:0;color:#ffda55}
+a{color:white;text-decoration:none;background:#7433c8;border-radius:14px;padding:10px 14px;font-weight:bold}
+.embed{flex:1;min-height:0;width:100%;position:relative}
+.embed iframe{width:100%;height:100%;border:0;display:block}
+footer{flex-shrink:0;display:flex;align-items:center;justify-content:center;padding:8px;background:#1b1242}
+.next{background:#ffcf39;color:#211044;font-size:clamp(14px,2vw,18px);box-shadow:0 3px 0 #ad7f00}
+@media(max-width:600px){header{height:48px;padding:5px 7px}a{padding:8px}footer{padding:7px}}
+</style>
+</head>
+<body>
+<header><a href="level1.html" aria-label="חזרה למפת השלבים">⌂ חזרה</a><h1>👾 מבוך הצלילים</h1><span></span></header>
+<main class="embed"><iframe title="Special English Phonics Sounds Maze" src="https://view.genially.com/6af07c1aee442bae1b20cc0c" allow="fullscreen; autoplay; clipboard-write" allowfullscreen loading="eager"></iframe></main>
+<footer><a class="next" href="sound-detectives.html">🔎 ממשיכים לבלשי הצלילים ←</a></footer>
+</body></html>
