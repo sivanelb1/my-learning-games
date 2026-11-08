@@ -1,0 +1,47 @@
+<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>מבוך הצלילים המיוחדים</title><style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Arial,sans-serif;background:#160d32;color:#fff}button,a{font:inherit}button{cursor:pointer}.app{max-width:1080px;min-height:100dvh;margin:auto;padding:12px;display:flex;flex-direction:column;gap:9px;background:radial-gradient(circle at top,#58338f,#160d32 75%)}header{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}.home{color:#fff;text-decoration:none;border:2px solid #ae87f3;border-radius:12px;padding:8px 12px}h1{margin:0;font-size:clamp(21px,3vw,34px)}.stats{display:flex;gap:12px;font-weight:bold}.hint{text-align:center;color:#e5d8ff;font-size:clamp(13px,1.8vw,18px)}.main{display:flex;justify-content:center;align-items:center;gap:14px;flex:1;min-height:0}.board{display:grid;grid-template-columns:repeat(15,minmax(0,1fr));width:min(100%,750px,calc(100dvh - 195px));aspect-ratio:15/11;background:#100e2a;border:5px solid #b18bff;border-radius:13px;overflow:hidden;direction:ltr;touch-action:none}.cell{display:grid;place-items:center;min-width:0;min-height:0;position:relative;border:1px solid #23183c}.wall{background:#6644a7;box-shadow:inset 0 0 0 2px #7958c4;border-radius:5px}.player{font-size:clamp(15px,3.1vmin,32px);filter:drop-shadow(0 0 5px #ffeb68)}.enemy{font-size:clamp(13px,2.7vmin,27px)}.token{background:#ffdd69;color:#36205d;border-radius:7px;padding:3px;font-size:clamp(8px,1.65vmin,17px);font-weight:900;box-shadow:0 0 10px #f7c74b}.controls{display:grid;grid-template-columns:repeat(3,52px);grid-template-rows:repeat(3,48px);gap:5px;direction:ltr;justify-content:center}.controls button{background:#8356cb;color:#fff;border:2px solid #bd9eff;border-radius:13px;font-size:23px;font-weight:bold}.controls button:active{background:#c58aff}.controls .up{grid-column:2;grid-row:1}.controls .left{grid-column:1;grid-row:2}.controls .right{grid-column:3;grid-row:2}.controls .down{grid-column:2;grid-row:3}.foot{text-align:center;font-size:14px;color:#d8c6ff}.overlay{position:fixed;inset:0;background:#120b2cba;z-index:10;display:grid;place-items:center;padding:15px}.overlay[hidden]{display:none}.modal{width:min(95vw,490px);background:white;color:#43246f;border:5px solid #ad75e9;border-radius:25px;padding:24px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px}.modal h2{font-size:clamp(25px,4vw,35px);margin:0}.modal p{font-size:19px;margin:0}.modal .example{font-size:clamp(24px,4vw,40px);font-weight:900;color:#8c37c5;direction:ltr}.action{background:#8238c6;color:white;border:0;border-radius:16px;padding:12px 24px;font-weight:bold;font-size:20px;text-decoration:none}.secondary{background:#eee2ff;color:#5d298e}.key{background:#f3e9ff;color:#502b83;border-radius:9px;padding:4px 9px;display:inline-block;font-weight:bold}
+@media(max-width:750px){.main{flex-direction:column;gap:6px}.board{width:min(100%,calc((100dvh - 320px)*15/11));min-width:0}.controls{grid-template-columns:repeat(3,48px);grid-template-rows:repeat(3,38px)}.hint{font-size:13px}.app{gap:5px}}
+</style></head><body><div class="app"><header><a href="level1.html" class="home">⌂ למפה</a><h1>👾 מבוך הצלילים</h1><div class="stats"><span id="hearts">❤️❤️❤️</span><span id="count">0 / 10</span></div></header><div class="hint">אספו את כל צמדי האותיות בלי להיתפס! זזים עם החצים במקלדת או הכפתורים.</div><main class="main"><div class="board" id="board" role="application" aria-label="מבוך הצלילים"></div><div class="controls"><button class="up" onclick="move(0,-1)" aria-label="למעלה">↑</button><button class="left" onclick="move(-1,0)" aria-label="שמאלה">←</button><button class="right" onclick="move(1,0)" aria-label="ימינה">→</button><button class="down" onclick="move(0,1)" aria-label="למטה">↓</button></div></main><div class="foot">אוספים צליל → לומדים מילה → ממשיכים במבוך → עוברים לבלשי הצלילים</div></div>
+<div class="overlay" id="overlay" hidden><div class="modal"><h2 id="modalTitle"></h2><div class="example" id="modalExample"></div><p id="modalText"></p><button class="action" id="modalButton" onclick="continueGame()">ממשיכים ▶</button><a class="action" id="toDetectives" href="sound-detectives.html" hidden>לבלשי הצלילים 🔎</a></div></div>
+<script>
+const raw=[
+"###############",
+"#.............#",
+"#.###.###.###.#",
+"#...#.....#...#",
+"###.#.###.#.###",
+"#...#...#.#...#",
+"#.#####.#.###.#",
+"#.....#.#.....#",
+"#.###.#.#####.#",
+"#.............#",
+"###############"];
+const items=[
+{x:3,y:1,s:"SH",w:"SHIP",e:"🚢",desc:"SH יוצר צליל שׁ"},
+{x:7,y:1,s:"CH",w:"CHAIR",e:"🪑",desc:"CH יוצר צליל צ׳"},
+{x:11,y:1,s:"TH",w:"THINK",e:"💭",desc:"TH הוא צליל אנגלי מיוחד, כמו בתחילת THINK"},
+{x:1,y:3,s:"EE",w:"TREE",e:"🌳",desc:"EE יוצר צליל אִי ארוך"},
+{x:7,y:3,s:"OO",w:"MOON",e:"🌙",desc:"OO יוצר כאן צליל אוּ ארוך"},
+{x:13,y:3,s:"AI",w:"RAIN",e:"🌧️",desc:"AI יוצר כאן צליל אֵיי"},
+{x:1,y:7,s:"OA",w:"BOAT",e:"⛵",desc:"OA יוצר כאן צליל אוֹ"},
+{x:9,y:7,s:"PH",w:"PHONE",e:"📱",desc:"PH יוצר צליל F"},
+{x:3,y:9,s:"CK",w:"DUCK",e:"🦆",desc:"CK יוצר צליל ק"},
+{x:11,y:9,s:"NG",w:"RING",e:"💍",desc:"NG יוצר צליל אף אנגלי בסוף RING"}
+];
+const grid=raw.map(r=>r.split(""));let player={x:1,y:1},enemies=[{x:13,y:9},{x:7,y:5}],hearts=3,collected=new Set(),paused=false,finished=false,ticks=0,modalMode="item";
+function isOpen(x,y){return grid[y]&&grid[y][x]==="."}
+function draw(){const b=document.getElementById("board");b.innerHTML="";for(let y=0;y<11;y++)for(let x=0;x<15;x++){const cell=document.createElement("div");cell.className="cell"+(grid[y][x]==="#"?" wall":"");if(player.x===x&&player.y===y){const el=document.createElement("span");el.className="player";el.textContent="🟡";cell.appendChild(el)}else if(enemies.some(e=>e.x===x&&e.y===y)){const el=document.createElement("span");el.className="enemy";el.textContent="👾";cell.appendChild(el)}else{const i=items.findIndex(t=>t.x===x&&t.y===y);if(i>=0&&!collected.has(i)){const el=document.createElement("span");el.className="token";el.textContent=items[i].s;cell.appendChild(el)}}b.appendChild(cell)}
+ document.getElementById("count").textContent=collected.size+" / "+items.length;document.getElementById("hearts").textContent="❤️".repeat(hearts)+"♡".repeat(3-hearts)}
+function speak(word){if(!("speechSynthesis" in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(word.toLowerCase());u.lang="en-US";u.rate=.75;const v=speechSynthesis.getVoices().find(v=>v.lang==="en-US")||speechSynthesis.getVoices().find(v=>v.lang.startsWith("en"));if(v)u.voice=v;speechSynthesis.speak(u)}
+function show(title,example,text,mode){paused=true;modalMode=mode;document.getElementById("modalTitle").textContent=title;document.getElementById("modalExample").textContent=example;document.getElementById("modalText").textContent=text;document.getElementById("modalButton").hidden=mode==="win";document.getElementById("toDetectives").hidden=mode!=="win";document.getElementById("modalButton").textContent=mode==="lose"?"↻ מתחילים מחדש":"ממשיכים ▶";document.getElementById("overlay").hidden=false;document.getElementById("modalButton").focus()}
+function continueGame(){document.getElementById("overlay").hidden=true;if(modalMode==="lose"){restart();return}paused=false;draw()}
+function restart(){player={x:1,y:1};enemies=[{x:13,y:9},{x:7,y:5}];hearts=3;collected.clear();ticks=0;finished=false;paused=false;document.getElementById("overlay").hidden=true;draw()}
+function hit(){hearts--;if(hearts<=0){draw();show("💜 לא נורא, נסו שוב","❤️ 0","המפלצות תפסו אתכם. אפשר להתחיל מחדש!","lose");return}player={x:1,y:1};enemies=[{x:13,y:9},{x:7,y:5}];draw();show("אוי! איבדתם לב","❤️".repeat(hearts),"המשיכו לאסוף את הצלילים ולהתרחק מהמפלצות.","hit")}
+function move(dx,dy){if(paused||finished)return;const nx=player.x+dx,ny=player.y+dy;if(!isOpen(nx,ny))return;player={x:nx,y:ny};if(enemies.some(e=>e.x===nx&&e.y===ny)){hit();return}
+ const i=items.findIndex(t=>t.x===nx&&t.y===ny);if(i>=0&&!collected.has(i)){collected.add(i);draw();const t=items[i];speak(t.w);if(collected.size===items.length){finished=true;show("🏆 אספתם את כל הצלילים!","10 / 10","עכשיו עוברים לחלק השני — בלשי הצלילים!","win")}else show("מצאתם את הצליל "+t.s+"! "+t.e,t.s+" → "+t.w,t.desc,"item");return}
+ ticks++;if(ticks%2===0)moveEnemies();if(enemies.some(e=>e.x===player.x&&e.y===player.y)){hit();return}draw()}
+function moveEnemies(){for(const enemy of enemies){const opts=[[1,0],[-1,0],[0,1],[0,-1]].map(([dx,dy])=>({x:enemy.x+dx,y:enemy.y+dy})).filter(p=>isOpen(p.x,p.y));if(opts.length){opts.sort((a,b)=>(Math.abs(a.x-player.x)+Math.abs(a.y-player.y))-(Math.abs(b.x-player.x)+Math.abs(b.y-player.y)));const pick=Math.random()<.65?opts[0]:opts[Math.floor(Math.random()*opts.length)];enemy.x=pick.x;enemy.y=pick.y}}}
+document.addEventListener("keydown",e=>{const d={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0]};if(d[e.key]){e.preventDefault();move(...d[e.key])}});
+let start=null;document.getElementById("board").addEventListener("touchstart",e=>{start={x:e.touches[0].clientX,y:e.touches[0].clientY}},{passive:true});document.getElementById("board").addEventListener("touchend",e=>{if(!start)return;const dx=e.changedTouches[0].clientX-start.x,dy=e.changedTouches[0].clientY-start.y;if(Math.max(Math.abs(dx),Math.abs(dy))>20){if(Math.abs(dx)>Math.abs(dy))move(Math.sign(dx),0);else move(0,Math.sign(dy))}start=null},{passive:true});
+draw();
+</script></body></html>
