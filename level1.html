@@ -60,9 +60,12 @@ header p {
   width: 100%;
   height: 100vh;
   height: 100dvh;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   position: relative;
+  scroll-behavior: smooth;
   touch-action: pan-y;
+  overscroll-behavior: contain;
   scrollbar-width: none;
 }
 
@@ -70,7 +73,7 @@ header p {
 
 .world {
   width: 100%;
-  max-width: 750px;
+  max-width: none;
   margin: 0 auto;
   position: relative;
   aspect-ratio: 1024 / 1536;
@@ -159,7 +162,13 @@ header p {
 
 @media (max-width: 600px) {.home{font-size:12px;padding:7px 10px}.level-name{padding:4px 5px;font-size:clamp(9px,2.2vw,12px)}.level{border-width:2px}}
 @media (min-width: 700px) {
-  .world { max-width: 650px; }
+  .world { width: 100%; max-width: none; }
+  .level { font-size: clamp(22px, 2.5vw, 40px); border-width: 4px; }
+  .level-name { font-size: clamp(15px, 1.3vw, 22px); padding: 12px 16px; width: 23%; }
+}
+@media (min-width: 1100px) {
+  .world { min-width: 100%; }
+  .level { width: 6.5%; }
 }
 </style>
 </head>
@@ -232,6 +241,7 @@ header p {
 function openLevel(level) {
   alert("שלב " + level + " עדיין בהכנה ⭐");
 }
+window.addEventListener("load",()=>{const pane=document.getElementById("mapWindow"),world=document.getElementById("world"),first=world.querySelector(".level.current");if(first){const center=first.offsetTop+first.offsetHeight/2;pane.scrollTop=Math.max(0,center-pane.clientHeight*.76)}});
 </script>
 
 </body>
