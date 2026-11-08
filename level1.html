@@ -1,133 +1,236 @@
 
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="he" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Level 1 - English Games</title>
-  <style>
-    * { box-sizing: border-box; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>המסע הקוסמי | Cosmic Adventure</title>
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f7ff;
-      color: #26324b;
-    }
+<style>
+* { box-sizing: border-box; }
 
-    header {
-      background: linear-gradient(135deg, #398bd6, #63c5c7);
-      color: white;
-      text-align: center;
-      padding: 40px 20px;
-      border-radius: 0 0 30px 30px;
-    }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #16082f;
+  color: white;
+  overflow-x: hidden;
+}
 
-    header h1 { font-size: 38px; margin: 12px 0; }
-    header p { font-size: 18px; }
+header {
+  position: fixed;
+  top: 10px;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  text-align: center;
+  pointer-events: none;
+}
 
-    .back {
-      display: inline-block;
-      color: white;
-      text-decoration: none;
-      background: #ffffff30;
-      padding: 10px 18px;
-      border-radius: 20px;
-    }
+header h1 {
+  display: inline-block;
+  background: #54218b;
+  border: 2px solid #e5b95c;
+  border-radius: 20px;
+  padding: 10px 22px;
+  margin: 0;
+  font-size: 23px;
+  box-shadow: 0 0 20px #a34bff;
+}
 
-    main {
-      max-width: 950px;
-      margin: 35px auto;
-      padding: 0 18px;
-    }
+header p {
+  margin: 7px;
+  text-shadow: 0 2px 5px black;
+}
 
-    .intro { text-align: center; margin-bottom: 30px; }
+.home {
+  position: fixed;
+  top: 15px;
+  right: 12px;
+  z-index: 20;
+  background: #54218b;
+  color: white;
+  padding: 10px 14px;
+  border-radius: 15px;
+  text-decoration: none;
+}
 
-    .topics {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 20px;
-    }
+.map-window {
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: auto;
+  position: relative;
+  touch-action: pan-y;
+  scrollbar-width: none;
+}
 
-    .topic {
-      background: white;
-      border-radius: 22px;
-      padding: 28px 15px;
-      text-align: center;
-      box-shadow: 0 6px 20px #26324b12;
-    }
+.map-window::-webkit-scrollbar { display: none; }
 
-    .topic .emoji { font-size: 48px; }
-    .topic h2 { margin: 12px 0; }
-    .topic p { color: #68738b; line-height: 1.5; }
+.world {
+  width: 100%;
+  max-width: 750px;
+  margin: 0 auto;
+  position: relative;
+  aspect-ratio: 1024 / 1536;
+  background-image: url("cosmic-map.png");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform-origin: center bottom;
+  animation: arrive 2s ease forwards;
+}
 
-    .coming {
-      display: inline-block;
-      background: #eaf3ff;
-      color: #3675b5;
-      padding: 9px 16px;
-      border-radius: 20px;
-      font-size: 14px;
-    }
+@keyframes arrive {
+  from { transform: scale(0.85); }
+  to { transform: scale(1.18); }
+}
 
-    footer {
-      text-align: center;
-      padding: 30px;
-      color: #7a8499;
-    }
+.level {
+  position: absolute;
+  z-index: 3;
+  width: 12%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 3px solid #ffd76a;
+  background: radial-gradient(circle, #a45bff, #45117e);
+  color: white;
+  font-size: clamp(17px, 4vw, 27px);
+  font-weight: bold;
+  box-shadow: 0 0 15px #e6aaff;
+  cursor: pointer;
+}
 
-    @media (max-width: 600px) {
-      .topics { grid-template-columns: 1fr; }
-    }
-  </style>
+.level.current {
+  animation: glow 1.5s infinite alternate;
+  background: radial-gradient(circle, #ffda72, #8d36d8);
+  color: #32104e;
+}
+
+.level.locked {
+  filter: grayscale(0.7);
+  opacity: 0.75;
+}
+
+@keyframes glow {
+  from { box-shadow: 0 0 10px #ffdf7a; }
+  to { box-shadow: 0 0 30px #ffdf7a, 0 0 45px #bd6aff; }
+}
+
+.level-name {
+  position: absolute;
+  z-index: 4;
+  background: #fff0c9;
+  color: #38174e;
+  border: 2px solid #d8a94d;
+  border-radius: 12px;
+  padding: 7px 9px;
+  width: 29%;
+  font-size: clamp(10px, 2.5vw, 14px);
+  font-weight: bold;
+  line-height: 1.4;
+  text-align: center;
+  box-shadow: 0 3px 8px #16082f;
+  transform: translateY(-50%);
+}
+
+.level-name small {
+  display: block;
+  direction: ltr;
+}
+
+.message {
+  position: fixed;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  background: #54218b;
+  border: 2px solid #e5b95c;
+  padding: 10px 16px;
+  border-radius: 18px;
+  text-align: center;
+  width: max-content;
+  max-width: 90%;
+}
+
+@media (min-width: 700px) {
+  .world { max-width: 650px; }
+}
+</style>
 </head>
 
 <body>
-  <header>
-    <a class="back" href="index.html">← Back to Home</a>
-    <h1>🌱 Level 1</h1>
-    <p>Let's Start Our English Adventure!</p>
-  </header>
 
-  <main>
-    <section class="intro">
-      <h2>Choose a Topic!</h2>
-      <p>Learn new words and have fun!</p>
-    </section>
+<a class="home" href="index.html">🏠 חזרה | Home</a>
 
-    <section class="topics">
-      <div class="topic">
-        <div class="emoji">🔤</div>
-        <h2>ABC – Letters</h2>
-        <p>Let's learn the English alphabet!</p>
-        <span class="coming">Games coming soon</span>
-      </div>
+<header>
+  <h1>🌌 המסע הקוסמי | Cosmic Adventure</h1>
+  <p>בחרו שלב והתחילו לשחק | Choose a level and play</p>
+</header>
 
-      <div class="topic">
-        <div class="emoji">🎨</div>
-        <h2>Colors</h2>
-        <p>Discover the colors in English!</p>
-        <span class="coming">Games coming soon</span>
-      </div>
+<div class="map-window" id="mapWindow">
+  <main class="world" id="world">
 
-      <div class="topic">
-        <div class="emoji">🔢</div>
-        <h2>Numbers</h2>
-        <p>Count and learn numbers!</p>
-        <span class="coming">Games coming soon</span>
-      </div>
+    <button class="level current" style="top:83%;left:43%"
+      onclick="openLevel(1)">1</button>
+    <div class="level-name" style="top:84%;left:57%">
+      תרגול ABC <small>ABC Practice</small>
+    </div>
 
-      <div class="topic">
-        <div class="emoji">🐶</div>
-        <h2>First Words</h2>
-        <p>Learn your first English words!</p>
-        <span class="coming">Games coming soon</span>
-      </div>
-    </section>
+    <button class="level" style="top:70%;left:43%"
+      onclick="openLevel(2)">2</button>
+    <div class="level-name" style="top:71%;left:12%">
+      צבעים <small>Colors</small>
+    </div>
+
+    <button class="level" style="top:57%;left:43%"
+      onclick="openLevel(3)">3</button>
+    <div class="level-name" style="top:58%;left:58%">
+      מספרים <small>Numbers</small>
+    </div>
+
+    <button class="level" style="top:45%;left:43%"
+      onclick="openLevel(4)">4</button>
+    <div class="level-name" style="top:46%;left:12%">
+      מילים ראשונות <small>First Words</small>
+    </div>
+
+    <button class="level locked" style="top:33%;left:43%"
+      onclick="openLevel(5)">5</button>
+    <div class="level-name" style="top:34%;left:58%">
+      חיות <small>Animals</small>
+    </div>
+
+    <button class="level locked" style="top:22%;left:43%"
+      onclick="openLevel(6)">6</button>
+    <div class="level-name" style="top:23%;left:12%">
+      אוכל <small>Food</small>
+    </div>
+
+    <button class="level locked" style="top:12%;left:43%"
+      onclick="openLevel(7)">7</button>
+    <div class="level-name" style="top:13%;left:58%">
+      משפחה <small>Family</small>
+    </div>
+
   </main>
+</div>
 
-  <footer>
-    ⭐ You can do it! Keep learning! ⭐
-  </footer>
+<div class="message">
+  ⭐ אוספים כוכבים ומתקדמים! | Collect stars and progress!
+</div>
+
+<script>
+function openLevel(number) {
+  if (number > 1) {
+    alert("השלב הזה ייפתח בהמשך! 🌟\nThis level is coming soon!");
+    return;
+  }
+
+  alert("ברוכים הבאים לתרגול ABC! 🌟\nWelcome to ABC Practice!");
+}
+</script>
+
 </body>
 </html>
