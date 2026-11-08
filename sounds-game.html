@@ -15,8 +15,8 @@ button,a{font-family:inherit}button{cursor:pointer}.round{border:0;border-radius
 .speak:active,.next:active{transform:scale(.97)}
 .work{display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;gap:8px;min-height:0;direction:rtl}
 .prompt{text-align:center;font-weight:bold;font-size:clamp(17px,2.3vw,26px)}
-.slots,.tiles{direction:ltr;display:flex;align-items:center;justify-content:center;gap:clamp(7px,1.4vw,22px);width:100%}
-.slot,.tile{width:clamp(64px,10vw,125px);height:clamp(64px,10vw,125px);border-radius:20%;display:grid;place-items:center;font-size:clamp(32px,5.4vw,65px);font-weight:800;user-select:none;-webkit-user-select:none}
+.slots,.tiles{direction:ltr;display:flex;align-items:center;justify-content:center;gap:clamp(4px,1vw,15px);width:100%}
+.slot,.tile{width:clamp(54px,8vw,115px);height:clamp(54px,8vw,115px);border-radius:20%;display:grid;place-items:center;font-size:clamp(32px,5.4vw,65px);font-weight:800;user-select:none;-webkit-user-select:none}
 .slot{background:#e7b6f1;border:3px solid #813a9b;color:#562178}
 .slot.over{background:#d1ffd2;outline:3px dashed #28a64a}
 .slot.filled{background:#d5f6d6;border-color:#39a34b}
@@ -27,7 +27,7 @@ button,a{font-family:inherit}button{cursor:pointer}.round{border:0;border-radius
 .feedback{font-size:clamp(17px,2.3vw,27px);font-weight:bold;color:#168333;text-align:center;min-height:1.4em}
 footer{display:flex;align-items:center;justify-content:center;gap:14px;font-weight:bold;font-size:clamp(14px,1.8vw,20px);flex-shrink:0}
 .next:disabled{background:#c5a7d7;cursor:default}
-@media(max-width:650px){.game{border-width:2px;padding:5px;gap:4px}.play{grid-template-columns:1fr;grid-template-rows:minmax(0,0.8fr) minmax(0,1.2fr);gap:4px}.emoji{font-size:clamp(40px,11vh,90px)}.picture{gap:3px;border-width:2px}.slot,.tile{width:clamp(54px,17vw,86px);height:clamp(54px,17vw,86px);font-size:clamp(26px,8vw,46px)}.work{gap:3px}.speak,.next{padding:7px 14px;font-size:14px}.hint{font-size:12px}}
+@media(max-width:650px){.game{border-width:2px;padding:5px;gap:4px}.play{grid-template-columns:1fr;grid-template-rows:minmax(0,0.8fr) minmax(0,1.2fr);gap:4px}.emoji{font-size:clamp(40px,11vh,90px)}.picture{gap:3px;border-width:2px}.slot,.tile{width:clamp(45px,15vw,78px);height:clamp(45px,15vw,78px);font-size:clamp(26px,8vw,46px)}.work{gap:3px}.speak,.next{padding:7px 14px;font-size:14px}.hint{font-size:12px}}
 </style></head>
 <body><div class="game">
 <header><a class="round" href="level1.html" title="חזרה למפה">⌂</a><h1>⭐ מפעל המילים הקסומות ⭐</h1><button class="round" onclick="restart()" title="התחלה מחדש">↻</button></header>
@@ -37,13 +37,13 @@ footer{display:flex;align-items:center;justify-content:center;gap:14px;font-weig
 <section class="work"><div class="prompt">בונים מילה באנגלית!</div><div class="slots" id="slots"></div><div class="hint">אפשר ללחוץ על אות כדי לשמוע את הצליל שלה 🔊</div><div class="tiles" id="tiles"></div><div class="feedback" id="feedback" aria-live="polite"></div><button class="next" id="next" onclick="nextWord()" disabled>המילה הבאה ←</button></section>
 </main><footer><span id="stars">⭐ 0 כוכבים</span></footer></div>
 <script>
-const words=[{word:"CAT",emoji:"🐱"},{word:"DOG",emoji:"🐶"},{word:"SUN",emoji:"☀️"},{word:"PEN",emoji:"🖊️"},{word:"BED",emoji:"🛏️"},{word:"PIG",emoji:"🐷"},{word:"HAT",emoji:"🎩"},{word:"BUS",emoji:"🚌"}];
-const phonics={A:"a",B:"buh",C:"kuh",D:"duh",E:"eh",F:"fff",G:"guh",H:"hhh",I:"ih",J:"juh",K:"kuh",L:"lll",M:"mmm",N:"nnn",O:"o",P:"puh",Q:"kwuh",R:"rrr",S:"sss",T:"tuh",U:"uh",V:"vvv",W:"wuh",X:"ks",Y:"yuh",Z:"zzz"};
+const words=[{word:"CAT",emoji:"🐱"},{word:"DOG",emoji:"🐶"},{word:"SUN",emoji:"☀️"},{word:"PEN",emoji:"🖊️"},{word:"BED",emoji:"🛏️"},{word:"PIG",emoji:"🐷"},{word:"HAT",emoji:"🎩"},{word:"BUS",emoji:"🚌"},{word:"FOX",emoji:"🦊"},{word:"WOLF",emoji:"🐺"},{word:"KING",emoji:"👑"},{word:"VEST",emoji:"🦺"},{word:"JEEP",emoji:"🚙"},{word:"YARD",emoji:"🏡"},{word:"QUIZ",emoji:"❓"}];
+const phonics={A:"a",B:"buh",C:"kuh",D:"duh",E:"eh",F:"fff",G:"guh",H:"hhh",I:"in",J:"juh",K:"kuh",L:"lll",M:"mmm",N:"nnn",O:"o",P:"puh",Q:"kwuh",R:"rrr",S:"sss",T:"tuh",U:"uh",V:"vvv",W:"wuh",X:"ks",Y:"yuh",Z:"zzz"};
 let index=0,placed=[],active=null,completed=false,voiceUnlocked=false;
 function speak(text,rate=.75){if(!("speechSynthesis" in window)){document.getElementById("feedback").textContent="הדפדפן אינו תומך בהשמעת קול";return}
  speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="en-US";u.rate=rate;u.pitch=1;const voices=speechSynthesis.getVoices();const en=voices.find(v=>v.lang==="en-US")||voices.find(v=>v.lang.startsWith("en"));if(en)u.voice=en;speechSynthesis.speak(u)}
 function sayWord(){speak(words[index].word.toLowerCase(),.7)}
-function sayLetter(letter){speak(phonics[letter]||letter.toLowerCase(),.65)}
+function sayLetter(letter){speak(phonics[letter]||letter.toLowerCase(),letter==="I"?.85:.65)}
 function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function render(){
  const item=words[index];placed=[];completed=false;active=null;
@@ -53,7 +53,7 @@ function render(){
  document.getElementById("feedback").textContent="";
  const next=document.getElementById("next");next.disabled=true;next.textContent=index===words.length-1?"סיום המשחק 🏆":"המילה הבאה ←";
  const slots=document.getElementById("slots"),tiles=document.getElementById("tiles");slots.innerHTML="";tiles.innerHTML="";
- for(let i=0;i<3;i++){const slot=document.createElement("div");slot.className="slot";slot.dataset.pos=i;slot.addEventListener("click",()=>{if(active)drop(active,slot)});slots.appendChild(slot)}
+ for(let i=0;i<item.word.length;i++){const slot=document.createElement("div");slot.className="slot";slot.dataset.pos=i;slot.addEventListener("click",()=>{if(active)drop(active,slot)});slots.appendChild(slot)}
  shuffle(item.word.split("")).forEach((letter,i)=>{const tile=document.createElement("div");tile.className="tile";tile.textContent=letter;tile.dataset.letter=letter;tile.dataset.id=i;tile.setAttribute("role","button");tile.setAttribute("tabindex","0");tile.addEventListener("pointerdown",startDrag);tile.addEventListener("click",()=>select(tile));tile.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();select(tile)}});tiles.appendChild(tile)});
 }
 function select(tile){if(tile.classList.contains("used")||completed)return;active=tile;sayLetter(tile.dataset.letter);document.querySelectorAll(".tile").forEach(t=>t.style.background="");tile.style.background="#fff1b6"}
@@ -63,7 +63,7 @@ function drop(tile,slot){
  if(letter!==expected){document.getElementById("feedback").textContent="נסו שוב 💜";document.getElementById("feedback").style.color="#a0447d";return}
  slot.textContent=letter;slot.classList.add("filled");tile.classList.add("used");tile.style.background="";active=null;placed.push(letter);
  document.getElementById("feedback").textContent="כל הכבוד! ⭐";document.getElementById("feedback").style.color="#168333";
- if(placed.length===3){completed=true;document.getElementById("feedback").textContent="🎉 "+words[index].word+" — הצלחתם!";document.getElementById("next").disabled=false;sayWord()}
+ if(placed.length===words[index].word.length){completed=true;document.getElementById("feedback").textContent="🎉 "+words[index].word+" — הצלחתם!";document.getElementById("next").disabled=false;sayWord()}
 }
 let dragging=null;
 function startDrag(e){
