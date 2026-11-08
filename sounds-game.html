@@ -58,7 +58,7 @@ function sayLetter(letter){speak(examples[letter]||letter.toLowerCase(),.73)}
 function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function render(){
  if(dragging){dragging.ghost.remove();dragging=null}
- speechSynthesis?.cancel?.();
+ if("speechSynthesis" in window)window.speechSynthesis.cancel();
  const item=words[index];filled=new Set();completed=solved.has(index);active=null;
  document.getElementById("picture").textContent=item.emoji;
  document.getElementById("status").textContent="מילה "+(index+1)+" מתוך "+words.length+" · ⭐ "+solved.size;
@@ -90,7 +90,7 @@ function drop(tile,slot){
   const first=document.querySelector('.slot[data-pos="1"]');
   if(!first.classList.contains("ee-first")){first.classList.add("ee-first");const label=document.createElement("span");label.className="ee-label";label.textContent="EE = אי";first.appendChild(label)}
   feedback.textContent="✨ EE ביחד נשמע כמו אי!";
-  speak("ee",.7);
+  speak("see",.7);
  }
  if(filled.size===word.length){
   completed=true;solved.add(index);feedback.textContent="🎉 "+word+" — הצלחתם!";
