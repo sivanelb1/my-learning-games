@@ -34,7 +34,7 @@ footer{display:flex;align-items:center;justify-content:center;gap:14px;font-weig
 .next:disabled{background:#c5a7d7;cursor:default}
 @media(max-width:650px){header{padding-left:102px;padding-right:46px}.scoreboard{padding:4px;font-size:11px;gap:3px;flex-direction:column}.hearts{letter-spacing:0}.skip{padding:5px;font-size:11px}.game{border-width:2px;padding:5px;gap:4px}.play{grid-template-columns:1fr;grid-template-rows:minmax(0,0.8fr) minmax(0,1.2fr);gap:4px}.emoji{font-size:clamp(40px,11vh,90px)}.picture{gap:3px;border-width:2px}.slot,.tile{width:clamp(45px,15vw,78px);height:clamp(45px,15vw,78px);font-size:clamp(26px,8vw,46px)}.work{gap:3px}.speak,.next{padding:7px 14px;font-size:14px}.hint{font-size:12px}}
 .game-over{position:fixed;inset:0;background:rgba(32,12,59,.62);z-index:200;display:grid;place-items:center;padding:20px}.game-over[hidden]{display:none}.game-over-card{width:min(90vw,420px);background:white;border:5px solid #a04bd7;border-radius:28px;padding:35px 20px;box-shadow:0 14px 40px #32113e55;display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center}.game-over-card h2{margin:0;font-size:clamp(25px,5vw,40px);color:#6c249b}.game-over-card p{margin:0;font-size:20px}.retry{background:#8d32ce;color:white;border:0;border-radius:20px;padding:16px 28px;font-size:22px;font-weight:bold;cursor:pointer}
-</style></head>
+.success-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}.success-actions a{padding:13px 16px;border-radius:15px;text-decoration:none;background:#8531cb;color:white;font-weight:bold}.success-actions a:last-child{background:#ffcf46;color:#3a185d}</style></head>
 <body><div class="game">
 <header><div class="scoreboard"><span class="hearts" id="hearts">❤️❤️❤️</span><span id="score">0 נק׳</span></div><button class="skip" id="skip" onclick="skipWord()" title="למילה הבאה ללא כוכב">דלגי ←</button><a class="round" href="level1.html" title="חזרה למפה">⌂</a><h1>מפעל המילים הקסומות</h1><button class="round" onclick="restart()" title="התחלה מחדש">↻</button></header>
 <div class="status" id="status">מילה 1 מתוך 15 · ⭐ 0</div>
@@ -42,7 +42,7 @@ footer{display:flex;align-items:center;justify-content:center;gap:14px;font-weig
 <section class="picture"><div class="emoji" id="picture" aria-label="תמונת המילה">🐱</div><button class="speak" onclick="sayWord()">🔊 השמיעו לי את המילה</button><div class="hint">הקשיבו למילה וגררו את האותיות</div></section>
 <section class="work"><div class="prompt">בונים מילה באנגלית!</div><div class="slots" id="slots"></div><div class="tiles" id="tiles"></div><div class="feedback" id="feedback" aria-live="polite"></div><button class="next" id="next" onclick="nextWord()" disabled>המילה הבאה ←</button></section>
 </main><div class="game-over" id="gameOver" hidden><div class="game-over-card" role="dialog" aria-modal="true" aria-labelledby="gameOverTitle"><h2 id="gameOverTitle">💜 לא נורא, נסו שוב!</h2><p>נגמרו הלבבות. אפשר להתחיל מחדש!</p><button class="retry" onclick="restart()">מתחילים מחדש ↻</button></div></div><footer><span id="stars">⭐ 0 כוכבים</span></footer></div>
-<script>
+<div class="game-over" id="success" hidden><div class="game-over-card"><h2>🏆 כל הכבוד!</h2><p>השלמתם את המשימה בהצלחה! 🎉</p><div class="success-actions"><a href="level1.html">🗺️ חזרה למפה</a><a href="sound-maze.html">🚀 מעבר לשלב הבא</a></div></div></div><script>
 const words=[{word:"CAT",emoji:"🐱"},{word:"DOG",emoji:"🐶"},{word:"SUN",emoji:"☀️"},{word:"PEN",emoji:"🖊️"},{word:"BED",emoji:"🛏️"},{word:"PIG",emoji:"🐷"},{word:"HAT",emoji:"🎩"},{word:"BUS",emoji:"🚌"},{word:"FOX",emoji:"🦊"},{word:"WOLF",emoji:"🐺"},{word:"MILK",emoji:"🥛"},{word:"VEST",emoji:"🦺"},{word:"JEEP",emoji:"🚙"},{word:"YARD",emoji:"🏡"},{word:"QUIZ",emoji:"❓"}];
 // Real words are more reliable with browser text-to-speech than invented phonetic syllables.
 // These are spoken Hebrew phonetic approximations, not English letter names or example words.
@@ -125,8 +125,8 @@ document.addEventListener("pointerup",e=>{
 });
 document.addEventListener("pointercancel",()=>{if(dragging){dragging.ghost.remove();dragging=null}});
 function skipWord(){if(lives<=0)return;if(index<words.length-1){index++;render()}}
-function nextWord(){if(lives<=0||!completed)return;if(index===words.length-1){document.getElementById("feedback").textContent="🏆 סיימתם! ⭐ "+solved.size+" מתוך "+words.length+" מילים נפתרו";document.getElementById("next").disabled=true;return}index++;render()}
+function nextWord(){if(lives<=0||!completed)return;if(index===words.length-1){document.getElementById("next").disabled=true;if(solved.size===words.length){document.getElementById("success").hidden=false}else{document.getElementById("feedback").textContent="⭐ פתרתם "+solved.size+" מתוך "+words.length+" מילים. כדי להשלים את המשימה, נסו שוב בלי לדלג!";document.getElementById("next").textContent="↻ נסו שוב";document.getElementById("next").disabled=false;document.getElementById("next").onclick=restart}return}index++;render()}
 function showGameOver(){if("speechSynthesis" in window)window.speechSynthesis.cancel();document.getElementById("gameOver").hidden=false;document.getElementById("gameOver").querySelector("button").focus()}
-function restart(){document.getElementById("gameOver").hidden=true;index=0;lives=3;solved.clear();render()}
+function restart(){document.getElementById("success").hidden=true;document.getElementById("next").onclick=nextWord;document.getElementById("gameOver").hidden=true;index=0;lives=3;solved.clear();render()}
 render();
 </script></body></html>
