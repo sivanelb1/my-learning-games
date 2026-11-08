@@ -1,0 +1,501 @@
+
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>הרפתקת האותיות | ABC Adventure</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  color: white;
+  background:
+    radial-gradient(circle at 15% 15%, #7139a8 0, transparent 30%),
+    radial-gradient(circle at 85% 70%, #4d267c 0, transparent 35%),
+    linear-gradient(145deg, #16072f, #321052 55%, #19072f);
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "✦  ·  ✧  ·  ✦     ·     ✧  ·  ✦";
+  position: fixed;
+  top: 8%;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: #f5d98b;
+  opacity: .35;
+  font-size: 25px;
+  pointer-events: none;
+}
+
+.topbar {
+  max-width: 1000px;
+  margin: auto;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.home, .restart {
+  border: 1px solid #e9c46a;
+  border-radius: 15px;
+  padding: 10px 14px;
+  color: white;
+  background: #542580;
+  text-decoration: none;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.hearts {
+  direction: ltr;
+  font-size: 25px;
+  letter-spacing: 3px;
+  white-space: nowrap;
+}
+
+main {
+  max-width: 1050px;
+  margin: auto;
+  padding: 5px 14px 35px;
+}
+
+h1 {
+  text-align: center;
+  color: #ffe19a;
+  font-size: clamp(25px, 5vw, 38px);
+  margin: 5px 0;
+  text-shadow: 0 0 16px #bd82ff;
+}
+
+.subtitle {
+  text-align: center;
+  line-height: 1.7;
+  color: #eadbff;
+  margin-bottom: 18px;
+}
+
+.panel {
+  background: rgba(35, 14, 67, .88);
+  border: 2px solid #9b6ac6;
+  border-radius: 22px;
+  padding: 16px;
+  margin: 15px 0;
+  box-shadow: 0 0 22px rgba(180, 113, 255, .16);
+}
+
+.panel-title {
+  text-align: center;
+  color: #ffdc91;
+  font-weight: bold;
+  margin-bottom: 13px;
+  line-height: 1.6;
+}
+
+.slots {
+  direction: ltr;
+  display: grid;
+  grid-template-columns: repeat(13, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.slot {
+  min-width: 0;
+  aspect-ratio: 1;
+  border: 2px dashed #b99bd5;
+  border-radius: 10px;
+  background: rgba(255,255,255,.08);
+  color: white;
+  font-size: clamp(13px, 2.5vw, 22px);
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0;
+}
+
+.slot.first, .slot.last {
+  border: 3px solid #ffd45c;
+  box-shadow: 0 0 12px #ffd45c;
+}
+
+.slot.done {
+  background: linear-gradient(145deg, #4cbf86, #21845c);
+  border: 2px solid #a5ffd1;
+  color: white;
+  animation: pop .25s ease;
+}
+
+.slot.next {
+  background: rgba(255, 213, 92, .18);
+  border-color: #ffe08a;
+}
+
+@keyframes pop {
+  50% { transform: scale(1.12); }
+}
+
+.tiles {
+  direction: ltr;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.tile {
+  aspect-ratio: 1;
+  min-width: 0;
+  border: 2px solid #e7c7ff;
+  border-radius: 13px;
+  background: linear-gradient(145deg, #fff5ff, #d9b9f5);
+  color: #48216e;
+  font-size: clamp(19px, 3.5vw, 30px);
+  font-weight: bold;
+  cursor: grab;
+  box-shadow: 0 4px 0 #8a59ad;
+  transition: transform .15s, opacity .15s;
+}
+
+.tile:active { transform: scale(.94); }
+
+.tile.selected {
+  outline: 4px solid #ffd45c;
+  transform: translateY(-5px);
+}
+
+.tile.used {
+  opacity: .15;
+  pointer-events: none;
+  box-shadow: none;
+}
+
+.status {
+  text-align: center;
+  min-height: 32px;
+  color: #ffe39c;
+  font-weight: bold;
+  line-height: 1.5;
+}
+
+.progress {
+  height: 12px;
+  background: #28113f;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-top: 12px;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #f7bd55, #ffeb9b);
+  transition: width .3s;
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: rgba(16, 5, 35, .9);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.overlay.show { display: flex; }
+
+.result {
+  width: min(430px, 100%);
+  background: linear-gradient(145deg, #5a2a89, #291047);
+  border: 3px solid #f4d17c;
+  border-radius: 25px;
+  padding: 30px 20px;
+  text-align: center;
+  box-shadow: 0 0 35px #a86be8;
+}
+
+.result h2 {
+  color: #ffe19a;
+  font-size: 30px;
+}
+
+.result button {
+  background: #f2ca69;
+  color: #32104e;
+  border: 0;
+  padding: 13px 24px;
+  border-radius: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+@media(max-width: 600px) {
+  .slots { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+  .tiles { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .panel { padding: 10px; }
+  .topbar { flex-wrap: wrap; justify-content: center; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+  <a class="home" href="level1.html">🏰 חזרה למפה | Back to Map</a>
+  <div class="hearts" id="hearts" aria-label="5 lives">❤️ ❤️ ❤️ ❤️ ❤️</div>
+  <button class="restart" onclick="startGame()">↻ התחלה מחדש | Restart</button>
+</div>
+
+<main>
+  <h1>✨ ABC Adventure ✨</h1>
+  <div class="subtitle">
+    הרפתקת האותיות – מסדרים את האותיות לפי הסדר!<br>
+    Letter Adventure – Put the letters in the correct order!
+  </div>
+
+  <section class="panel">
+    <div class="panel-title">
+      🏰 סדרו את האותיות במשבצות<br>
+      Arrange the letters in the boxes
+    </div>
+    <div class="slots" id="slots"></div>
+    <div class="progress">
+      <div class="progress-fill" id="progress"></div>
+    </div>
+    <div class="status" id="status" aria-live="polite">
+      בחרו אות ואז משבצת | Choose a letter, then a box
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-title">
+      🌟 מצאו את האותיות הנכונות<br>
+      Find the correct letters
+    </div>
+    <div class="tiles" id="tiles"></div>
+  </section>
+</main>
+
+<div class="overlay" id="overlay">
+  <div class="result">
+    <div style="font-size:55px" id="resultIcon">🏆</div>
+    <h2 id="resultTitle">כל הכבוד!</h2>
+    <p id="resultText">השלמתם את המשחק!</p>
+    <p id="resultStars" style="font-size:30px">⭐⭐⭐</p>
+    <button onclick="startGame()">לשחק שוב | Play Again</button>
+    <p><a href="level1.html" style="color:#ffe19a">חזרה למפה | Back to Map</a></p>
+  </div>
+</div>
+
+<script>
+const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+const sequence = alphabet.flatMap(letter => [letter, letter.toLowerCase()]);
+
+let nextIndex = 0;
+let lives = 5;
+let mistakes = 0;
+let selectedTile = null;
+let gameOver = false;
+
+const slotsElement = document.getElementById("slots");
+const tilesElement = document.getElementById("tiles");
+const heartsElement = document.getElementById("hearts");
+const statusElement = document.getElementById("status");
+const progressElement = document.getElementById("progress");
+
+function shuffle(array) {
+  const copy = [...array];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+function startGame() {
+  nextIndex = 0;
+  lives = 5;
+  mistakes = 0;
+  selectedTile = null;
+  gameOver = false;
+
+  document.getElementById("overlay").classList.remove("show");
+  slotsElement.innerHTML = "";
+  tilesElement.innerHTML = "";
+
+  sequence.forEach((letter, index) => {
+    const slot = document.createElement("button");
+    slot.className = "slot";
+    slot.type = "button";
+    slot.dataset.index = index;
+
+    if (index === 0 || index === 51) {
+      slot.classList.add(index === 0 ? "first" : "last");
+    }
+
+    if (index === 0) slot.classList.add("next");
+
+    slot.textContent = index === 0 ? "★" : index === 51 ? "🏆" : "?";
+    slot.setAttribute("aria-label", "משבצת " + (index + 1));
+    slot.addEventListener("click", () => placeInSlot(index));
+    slot.addEventListener("dragover", event => event.preventDefault());
+    slot.addEventListener("drop", event => {
+      event.preventDefault();
+      const id = event.dataTransfer.getData("text/plain");
+      chooseTile(id);
+      placeInSlot(index);
+    });
+
+    slotsElement.appendChild(slot);
+  });
+
+  shuffle(sequence).forEach((letter, index) => {
+    const tile = document.createElement("button");
+    tile.className = "tile";
+    tile.type = "button";
+    tile.textContent = letter;
+    tile.dataset.letter = letter;
+    tile.id = "tile-" + index;
+    tile.draggable = true;
+    tile.setAttribute("aria-label", "אות " + letter);
+
+    tile.addEventListener("click", () => chooseTile(tile.id));
+    tile.addEventListener("dragstart", event => {
+      event.dataTransfer.setData("text/plain", tile.id);
+    });
+
+    tilesElement.appendChild(tile);
+  });
+
+  updateDisplay();
+  statusElement.textContent = "בחרו אות ואז משבצת | Choose a letter, then a box";
+}
+
+function chooseTile(id) {
+  if (gameOver) return;
+
+  const tile = document.getElementById(id);
+  if (!tile || tile.classList.contains("used")) return;
+
+  document.querySelectorAll(".tile").forEach(item =>
+    item.classList.remove("selected")
+  );
+
+  selectedTile = id;
+  tile.classList.add("selected");
+  statusElement.textContent = "עכשיו בחרו את המשבצת המתאימה | Choose its box";
+}
+
+function placeInSlot(index) {
+  if (gameOver || selectedTile === null) return;
+
+  if (index !== nextIndex) {
+    statusElement.textContent =
+      "מתחילים מהמשבצת הזוהרת! | Start with the glowing box!";
+    return;
+  }
+
+  const tile = document.getElementById(selectedTile);
+  const expected = sequence[nextIndex];
+
+  if (tile.dataset.letter === expected) {
+    const slot = slotsElement.children[nextIndex];
+
+    slot.textContent = expected;
+    slot.classList.remove("next");
+    slot.classList.add("done");
+
+    tile.classList.add("used");
+    tile.classList.remove("selected");
+
+    nextIndex++;
+    selectedTile = null;
+
+    speakLetter(expected);
+    statusElement.textContent =
+      "כל הכבוד! " + expected + " – תשובה נכונה! | Correct!";
+
+    if (nextIndex < sequence.length) {
+      slotsElement.children[nextIndex].classList.add("next");
+    }
+
+    updateDisplay();
+
+    if (nextIndex === sequence.length) {
+      setTimeout(() => finishGame(true), 700);
+    }
+  } else {
+    mistakes++;
+    lives--;
+    tile.classList.remove("selected");
+    selectedTile = null;
+
+    statusElement.textContent =
+      "לא בדיוק! נסו שוב ❤️ | Not quite! Try again!";
+
+    updateDisplay();
+
+    if (lives <= 0) {
+      setTimeout(() => finishGame(false), 500);
+    }
+  }
+}
+
+function speakLetter(letter) {
+  if (!("speechSynthesis" in window)) return;
+
+  window.speechSynthesis.cancel();
+  const speech = new SpeechSynthesisUtterance(letter);
+  speech.lang = "en-US";
+  speech.rate = 0.75;
+  window.speechSynthesis.speak(speech);
+}
+
+function updateDisplay() {
+  heartsElement.textContent =
+    "❤️ ".repeat(lives) + "🖤 ".repeat(5 - lives);
+
+  progressElement.style.width =
+    (nextIndex / sequence.length * 100) + "%";
+}
+
+function finishGame(won) {
+  gameOver = true;
+
+  const overlay = document.getElementById("overlay");
+  const title = document.getElementById("resultTitle");
+  const text = document.getElementById("resultText");
+  const icon = document.getElementById("resultIcon");
+  const stars = document.getElementById("resultStars");
+
+  if (won) {
+    icon.textContent = "🏆";
+    title.textContent = "אלופי האותיות! | ABC Champions!";
+    text.textContent =
+      "סידרתם את כל 52 האותיות! איזה מסע מדהים! | You completed all 52 letters!";
+    stars.textContent = mistakes === 0 ? "⭐⭐⭐" :
+                        mistakes <= 3 ? "⭐⭐" : "⭐";
+  } else {
+    icon.textContent = "💜";
+    title.textContent = "אל תוותרו! | Keep Trying!";
+    text.textContent =
+      "נגמרו החיים. אפשר לנסות שוב! | Out of lives. Try again!";
+    stars.textContent = "🌟";
+  }
+
+  overlay.classList.add("show");
+}
+
+startGame();
+</script>
+
+</body>
+</html>
