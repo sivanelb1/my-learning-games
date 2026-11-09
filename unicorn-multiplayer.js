@@ -6,7 +6,7 @@ let room=null,role=null,roomRef=null,actionRef=null,guestChoiceRef=null,revision
 const el=id=>document.getElementById(id);
 function message(t){el("roomMessage").textContent=t}
 function error(e){console.error("PLAYWISE multiplayer",e);el("joinError").textContent="לא הצלחנו להתחבר: "+(e.code==="PERMISSION_DENIED"?"בדקי את הקוד ואת הרשאות Firebase":e.message||"נסי שוב")}
-function randomCode(){const b=new Uint8Array(9);crypto.getRandomValues(b);return Array.from(b,x=>"ABCDEFGHJKLMNPQRSTUVWXYZ23456789"[x%32]).join("")}
+function randomCode(){const b=new Uint8Array(12);crypto.getRandomValues(b);return Array.from(b,x=>"ABCDEFGHJKLMNPQRSTUVWXYZ23456789"[x%32]).join("")}
 async function signIn(){if(!auth.currentUser)await auth.signInAnonymously();return auth.currentUser.uid}
 function snapshot(){const raw={board,turn,chain,score,phase,combat,chosen,quietTurns,seen,answered:!!answered,word:word?word[0]:null,options:[...el("answers").children].map(x=>x.textContent),feedback:el("feedback").textContent,revision:++revision};return JSON.parse(JSON.stringify(raw))}
 async function publish(){if(role!=="host"||!roomRef||applying)return;try{await roomRef.child("state").set(snapshot())}catch(e){error(e)}}
