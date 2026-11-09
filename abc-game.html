@@ -122,7 +122,7 @@ function placeLetter(letter,slot){
   const lowerTile=[...document.querySelectorAll(".letter")].find(e=>e.dataset.letter===letter);if(lowerTile)lowerTile.classList.add("done");selected=null;
   document.getElementById("progress").textContent=matched.size+" מתוך 26 זוגות";
   document.getElementById("message").textContent=matched.size===26?"🎉 כל הכבוד! התאמתם את כל האותיות!":"🔊 לחצו על האות הירוקה לשמיעת שמה";
-  if(matched.size===26)document.getElementById("success").hidden=false;
+  if(matched.size===26){document.getElementById("success").hidden=false;window.PlaywiseTreasure?.award(1)}
   return;
  }
  slot.textContent=letter;slot.classList.remove("error");slot.classList.add("filled");slot.style.background="";slot.setAttribute("role","button");slot.setAttribute("tabindex","0");slot.setAttribute("title","🔊 לחצו לשמיעת שם האות "+letter);slot.setAttribute("aria-label","השמעת שם האות "+letter);
@@ -170,5 +170,5 @@ document.getElementById("board").addEventListener("click",event=>{const slot=eve
 startGame();
 </script>
 
-</body>
+<script src="treasure-progress.js"></script></body>
 </html>
