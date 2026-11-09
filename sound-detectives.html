@@ -49,7 +49,7 @@ function choose(value,button){
  else{lives--;button.classList.add("wrong");button.disabled=true;document.getElementById("hearts").textContent="❤️".repeat(lives)+"♡".repeat(3-lives);document.getElementById("message").textContent="נסו שוב 💜";if(lives===0){locked=true;showModal(false)}}
 }
 function advance(){if(!locked)return;if(phase===0){phase=1;render()}else if(index<tasks.length-1){index++;phase=0;render()}else{showModal(true)}}
-function showModal(win){if("speechSynthesis" in window)speechSynthesis.cancel();document.getElementById("modalTitle").textContent=win?"🏆 כל הכבוד!":"💜 לא נורא, נסו שוב";document.getElementById("modalText").textContent=win?"השלמתם את המשימה בהצלחה! 🎉 צברתם "+points+" נקודות!":"נגמרו הלבבות. אפשר לנסות שוב!";document.getElementById("winLinks").hidden=!win;document.getElementById("restartButton").hidden=win;document.getElementById("overlay").hidden=false;(win?document.querySelector("#winLinks a"):document.querySelector(".restart")).focus()}
+function showModal(win){if(win)window.PlaywiseTreasure?.award(3);if("speechSynthesis" in window)speechSynthesis.cancel();document.getElementById("modalTitle").textContent=win?"🏆 כל הכבוד!":"💜 לא נורא, נסו שוב";document.getElementById("modalText").textContent=win?"השלמתם את המשימה בהצלחה! 🎉 צברתם "+points+" נקודות!":"נגמרו הלבבות. אפשר לנסות שוב!";document.getElementById("winLinks").hidden=!win;document.getElementById("restartButton").hidden=win;document.getElementById("overlay").hidden=false;(win?document.querySelector("#winLinks a"):document.querySelector(".restart")).focus()}
 function restart(){if(advanceTimer!==null){clearTimeout(advanceTimer);advanceTimer=null}document.getElementById("overlay").hidden=true;index=0;phase=0;lives=3;points=0;render()}
 render();
-</script></body></html>
+</script><script src="treasure-progress.js"></script></body></html>
