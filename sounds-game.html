@@ -127,8 +127,8 @@ document.addEventListener("pointerup",e=>{
 });
 document.addEventListener("pointercancel",()=>{if(dragging){dragging.ghost.remove();dragging=null}});
 function skipWord(){if(lives<=0)return;if(index<words.length-1){index++;render()}}
-function nextWord(){if(lives<=0||!completed)return;if(index===words.length-1){document.getElementById("next").disabled=true;if(solved.size===words.length){document.getElementById("success").hidden=false}else{document.getElementById("feedback").textContent="⭐ פתרתם "+solved.size+" מתוך "+words.length+" מילים. כדי להשלים את המשימה, נסו שוב בלי לדלג!";document.getElementById("next").textContent="↻ נסו שוב";document.getElementById("next").disabled=false;document.getElementById("next").onclick=restart}return}index++;render()}
+function nextWord(){if(lives<=0||!completed)return;if(index===words.length-1){document.getElementById("next").disabled=true;if(solved.size===words.length){document.getElementById("success").hidden=false;window.PlaywiseTreasure?.award(2)}else{document.getElementById("feedback").textContent="⭐ פתרתם "+solved.size+" מתוך "+words.length+" מילים. כדי להשלים את המשימה, נסו שוב בלי לדלג!";document.getElementById("next").textContent="↻ נסו שוב";document.getElementById("next").disabled=false;document.getElementById("next").onclick=restart}return}index++;render()}
 function showGameOver(){if("speechSynthesis" in window)window.speechSynthesis.cancel();document.getElementById("gameOver").hidden=false;document.getElementById("gameOver").querySelector("button").focus()}
 function restart(){document.getElementById("success").hidden=true;document.getElementById("next").onclick=nextWord;document.getElementById("gameOver").hidden=true;index=0;lives=3;solved.clear();render()}
 render();
-</script></body></html>
+</script><script src="treasure-progress.js"></script></body></html>
