@@ -67,21 +67,13 @@
       color: #455a64;
     }
 
-    .levels::before { content:"✦   ⋆   ✧   ☾   ✦"; color:#ad85dc; font-size:28px; letter-spacing:18px; }
-    .levels {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 22px;
-      max-width: 760px;
-      margin: 12px auto 50px;
-      padding: 20px;
-    }
+    .levels::before { content:"✦   ⋆   ✧   ☾   ✦"; color:#fff5cc; font-size:28px; letter-spacing:18px; grid-column:1/-1; text-shadow:0 0 16px #fff; }
+    .levels { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:center;justify-items:center;gap:clamp(18px,3vw,40px);max-width:1450px;margin:8px auto 55px;padding:20px clamp(16px,4vw,60px);position:relative;z-index:2; }
 
     .card {
       background: radial-gradient(circle at 30% 20%, #fff 15%, #fff8ff 65%, #f5eaff);
       border-radius: 50%;
-      width: min(88vw, 390px);
+      width: min(100%, 370px);
       aspect-ratio: 1;
       padding: 36px 30px;
       display: flex;
@@ -141,10 +133,37 @@
       color: #546e7a;
       font-size: 15px;
     }
+
+    /* Enchanted woodland — animated scenery without external tracking or media */
+    body{background:#122c39;color:#fff8f1;min-height:100vh;isolation:isolate}
+    .forest-scene{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;background:radial-gradient(ellipse at 49% 34%,#f9ddba 0%,#c1d3bb 14%,#5a9991 38%,#234c59 70%,#102937 100%)}
+    .forest-scene::before{content:"";position:absolute;inset:-10%;background:radial-gradient(ellipse at 50% 20%,#fff6d5aa,transparent 37%),radial-gradient(ellipse at 28% 70%,#d3a5f07a,transparent 48%),radial-gradient(ellipse at 76% 76%,#86d8ca88,transparent 46%);animation:mist 16s ease-in-out infinite alternate}
+    .forest-scene::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#102a2eab,transparent 20% 80%,#102a2eab),linear-gradient(0deg,#142e3ae8,transparent 48%);}
+    .forest-tree{position:absolute;bottom:-15vh;width:clamp(140px,19vw,350px);height:115vh;filter:drop-shadow(0 0 25px #163d35a6)}
+    .forest-tree::before{content:"";position:absolute;bottom:0;left:45%;width:13%;height:86%;background:linear-gradient(90deg,#172d35,#38524b 50%,#152c36);border-radius:70% 70% 10% 10%;transform:rotate(4deg)}
+    .forest-tree::after{content:"";position:absolute;left:-12%;top:0;width:125%;height:64%;background:radial-gradient(ellipse at 40% 35%,#43776b 0%,#24554e 42%,#143c42 72%,transparent 73%);border-radius:50%;box-shadow:45px 35px 0 -8px #1c4a46,-38px 70px 0 -15px #204b48;animation:sway 9s ease-in-out infinite alternate;transform-origin:bottom center}
+    .forest-tree.left{left:-9%}.forest-tree.right{right:-10%;transform:scaleX(-1)}.forest-tree.midleft{left:9%;transform:scale(.65);opacity:.5}.forest-tree.midright{right:8%;transform:scale(.7);opacity:.5}
+    .firefly{position:absolute;width:7px;height:7px;border-radius:50%;background:#fff4b2;box-shadow:0 0 12px 5px #f9eeb2,0 0 34px 12px #b5ffdb66;animation:firefly 8s ease-in-out infinite alternate;z-index:2}
+    .firefly:nth-of-type(5){left:14%;top:36%}.firefly:nth-of-type(6){left:28%;top:68%;animation-delay:-3s}.firefly:nth-of-type(7){left:44%;top:18%;animation-delay:-5s}.firefly:nth-of-type(8){left:64%;top:61%;animation-delay:-2s}.firefly:nth-of-type(9){left:85%;top:30%;animation-delay:-6s}.firefly:nth-of-type(10){left:75%;top:81%;animation-delay:-1s}.firefly:nth-of-type(11){left:37%;top:83%;animation-delay:-4s}
+    @keyframes mist{to{transform:translate3d(3%,2%,0) scale(1.08)}}@keyframes sway{to{transform:rotate(3deg)}}@keyframes firefly{0%{transform:translate(0,0);opacity:.25}50%{opacity:1}100%{transform:translate(25px,-45px);opacity:.45}}
+    header{padding:28px 20px 10px;z-index:2}.brand-mark{background:linear-gradient(140deg,#13284fcf,#2a236bc9);backdrop-filter:blur(9px);box-shadow:0 12px 50px #12233280,0 0 45px #f9e2a93d}
+    .welcome-heading{color:#fff8db!important;text-shadow:0 3px 12px #123e4b}
+    .card{width:min(100%,360px);background:radial-gradient(circle at 35% 20%,#fffffff5,#fdf4ffef 60%,#e9d9ffed);color:#3d325d;box-shadow:0 12px 38px #0b273b88,0 0 24px #f5f5d34d,inset 0 0 28px #fff;backdrop-filter:blur(7px);border-width:7px;transition:transform .25s,box-shadow .25s}
+    .card:hover{transform:translateY(-9px) scale(1.025);box-shadow:0 18px 55px #0b273ba8,0 0 35px #fff3c38c}
+    .card h2{font-size:clamp(19px,2vw,25px)}.card p{font-size:clamp(13px,1.25vw,16px)}.card .emoji{font-size:clamp(34px,3.8vw,50px)}
+    .level4{grid-column:1/2;margin-left:0}.bonus{grid-column:2/3}
+    footer{position:relative;z-index:2;color:#fff5dc;text-shadow:0 2px 9px #092c3b}
+    .sound-control{position:fixed;bottom:18px;left:18px;z-index:8;border:1px solid #fff9d2a6;border-radius:99px;padding:12px 17px;background:#1c4256e8;color:white;font-size:15px;font-weight:bold;cursor:pointer;box-shadow:0 6px 24px #0005}
+    .sound-control:focus-visible{outline:3px solid #ffe79a;outline-offset:3px}
+    @media(max-width:1000px){.levels{grid-template-columns:repeat(2,minmax(0,1fr));max-width:850px}.level4,.bonus{grid-column:auto}.bonus{grid-column:1/-1}.card{width:min(100%,340px)}}
+    @media(max-width:620px){.levels{grid-template-columns:1fr;max-width:410px;gap:18px;padding:12px 22px}.card{width:min(100%,320px)}.level4,.bonus{grid-column:auto}.forest-tree{opacity:.7}.brand-mark{padding:17px 23px}.sound-control{bottom:12px;left:12px;font-size:13px}}
+    @media(prefers-reduced-motion:reduce){.forest-scene::before,.forest-tree::after,.firefly{animation:none}.card{transition:none}}
   </style>
 </head>
 
 <body>
+  <div class="forest-scene" aria-hidden="true"><span class="forest-tree left"></span><span class="forest-tree right"></span><span class="forest-tree midleft"></span><span class="forest-tree midright"></span><span class="firefly"></span><span class="firefly"></span><span class="firefly"></span><span class="firefly"></span><span class="firefly"></span><span class="firefly"></span><span class="firefly"></span></div>
+  <button class="sound-control" id="forestSound" type="button" aria-pressed="false">🔊 הפעלת צלילי היער</button>
 
   <header>
     <div class="brand-mark" aria-label="PLAYWISE">
@@ -213,5 +232,13 @@
     Keep learning and having fun!
   </footer>
 
+<script>
+  // Gentle original synthesized bird calls. Audio begins only after a user gesture.
+  (()=>{const btn=document.getElementById('forestSound');let ctx=null,timer=null,enabled=false;
+    function chirp(){if(!enabled||!ctx)return;const now=ctx.currentTime;const count=2+Math.floor(Math.random()*3);for(let i=0;i<count;i++){const o=ctx.createOscillator(),g=ctx.createGain(),t=now+i*.11,f=1100+Math.random()*950;o.type='sine';o.frequency.setValueAtTime(f,t);o.frequency.exponentialRampToValueAtTime(f*1.35,t+.055);o.frequency.exponentialRampToValueAtTime(f*.85,t+.14);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.016,t+.025);g.gain.exponentialRampToValueAtTime(.0001,t+.15);o.connect(g).connect(ctx.destination);o.start(t);o.stop(t+.17)}}
+    btn.addEventListener('click',async()=>{enabled=!enabled;if(enabled){const AudioContext=window.AudioContext||window.webkitAudioContext;if(!AudioContext){enabled=false;btn.textContent='🔇 הצליל אינו נתמך בדפדפן';return}ctx=ctx||new AudioContext();await ctx.resume();chirp();timer=setInterval(chirp,1900+Math.random()*1200);btn.textContent='🔇 השתקת צלילי היער'}else{clearInterval(timer);btn.textContent='🔊 הפעלת צלילי היער'}btn.setAttribute('aria-pressed',String(enabled))});
+    document.addEventListener('visibilitychange',()=>{if(document.hidden&&enabled){enabled=false;clearInterval(timer);btn.textContent='🔊 הפעלת צלילי היער';btn.setAttribute('aria-pressed','false')}});
+  })();
+</script>
 </body>
 </html>
