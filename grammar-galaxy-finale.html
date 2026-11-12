@@ -13,4 +13,4 @@ function render(){const words=tokenize(questions[i]);$('slots').replaceChildren(
 $('dropzone').addEventListener('dragover',e=>e.preventDefault());$('dropzone').addEventListener('drop',e=>{e.preventDefault();const id=Number(e.dataTransfer.getData('text/plain'));if(Number.isInteger(id))add(id)});
 function check(){if(locked)return;const words=tokenize(questions[i]);if(placed.length!==words.length){$('feedback').textContent='💫 צריך להשתמש בכל המילים.';return}if(!placed.every((v,j)=>v===j)){showErrors=true;render();$('feedback').textContent='🟢 ירוק = מילה במקום הנכון · 🔴 אדום = מילה שצריך להזיז. נסו שוב!';return}locked=true;score++;$('score').textContent='⭐ '+score;$('feedback').textContent='🌟 מצוין! '+questions[i];setTimeout(()=>{i++;if(i===5){$('game').hidden=true;$('done').hidden=false;$('progress').style.width='100%';try{localStorage.setItem('playwise_grammar_planet_'+p+'_finale','completed')}catch(e){}}else show()},950)}
 newGame();
-</script><script src="grammar-vocabulary.js?v=2"></script></body></html>
+</script><script src="grammar-vocabulary.js?v=2"></script><script src="grammar-stage-navigation.js?v=1"></script></body></html>
