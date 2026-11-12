@@ -45,7 +45,7 @@ h2{font-size:clamp(22px,4vw,29px);margin:8px 0 18px}.pronouns{display:grid;grid-
 <canvas id="arena" width="900" height="560" role="img" aria-label="משחק חללית: אבני חלל מתקרבות, בחרו את האבן עם כינוי הגוף המתאים"></canvas>
 <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
 <div class="controls"><button id="left" aria-label="שמאלה">⬅️</button><button class="fire" id="fire">🔥 ירי</button><button id="right" aria-label="ימינה">➡️</button></div>
-<div class="help">⌨️ החזיקו חץ ימינה / שמאלה כדי לטוס · רווח לירי | 🎯 פגעו 3 פעמים בכל אבן נכונה · המספר יורד בכל פגיעה · פגיעה באבן שגויה מורידה חיים | 📱 כפתורי מגע</div>
+<div class="help">⌨️ החזיקו חץ ימינה / שמאלה כדי לטוס · רווח לירי | 🎯 פגעו 5 פעמים בכל אבן נכונה · המספר יורד בכל פגיעה · פגיעה באבן שגויה מורידה חיים | 📱 כפתורי מגע</div>
 </section>
 <section class="panel complete hidden" id="complete"><div class="trophy" id="trophy">🏆🌟</div><h2 id="endTitle">כל הכבוד!</h2><p id="endText"></p><button class="btn" onclick="begin()">🔁 משחקים שוב</button><a class="btn" href="level5.html" style="display:inline-block;text-decoration:none">🪐 חזרה לגלקסיה</a></section>
 </main>
@@ -116,9 +116,9 @@ function newWave(){
  const labels=shuffle([...Array(5).fill(en),...Array.from({length:7},()=>all.filter(x=>x!==en)[Math.floor(Math.random()*6)])]);
  // Exactly two staggered rows, like checkers: the lower stones sit between the upper stones so shots can reach either row.
  const slots=shuffle(Array.from({length:12},(_,i)=>({col:i%6,row:Math.floor(i/6)})));
- labels.forEach((label,i)=>{const slot=slots[i];stones.push({label,correct:label===en,alive:true,x:slot.row===0?90+slot.col*140:160+slot.col*140,y:slot.row===0?72:180,shape:i%3,rotation:Math.random()*6,r:23+Math.random()*4,drift:Math.random()*6,hp:3,maxHp:3,hitFlash:0})});
- $('prompt').textContent='👽 איך אומרים ״'+he+'״ באנגלית? פגעו 3 פעמים בכל אחת מ־5 האבנים הנכונות!';
- announce('🎯 לכל אבן נכונה יש 3 פגיעות עד לפיצוץ! המספר שעל האבן יורד בכל פגיעה. אבן שגויה מורידה חיים!');
+ labels.forEach((label,i)=>{const slot=slots[i];stones.push({label,correct:label===en,alive:true,x:slot.row===0?90+slot.col*140:160+slot.col*140,y:slot.row===0?72:180,shape:i%3,rotation:Math.random()*6,r:23+Math.random()*4,drift:Math.random()*6,hp:5,maxHp:5,hitFlash:0})});
+ $('prompt').textContent='👽 איך אומרים ״'+he+'״ באנגלית? פגעו 5 פעמים בכל אחת מ־5 האבנים הנכונות!';
+ announce('🎯 לכל אבן נכונה יש 5 פגיעות עד לפיצוץ! המספר שעל האבן יורד בכל פגיעה. אבן שגויה מורידה חיים!');
  hud()
 }
 function hud(){$('points').textContent='⭐ נקודות: '+points;$('round').textContent='🪨 גל '+Math.min(round+1,12)+' / 12';$('lives').textContent='🛡️ חיים: '+'❤️'.repeat(lives)+'🤍'.repeat(5-lives)}
