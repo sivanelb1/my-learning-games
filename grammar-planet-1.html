@@ -118,7 +118,7 @@ function newWave(){
  const slots=shuffle(Array.from({length:12},(_,i)=>({col:i%6,row:Math.floor(i/6)})));
  labels.forEach((label,i)=>{const slot=slots[i];stones.push({label,correct:label===en,alive:true,x:slot.row===0?90+slot.col*140:160+slot.col*140,y:slot.row===0?72:180,shape:i%3,rotation:Math.random()*6,r:23+Math.random()*4,drift:Math.random()*6,hp:5,maxHp:5,hitFlash:0})});
  $('prompt').textContent='👽 איך אומרים ״'+he+'״ באנגלית? פגעו 5 פעמים בכל אחת מ־5 האבנים הנכונות!';
- announce('🎯 לכל אבן נכונה יש 5 פגיעות עד לפיצוץ! המספר שעל האבן יורד בכל פגיעה. אבן שגויה מורידה חיים!');
+ announce('🎯 לכל אבן נכונה יש 5 פגיעות עד לפיצוץ! המספר שעל האבן יורד בכל פגיעה. פיצוץ אבן שגויה מוריד חיים!');
  hud()
 }
 function hud(){$('points').textContent='⭐ נקודות: '+points;$('round').textContent='🪨 גל '+Math.min(round+1,12)+' / 12';$('lives').textContent='🛡️ חיים: '+'❤️'.repeat(lives)+'🤍'.repeat(5-lives)}
@@ -128,18 +128,23 @@ function fire(){if(!active||transition)return;let now=performance.now();if(now<c
 function announce(t){$('feedback').textContent=t}
 function burst(x,y,color){for(let i=0;i<12;i++){let a=i*Math.PI/6;particles.push({x,y,vx:Math.cos(a)*(60+Math.random()*110),vy:Math.sin(a)*(60+Math.random()*110),life:.5,color})}}
 function hit(stone){
- if(!stone.correct){
-  stone.alive=false;burst(stone.x,stone.y,'#ff678a');lives--;
-  announce('💥 אבן לא נכונה! ירד חיים אחד. נשארו '+lives+' חיים');
-  if(lives<=0){transition=true;setTimeout(()=>{if(active)end(false)},700)}
+ stone.hp=Math.max(0,stone.hp-1);
+ stone.hitFlash=performance.now()+190;
+ if(stone.hp>0){
+  burst(stone.x,stone.y,stone.correct?'#f7e5a1':'#ffb6c7');
+  announce('🎯 פגיעה! נשארו עוד '+stone.hp+' פגיעות באבן הזאת');
  }else{
-  stone.hp--;stone.hitFlash=performance.now()+190;
-  if(stone.hp>0){burst(stone.x,stone.y,'#f7e5a1');announce('🎯 פגיעה! נשארו עוד '+stone.hp+' פגיעות באבן הזאת');}
-  else{
-   stone.alive=false;burst(stone.x,stone.y,'#8cf7c9');points+=5;
+  stone.alive=false;
+  burst(stone.x,stone.y,stone.correct?'#8cf7c9':'#ff678a');
+  if(stone.correct){
+   points+=5;
    let remaining=stones.filter(s=>s.correct&&s.alive).length;
    announce(remaining?'✨ האבן התפוצצה! נשארו '+remaining+' אבנים נכונות':'🌟 מדהים! כל 5 האבנים הנכונות התפוצצו!');
    if(!remaining){transition=true;setTimeout(()=>{if(!active)return;round++;newWave()},950)}
+  }else{
+   lives--;
+   announce('💥 אבן לא נכונה התפוצצה! ירד חיים אחד. נשארו '+lives+' חיים');
+   if(lives<=0){transition=true;setTimeout(()=>{if(active)end(false)},700)}
   }
  }
  hud()
