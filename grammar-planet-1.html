@@ -39,12 +39,12 @@ h2{font-size:clamp(22px,4vw,29px);margin:8px 0 18px}.pronouns{display:grid;grid-
 <section class="panel hidden" id="sort"><div class="ziggy"><div class="face">👽</div><div><h2>עזרו לזיגי למיין את הכוכבים!</h2><p>גררו כוכב לטור המתאים, או לחצו עליו ואז על הטור. <b>You</b> מופיע פעמיים, כי הוא מתאים לשתי הקבוצות!</p></div></div><div class="star-bank" id="starBank" aria-label="כוכבים למיון"></div><div class="sort-grid"><div class="sort-zone" id="singular" data-group="singular" role="button" tabindex="0" aria-label="יחיד Singular"><h3>👤 יחיד<br>Singular</h3><div class="placed"></div></div><div class="sort-zone" id="plural" data-group="plural" role="button" tabindex="0" aria-label="רבים Plural"><h3>👥 רבים<br>Plural</h3><div class="placed"></div></div></div><p class="sort-hint" id="sortFeedback" role="status" aria-live="polite">✨ בחרו כוכב והניחו אותו בקבוצה המתאימה</p><p class="center"><button class="btn" onclick="checkSort()">🔎 בדוק · CHECK</button><button class="btn hidden" id="goShooter" onclick="startMatch()">🌟 ממשיכים להתאמת מילים!</button></p></section>
 <section class="panel hidden" id="match"><div class="ziggy"><div class="face">👽</div><div><h2>עכשיו מחברים בין הכוכבים!</h2><p>לחצו על כינוי גוף באנגלית ועל הפירוש שלו בעברית. התאמה נכונה תגרום לשני הכוכבים לזהור! ✨</p></div></div><div class="match-columns"><div class="match-column" id="englishMatches"></div><div class="match-column" id="hebrewMatches"></div></div><div class="match-status" id="matchStatus" role="status" aria-live="polite"></div><p class="center"><button class="btn hidden" id="matchDone" onclick="begin()">🚀 מעולים! יוצאים לקרב החלל!</button></p></section>
 <section class="panel hidden" id="game">
-<div class="hud"><span id="points">⭐ נקודות: 0</span><span id="round">🪨 גל 1 / 12</span><span id="lives">🛡️ מגנים: ❤️❤️❤️</span></div>
+<div class="hud"><span id="points">⭐ נקודות: 0</span><span id="round">🪨 גל 1 / 12</span><span id="lives">🛡️ חיים: ❤️❤️❤️❤️❤️</span></div>
 <div class="prompt" id="prompt" aria-live="polite">מהי המילה באנגלית?</div>
 <canvas id="arena" width="900" height="560" role="img" aria-label="משחק חללית: אבני חלל מתקרבות, בחרו את האבן עם כינוי הגוף המתאים"></canvas>
 <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
 <div class="controls"><button id="left" aria-label="שמאלה">⬅️</button><button class="fire" id="fire">🔥 ירי</button><button id="right" aria-label="ימינה">➡️</button></div>
-<div class="help">⌨️ החזיקו חץ ימינה / שמאלה כדי לטוס · רווח לירי | 🎯 חסלו את כל האבנים עם התשובה הנכונה | 📱 כפתורי מגע</div>
+<div class="help">⌨️ החזיקו חץ ימינה / שמאלה כדי לטוס · רווח לירי | 🎯 חסלו את 5 האבנים הנכונות מתוך אבנים מפוזרות · פגיעה בשגויה מורידה חיים | 📱 כפתורי מגע</div>
 </section>
 <section class="panel complete hidden" id="complete"><div class="trophy" id="trophy">🏆🌟</div><h2 id="endTitle">כל הכבוד!</h2><p id="endText"></p><button class="btn" onclick="begin()">🔁 משחקים שוב</button><a class="btn" href="level5.html" style="display:inline-block;text-decoration:none">🪐 חזרה לגלקסיה</a></section>
 </main>
@@ -53,7 +53,7 @@ h2{font-size:clamp(22px,4vw,29px);margin:8px 0 18px}.pronouns{display:grid;grid-
 const items=[['אני','I'],['אתה','You'],['את','You'],['הוא','He'],['היא','She'],['זה','It'],['זאת (חפץ)','It'],['אנחנו','We'],['הם','They'],['הן','They'],['אתם','You'],['אתן','You']];
 const all=['I','You','He','She','It','We','They'];
 const $=id=>document.getElementById(id),canvas=$('arena'),ctx=canvas.getContext('2d');
-let active=false,round=0,points=0,lives=3,lane=1,stones=[],shots=[],last=0,raf=0,spawnTime=0,cooldown=0,transition=false,flash='',flashUntil=0;
+let active=false,round=0,points=0,lives=5,lane=1,stones=[],shots=[],last=0,raf=0,spawnTime=0,cooldown=0,transition=false,flash='',flashUntil=0;
 const W=900,H=500,shipY=437,lanes=[180,450,720];
 let selectedStar=null,sortChecked=false;
 function startSort(){$('lesson').classList.add('hidden');$('sort').classList.remove('hidden');$('goShooter').classList.add('hidden');$('sortFeedback').textContent='✨ בחרו כוכב והניחו אותו בקבוצה המתאימה';sortChecked=false;selectedStar=null;for(let id of ['starBank','singular','plural']){let target=id==='starBank'?$(id):$(id).querySelector('.placed');target.replaceChildren()}const words=['I','You','He','She','It','We','They','You'];shuffle(words.map((w,i)=>({w,id:i}))).forEach(({w,id})=>{let b=document.createElement('button');b.className='star-token';b.textContent='⭐ '+w;b.dataset.word=w;b.dataset.id=id;b.draggable=true;b.addEventListener('click',()=>{if(sortChecked)return;selectedStar=b;document.querySelectorAll('.star-token').forEach(x=>x.classList.toggle('selected',x===b))});b.addEventListener('dragstart',e=>{selectedStar=b;e.dataTransfer.setData('text/plain',String(id))});$('starBank').append(b)});$('sort').scrollIntoView({behavior:'smooth',block:'start'})}
@@ -66,27 +66,29 @@ function startMatch(){$('sort').classList.add('hidden');$('match').classList.rem
 function pickMatch(side,b){if(matchLocked||b.classList.contains('matched'))return;if(matchSelected[side])matchSelected[side].classList.remove('selected');matchSelected[side]=b;b.classList.add('selected');if(side==='en')say(b.dataset.answer);if(!matchSelected.en||!matchSelected.he)return;const a=matchSelected.en,c=matchSelected.he;matchLocked=true;if(a.dataset.answer===c.dataset.answer){a.classList.remove('selected');c.classList.remove('selected');a.classList.add('matched');c.classList.add('matched');matchedCount++;$('matchStatus').textContent='✨ התאמה נכונה! '+matchedCount+' מתוך 7';matchSelected={en:null,he:null};matchLocked=false;if(matchedCount===7){$('matchStatus').textContent='🌟 מדהים! התאמתם את כל כינויי הגוף!';$('matchDone').classList.remove('hidden')}}else{a.classList.add('wrong');c.classList.add('wrong');$('matchStatus').textContent='💫 כמעט! נסו זוג אחר';setTimeout(()=>{a.classList.remove('wrong','selected');c.classList.remove('wrong','selected');matchSelected={en:null,he:null};matchLocked=false},650)}}
 function say(t){if(!('speechSynthesis' in window))return;window.speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=.78;window.speechSynthesis.speak(u)}
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function begin(){cancelAnimationFrame(raf);$('match').classList.add('hidden');$('sort').classList.add('hidden');$('lesson').classList.add('hidden');$('complete').classList.add('hidden');$('game').classList.remove('hidden');active=true;round=0;points=0;lives=3;lane=1;shipX=450;keys.left=keys.right=keys.fire=false;particles=[];shots=[];cooldown=0;transition=false;flash='';newWave();last=performance.now();raf=requestAnimationFrame(loop);$('game').scrollIntoView({behavior:'smooth',block:'start'})}
+function begin(){cancelAnimationFrame(raf);$('match').classList.add('hidden');$('sort').classList.add('hidden');$('lesson').classList.add('hidden');$('complete').classList.add('hidden');$('game').classList.remove('hidden');active=true;round=0;points=0;lives=5;lane=1;shipX=450;keys.left=keys.right=keys.fire=false;particles=[];shots=[];cooldown=0;transition=false;flash='';newWave();last=performance.now();raf=requestAnimationFrame(loop);$('game').scrollIntoView({behavior:'smooth',block:'start'})}
 function newWave(){
  if(round>=items.length){end(true);return}
- const [he,en]=items[round],wrong=shuffle(all.filter(x=>x!==en)).slice(0,2),options=shuffle([en,...wrong]);
- stones=[];shots=[];shipX=450;transition=false;waveStart=performance.now();waveDuration=21000;
- // Three distinct squadrons, each containing four asteroids with the same pronoun.
- options.forEach((label,group)=>{for(let j=0;j<4;j++){stones.push({group,label,correct:label===en,alive:true,x:125+group*325+(j%2)*62,y:55+Math.floor(j/2)*73,shape:(group+j)%3,rotation:(group+j)*.65,r:24+(j%3)*2})}});
- $('prompt').textContent='👽 איך אומרים ״'+he+'״ באנגלית? חסלו את כל 4 האבנים הנכונות!';
- announce('🚀 גל חדש! מצאו את קבוצת האבנים הנכונה');
+ const [he,en]=items[round];
+ stones=[];shots=[];transition=false;waveStart=performance.now();waveDuration=26000;
+ // A scattered field: five correct targets among twelve randomly mixed asteroids.
+ const labels=shuffle([...Array(5).fill(en),...Array.from({length:7},()=>all.filter(x=>x!==en)[Math.floor(Math.random()*6)])]);
+ const slots=shuffle(Array.from({length:12},(_,i)=>({col:i%6,row:Math.floor(i/6)})));
+ labels.forEach((label,i)=>{const slot=slots[i];stones.push({label,correct:label===en,alive:true,x:85+slot.col*145+(Math.random()-.5)*22,y:58+slot.row*90+(Math.random()-.5)*22,shape:i%3,rotation:Math.random()*6,r:23+Math.random()*4,drift:Math.random()*6})});
+ $('prompt').textContent='👽 איך אומרים ״'+he+'״ באנגלית? פגעו בכל 5 האבנים הנכונות!';
+ announce('🎯 5 אבנים נכונות מפוזרות בשדה! היזהרו מאבנים שגויות — הן מורידות חיים!');
  hud()
 }
-function hud(){$('points').textContent='⭐ נקודות: '+points;$('round').textContent='🪨 גל '+Math.min(round+1,12)+' / 12';$('lives').textContent='🛡️ מגנים: '+'❤️'.repeat(lives)+'🤍'.repeat(3-lives)}
+function hud(){$('points').textContent='⭐ נקודות: '+points;$('round').textContent='🪨 גל '+Math.min(round+1,12)+' / 12';$('lives').textContent='🛡️ חיים: '+'❤️'.repeat(lives)+'🤍'.repeat(5-lives)}
 let shipX=450,waveStart=0,waveDuration=21000,keys={left:false,right:false,fire:false},particles=[];
 function move(n){if(active&&!transition)shipX=Math.max(38,Math.min(W-38,shipX+n*68))}
 function fire(){if(!active||transition)return;let now=performance.now();if(now<cooldown)return;cooldown=145+now;shots.push({x:shipX,y:shipY-33});}
 function announce(t){$('feedback').textContent=t}
 function burst(x,y,color){for(let i=0;i<12;i++){let a=i*Math.PI/6;particles.push({x,y,vx:Math.cos(a)*(60+Math.random()*110),vy:Math.sin(a)*(60+Math.random()*110),life:.5,color})}}
 function hit(stone){
- stone.alive=false;burst(stone.x,stone.y,stone.correct?'#8cf7c9':'#ffb4c5');
- if(stone.correct){points+=5;let remaining=stones.filter(s=>s.correct&&s.alive).length;announce(remaining?'✨ פגיעה נכונה! נשארו '+remaining+' אבנים נכונות':'🌟 מצוין! חיסלתם את כל האבנים הנכונות!');if(!remaining){transition=true;setTimeout(()=>{if(!active)return;round++;newWave()},950)}}
- else{points=Math.max(0,points-2);announce('💫 אופס! זו קבוצה לא נכונה. נסו את הקבוצה השנייה!')}
+ stone.alive=false;burst(stone.x,stone.y,stone.correct?'#8cf7c9':'#ff678a');
+ if(stone.correct){points+=5;let remaining=stones.filter(s=>s.correct&&s.alive).length;announce(remaining?'✨ פגיעה נכונה! נשארו '+remaining+' אבנים נכונות':'🌟 מצוין! כל 5 האבנים הנכונות חוסלו!');if(!remaining){transition=true;setTimeout(()=>{if(!active)return;round++;newWave()},950)}}
+ else{lives--;announce('💥 אבן לא נכונה! ירד חיים אחד. נשארו '+lives+' חיים');if(lives<=0){transition=true;setTimeout(()=>{if(active)end(false)},700)}}
  hud()
 }
 function miss(){if(transition)return;lives--;transition=true;announce('🛡️ אבני החלל הגיעו! איבדנו מגן.');hud();setTimeout(()=>{if(!active)return;if(lives<=0)end(false);else{round++;newWave()}},1100)}
@@ -109,10 +111,10 @@ function loop(t){
  if(!transition){
  if(keys.left)shipX=Math.max(38,shipX-370*dt);if(keys.right)shipX=Math.min(W-38,shipX+370*dt);if(keys.fire)fire();
  let elapsed=Math.min(1,(t-waveStart)/waveDuration);
- for(let s of stones){if(s.alive){s.y+=dt*(305/waveDuration*1000);s.x+=Math.sin(t/650+s.group)*dt*7}}
+ for(let s of stones){if(s.alive){s.y+=dt*(245/waveDuration*1000);s.x+=Math.sin(t/650+s.drift)*dt*5}}
  for(let b of shots){b.y-=690*dt;for(let s of stones){if(s.alive&&Math.hypot(s.x-b.x,s.y-b.y)<s.r+9){b.y=-100;hit(s);break}}}
  shots=shots.filter(b=>b.y>-20);
- if(!transition&&stones.some(s=>s.correct&&s.alive&&s.y>=shipY-42))miss()
+ if(!transition&&stones.some(s=>s.correct&&s.alive&&s.y>=shipY-45))miss()
  }
  for(let p of particles){p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt}particles=particles.filter(p=>p.life>0);
  draw(t);raf=requestAnimationFrame(loop)
