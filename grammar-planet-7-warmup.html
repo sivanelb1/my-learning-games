@@ -10,4 +10,4 @@ function render(){locked=false;const q=order[idx];$('counter').textContent='שא
 function choose(a){if(locked)return;const good=order[idx][2]===a,button=$(a==='do'?'a':'b');if(!good){button.classList.add('bad');$('msg').textContent='💜 כמעט! בדקו אם הנושא ביחיד או ברבים ונסו שוב.';setTimeout(()=>button.classList.remove('bad'),900);return}locked=true;button.classList.add('good');$('msg').textContent='🌟 נכון מאוד!';$('next').hidden=false;$('next').textContent=idx===4?'🚀 למשחק הבא!':'לשאלה הבאה ←';$('progress').style.width=((idx+1)/5*100)+'%';for(const id of ['a','b'])$(id).disabled=true}
 function advance(){idx++;if(idx===5){$('game').hidden=true;$('done').hidden=false;return}render()}
 function closeInfo(){$('overlay').hidden=true}$('info').onclick=()=>{$('overlay').hidden=false};$('overlay').onclick=e=>{if(e.target===$('overlay'))closeInfo()};document.addEventListener('keydown',e=>{if(e.key==='Escape')closeInfo()});init();
-</script><script src="grammar-vocabulary.js?v=2"></script></body></html>
+</script><script src="grammar-vocabulary.js?v=2"></script><script src="grammar-stage-navigation.js?v=1"></script></body></html>
