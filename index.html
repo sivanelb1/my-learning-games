@@ -151,10 +151,12 @@
     .card{width:min(100%,360px);background:radial-gradient(circle at 35% 20%,#fffffff5,#fdf4ffef 60%,#e9d9ffed);color:#3d325d;box-shadow:0 12px 38px #0b273b88,0 0 24px #f5f5d34d,inset 0 0 28px #fff;backdrop-filter:blur(7px);border-width:7px;transition:transform .25s,box-shadow .25s}
     .card:hover{transform:translateY(-9px) scale(1.025);box-shadow:0 18px 55px #0b273ba8,0 0 35px #fff3c38c}
     .card h2{font-size:clamp(19px,2vw,25px)}.card p{font-size:clamp(13px,1.25vw,16px)}.card .emoji{font-size:clamp(34px,3.8vw,50px)}
-    .level4{grid-column:1/2;margin-left:0}.bonus{grid-column:2/3}
+    .level4,.level5,.level6{grid-column:auto}
     footer{position:relative;z-index:2;color:#fff5dc;text-shadow:0 2px 9px #092c3b}
     .sound-control{position:fixed;bottom:18px;left:18px;z-index:8;border:1px solid #fff9d2a6;border-radius:99px;padding:12px 17px;background:#1c4256e8;color:white;font-size:15px;font-weight:bold;cursor:pointer;box-shadow:0 6px 24px #0005}
     .sound-control:focus-visible{outline:3px solid #ffe79a;outline-offset:3px}
+    .level5{border:7px solid #a2e2b0}.level6{border:7px solid #ffda86}
+    .bonus-corner{position:relative;z-index:2;max-width:700px;margin:5px auto 35px;padding:22px;border-radius:28px;background:#fff8ffe8;color:#4c3569;border:3px solid #dca5e9;box-shadow:0 12px 38px #0b273b66}.bonus-corner h2{margin:8px 0}.bonus-corner p{margin:5px 0}
     @media(max-width:1000px){.levels{grid-template-columns:repeat(2,minmax(0,1fr));max-width:850px}.level4,.bonus{grid-column:auto}.bonus{grid-column:1/-1}.card{width:min(100%,340px)}}
     @media(max-width:620px){.levels{grid-template-columns:1fr;max-width:410px;gap:18px;padding:12px 22px}.card{width:min(100%,320px)}.level4,.bonus{grid-column:auto}.forest-tree{opacity:.7}.brand-mark{padding:17px 23px}.sound-control{bottom:12px;left:12px;font-size:13px}}
     @media(prefers-reduced-motion:reduce){.forest-scene::before,.forest-tree::after,.firefly{animation:none}.card{transition:none}}
@@ -175,57 +177,14 @@
   </header>
 
   <main class="levels">
-
-    <section class="card level1">
-      <div class="emoji">🧚‍♀️✨</div>
-      <h2>רמה 1 | Level 1</h2>
-      <p>
-        מתחילים – אותיות, צבעים, מספרים ומילים ראשונות.<br>
-        Beginners – Letters, Colors, Numbers & First Words.
-      </p>
-      <a class="button" href="adventure-map.html">
-        בואו לשחק | Let's Play
-      </a>
-    </section>
-
-    <section class="card level2">
-      <div class="emoji">🪄🌙</div>
-      <h2>רמה 2 | Level 2</h2>
-      <p>
-        בסיסי – אוצר מילים בנושאים שונים.<br>
-        Basic – Vocabulary, Animals, Food & Family.
-      </p>
-      <a class="button" href="level2.html">
-        בואו לשחק | Let's Play
-      </a>
-    </section>
-
-    <section class="card level3">
-      <div class="emoji">🧙‍♂️🔮</div>
-      <h2>רמה 3 | Level 3</h2>
-      <p>
-        בינוני – משפטים, פעלים, שאלות וקריאה.<br>
-        Intermediate – Sentences, Verbs, Questions & Reading.
-      </p>
-      <a class="button" href="level3.html">
-        בואו לשחק | Let's Play
-      </a>
-    </section>
-
-    <section class="card level4">
-      <div class="emoji">🚀🌟</div>
-      <h2>רמה 4 | Level 4</h2>
-      <p>
-        אתגר – דקדוק, הבנת הנקרא ואוצר מילים מתקדם.<br>
-        Challenge – Grammar, Reading Comprehension & Vocabulary.
-      </p>
-      <a class="button" href="level4.html">
-        בואו לשחק | Let's Play
-      </a>
-    </section>
-
-    <section class="card bonus"><div class="emoji">🦄🎤✨</div><h2>פינת בונוס מוזיקלית!</h2><p><strong>Sing &amp; Sparkle</strong><br>שרים, מבינים ונהנים!<br>לומדים אנגלית עם שירים אהובים 🎶</p><a class="button" href="sing-and-sparkle.html">בואו לשיר | Let's Sing!</a></section>
+    <section class="card level1"><div class="emoji">🔤🎵</div><h2>שלב 1 | Level 1</h2><h3 style="margin:0;color:#7551aa">צלילים ו־ABC</h3><p>אותיות באנגלית, זיהוי צלילים והיכרות עם ה־ABC.<br>ABC Letters & Sounds.</p><a class="button" href="abc-sounds-level.html">נכנסים לשלב | Enter Level</a></section>
+    <section class="card level2"><div class="emoji">🧚‍♀️✨</div><h2>שלב 2 | Level 2</h2><h3 style="margin:0;color:#7551aa">ההרפתקה הקסומה</h3><p>אותיות, צבעים, מספרים ומילים ראשונות — ההרפתקה שכבר בנינו!<br>Letters, Colors, Numbers & First Words.</p><a class="button" href="adventure-map.html">בואו לשחק | Let's Play</a></section>
+    <section class="card level3"><div class="emoji">🪄🌙</div><h2>שלב 3 | Level 3</h2><h3 style="margin:0;color:#7551aa">אוצר מילים</h3><p>בקרוב: חיות, אוכל, משפחה ומילים שימושיות.<br>Vocabulary, Animals, Food & Family.</p><a class="button" href="level3.html">לשלב 3 | Level 3</a></section>
+    <section class="card level4"><div class="emoji">🧙‍♂️🔮</div><h2>שלב 4 | Level 4</h2><h3 style="margin:0;color:#7551aa">משפטים וקריאה</h3><p>בקרוב: משפטים, פעלים, שאלות וקריאה.<br>Sentences, Verbs, Questions & Reading.</p><a class="button" href="level4.html">לשלב 4 | Level 4</a></section>
+    <section class="card level5"><div class="emoji">🚀🌟</div><h2>שלב 5 | Level 5</h2><h3 style="margin:0;color:#7551aa">אתגר האנגלית</h3><p>בקרוב: דקדוק, הבנת הנקרא ואוצר מילים מתקדם.<br>Grammar, Reading Comprehension & Vocabulary.</p><a class="button" href="level5.html">לשלב 5 | Level 5</a></section>
+    <section class="card level6"><div class="emoji">🏰💎</div><h2>שלב 6 | Level 6</h2><h3 style="margin:0;color:#7551aa">האתגר הגדול</h3><p>שלב חדש שנבנה יחד בהמשך!<br>The Grand English Adventure.</p><a class="button" href="level6.html">לשלב 6 | Level 6</a></section>
   </main>
+  <section class="bonus-corner"><div class="emoji">🦄🎤✨</div><h2>פינת בונוס מוזיקלית!</h2><p><strong>Sing &amp; Sparkle</strong> · שרים, מבינים ונהנים 🎶</p><a class="button" href="sing-and-sparkle.html">בואו לשיר | Let’s Sing!</a></section>
 
   <footer>
     כל הכבוד על הלמידה! 🌟<br>
