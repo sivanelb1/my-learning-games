@@ -183,4 +183,4 @@ for(let [id,key] of [['left','left'],['right','right'],['fire','fire']]){let b=$
 canvas.addEventListener('pointerdown',e=>{if(!active)return;let rect=canvas.getBoundingClientRect();shipX=Math.max(38,Math.min(W-38,(e.clientX-rect.left)/rect.width*W));fire()});
 window.addEventListener('blur',()=>{keys.left=keys.right=keys.fire=false});
 document.addEventListener('visibilitychange',()=>{if(document.hidden){keys.left=keys.right=keys.fire=false;last=performance.now()}});
-</script><script src="grammar-stage-navigation.js?v=1"></script></body></html>
+</script><script src="grammar-stage-navigation.js?v=1"></script><script src="grammar-stage-navigation.js?v=1"></script></body></html>
