@@ -16,7 +16,7 @@ h2{font-size:clamp(22px,4vw,29px);margin:8px 0 18px}.pronouns{display:grid;grid-
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style></head><body>
 <a class="back" href="level5.html">🪐 חזרה למפת הגלקסיה</a>
-<main><nav class="teacher-toolbar" aria-label="מעבר בין משחקי הכוכב"><span class="toolbar-title">🎓 מעבר מהיר למורה</span><button data-stage="0" onclick="goStage(0)">👽 הסבר</button><button data-stage="1" onclick="goStage(1)">⭐ מיון</button><button data-stage="2" onclick="goStage(2)">🚀 התאמות</button><button data-stage="3" onclick="goStage(3)">🛸 חללית</button></nav><header><div style="font-size:60px">👽🚀🪐</div><h1>Pronoun Planet</h1><p>כוכב כינויי הגוף · משימה 1 בגלקסיית הדקדוק</p></header>
+<main><nav class="teacher-toolbar" aria-label="מעבר בין משחקי הכוכב"><button data-stage="0" onclick="goStage(0)">👽 הסבר</button><button data-stage="1" onclick="goStage(1)">⭐ מיון</button><button data-stage="2" onclick="goStage(2)">🚀 התאמות</button><button data-stage="3" onclick="goStage(3)">🛸 חללית</button></nav><header><div style="font-size:60px">👽🚀🪐</div><h1>Pronoun Planet</h1><p>כוכב כינויי הגוף · משימה 1 בגלקסיית הדקדוק</p></header>
 <section class="panel" id="lesson"><div class="stage-nav"><span>📖 חלק 1 מתוך 4 · לומדים עם זיגי</span><button onclick="goStage(1)">המשחק הבא ←</button></div>
 <div class="ziggy"><div class="face" role="img" aria-label="זיגי החייזרון">👽</div><div><h2>היי! אני זיגי!</h2><p>ברוכים הבאים לכוכב שלי! היום נלמד <b>כינויי גוף — Pronouns</b>. אלה מילים קצרות שבאות במקום שמות: במקום להגיד כל פעם ״דנה״, אפשר להגיד <b>She</b> — היא!</p><p>לחצו על כל כינוי כדי לשמוע אותו באנגלית 🔊</p></div></div>
 <div class="pronouns">
@@ -45,7 +45,7 @@ h2{font-size:clamp(22px,4vw,29px);margin:8px 0 18px}.pronouns{display:grid;grid-
 <canvas id="arena" width="900" height="560" role="img" aria-label="משחק חללית: אבני חלל מתקרבות, בחרו את האבן עם כינוי הגוף המתאים"></canvas>
 <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
 <div class="controls"><button id="left" aria-label="שמאלה">⬅️</button><button class="fire" id="fire">🔥 ירי</button><button id="right" aria-label="ימינה">➡️</button></div>
-<div class="help">⌨️ החזיקו חץ ימינה / שמאלה כדי לטוס · רווח לירי | 🎯 חסלו את 5 האבנים הנכונות מתוך אבנים מפוזרות · פגיעה בשגויה מורידה חיים | 📱 כפתורי מגע</div>
+<div class="help">⌨️ החזיקו חץ ימינה / שמאלה כדי לטוס · רווח לירי | 🎯 פגעו 3 פעמים בכל אבן נכונה · המספר יורד בכל פגיעה · פגיעה באבן שגויה מורידה חיים | 📱 כפתורי מגע</div>
 </section>
 <section class="panel complete hidden" id="complete"><div class="trophy" id="trophy">🏆🌟</div><h2 id="endTitle">כל הכבוד!</h2><p id="endText"></p><button class="btn" onclick="begin()">🔁 משחקים שוב</button><a class="btn" href="level5.html" style="display:inline-block;text-decoration:none">🪐 חזרה לגלקסיה</a></section>
 </main>
@@ -116,9 +116,9 @@ function newWave(){
  const labels=shuffle([...Array(5).fill(en),...Array.from({length:7},()=>all.filter(x=>x!==en)[Math.floor(Math.random()*6)])]);
  // Exactly two staggered rows, like checkers: the lower stones sit between the upper stones so shots can reach either row.
  const slots=shuffle(Array.from({length:12},(_,i)=>({col:i%6,row:Math.floor(i/6)})));
- labels.forEach((label,i)=>{const slot=slots[i];stones.push({label,correct:label===en,alive:true,x:slot.row===0?90+slot.col*140:160+slot.col*140,y:slot.row===0?72:180,shape:i%3,rotation:Math.random()*6,r:23+Math.random()*4,drift:Math.random()*6})});
- $('prompt').textContent='👽 איך אומרים ״'+he+'״ באנגלית? פגעו בכל 5 האבנים הנכונות!';
- announce('🎯 5 אבנים נכונות מפוזרות בשדה! היזהרו מאבנים שגויות — הן מורידות חיים!');
+ labels.forEach((label,i)=>{const slot=slots[i];stones.push({label,correct:label===en,alive:true,x:slot.row===0?90+slot.col*140:160+slot.col*140,y:slot.row===0?72:180,shape:i%3,rotation:Math.random()*6,r:23+Math.random()*4,drift:Math.random()*6,hp:3,maxHp:3,hitFlash:0})});
+ $('prompt').textContent='👽 איך אומרים ״'+he+'״ באנגלית? פגעו 3 פעמים בכל אחת מ־5 האבנים הנכונות!';
+ announce('🎯 לכל אבן נכונה יש 3 פגיעות עד לפיצוץ! המספר שעל האבן יורד בכל פגיעה. אבן שגויה מורידה חיים!');
  hud()
 }
 function hud(){$('points').textContent='⭐ נקודות: '+points;$('round').textContent='🪨 גל '+Math.min(round+1,12)+' / 12';$('lives').textContent='🛡️ חיים: '+'❤️'.repeat(lives)+'🤍'.repeat(5-lives)}
@@ -128,9 +128,20 @@ function fire(){if(!active||transition)return;let now=performance.now();if(now<c
 function announce(t){$('feedback').textContent=t}
 function burst(x,y,color){for(let i=0;i<12;i++){let a=i*Math.PI/6;particles.push({x,y,vx:Math.cos(a)*(60+Math.random()*110),vy:Math.sin(a)*(60+Math.random()*110),life:.5,color})}}
 function hit(stone){
- stone.alive=false;burst(stone.x,stone.y,stone.correct?'#8cf7c9':'#ff678a');
- if(stone.correct){points+=5;let remaining=stones.filter(s=>s.correct&&s.alive).length;announce(remaining?'✨ פגיעה נכונה! נשארו '+remaining+' אבנים נכונות':'🌟 מצוין! כל 5 האבנים הנכונות חוסלו!');if(!remaining){transition=true;setTimeout(()=>{if(!active)return;round++;newWave()},950)}}
- else{lives--;announce('💥 אבן לא נכונה! ירד חיים אחד. נשארו '+lives+' חיים');if(lives<=0){transition=true;setTimeout(()=>{if(active)end(false)},700)}}
+ if(!stone.correct){
+  stone.alive=false;burst(stone.x,stone.y,'#ff678a');lives--;
+  announce('💥 אבן לא נכונה! ירד חיים אחד. נשארו '+lives+' חיים');
+  if(lives<=0){transition=true;setTimeout(()=>{if(active)end(false)},700)}
+ }else{
+  stone.hp--;stone.hitFlash=performance.now()+190;
+  if(stone.hp>0){burst(stone.x,stone.y,'#f7e5a1');announce('🎯 פגיעה! נשארו עוד '+stone.hp+' פגיעות באבן הזאת');}
+  else{
+   stone.alive=false;burst(stone.x,stone.y,'#8cf7c9');points+=5;
+   let remaining=stones.filter(s=>s.correct&&s.alive).length;
+   announce(remaining?'✨ האבן התפוצצה! נשארו '+remaining+' אבנים נכונות':'🌟 מדהים! כל 5 האבנים הנכונות התפוצצו!');
+   if(!remaining){transition=true;setTimeout(()=>{if(!active)return;round++;newWave()},950)}
+  }
+ }
  hud()
 }
 function miss(){if(transition)return;lives--;transition=true;announce('🛡️ אבני החלל הגיעו! איבדנו מגן.');hud();setTimeout(()=>{if(!active)return;if(lives<=0)end(false);else{round++;newWave()}},1100)}
@@ -142,7 +153,7 @@ function draw(t){
  ctx.fillStyle='#b84cc722';ctx.beginPath();ctx.ellipse(480,150,360,125,-.4,0,Math.PI*2);ctx.fill();
  for(let i=0;i<110;i++){let x=(i*173+43)%W,y=(i*109+t*.02*(i%3+1))%H;ctx.fillStyle=i%5?'#d5e4ff':'#f7d1ff';ctx.globalAlpha=.3+(i%4)*.16;ctx.fillRect(x,y,i%7===0?3:2,i%7===0?3:2)}ctx.globalAlpha=1;
  // Three asteroid formations travel downwards with a gentle side-to-side sway.
- for(let s of stones){if(!s.alive)continue;ctx.save();ctx.shadowColor=s.correct?'#e1c7ff':'#b5b3db';ctx.shadowBlur=12;poly(s.x,s.y,s.r,s.rotation,s.shape);ctx.fillStyle=['#85708d','#71667e','#8d7787'][s.shape];ctx.fill();ctx.lineWidth=3;ctx.strokeStyle='#bdb1ce';ctx.stroke();ctx.shadowBlur=0;ctx.fillStyle='#3b344f';ctx.beginPath();ctx.arc(s.x-8,s.y-6,5,0,Math.PI*2);ctx.arc(s.x+8,s.y+7,4,0,Math.PI*2);ctx.fill();ctx.fillStyle='white';ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='bold 17px Arial';ctx.shadowColor='#21182f';ctx.shadowBlur=5;ctx.fillText(s.label,s.x,s.y,65);ctx.restore()}
+ for(let s of stones){if(!s.alive)continue;ctx.save();ctx.shadowColor=s.correct?'#e1c7ff':'#b5b3db';ctx.shadowBlur=12;poly(s.x,s.y,s.r,s.rotation,s.shape);ctx.fillStyle=t<s.hitFlash?'#fff0a8':['#85708d','#71667e','#8d7787'][s.shape];ctx.fill();ctx.lineWidth=3;ctx.strokeStyle='#bdb1ce';ctx.stroke();ctx.shadowBlur=0;ctx.fillStyle='#3b344f';ctx.beginPath();ctx.arc(s.x-8,s.y-6,5,0,Math.PI*2);ctx.arc(s.x+8,s.y+7,4,0,Math.PI*2);ctx.fill();ctx.fillStyle='white';ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='bold 17px Arial';ctx.shadowColor='#21182f';ctx.shadowBlur=5;ctx.fillText(s.label,s.x,s.y-5,65);ctx.shadowBlur=0;ctx.fillStyle='#ffe58e';ctx.font='bold 17px Arial';ctx.fillText(''+s.hp,s.x,s.y+17);ctx.restore()}
  for(let b of shots){ctx.fillStyle='#ffed8d';ctx.shadowColor='#ffe266';ctx.shadowBlur=17;ctx.fillRect(b.x-4,b.y-16,8,26);ctx.shadowBlur=0}
  for(let p of particles){ctx.globalAlpha=Math.max(0,p.life*2);ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,4,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1;
  ctx.save();ctx.translate(shipX,shipY);ctx.shadowColor='#77e8ff';ctx.shadowBlur=24;ctx.fillStyle='#67d6ee';ctx.beginPath();ctx.moveTo(0,-40);ctx.lineTo(-39,29);ctx.lineTo(-13,18);ctx.lineTo(0,29);ctx.lineTo(13,18);ctx.lineTo(39,29);ctx.closePath();ctx.fill();ctx.fillStyle='#c3b1ff';ctx.beginPath();ctx.ellipse(0,-7,13,17,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#ffc46a';ctx.beginPath();ctx.moveTo(-13,29);ctx.lineTo(0,48+Math.sin(t/90)*6);ctx.lineTo(13,29);ctx.fill();ctx.restore();
