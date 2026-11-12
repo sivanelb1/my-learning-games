@@ -93,8 +93,9 @@ function newWave(){
  stones=[];shots=[];transition=false;waveStart=performance.now();waveDuration=26000;
  // A scattered field: five correct targets among twelve randomly mixed asteroids.
  const labels=shuffle([...Array(5).fill(en),...Array.from({length:7},()=>all.filter(x=>x!==en)[Math.floor(Math.random()*6)])]);
+ // Exactly two staggered rows, like checkers: the lower stones sit between the upper stones so shots can reach either row.
  const slots=shuffle(Array.from({length:12},(_,i)=>({col:i%6,row:Math.floor(i/6)})));
- labels.forEach((label,i)=>{const slot=slots[i];stones.push({label,correct:label===en,alive:true,x:85+slot.col*145+(Math.random()-.5)*22,y:58+slot.row*90+(Math.random()-.5)*22,shape:i%3,rotation:Math.random()*6,r:23+Math.random()*4,drift:Math.random()*6})});
+ labels.forEach((label,i)=>{const slot=slots[i];stones.push({label,correct:label===en,alive:true,x:slot.row===0?90+slot.col*140:160+slot.col*140,y:slot.row===0?72:180,shape:i%3,rotation:Math.random()*6,r:23+Math.random()*4,drift:Math.random()*6})});
  $('prompt').textContent='👽 איך אומרים ״'+he+'״ באנגלית? פגעו בכל 5 האבנים הנכונות!';
  announce('🎯 5 אבנים נכונות מפוזרות בשדה! היזהרו מאבנים שגויות — הן מורידות חיים!');
  hud()
