@@ -213,6 +213,38 @@
   text-shadow:0 2px 9px #081f30,0 1px 3px #081f30;
 }
 .bonus-corner h2,.bonus-corner p{color:#fffaf1!important}
+
+/* Musical bonus: the only round island, anchored to the left edge. */
+.bonus-corner{
+  width:min(260px,88vw)!important;
+  min-height:260px;
+  aspect-ratio:1;
+  margin:12px auto 35px clamp(18px,4vw,64px)!important;
+  padding:22px 22px!important;
+  border-radius:50%!important;
+  border:3px solid #ffe6ffbf!important;
+  background:radial-gradient(circle at 35% 25%,#ffffff2a,#78409c45 65%,#29275570)!important;
+  box-shadow:0 8px 32px #0b213477,inset 0 0 20px #ffffff16!important;
+  backdrop-filter:blur(5px)!important;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:5px;
+}
+.bonus-corner .emoji-link{
+  width:76px;
+  height:76px;
+  font-size:45px;
+  margin:0 auto 4px;
+  flex-shrink:0;
+}
+.bonus-corner h2{font-size:19px;margin:2px 0!important}
+.bonus-corner p{font-size:14px;line-height:1.45;margin:0!important}
+@media(max-width:620px){
+  .bonus-corner{width:225px!important;min-height:225px;margin:10px auto 32px 16px!important;padding:16px!important}
+  .bonus-corner .emoji-link{width:66px;height:66px;font-size:40px}
+}
 </style>
 </head>
 
