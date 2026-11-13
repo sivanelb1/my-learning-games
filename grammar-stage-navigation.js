@@ -7,7 +7,7 @@ const configs={
 4:[['👽 הסבר','main:lesson'],['🌟 בחירה','main:quiz'],['🌟 בניית 5 משפטים','finale']],
 5:[['👽 הסבר','main:lesson'],['🌟 בחירה','main:quiz'],['🚀 המסע בין כוכבי הלכת','grammar-planet-5-journey.html'],['🌟 בניית 5 משפטים','finale']],
 6:[['📚 הסבר','main:lesson'],['🌟 HAVE / HAS','main:quiz'],['👽 כביש החלל','grammar-planet-6-crossing.html'],['🌟 בניית 5 משפטים','finale']],
-8:[['🌞 כל מה שלמדנו','main:lesson'],['🔎 מתי משתמשים ומילות רמז','main:uses']],
+8:[['🌞 מהו הווה פשוט?','main:lesson'],['📖 סיכום מה שלמדנו','main:recap']],
 7:[['📖 מילות שאלה','main:0'],['🧩 צימוד מילים','main:1'],['📖 DO / DOES','main:2'],['❓ חימום שאלות','grammar-planet-7-warmup.html?mode=question'],['👾 פולשי השאלות','grammar-planet-7-invaders.html'],['🚫 חימום שלילה','grammar-planet-7-warmup.html?mode=negative'],['🧱 שוברים את השלילה','grammar-planet-7-breakout.html'],['🛠️ מעבדת המשפטים','main:3'],['🌟 בניית 5 משפטים','finale']]
 };
 const file=location.pathname.split('/').pop(),params=new URLSearchParams(location.search);let planet=Number((file.match(/^grammar-planet-(\d+)/)||[])[1]);if(file==='grammar-galaxy-finale.html')planet=Number(params.get('planet'));if(!configs[planet])return;
