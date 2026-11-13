@@ -155,12 +155,35 @@
     footer{position:relative;z-index:2;color:#fff5dc;text-shadow:0 2px 9px #092c3b}
     .sound-control{position:fixed;bottom:18px;left:18px;z-index:8;border:1px solid #fff9d2a6;border-radius:99px;padding:12px 17px;background:#1c4256e8;color:white;font-size:15px;font-weight:bold;cursor:pointer;box-shadow:0 6px 24px #0005}
     .sound-control:focus-visible{outline:3px solid #ffe79a;outline-offset:3px}
-    .level5{border:7px solid #a2e2b0}.level5 a.button:not([href^="level5.html"]){display:none!important}.level6{border:7px solid #ffda86}
+    .level5{border:7px solid #a2e2b0}.level6{border:7px solid #ffda86}
     .bonus-corner{position:relative;z-index:2;max-width:700px;margin:5px auto 35px;padding:22px;border-radius:28px;background:#fff8ffe8;color:#4c3569;border:3px solid #dca5e9;box-shadow:0 12px 38px #0b273b66}.bonus-corner h2{margin:8px 0}.bonus-corner p{margin:5px 0}
     @media(max-width:1000px){.levels{grid-template-columns:repeat(2,minmax(0,1fr));max-width:850px}.level4,.bonus{grid-column:auto}.bonus{grid-column:1/-1}.card{width:min(100%,340px)}}
     @media(max-width:620px){.levels{grid-template-columns:1fr;max-width:410px;gap:18px;padding:12px 22px}.card{width:min(100%,320px)}.level4,.bonus{grid-column:auto}.forest-tree{opacity:.7}.brand-mark{padding:17px 23px}.sound-control{bottom:12px;left:12px;font-size:13px}}
     @media(prefers-reduced-motion:reduce){.forest-scene::before,.forest-tree::after,.firefly{animation:none}.card{transition:none}}
-  </style>
+  /* Home stage selector: emoji-only entry points, topics remain underneath. */
+.levels{gap:22px;align-items:stretch;max-width:1200px;margin:12px auto 35px}
+.levels::before{display:none}
+.levels .card{width:100%;max-width:none;aspect-ratio:auto;min-height:245px;padding:23px 18px 20px;border-radius:28px;border-width:2px;justify-content:flex-start;gap:7px}
+.levels .card:hover{transform:translateY(-4px)}
+.levels .card h2{font-size:19px;margin:1px 0;color:#5c4588}
+.levels .card h3{font-size:16px;margin:1px 0}
+.levels .card p{font-size:14px;line-height:1.65;margin:6px 0 0;max-width:290px}
+.emoji-link{display:grid;place-items:center;width:98px;height:98px;border-radius:26px;margin:1px auto 6px;text-decoration:none;font-size:60px;line-height:1;background:#f4ebff;border:3px solid #d7beff;box-shadow:0 9px 0 #d8c6eb,0 13px 20px #42315b24;transition:transform .18s,box-shadow .18s;cursor:pointer}
+.emoji-link:hover{transform:translateY(-4px) rotate(-3deg);box-shadow:0 13px 0 #d8c6eb,0 18px 20px #42315b24}
+.emoji-link:focus-visible{outline:4px solid #ffba43;outline-offset:5px}
+.level1 .emoji-link{background:#efe8ff;border-color:#ac91f5}
+.level2 .emoji-link{background:#eaf9ff;border-color:#8bd6ef}
+.level3 .emoji-link{background:#ffe8f5;border-color:#f2acdc}
+.level4 .emoji-link{background:#fff4df;border-color:#f5c97b}
+.level5 .emoji-link{background:#e8f9e9;border-color:#9ddcb4}
+.level6 .emoji-link{background:#fff0df;border-color:#ffda86}
+.bonus-corner{max-width:420px;margin:6px auto 37px;padding:20px 23px 23px;background:#fff8fff5}
+.bonus-corner .emoji-link{font-size:57px;width:98px;height:98px;background:#ffe8f7;border-color:#eeb2e2}
+.bonus-corner h2{font-size:21px;margin:10px 0 6px}
+.bonus-corner p{font-size:15px}
+@media(max-width:1000px){.levels .card{min-height:230px}}
+@media(max-width:620px){.levels{gap:13px}.levels .card{min-height:0;padding:18px 16px;border-radius:23px}.emoji-link{width:85px;height:85px;font-size:50px}.levels .card p{font-size:13px}.bonus-corner{margin:8px 20px 30px}}
+</style>
 </head>
 
 <body>
@@ -177,14 +200,14 @@
   </header>
 
   <main class="levels">
-    <section class="card level1"><div class="emoji">🔤🎵</div><h2>שלב 1 | Level 1</h2><h3 style="margin:0;color:#7551aa">צלילים ו־ABC</h3><p>אותיות באנגלית, זיהוי צלילים והיכרות עם ה־ABC.<br>ABC Letters & Sounds.</p><a class="button" href="abc-sounds-level.html">שחק עכשיו</a></section>
-    <section class="card level2"><div class="emoji">🧚‍♀️✨</div><h2>שלב 2 | Level 2</h2><p>חזרה על ABC, צלילים מיוחדים ומילים ראשונות<br>ABC Review, Special Sounds & First Words</p><a class="button" href="adventure-map.html">שחק עכשיו</a></section>
-    <section class="card level3"><div class="emoji">🪄🌙</div><h2>שלב 3 | Level 3</h2><p>צבעים, מספרים, חיות, אוכל, משפחה ומילים שימושיות<br>Colors, Numbers, Animals, Food, Family & Useful Words</p><a class="button" href="level3.html">שחק עכשיו</a></section>
-    <section class="card level4"><div class="emoji">🧙‍♂️🔮</div><h2>שלב 4 | Level 4</h2><p>משפטים, פעלים, שאלות ומתחילים לקרוא<br>Sentences, Verbs, Questions & Beginning Reading</p><a class="button" href="level4.html">שחק עכשיו</a></section>
-    <section class="card level5"><div class="emoji">🚀🌟</div><h2>שלב 5 | Level 5</h2><p>דקדוק, הבנת הנקרא ואוצר מילים מתקדם<br>Grammar, Reading Comprehension & Advanced Vocabulary</p><a class="button" href="level5.html?v=galaxy-14">שחק עכשיו</a></section>
-    <section class="card level6"><div class="emoji">🏰💎</div><h2>שלב 6 | Level 6</h2><p>קריאה, דיבור וכתיבה למתקדמים<br>Advanced Reading, Speaking & Writing</p><a class="button" href="level6.html">שחק עכשיו</a></section>
+    <section class="card level1"><a class="emoji-link" href="abc-sounds-level.html" aria-label="כניסה לשלב 1" title="כניסה לשלב 1">🔤</a><h2>שלב 1 | Level 1</h2><h3 style="margin:0;color:#7551aa">צלילים ו־ABC</h3><p>אותיות באנגלית, זיהוי צלילים והיכרות עם ה־ABC.<br>ABC Letters & Sounds.</p></section>
+    <section class="card level2"><a class="emoji-link" href="adventure-map.html" aria-label="כניסה לשלב 2" title="כניסה לשלב 2">🧚‍♀️</a><h2>שלב 2 | Level 2</h2><p>חזרה על ABC, צלילים מיוחדים ומילים ראשונות<br>ABC Review, Special Sounds & First Words</p></section>
+    <section class="card level3"><a class="emoji-link" href="level3.html" aria-label="כניסה לשלב 3" title="כניסה לשלב 3">🪄</a><h2>שלב 3 | Level 3</h2><p>צבעים, מספרים, חיות, אוכל, משפחה ומילים שימושיות<br>Colors, Numbers, Animals, Food, Family & Useful Words</p></section>
+    <section class="card level4"><a class="emoji-link" href="level4.html" aria-label="כניסה לשלב 4" title="כניסה לשלב 4">🧙‍♂️</a><h2>שלב 4 | Level 4</h2><p>משפטים, פעלים, שאלות ומתחילים לקרוא<br>Sentences, Verbs, Questions & Beginning Reading</p></section>
+    <section class="card level5"><a class="emoji-link" href="level5.html?v=galaxy-14" aria-label="כניסה לשלב 5" title="כניסה לשלב 5">🚀</a><h2>שלב 5 | Level 5</h2><p>דקדוק, הבנת הנקרא ואוצר מילים מתקדם<br>Grammar, Reading Comprehension & Advanced Vocabulary</p></section>
+    <section class="card level6"><a class="emoji-link" href="level6.html" aria-label="כניסה לשלב 6" title="כניסה לשלב 6">🏰</a><h2>שלב 6 | Level 6</h2><p>קריאה, דיבור וכתיבה למתקדמים<br>Advanced Reading, Speaking & Writing</p></section>
   </main>
-  <section class="bonus-corner"><div class="emoji">🦄🎤✨</div><h2>פינת בונוס מוזיקלית!</h2><p><strong>Sing &amp; Sparkle</strong> · שרים, מבינים ונהנים 🎶</p><a class="button" href="sing-and-sparkle.html">בואו לשיר | Let’s Sing!</a></section>
+  <section class="bonus-corner"><a class="emoji-link" href="sing-and-sparkle.html" aria-label="כניסה לפינת השירים" title="בואו לשיר">🎤</a><h2>פינת בונוס מוזיקלית!</h2><p><strong>Sing &amp; Sparkle</strong> · שרים, מבינים ונהנים 🎶</p></section>
 
   <footer>
     כל הכבוד על הלמידה! 🌟<br>
