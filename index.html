@@ -245,6 +245,50 @@
   .bonus-corner{width:225px!important;min-height:225px;margin:10px auto 32px 16px!important;padding:16px!important}
   .bonus-corner .emoji-link{width:66px;height:66px;font-size:40px}
 }
+
+/* Bonus island sits directly to the left of the PLAYWISE logo. */
+.hero-top{
+  display:grid;
+  direction:ltr;
+  grid-template-columns:minmax(200px,1fr) auto minmax(200px,1fr);
+  align-items:center;
+  gap:clamp(10px,2vw,35px);
+  max-width:1250px;
+  margin:0 auto 12px;
+}
+.hero-logo{grid-column:2;direction:rtl;min-width:0}
+.hero-logo .brand-mark{margin-bottom:0}
+.hero-top .bonus-corner{
+  grid-column:1;
+  grid-row:1;
+  justify-self:end;
+  width:clamp(185px,18vw,238px)!important;
+  min-height:0;
+  aspect-ratio:1;
+  margin:0!important;
+}
+.hero-balance{grid-column:3;grid-row:1}
+@media(max-width:800px){
+  .hero-top{grid-template-columns:minmax(110px,1fr) minmax(0,2fr);gap:10px}
+  .hero-top .bonus-corner{width:clamp(128px,25vw,185px)!important;padding:12px!important}
+  .hero-top .bonus-corner .emoji-link{width:55px;height:55px;font-size:34px}
+  .hero-top .bonus-corner h2{font-size:15px}
+  .hero-top .bonus-corner p{font-size:11px}
+  .hero-logo{grid-column:2}
+  .hero-balance{display:none}
+  .hero-logo .brand-mark{padding:16px 22px}
+}
+@media(max-width:520px){
+  .hero-top{grid-template-columns:112px minmax(0,1fr);gap:8px}
+  .hero-top .bonus-corner{width:112px!important;min-height:112px;padding:8px!important;border-width:2px!important}
+  .hero-top .bonus-corner .emoji-link{width:38px;height:38px;font-size:24px;border-radius:12px;box-shadow:0 3px 0 #d8c6eb;margin:0}
+  .hero-top .bonus-corner h2{font-size:11px;line-height:1.1}
+  .hero-top .bonus-corner p{font-size:9px;line-height:1.15}
+  .hero-logo .brand-mark{padding:12px 10px;border-radius:19px}
+  .hero-logo h1{font-size:clamp(24px,7vw,36px);letter-spacing:-2px}
+  .hero-logo .brand-icon{font-size:30px}
+  .hero-logo .brand-tagline{font-size:9px}
+}
 </style>
 </head>
 
@@ -253,11 +297,11 @@
   <button class="sound-control" id="forestSound" type="button" aria-pressed="false">🔊 הפעלת צלילי היער</button>
 
   <header>
-    <div class="brand-mark" aria-label="PLAYWISE">
+    <div class="hero-top"><section class="bonus-corner"><a class="emoji-link" href="sing-and-sparkle.html" aria-label="כניסה לפינת השירים" title="בואו לשיר">🎤</a><h2>פינת בונוס מוזיקלית!</h2><p><strong>Sing &amp; Sparkle</strong> · שרים, מבינים ונהנים 🎶</p></section><div class="hero-logo"><div class="brand-mark" aria-label="PLAYWISE">
       <div class="brand-icon" aria-hidden="true">💡</div>
       <h1><span class="brand-play">PLAY</span><span class="brand-wise">WISE</span></h1>
       <div class="brand-tagline">מיומנות · ביטחון · חיבור</div>
-    </div>
+    </div></div><div class="hero-balance" aria-hidden="true"></div></div>
     <div class="welcome-heading" style="font-size:clamp(16px,2vw,20px);font-weight:500;margin-top:4px">ברוכים הבאים לעולם של למידה ומשחק!</div>
   </header>
 
@@ -269,7 +313,7 @@
     <section class="card level5"><a class="emoji-link" href="level5.html?v=galaxy-14" aria-label="כניסה לשלב 5" title="כניסה לשלב 5">🚀</a><h2>שלב 5 | Level 5</h2><p>דקדוק, הבנת הנקרא ואוצר מילים מתקדם<br>Grammar, Reading Comprehension & Advanced Vocabulary</p></section>
     <section class="card level6"><a class="emoji-link" href="level6.html" aria-label="כניסה לשלב 6" title="כניסה לשלב 6">🏰</a><h2>שלב 6 | Level 6</h2><p>קריאה, דיבור וכתיבה למתקדמים<br>Advanced Reading, Speaking & Writing</p></section>
   </main>
-  <section class="bonus-corner"><a class="emoji-link" href="sing-and-sparkle.html" aria-label="כניסה לפינת השירים" title="בואו לשיר">🎤</a><h2>פינת בונוס מוזיקלית!</h2><p><strong>Sing &amp; Sparkle</strong> · שרים, מבינים ונהנים 🎶</p></section>
+
 
   <footer>
     כל הכבוד על הלמידה! 🌟<br>
