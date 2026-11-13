@@ -183,6 +183,36 @@
 .bonus-corner p{font-size:15px}
 @media(max-width:1000px){.levels .card{min-height:230px}}
 @media(max-width:620px){.levels{gap:13px}.levels .card{min-height:0;padding:18px 16px;border-radius:23px}.emoji-link{width:85px;height:85px;font-size:50px}.levels .card p{font-size:13px}.bonus-corner{margin:8px 20px 30px}}
+
+/* Transparent stage layout: let the magical forest show through. */
+.levels .card{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+  color:#fffaf1;
+  text-shadow:0 2px 9px #081f30,0 1px 3px #081f30;
+}
+.levels .card:hover{
+  transform:translateY(-5px);
+  box-shadow:none!important;
+}
+.levels .card h2,
+.levels .card h3,
+.levels .card p{
+  color:#fffaf1!important;
+  text-shadow:0 2px 9px #081f30,0 1px 3px #081f30;
+}
+.levels .emoji-link,.bonus-corner .emoji-link{text-shadow:none}
+.bonus-corner{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+  color:#fffaf1!important;
+  text-shadow:0 2px 9px #081f30,0 1px 3px #081f30;
+}
+.bonus-corner h2,.bonus-corner p{color:#fffaf1!important}
 </style>
 </head>
 
