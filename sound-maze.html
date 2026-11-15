@@ -1,23 +1,120 @@
-<!doctype html>
-<html lang="he" dir="rtl">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>מבוך הצלילים – שלב 3</title>
-<style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:#100c2d;color:white;font-family:Arial,sans-serif}
-body{display:flex;flex-direction:column;min-height:100dvh;overflow:hidden}
-header{height:52px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:5px 14px;background:#1b1242;gap:10px}
-h1{font-size:clamp(16px,2.8vw,24px);margin:0;color:#ffda55}
-a{color:white;text-decoration:none;background:#7433c8;border-radius:14px;padding:10px 14px;font-weight:bold}
-.embed{flex:1;min-height:0;width:100%;position:relative}
-.embed iframe{width:100%;height:100%;border:0;display:block}
-footer{flex-shrink:0;display:flex;align-items:center;justify-content:center;padding:8px;background:#1b1242}
-.next{background:#ffcf39;color:#211044;font-size:clamp(14px,2vw,18px);box-shadow:0 3px 0 #ad7f00}
-@media(max-width:600px){header{height:48px;padding:5px 7px}a{padding:8px}footer{padding:7px}}
-</style>
-</head>
-<body>
-<header><a href="level1.html" aria-label="חזרה למפת השלבים">⌂ חזרה</a><h1>👾 מבוך הצלילים</h1><span></span></header>
-<main class="embed"><iframe title="Special English Phonics Sounds Maze" src="https://view.genially.com/6af07c1aee442bae1b20cc0c" allow="fullscreen; autoplay; clipboard-write" allowfullscreen loading="eager"></iframe></main>
-<footer><a class="next" href="sound-detectives.html">🔎 ממשיכים לבלשי הצלילים ←</a></footer>
-<script src="treasure-progress.js"></script></body></html>
+<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>מבוך האוצרות של הממלכה | מבוך הצלילים</title><style>
+:root{font-family:Arial,sans-serif;color:#fff5d6;background:#100b29}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% 20%,#443080 0%,#160e3b 55%,#09071b 100%)}header{max-width:1100px;margin:auto;padding:16px 14px 4px;text-align:center}h1{font-size:clamp(25px,4vw,43px);margin:4px;color:#ffda77;text-shadow:0 3px 0 #6e3971}p{margin:7px}.wrap{max-width:1100px;margin:auto;padding:10px}.hud{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;align-items:center;background:#25164b;border:2px solid #c7a15e;border-radius:14px;padding:12px 16px;font-weight:bold}.hud b{color:#ffd85e}.board-wrap{position:relative;margin:12px auto;max-width:940px}canvas{display:block;width:100%;height:auto;aspect-ratio:19/15;background:#0e102e;border:5px solid #b98c56;border-radius:12px;box-shadow:0 12px 40px #0008;touch-action:none}.buttons{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin:12px auto}button{cursor:pointer;background:linear-gradient(#ffdc83,#d48b37);color:#301742;border:2px solid #fff1b3;border-radius:11px;padding:10px 16px;font-weight:900;font-size:16px}button:hover,button:focus-visible{filter:brightness(1.12);outline:2px solid #fff}.dpad{display:grid;grid-template-columns:repeat(3,60px);gap:5px;justify-content:center;margin:8px auto}.dpad button{min-height:52px}.dpad .up{grid-column:2}.dpad .left{grid-column:1}.dpad .down{grid-column:2}.dpad .right{grid-column:3;grid-row:2}.overlay{position:fixed;inset:0;background:#07041bdc;display:flex;align-items:center;justify-content:center;padding:18px;z-index:5}.overlay[hidden]{display:none}.modal{width:min(590px,100%);max-height:90vh;overflow:auto;background:linear-gradient(145deg,#fff0c8,#f3d39c);color:#3b2450;border:7px double #b8833b;border-radius:22px;padding:24px;box-shadow:0 18px 80px #000a;text-align:center}.modal h2{margin:0 0 10px;font-size:29px;color:#68346a}.word{font-size:31px;color:#602b8e;font-weight:900;direction:ltr;display:inline-block}.answers{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}.answers button{min-height:54px;background:#fff6df;border:2px solid #b8844b}.answers button.correct{background:#b4f0b2}.answers button.wrong{background:#ffc2bd}.message{min-height:28px;font-weight:bold}.foot{text-align:center;color:#ddc9fb;font-size:13px;padding-bottom:20px}a{color:#ffdb85}@media(max-width:520px){.hud{font-size:13px}.answers{grid-template-columns:1fr}.modal{padding:14px}.dpad{grid-template-columns:repeat(3,53px)}}
+</style></head><body><header><h1>👑 מבוך האוצרות של הממלכה 👑</h1><p>עולם 2 · מבוך הצלילים המיוחדים באנגלית</p></header><main class="wrap"><section class="hud" aria-label="מצב המשחק"><span>⭐ כוכבים: <b id="stars">0/6</b></span><span>💰 נקודות: <b id="score">0</b></span><span>⏳ זמן: <b id="time">03:00</b></span><span>❤️ חיים: <b id="lives">❤️❤️❤️</b></span></section><div class="board-wrap"><canvas id="game" width="950" height="750" aria-label="מבוך: זזים באמצעות החצים במקלדת או כפתורי הכיוון"></canvas></div><div class="buttons"><button id="start">▶ התחלה מחדש</button><button id="pause">⏸ השהיה</button></div><div class="dpad" aria-label="כפתורי תנועה"><button class="up" data-dir="up" aria-label="למעלה">▲</button><button class="left" data-dir="left" aria-label="שמאלה">◀</button><button class="down" data-dir="down" aria-label="למטה">▼</button><button class="right" data-dir="right" aria-label="ימינה">▶</button></div><p class="foot">לחיצה אחת על חץ מפעילה תנועה רציפה עד קיר; אפשר לתכנן פנייה בצומת. אספו את ששת הכוכבים, ענו על השאלות והתחמקו מהרוחות והגיעו אל תיבת האוצר! · מקשי חצים / WASD</p><nav style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:18px auto 8px"><a href="level1.html" style="padding:12px 18px;background:#7433c8;border-radius:12px;text-decoration:none;font-weight:bold">⌂ חזרה למפת השלבים</a><a href="sound-detectives.html" style="padding:12px 18px;background:#ffcf39;color:#211044;border-radius:12px;text-decoration:none;font-weight:bold">🔎 ממשיכים לבלשי הצלילים ←</a></nav></main>
+<div class="overlay" id="overlay"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"><h2 id="modal-title">ברוכים הבאים למבוך! 🏰</h2><div id="modal-body">אספו שישה כוכבי קסם וענו נכון על השאלות. היזהרו מהרוחות! יש לכם שלושה לבבות ושלוש דקות. אחרי איסוף הכוכבים, הגיעו לתיבת האוצר.</div><div class="answers" id="answers"></div><p class="message" id="feedback" aria-live="polite"></p><button id="modal-action">בואו נשחק! ✨</button></div></div>
+<script>
+(()=>{'use strict';
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d'),$=id=>document.getElementById(id);
+const layout=[
+'###################',
+'#........#........#',
+'#.##.###.#.###.##.#',
+'#.................#',
+'#.##.#.#####.#.##.#',
+'#....#.....#.#....#',
+'####.###.#.#.####.#',
+'#....#...#...#....#',
+'#.###.#.#####.#.###',
+'#.................#',
+'#.##.###.#.###.##.#',
+'#....#...#...#....#',
+'#.##.#.###.###.##.#',
+'#.................#',
+'###################'];
+const rows=layout.length,cols=19,T=50; // 950x750
+const questions=[
+{word:'SHIP',emoji:'🚢',correct:'ש',wrong:['צ׳','ד','פ']},
+{word:'CHAIR',emoji:'🪑',correct:'צ׳',wrong:['ש','ק','ם']},
+{word:'THINK',emoji:'☁️',correct:'ת׳',wrong:['פ','ש','צ׳']},
+{word:'TREE',emoji:'🌳',correct:'אי',wrong:['או','וואה','אאו']},
+{word:'MOON',emoji:'🌙',correct:'או',wrong:['אי','אה','איה']},
+{word:'DUCK',emoji:'🦆',correct:'ק',wrong:['ב','ס','ד']}];
+const starCells=[[1,2],[17,2],[1,11],[17,11],[3,9],[15,9]];
+const ghostStarts=[[3,7],[15,7],[9,3]],ghostColors=['#fa73c5','#66d7ff','#ff9a3b'];
+let player,ghosts,stars,dots,score,lives,remaining,started=false,paused=true,questionOpen=false,invincibleUntil=0,lastMove=0,lastGhost=0,lastTick=0,win=false,frame=0,modalAction=null;
+const key=(x,y)=>x+','+y,wall=(x,y)=>!layout[y]||layout[y][x]!=='#'?(!layout[y]||layout[y][x]===undefined):true;
+function blocked(x,y){return y<0||y>=rows||x<0||x>=cols||layout[y][x]==='#'}
+function nearestOpen(x,y){if(!blocked(x,y))return{x,y};for(let r=1;r<cols;r++)for(let dy=-r;dy<=r;dy++)for(let dx=-r;dx<=r;dx++)if(!blocked(x+dx,y+dy))return{x:x+dx,y:y+dy};return{x:1,y:1}}
+function show(title,body,button,fn){paused=true;$('modal-title').textContent=title;$('modal-body').innerHTML=body;$('answers').replaceChildren();$('feedback').textContent='';$('modal-action').hidden=false;$('modal-action').textContent=button;modalAction=fn;$('overlay').hidden=false}
+function hide(){ $('overlay').hidden=true;paused=false;lastTick=performance.now();lastGhost=performance.now();lastMove=performance.now(); }
+function reset(){player={x:9,y:9,fromX:9,fromY:9,moveAt:0,dir:[0,0],wanted:[0,0]};if(blocked(player.x,player.y))player={...player,...nearestOpen(9,9)};player.fromX=player.x;player.fromY=player.y;ghosts=ghostStarts.map(([x,y],i)=>{const pos=nearestOpen(x,y);return {...pos,fromX:pos.x,fromY:pos.y,moveAt:0,dir:[0,0],color:ghostColors[i]}});stars=starCells.map(([x,y],i)=>({...nearestOpen(x,y),q:questions[i],collected:false}));dots=new Set();for(let y=0;y<rows;y++)for(let x=0;x<cols;x++)if(!blocked(x,y))dots.add(key(x,y));score=0;lives=3;remaining=180;started=true;paused=true;questionOpen=false;win=false;invincibleUntil=0;update();show('👑 מבוך האוצרות','אספו את כל ששת הכוכבים, ענו על שאלות הצלילים והתחמקו מהרוחות. כשתסיימו, תיבת האוצר תיפתח בפינה הימנית התחתונה!','מתחילים! ✨',hide)}
+function update(){$('stars').textContent=stars.filter(s=>s.collected).length+'/6';$('score').textContent=score;$('time').textContent=String(Math.floor(remaining/60)).padStart(2,'0')+':'+String(remaining%60).padStart(2,'0');$('lives').textContent='❤️'.repeat(lives)||'—'}
+function lose(reason){if(win)return;show('💔 המשחק הסתיים',reason+'<p>אפשר לנסות שוב ולהציל את הממלכה!</p>','🔄 ניסיון נוסף',reset)}
+function victory(){win=true;score+=250;update();show('🏆 מצאתם את אוצר הממלכה!','כל ששת הכוכבים נאספו! פתרתם את שאלות הצלילים והצלחתם לברוח מהרוחות.<p>הניקוד שלכם: <b>'+score+'</b></p>','🔄 משחק חדש',reset)}
+function hit(){if(performance.now()<invincibleUntil||paused)return;lives--;invincibleUntil=performance.now()+1800;{const pos=nearestOpen(9,9);Object.assign(player,pos,{fromX:pos.x,fromY:pos.y,moveAt:performance.now(),dir:[0,0]})}update();if(lives<=0)lose('הרוחות תפסו אתכם שלוש פעמים!')}
+function ask(s){
+ questionOpen=true;paused=true;
+ const q=s.q;
+ const pairs={SHIP:'SH',CHAIR:'CH',THINK:'TH',TREE:'EE',MOON:'OO',DUCK:'CK'};
+ show('⭐ שאלת כוכב','מה הצליל המיוחד במילה <span class="word">'+q.word+'</span> '+q.emoji+'?', 'המשך',()=>{});
+ $('modal-action').hidden=true;
+ const options=[q.correct,...q.wrong].sort(()=>Math.random()-.5);
+ options.forEach((answer,i)=>{
+  const b=document.createElement('button');
+  b.textContent=(i+1)+'. '+answer;
+  b.onclick=()=>{
+   if(answer===q.correct){
+    b.classList.add('correct');score+=100;s.collected=true;
+    $('feedback').textContent='נכון מאוד! ⭐ הכוכב שלך!';
+    Array.from($('answers').children).forEach(el=>el.disabled=true);
+    update();$('modal-action').hidden=false;
+    $('modal-action').textContent='ממשיכים במבוך';
+    modalAction=()=>{questionOpen=false;hide()};
+   }else{
+    b.classList.add('wrong');b.disabled=true;
+    $('feedback').textContent='כמעט! 💡 רמז: שימו לב לשתי האותיות '+pairs[q.word]+' במילה. נסו שוב!';
+   }
+  };
+  $('answers').appendChild(b);
+ });
+}
+// תנועה רציפה: לחיצה אחת שומרת כיוון, ופנייה נרשמת מראש לצומת הבא.
+const PLAYER_MS=145, GHOST_MS=390;
+function setDirection(dx,dy){if(!started||questionOpen)return;player.wanted=[dx,dy]}
+function advancePlayer(now){
+  if(!started||paused||now-player.moveAt<PLAYER_MS)return;
+  const [wx,wy]=player.wanted,[dx,dy]=player.dir;
+  let chosen=null;
+  if((wx||wy)&&!blocked(player.x+wx,player.y+wy))chosen=[wx,wy];
+  else if((dx||dy)&&!blocked(player.x+dx,player.y+dy))chosen=[dx,dy];
+  if(!chosen)return;
+  player.fromX=player.x;player.fromY=player.y;
+  player.x+=chosen[0];player.y+=chosen[1];player.dir=chosen;player.moveAt=now;
+  const k=key(player.x,player.y);
+  if(dots.delete(k))score+=5;
+  const star=stars.find(st=>!st.collected&&st.x===player.x&&st.y===player.y);
+  if(star){ask(star);update();return}
+  if(ghosts.some(g=>g.x===player.x&&g.y===player.y))hit();
+  if(player.x===17&&player.y===13&&stars.every(st=>st.collected))victory();
+  update();
+}
+function advanceGhosts(now){
+  if(now-lastGhost<GHOST_MS)return;
+  lastGhost=now;
+  ghosts.forEach(g=>{
+    const dirs=[[1,0],[-1,0],[0,1],[0,-1]].filter(([dx,dy])=>!blocked(g.x+dx,g.y+dy));
+    if(!dirs.length)return;
+    const forward=dirs.find(([dx,dy])=>dx===g.dir[0]&&dy===g.dir[1]);
+    let pick;
+    // הרוחות מעדיפות להמשיך ישר; מדי פעם הן רודפות או בוחרות מסלול חדש.
+    if(forward&&Math.random()<.68)pick=forward;
+    else if(Math.random()<.45)pick=[...dirs].sort((a,b)=>
+      (Math.abs(g.x+a[0]-player.x)+Math.abs(g.y+a[1]-player.y))-
+      (Math.abs(g.x+b[0]-player.x)+Math.abs(g.y+b[1]-player.y)))[0];
+    else pick=dirs[Math.floor(Math.random()*dirs.length)];
+    g.fromX=g.x;g.fromY=g.y;g.x+=pick[0];g.y+=pick[1];g.dir=pick;g.moveAt=now;
+    if(g.x===player.x&&g.y===player.y)hit();
+  });
+}
+function smoothPos(entity,now,duration){
+  const t=Math.max(0,Math.min(1,(now-entity.moveAt)/duration));
+  return {x:entity.fromX+(entity.x-entity.fromX)*t,
+          y:entity.fromY+(entity.y-entity.fromY)*t};
+}
+function tile(x,y){const px=x*T,py=y*T;if(blocked(x,y)){ctx.fillStyle=(x+y)%2?'#7160ba':'#8c76d0';ctx.fillRect(px+1,py+1,T-2,T-2);ctx.fillStyle='#b1a1f0';ctx.fillRect(px+4,py+4,T-8,5);ctx.strokeStyle='#4b377e';ctx.lineWidth=2;ctx.strokeRect(px+1,py+1,T-2,T-2)}else{ctx.fillStyle=(x+y)%2?'#211a43':'#1a1539';ctx.fillRect(px,py,T,T);ctx.strokeStyle='#302451';ctx.strokeRect(px,py,T,T);if(dots.has(key(x,y))){ctx.beginPath();ctx.arc(px+T/2,py+T/2,4,0,Math.PI*2);ctx.fillStyle='#ffca4b';ctx.fill()}}}
+function emoji(e,x,y,size=34){ctx.font=size+'px "Segoe UI Emoji",Arial';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(e,(x+.5)*T,(y+.5)*T+2)}
+function draw(t){frame++;ctx.clearRect(0,0,canvas.width,canvas.height);for(let y=0;y<rows;y++)for(let x=0;x<cols;x++)tile(x,y);stars.forEach(s=>{if(!s.collected){ctx.shadowBlur=15;ctx.shadowColor='#ffe45d';emoji('⭐',s.x,s.y,32+Math.sin(t/230)*3);ctx.shadowBlur=0}});emoji(stars.every(s=>s.collected)?'💎':'🔒',17,13,35);ghosts.forEach(g=>{const pos=smoothPos(g,t,GHOST_MS);emoji('👻',pos.x,pos.y+Math.sin(t/210+g.x)*.045,36)});
+if(performance.now()>invincibleUntil||Math.floor(t/130)%2===0){const pos=smoothPos(player,t,PLAYER_MS);emoji('🤴',pos.x,pos.y,36)};if(started&&!paused){if(t-lastTick>=1000){const n=Math.floor((t-lastTick)/1000);remaining=Math.max(0,remaining-n);lastTick+=n*1000;update();if(remaining===0)lose('הזמן נגמר!')}advancePlayer(t);advanceGhosts(t)}requestAnimationFrame(draw)}
+const controls={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0],w:[0,-1],s:[0,1],a:[-1,0],d:[1,0]};window.addEventListener('keydown',e=>{if(questionOpen&&/^[1-4]$/.test(e.key)){const b=$('answers').children[Number(e.key)-1];if(b&&!b.disabled)b.click();return}if(controls[e.key]){e.preventDefault();setDirection(...controls[e.key])}if(e.key==='Escape'&&!questionOpen&&started){togglePause()}});document.querySelectorAll('[data-dir]').forEach(b=>{const dirs={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]};b.addEventListener('click',()=>setDirection(...dirs[b.dataset.dir]))});function togglePause(){if(!started||questionOpen||win)return;if(paused)hide();else show('⏸ המשחק מושהה','אפשר לנוח רגע. הרוחות והשעון מחכים לך.','▶ המשך',hide)}$('pause').onclick=togglePause;$('start').onclick=reset;$('modal-action').onclick=()=>{if(modalAction)modalAction()};reset();requestAnimationFrame(draw);
+})();
+</script><script src="treasure-progress.js"></script></body></html>
