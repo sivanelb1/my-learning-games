@@ -349,7 +349,25 @@ function addRow(distance){
   }
  }
  if(letterIndex<alphabet.length&&rowNumber>=nextLetterRow&&!objects.some(item=>item.kind==='letter'&&!item.used)){
-  objects.push({kind:'letter',letter:alphabet[letterIndex],lane:safe,z:z+13});
+  // בתחנה הראשונה משאירים איסוף נוח. בתחנות המתקדמות האותיות
+  // מופיעות אחרי מכשול או על גג רכבת עם רמפה נגישה.
+  let letterLane=safe,letterZ=z+13,letterAltitude=0,letterRoof=null;
+  if(station>=1&&rowNumber>0){
+   const pattern=station>=2?letterIndex%3:letterIndex%2;
+   if(pattern===0&&ramp){
+    letterLane=train;
+    letterZ=z+14;
+    letterAltitude=roofHeight;
+    letterRoof=car;
+   }else if(pattern!==0&&(barrier!==undefined||gantry!==undefined)){
+    letterLane=barrier!==undefined?barrier:gantry;
+    // קטן יותר מ-z+8: פוגשים קודם את המחסום ואז את האות.
+    letterZ=z+4.2;
+   }else if(station>=2&&ramp){
+    letterLane=train;letterZ=z+14;letterAltitude=roofHeight;letterRoof=car;
+   }
+  }
+  objects.push({kind:'letter',letter:alphabet[letterIndex],lane:letterLane,z:letterZ,altitude:letterAltitude,roof:letterRoof});
   nextLetterRow=rowNumber+3;
  }
  rowNumber++;
