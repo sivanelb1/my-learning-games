@@ -12,7 +12,7 @@
 <div class="game-wrap"><canvas id="board" width="660" height="610" aria-label="משחק חציית מסילות עם רכבות נעות, מתקדמים לכיוון האות הבאה"></canvas>
 <div id="overlay" class="overlay"><h2 id="overlayTitle">🚂 מוכנים לחצות?</h2><p id="overlayText">חוצים שלוש מסילות בין רכבות קטנות, ובוחרים אחת משלוש אותיות — רק אחת נכונה.</p><button id="start">מתחילים!</button></div></div>
 <div class="controls" aria-label="תנועה"><button data-move="left" aria-label="שמאלה">⬅️</button><button data-move="up" aria-label="קדימה">⬆️</button><button data-move="down" aria-label="אחורה">⬇️</button><button data-move="right" aria-label="ימינה">➡️</button></div>
-<p class="help">אפשר לשחק גם עם חיצי המקלדת. בכל אות חוצים שלוש מסילות ובוחרים את האות הנכונה מתוך שלוש אפשרויות. פגיעה ברכבת מורידה חיים.</p>
+<p class="help">אפשר לשחק גם עם חיצי המקלדת. בכל אות חוצים שלוש מסילות ובוחרים את האות הנכונה מתוך שלוש אפשרויות. פגיעה ברכבת מורידה חיים. מדי כמה אותיות יופיע לב שאפשר לאסוף כדי להחזיר חיים שאבדו (עד שלושה).</p>
 </main><script src="alphabet-stations.js"></script><script src="task-nav.js"></script><script>
 const $=id=>document.getElementById(id);
 const groupEnd=alphabetGroups.slice(0,station+1).join('');
@@ -21,7 +21,7 @@ $('intro').textContent='חזרה מצטברת על כל האותיות שלמד�
 const selectTask=mountTaskNavigation('review');
 const canvas=$('board'),ctx=canvas.getContext('2d'),W=canvas.width,H=canvas.height;
 const rows=[500,388,276],goalY=152,startY=554,step=112;
-let state='ready',index=0,lives=3,x=W/2,y=startY,trains=[],last=0,invincible=0,stagePause=0,choices=[],correctSlot=0;
+let state='ready',index=0,lives=3,x=W/2,y=startY,trains=[],last=0,invincible=0,stagePause=0,choices=[],correctSlot=0,heartBonus=null;
 function updateHUD(){$('goal').textContent=letters[index]||'🏆';$('progress').textContent=index+' / '+letters.length;$('hearts').textContent='❤️'.repeat(lives)+'🤍'.repeat(3-lives)}
 function resetRoad(){
  const answer=letters[index];
@@ -30,6 +30,8 @@ function resetRoad(){
  correctSlot=Math.floor(Math.random()*3);
  choices=Array.from({length:3},(_,slot)=>slot===correctSlot?answer:distractors[slot<correctSlot?slot:slot-1]);
  x=W/2;y=startY;invincible=0;stagePause=0;
+ // בכל אות רביעית מציעים לב להשלמת החיים, במסלול בטוח בין המסילות.
+ heartBonus=(index>0&&(index+1)%4===0&&lives<3)?{x:W/2,y:startY-step}:null;
  trains=[];
  const speed=85+index*4;
  for(let lane=0;lane<3;lane++){
@@ -68,6 +70,9 @@ function move(direction){
  // ולא רק את נקודת הנחיתה שבין המסילות.
  if(invincible<=0&&trainHitAt(newX,oldY,newY)){loseLife();return}
  x=newX;y=newY;
+ if(heartBonus&&Math.abs(x-heartBonus.x)<43&&Math.abs(y-heartBonus.y)<35){
+  lives=Math.min(3,lives+1);heartBonus=null;updateHUD();
+ }
  if(y<=goalY+10){
   const slot=Math.max(0,Math.min(2,Math.round((x-110)/220)));
   if(choices[slot]===letters[index]){stagePause=.6;state='transition';setTimeout(()=>{if(state==='transition'){state='playing';advance()}},650)}
@@ -141,6 +146,11 @@ function draw(){
  }
  ctx.font='bold 16px Arial';ctx.fillStyle='#1e4659';ctx.fillText('בחרו את האות הנכונה!',W/2,goalY+53);
  for(const t of trains)drawTrain(t);
+ if(heartBonus){
+  ctx.textAlign="center";ctx.textBaseline="middle";ctx.font="bold 37px Arial";
+  ctx.fillText("❤️",heartBonus.x,heartBonus.y-8);
+  ctx.font="bold 14px Arial";ctx.fillStyle="#21485b";ctx.fillText("+1 חיים",heartBonus.x,heartBonus.y+23);
+ }
  if(invincible<=0||Math.floor(invincible*9)%2===0)drawRobot(x,y);
  ctx.fillStyle='#244c58';ctx.font='bold 17px Arial';ctx.fillText('התחלה',W/2,startY+39);
 }
