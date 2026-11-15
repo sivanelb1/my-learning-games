@@ -95,6 +95,21 @@ function drawRobot(px,py){
 function draw(){
  ctx.clearRect(0,0,W,H);
  rounded(0,0,W,H,0,'#bce6d2');
+ // חלון האותיות שנאספו: האות החדשה נכנסת מימין, הישנות נעות שמאלה.
+ rounded(12,12,W-24,103,16,'#eaf8f0');
+ ctx.textAlign='right';ctx.textBaseline='middle';ctx.fillStyle='#235269';ctx.font='bold 18px Arial';
+ ctx.fillText('האותיות שאספנו 🚂',W-27,34);
+ const collected=letters.slice(0,index);
+ const visible=collected.slice(-8);
+ const cell=72,space=8,right=W-28;
+ for(let i=0;i<visible.length;i++){
+  const letter=visible[visible.length-1-i],bx=right-(i+1)*cell;
+  rounded(bx,53,cell-space,49,10,'#ffe7a0');
+  ctx.fillStyle='#1c4155';ctx.textAlign='center';ctx.font='bold 29px Arial';
+  ctx.fillText(letter,bx+(cell-space)/2,78);
+ }
+ ctx.textAlign='center';
+
  for(let i=0;i<3;i++){
   const yy=rows[i];
   rounded(0,yy-44,W,88,0,'#486c77');
