@@ -2,7 +2,7 @@
 <html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>תחנת המיון הגדולה 🚂 | PLAYWISE</title><link rel="stylesheet" href="alphabet-task-nav.css">
 <style>
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#3a7384,#102c42 80%);color:#fff9e8;font:18px/1.45 Arial,sans-serif}main{max-width:1080px;margin:auto;padding:16px}a{color:#d1fff3}h1{font-size:clamp(28px,5vw,44px);margin:10px 0 4px}p{margin:6px 0 12px}.hud{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;background:#183f52;padding:11px 16px;border-radius:14px;margin:12px 0}.hud strong{color:#ffe59c}.scene{position:relative;border:5px solid #8cd7cb;border-radius:22px;overflow:hidden;background:#c6e9db;max-width:930px;margin:auto}svg{display:block;width:100%;height:auto;touch-action:none;user-select:none}.scene .overlay{position:absolute;inset:0;display:grid;place-content:center;gap:14px;text-align:center;padding:24px;background:#102b42ed;z-index:5}.overlay[hidden]{display:none}.overlay h2{margin:0;font-size:clamp(28px,5vw,42px)}.overlay p{max-width:520px;margin:auto}.overlay button{background:#ffe08e;color:#183b4b;border:0;border-radius:15px;font:bold 22px Arial;padding:13px 30px;cursor:pointer}.car{cursor:grab;touch-action:none}.car:active{cursor:grabbing}.car text{pointer-events:none}.drop-zone{cursor:default}.progress{position:absolute;z-index:3;top:10px;left:12px;right:12px;display:flex;gap:5px;overflow:hidden;direction:ltr;justify-content:flex-start;align-items:center;min-height:58px;padding:8px 12px;background:#173f52ed;border:2px solid #a2e7d8;border-radius:16px;box-shadow:0 5px 14px #153a4b55;pointer-events:none}.progress span{flex:0 0 auto;display:grid;place-items:center;min-width:40px;height:42px;border-radius:9px;background:#ffe29a;color:#1a4356;font:bold 27px Arial}.progress span.current{background:#abf0e4;border:3px solid #fff}.message{min-height:29px;text-align:center;font-weight:bold;color:#ffedac}.help{text-align:center;font-size:15px;color:#cce9e3}.task-navigation{margin-bottom:12px}@media(max-width:580px){.progress span{min-width:31px;height:34px;font-size:21px}.hud{font-size:15px}}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#3a7384,#102c42 80%);color:#fff9e8;font:18px/1.45 Arial,sans-serif}main{max-width:1080px;margin:auto;padding:16px}a{color:#d1fff3}h1{font-size:clamp(28px,5vw,44px);margin:10px 0 4px}p{margin:6px 0 12px}.hud{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;background:#183f52;padding:11px 16px;border-radius:14px;margin:12px 0}.hud strong{color:#ffe59c}.scene{position:relative;border:5px solid #8cd7cb;border-radius:22px;overflow:hidden;background:#c6e9db;max-width:930px;margin:auto}svg{display:block;width:100%;height:auto;touch-action:none;user-select:none}.scene .overlay{position:absolute;inset:0;display:grid;place-content:center;gap:14px;text-align:center;padding:24px;background:#102b42ed;z-index:5}.overlay[hidden]{display:none}.overlay h2{margin:0;font-size:clamp(28px,5vw,42px)}.overlay p{max-width:520px;margin:auto}.overlay button{background:#ffe08e;color:#183b4b;border:0;border-radius:15px;font:bold 22px Arial;padding:13px 30px;cursor:pointer}.car{cursor:grab;touch-action:none}.car:active{cursor:grabbing}.car text{pointer-events:none}.drop-zone{cursor:default}.progress{position:absolute;z-index:3;top:10px;left:12px;right:12px;display:flex;gap:5px;overflow:hidden;direction:ltr;justify-content:flex-start;align-items:center;min-height:58px;padding:8px 12px;background:#173f52ed;border:2px solid #a2e7d8;border-radius:16px;box-shadow:0 5px 14px #153a4b55;pointer-events:none}.progress span{flex:0 0 auto;display:grid;place-items:center;min-width:40px;height:42px;border-radius:9px;background:#ffe29a;color:#1a4356;font:bold 27px Arial}.progress span.current{background:#abf0e4;border:3px solid #fff}.message{min-height:29px;text-align:center;font-weight:bold;color:#ffedac}.speed-controls{position:absolute;right:12px;bottom:12px;z-index:4;display:flex;flex-direction:column;align-items:stretch;gap:7px;max-width:165px;direction:rtl}.speed-controls button{background:#fff0b9;color:#17455a;border:2px solid #438d97;border-radius:12px;padding:9px 10px;font:bold 15px Arial;cursor:pointer;box-shadow:0 3px 0 #36727a}.speed-controls button:disabled{opacity:.48;cursor:default}.speed-controls output{background:#163d51e8;color:#fff;border-radius:9px;text-align:center;font:bold 14px Arial;padding:4px}.help{text-align:center;font-size:15px;color:#cce9e3}.task-navigation{margin-bottom:12px}@media(max-width:580px){.progress span{min-width:31px;height:34px;font-size:21px}.hud{font-size:15px}}
 </style></head><body><main>
 <a href="abc-sounds-level.html">↩ שלב 1 · רכבת הצלילים</a><h1>🚂 תחנת המיון הגדולה</h1><p id="intro"></p>
 <nav id="taskNavigation" class="task-navigation" aria-label="כל משימות רכבת הצלילים" hidden></nav>
@@ -26,6 +26,7 @@
 </g>
 <g id="dragLayer"></g>
 </svg>
+<div class="speed-controls" aria-label="כיוון מהירות המסוע"><button id="slower" type="button">🐢 האט את המסוע</button><output id="speedLabel" aria-live="polite">מהירות רגילה · 1×</output><button id="faster" type="button">🚀 מסוע מהיר יותר</button></div>
 <div id="overlay" class="overlay"><h2 id="overlayTitle">🚂 תחנת המיון הגדולה!</h2><p id="overlayText">רכבות קטנות נוסעות לאורך המסילה. כל רכבת נושאת אות אחרת. גררו לתחנת האיסוף את האות הבאה לפי סדר ה־ABC. רכבת שלא נבחרה ממשיכה ונעלמת, ואחרת מגיעה במקומה.</p><button id="start">מתחילים!</button></div>
 </div><p class="message" id="message" role="status" aria-live="polite"></p>
 <p class="help">אפשר גם ללחוץ על קרון במקום לגרור אותו. אין עונש על רכבת שחלפה בלי שנאספה; בחירת אות שגויה מורידה חיים.</p>
@@ -39,6 +40,10 @@ mountTaskNavigation('review');
 const svg=$('game'),route=$('route'),carsLayer=$('cars'),dragLayer=$('dragLayer'),length=route.getTotalLength();
 const NS='http://www.w3.org/2000/svg';
 let index=0,lives=3,running=false,cars=[],last=0,spawnTimer=0,serial=0,drag=null,token=0;
+const speedLevels=[0.5,0.7,0.85,1,1.2,1.45,1.7];let speedIndex=3;
+function updateSpeed(){const speed=speedLevels[speedIndex];$('speedLabel').textContent=(speed===1?'מהירות רגילה':'מהירות')+' · '+speed+'×';$('slower').disabled=speedIndex===0;$('faster').disabled=speedIndex===speedLevels.length-1}
+$('slower').onclick=()=>{speedIndex=Math.max(0,speedIndex-1);updateSpeed()};
+$('faster').onclick=()=>{speedIndex=Math.min(speedLevels.length-1,speedIndex+1);updateSpeed()};updateSpeed();
 const colors=['#ef8c9a','#81b5ef','#b993e5','#f5b95c','#77cbb4'];
 function el(tag,attrs={},parent){const n=document.createElementNS(NS,tag);for(const [k,v] of Object.entries(attrs))n.setAttribute(k,v);if(parent)parent.append(n);return n}
 function pointAt(d){const p=route.getPointAtLength(Math.max(0,Math.min(length,d)));return {x:p.x,y:p.y}}
@@ -90,11 +95,11 @@ $('start').onclick=reset;
 function frame(time){
  const dt=last?Math.min(.05,(time-last)/1000):0;last=time;
  if(running){
-  spawnTimer+=dt;
+  spawnTimer+=dt*speedLevels[speedIndex];
   if(spawnTimer>=1.75&&cars.length<9){spawnTimer=0;createCar()}
   for(const car of [...cars]){
    if(drag&&drag.car===car)continue;
-   car.d+=dt*105;
+   car.d+=dt*105*speedLevels[speedIndex];
    if(car.d>length+65){car.group.remove();cars=cars.filter(c=>c!==car);continue}
    const p=pointAt(car.d);car.group.setAttribute('transform','translate('+p.x+' '+p.y+')');
   }
