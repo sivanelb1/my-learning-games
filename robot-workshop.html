@@ -192,7 +192,7 @@ function renderLetter(){
   container.append(card);
  }
  $('letterTabs').querySelectorAll('button').forEach((button,index)=>button.setAttribute('aria-current',String(index===current)));
- $('trainCarriages').style.transform=`translateX(${current*100}%)`;
+ $('trainCarriages').style.transform=`translateX(-${current*100}%)`;
  $('trainCarriages').querySelectorAll('.carriage').forEach((carriage,index)=>carriage.setAttribute('aria-current',String(index===current)));
  $('nextLetter').textContent=current===letters.length-1?'ל'+gameLabel:'לאות הבאה';
 }
