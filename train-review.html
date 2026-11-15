@@ -207,13 +207,15 @@ function tick(timestamp){
 }
 resetRoad();requestAnimationFrame(tick);
 </script><script>(function(){const lesson=document.getElementById('caseLesson'),btn=document.getElementById('caseLessonToggle');if(!lesson||!btn)return;btn.addEventListener('click',()=>{lesson.classList.toggle('compact');btn.textContent=lesson.classList.contains('compact')?'🔠 להציג שוב את ההסבר':'הבנתי! 🚂'});})();</script><script id="case-quiz-script">(function(){
-const level=typeof station==='number'?station:0;
+const stationParam=new URLSearchParams(location.search).get('station');
+const level=({A:0,G:1,L:2,Q:3,V:4})[(stationParam||'A').toUpperCase()]??0;
 const isFirst=level===0;
 const lesson=document.getElementById('caseLesson'),quiz=document.getElementById('caseQuiz'),start=document.getElementById('start');
 if(!quiz||!start)return;
 if(isFirst){return}
-if(lesson)lesson.hidden=true;
-quiz.hidden=false;start.disabled=true;start.setAttribute('aria-disabled','true');start.title='קודם מסיימים את אתגר האותיות';
+if(lesson){lesson.hidden=true;lesson.style.display='none'}
+quiz.hidden=false;quiz.style.display='block';
+quiz.scrollIntoView({block:'start'});start.disabled=true;start.setAttribute('aria-disabled','true');start.title='קודם מסיימים את אתגר האותיות';
 const questions=[
 {q:'מה נכון בתחילת משפט באנגלית?',choices:['The dog is happy.','the dog is happy.'],a:0,why:'בתחילת משפט האות הראשונה גדולה.'},
 {q:'איך כותבים שם של אדם?',choices:['anna','Anna'],a:1,why:'שמות של אנשים מתחילים באות גדולה.'},
@@ -226,6 +228,6 @@ let index=0,correct=0,answered=false;
 const count=document.getElementById('caseQuizCount'),question=document.getElementById('caseQuizQuestion'),options=document.getElementById('caseQuizOptions'),feedback=document.getElementById('caseQuizFeedback'),continueBtn=document.getElementById('caseQuizContinue');
 function render(){answered=false;count.textContent='שאלה '+(index+1)+' מתוך '+questions.length+' · ⭐ '+correct;question.textContent=questions[index].q;feedback.textContent='בחרו את התשובה הנכונה';options.replaceChildren();questions[index].choices.forEach((choice,i)=>{const b=document.createElement('button');b.type='button';b.dir='ltr';b.textContent=choice;b.onclick=()=>answer(i,b);options.append(b)})}
 function answer(i,b){if(answered)return;const item=questions[index];if(i!==item.a){b.classList.add('wrong');feedback.textContent='כמעט! נסו שוב — חפשו את הכלל שלמדנו.';return}answered=true;correct++;b.classList.add('correct');feedback.textContent='⭐ מצוין! '+item.why;options.querySelectorAll('button').forEach(x=>x.disabled=true);setTimeout(()=>{index++;if(index===questions.length){count.textContent='🏆 '+correct+' מתוך '+questions.length;question.textContent='כל הכבוד! אתם מוכנים לנסיעה!';options.replaceChildren();feedback.textContent='זכרתם את כל הכללים!';continueBtn.hidden=false}else render()},800)}
-continueBtn.addEventListener('click',()=>{quiz.hidden=true;start.disabled=false;start.removeAttribute('aria-disabled');start.title='';start.focus();document.getElementById('overlay')?.scrollIntoView({behavior:'smooth',block:'center'})});
+continueBtn.addEventListener('click',()=>{quiz.hidden=true;quiz.style.display='none';start.disabled=false;start.removeAttribute('aria-disabled');start.title='';start.focus();document.getElementById('overlay')?.scrollIntoView({behavior:'smooth',block:'center'})});
 render();
 })();</script></body></html>
