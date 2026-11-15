@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="alphabet-task-nav.css">
 <style>
 *{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#0d2838,#214d5a);color:#fff9df;font:18px/1.5 Arial,sans-serif}main{max-width:1000px;margin:auto;padding:15px}a{color:#c6f5eb}h1{margin:12px 0 5px;font-size:clamp(28px,5vw,45px)}p{margin:5px 0 14px}.hud{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;background:#193e51;border-radius:15px;padding:12px;margin:12px 0}.hud strong{color:#ffe28b}.game-wrap{position:relative;width:min(100%,680px);margin:auto}canvas{display:block;width:100%;height:auto;border:5px solid #85c5c4;border-radius:18px;background:#c9ecdc;touch-action:none}.overlay{position:absolute;inset:0;background:#092536df;display:grid;place-content:center;text-align:center;gap:14px;padding:25px;border-radius:18px}.overlay[hidden]{display:none}.overlay h2{font-size:clamp(27px,5vw,42px);margin:0}.overlay p{margin:0}.controls{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:14px auto}.controls button,.overlay button{border:0;border-radius:15px;background:#ffda7a;color:#153746;font:bold 21px Arial;min-width:78px;min-height:56px;cursor:pointer;padding:12px}.overlay button{margin:auto}.controls button:focus-visible,.overlay button:focus-visible{outline:4px solid white}.help{text-align:center;font-size:15px;color:#d3eae4}.task-navigation{margin-bottom:12px}@media(max-width:500px){.controls button{min-width:68px}}
-</style></head><body><main>
+.recap-toggle{display:block;margin:0 auto;background:#c5f3e5!important;color:#17455a!important;border:2px solid #8bd3c3!important;border-radius:13px;padding:10px 16px;font:bold 17px Arial;cursor:pointer}.recap-list{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;max-width:550px;margin:0 auto;padding:10px;background:#21495b;border-radius:14px}.recap-list[hidden]{display:none}.recap-list span{display:inline-grid;place-items:center;background:#ffe4a2;color:#1c4355;border-radius:8px;min-width:35px;padding:4px;font:bold 24px Arial}.recap-note{font-size:15px;color:#e0f8ee}</style></head><body><main>
 <a href="abc-sounds-level.html">↩ שלב 1 · רכבת הצלילים</a>
 <h1>🚂 מסע הרכבות — משחק חזרה</h1><p id="intro"></p>
 <nav id="taskNavigation" class="task-navigation" aria-label="כל משימות רכבת הצלילים" hidden></nav>
@@ -15,10 +15,34 @@
 <p class="help">אפשר לשחק גם עם חיצי המקלדת. בכל אות חוצים שלוש מסילות ובוחרים את האות הנכונה מתוך שלוש אפשרויות. פגיעה ברכבת מורידה חיים. מדי כמה אותיות יופיע לב שאפשר לאסוף כדי להחזיר חיים שאבדו (עד שלושה).</p>
 </main><script src="alphabet-stations.js"></script><script src="task-nav.js"></script><script>
 const $=id=>document.getElementById(id);
+function setupSummaryIntro(){
+ const overlay=$('overlay'),start=$('start'),text=$('overlayText');
+ const recap=document.createElement('div');recap.className='recap-list';recap.hidden=true;recap.id='recapList';
+ for(const letter of letters){const item=document.createElement('span');item.textContent=letter;recap.append(item)}
+ const toggle=document.createElement('button');toggle.type='button';toggle.className='recap-toggle';toggle.textContent='🔤 רוצים להיזכר באותיות שלמדנו עד עכשיו?';
+ toggle.onclick=()=>{recap.hidden=!recap.hidden;toggle.textContent=recap.hidden?'🔤 רוצים להיזכר באותיות שלמדנו עד עכשיו?':'🙈 הסתרת האותיות'};
+ text.insertAdjacentElement('afterend',recap);text.insertAdjacentElement('afterend',toggle);
+ const originalClick=start.onclick;
+ start.onclick=()=>{recap.hidden=true;toggle.textContent='🔤 רוצים להיזכר באותיות שלמדנו עד עכשיו?';originalClick()};
+}
+function sayLetter(letter){
+ if(!('speechSynthesis' in window))return;
+ try{
+  window.speechSynthesis.cancel();
+  const utterance=new SpeechSynthesisUtterance(letter);
+  utterance.lang='en-US';utterance.rate=.78;utterance.pitch=1;
+  const voices=window.speechSynthesis.getVoices();
+  const english=voices.find(v=>v.lang.toLowerCase().startsWith('en'));
+  if(english)utterance.voice=english;
+  window.speechSynthesis.speak(utterance);
+ }catch(error){console.warn('Letter pronunciation unavailable',error)}
+}
+
 const groupEnd=alphabetGroups.slice(0,station+1).join('');
 const letters=groupEnd.split('');
 $('intro').textContent='חזרה מצטברת על כל האותיות שלמדנו: A–'+letters.at(-1)+'. מתחילים ב־A ומגיעים לכל האותיות לפי הסדר!';
 const selectTask=mountTaskNavigation('review');
+$('overlayText').textContent='במשחק הזה חוזרים על כל האותיות שלמדנו עד עכשיו, מ־A ועד '+letters.at(-1)+'. חצו שלוש מסילות בלי להיפגע ברכבות, ובחרו בכל פעם את האות הבאה לפי הסדר מתוך שלוש אפשרויות.';
 const canvas=$('board'),ctx=canvas.getContext('2d'),W=canvas.width,H=canvas.height;
 const rows=[500,388,276],goalY=152,startY=554,step=112;
 let state='ready',index=0,lives=3,x=W/2,y=startY,trains=[],last=0,invincible=0,stagePause=0,choices=[],correctSlot=0,heartBonus=null;
@@ -75,13 +99,14 @@ function move(direction){
  }
  if(y<=goalY+10){
   const slot=Math.max(0,Math.min(2,Math.round((x-110)/220)));
-  if(choices[slot]===letters[index]){stagePause=.6;state='transition';setTimeout(()=>{if(state==='transition'){state='playing';advance()}},650)}
+  if(choices[slot]===letters[index]){sayLetter(letters[index]);stagePause=.6;state='transition';setTimeout(()=>{if(state==='transition'){state='playing';advance()}},650)}
   else loseLife();
  }
 }
 document.querySelectorAll('[data-move]').forEach(b=>b.onclick=()=>move(b.dataset.move));
 document.addEventListener('keydown',e=>{const d={ArrowLeft:'left',ArrowRight:'right',ArrowUp:'up',ArrowDown:'down'}[e.key];if(d){e.preventDefault();move(d)}});
 $('start').onclick=begin;
+setupSummaryIntro();
 function rounded(x,y,w,h,r,color){ctx.fillStyle=color;ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fill()}
 function drawTrain(t){
  const yy=rows[t.lane],xx=t.x;
