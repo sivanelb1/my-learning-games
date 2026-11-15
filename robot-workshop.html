@@ -39,12 +39,15 @@ button{font:inherit;font-weight:bold;cursor:pointer;border-radius:12px;padding:1
 .targets button[aria-pressed=true]{border-color:#126c62;background:#f5df90}
 .targets button[aria-disabled=true]{background:#d3f7e9;border-color:#257b67}
 .targets .picture{font-size:1.2em}
+.progress[hidden]{display:none}
 </style>
+<link rel="stylesheet" href="alphabet-task-nav.css">
 </head>
 <body><main>
 <a href="abc-sounds-level.html">↩ לשלב האותיות והצלילים</a>
 <header class="hero"><div><h1>סדנת הרובוטים</h1><p id="mission">בּיפּ מושבת. הכירו את האותיות A–F, מצאו זוגות במשחק הזיכרון והפעילו את הלוח הראשון שלו.</p></div><div id="robot" class="robot" role="img" aria-label="הרובוט כבוי"><div class="robot-face"><i class="eye"></i><i class="eye"></i></div></div></header>
-<ol class="progress"><li id="learnStep" aria-current="step">מכירים</li><li id="gameStep">משחקים</li><li id="writeStep">כותבים</li></ol>
+<nav id="taskNavigation" class="task-navigation" aria-label="כל משימות רכבת הצלילים" hidden></nav>
+<ol id="workshopProgress" class="progress"><li id="learnStep" aria-current="step">מכירים</li><li id="gameStep">משחקים</li><li id="writeStep">כותבים</li></ol>
 <section class="panel" id="learn"><h2 tabindex="-1">שם האות והצליל שלה</h2>
 <p>האות הגדולה והקטנה הן שתי צורות של אותה אות. ליד כל אות מופיעה מילה לדוגמה.</p>
 <div id="letterTabs" class="letter-tabs" role="group" aria-label="בחירת אות"></div>
@@ -83,6 +86,7 @@ button{font:inherit;font-weight:bold;cursor:pointer;border-radius:12px;padding:1
 <output id="audioFeedback" aria-live="polite"></output>
 </main>
 <script src="alphabet-stations.js"></script>
+<script src="task-nav.js"></script>
 <script src="alphabet-pair-audio.js"></script>
 <script>
 const $ = id => document.getElementById(id);
@@ -96,6 +100,8 @@ const firstLetters = [
 ];
 const letters = [...firstLetters,...laterLetters].filter(data=>stationLetters.includes(data.letter));
 const trainTheme=stationParams.get('theme')==='train';
+const requestedTask=stationParams.get('task');
+let selectTask=()=>{};
 const connectGame=station%2===1;
 const gameLabel=connectGame?'משחק הקווים':'משחק הזיכרון';
 const soundTips = [
@@ -140,6 +146,7 @@ let pointer = null, stroke = null, guides = [], lastPoint = null;
 const ns = 'http://www.w3.org/2000/svg';
 const letterLabel = data => data.letter + data.letter.toLowerCase();
 function show(stage){
+ selectTask(stage==='done'?'write':stage);
  for(const name of lesson){
   $(name).hidden = name !== stage;
   const step = $(name+'Step');
@@ -186,9 +193,14 @@ letters.forEach((data,index)=>{
 });
 $('nextLetter').onclick=()=>{
  if(current<letters.length-1){current++;renderLetter();return;}
+ startPractice();
+};
+let practiceReady=false;
+function startPractice(){
+ practiceReady=true;
  if(connectGame)startConnections();else startMemory();
  show('game');
-};
+}
 const pairsPerBoard=3;
 const boardCount=Math.ceil(letters.length/pairsPerBoard);
 let pairsThisBoard=0;
@@ -526,7 +538,11 @@ for(const name of ['pointerup','pointercancel','lostpointercapture']){
  });
 }
 $('erase').onclick=erase;
-$('prevTrace').onclick=()=>{if(trace>0){trace--;renderTrace();}else{show('game');}};
+$('prevTrace').onclick=()=>{
+ if(trace>0){trace--;renderTrace();}
+ else if(practiceReady)show('game');
+ else startPractice();
+};
 function hasTracedExample(){
  return [118,222].some(offset=>guides.filter(guide=>guide.offset===offset)
   .every(guide=>guide.marks.size>=guide.points.length*.68));
@@ -553,11 +569,13 @@ if(connectGame){
 }
 if(trainTheme){
  document.body.classList.add('train-theme');
+ $('workshopProgress').hidden=true;
+ selectTask=mountTaskNavigation('learn');
  const range=stationRange(stationLetters);
  const finalStation=station===alphabetGroups.length-1;
  document.title='רכבת הצלילים · תחנת '+range+' | PLAYWISE';
  document.querySelector('h1').textContent='🚆 רכבת הצלילים';
- $('mission').textContent='אספתם את האותיות '+range+'! עכשיו נכיר אותן, נתרגל ב'+gameLabel+' ונכתוב אותן לשלט התחנה.';
+ $('mission').textContent='תחנת '+range+' · מכירים את האותיות, מתרגלים ב'+gameLabel+' וכותבים אותן לשלט התחנה.';
  const done=$('done');
  done.querySelector('h2').textContent=finalStation?'השלמתם את כל ה־ABC!':'השלט של התחנה מוכן!';
  const train=document.createElement('div');
@@ -575,4 +593,6 @@ if(trainTheme){
  $('replay').textContent='לתרגל שוב בתחנה';
 }
 renderLetter();
+if(trainTheme&&requestedTask==='game')startPractice();
+if(trainTheme&&requestedTask==='write')startWriting();
 </script></body></html>

@@ -38,12 +38,16 @@ canvas{height:auto;aspect-ratio:900/610;object-fit:fill}
 @media(max-width:620px){main{padding-inline:8px}canvas{height:clamp(340px,56vh,460px);aspect-ratio:auto}.controls{gap:5px}.controls button{min-width:44px;padding-inline:8px}.dashboard{justify-content:center}#letters span{width:30px}}
 #boost{position:absolute;inset-inline-start:9px;top:9px;background:#122b39ee;color:#fff8e8;font-weight:bold;border:2px solid #95e8c9;padding:5px 10px;border-radius:10px;pointer-events:none}
 #boost[hidden]{display:none}
+.lives{letter-spacing:3px;color:#ff8ea0;font-size:1.22rem;font-weight:bold;direction:ltr;white-space:nowrap}
+.lives .lost{color:#a7b9c3}
 </style>
+<link rel="stylesheet" href="alphabet-task-nav.css">
 </head>
 <body><main>
 <a href="abc-sounds-level.html">↩ לשלב האותיות והצלילים</a>
 <header><h1>🚆 רכבת הצלילים</h1><p id="routeIntro">אותיות נפלו מהשלט של התחנה. אספו מטבעות לאורך המסילות וחפשו את האותיות A עד F.</p></header>
-<div class="dashboard"><strong id="score">נאספו 0 מתוך 6</strong><div id="letters" lang="en" aria-label="אותיות שנאספו"></div><div class="totals"><span aria-label="מכפיל" id="multiplier">×1</span><span aria-label="ניקוד" id="points">000000</span><span>🪙 <b id="coins">0</b></span></div></div>
+<nav id="taskNavigation" class="task-navigation" aria-label="כל משימות רכבת הצלילים" hidden></nav>
+<div class="dashboard"><strong id="score">נאספו 0 מתוך 6</strong><div id="letters" lang="en" aria-label="אותיות שנאספו"></div><div id="lives" class="lives" role="status" aria-label="3 חיים נשארו"><span aria-hidden="true">♥♥♥</span></div><div class="totals"><span aria-label="מכפיל" id="multiplier">×1</span><span aria-label="ניקוד" id="points">000000</span><span>🪙 <b id="coins">0</b></span></div></div>
 <div class="field">
 <canvas id="tracks" width="900" height="610" tabindex="0" aria-label="שלוש מסילות. חצים ימינה ושמאלה למעבר בין מסילות, חץ למעלה או רווח להתרוממות. חץ למטה להנמכה."></canvas>
 <div id="boost" role="status" hidden></div>
@@ -51,7 +55,7 @@ canvas{height:auto;aspect-ratio:900/610;object-fit:fill}
 <div class="overlay" id="overlay">
  <div class="card">
   <h2 id="title" tabindex="-1">יוצאים לאסוף אותיות</h2>
-  <p id="instructions">הטיסו את הרובוט בין הרכבות. התרוממו מעל מחסומים והנמיכו מתחת לשלטים. הרמפות מובילות לגגות הרכבות.</p>
+  <p id="instructions">הטיסו את הרובוט בין הרכבות. התרוממו מעל מחסומים והנמיכו מתחת לשלטים. הרמפות מובילות לגגות הרכבות. יש לכם שלושה חיים.</p>
   <button class="primary" id="start">מתחילים לרחף</button>
   <a class="primary" href="robot-workshop.html?theme=train" id="continue" hidden>לתחנה הראשונה · מכירים את A–F</a>
  </div>
@@ -67,6 +71,7 @@ canvas{height:auto;aspect-ratio:900/610;object-fit:fill}
 <p id="status" role="status">חצים ורווח במקלדת, או תנועות החלקה וכפתורים במסך מגע.</p>
 </main>
 <script src="alphabet-stations.js"></script>
+<script src="task-nav.js"></script>
 <script src="alphabet-name-audio.js"></script>
 <script>
 const $=id=>document.getElementById(id);
@@ -289,7 +294,8 @@ const routes=[
 ];
 let state='intro',lane=0,visualLane=0,jumpTime=0,slideTime=0,frame=0,lastTime=null,travel=0;
 let ground=0,runnerElevation=0,objects=[],nextRow=22,rowNumber=0,nextLetterRow=1,letterIndex=0;
-let coins=0,points=0,streak=0,hold=0,flashTime=0,gesture=null;
+const maxLives=3;
+let lives=maxLives, coins=0,points=0,streak=0,hold=0,flashTime=0,gesture=null;
 const jumpDuration=.8;
 const powers={
  slow:{icon:'◴',label:'האטת זמן',color:'#285eaf',duration:5,speed:.66},
@@ -304,6 +310,7 @@ $('routeIntro').textContent='תחנה '+(station+1)+' מתוך '+alphabetGroups.
 $('continue').href=workshopUrl(station);
 $('continue').textContent='להיכרות עם האותיות · '+range;
 if(station)$('instructions').textContent+=' חפשו מטבעות אחרי המחסומים וגם כוחות מיוחדים.';
+mountTaskNavigation('run');
 for(const letter of alphabet){
  const tile=document.createElement('span');
  tile.textContent='·';
@@ -409,10 +416,54 @@ function getSurface(){
  if(runnerZ<train.z)return roofHeight*(runnerZ-train.z+rampLength)/rampLength;
  return roofHeight;
 }
+function updateLives(){
+ const display=$('lives');
+ display.setAttribute('aria-label',lives===0?'לא נשארו חיים':lives===1?'נשאר לב אחד':'נשארו '+lives+' חיים');
+ display.replaceChildren();
+ for(let i=0;i<maxLives;i++){
+  const heart=document.createElement('span');
+  heart.setAttribute('aria-hidden','true');
+  heart.textContent=i<lives?'♥':'♡';
+  if(i>=lives)heart.className='lost';
+  display.append(heart);
+ }
+}
 function crash(){
- hold=.58;
+ if(state!=='running'||hold)return;
+ lives--;
+ updateLives();
  streak=0;
- $('status').textContent='אפשר להמשיך! עברו למסילה פנויה.';
+ if(lives===0){
+  state='failed';
+  gesture=null;
+  $('status').textContent='לא נשארו חיים.';
+  $('start').textContent='לנסות שוב';
+  showOverlay('הנסיעה הסתיימה','נגמרו שלושת החיים. נסו שוב ואספו את האותיות מתחילת התחנה.');
+  return;
+ }
+ hold=.58;
+ $('status').textContent=lives===1?'נשאר לב אחד. בחרו מסילה פנויה.':'נשארו 2 חיים. בחרו מסילה פנויה.';
+}
+function resetRun(){
+ lives=maxLives;
+ lane=visualLane=jumpTime=slideTime=travel=ground=runnerElevation=0;
+ cameraLane=cameraLift=hoverTime=bank=dip=0;
+ coins=points=streak=hold=flashTime=powerTime=flightLift=0;
+ nextRow=22;
+ rowNumber=letterIndex=0;
+ nextLetterRow=1;
+ objects=[];
+ activePower=gesture=null;
+ $('pickup').hidden=true;
+ for(const tile of tiles){
+  tile.textContent='·';
+  tile.classList.remove('found');
+ }
+ $('score').textContent='נאספו 0 מתוך '+alphabet.length;
+ $('status').textContent='אוספים את האותיות לפי הסדר.';
+ updateLives();
+ updatePower();
+ updateDashboard();
 }
 function resolve(item,previous,oldGround){
  if(item.used||Math.abs(visualLane-item.lane)>.43)return;
@@ -489,7 +540,7 @@ function tick(timestamp){
   updateDashboard();
  }
  draw();
- frame=requestAnimationFrame(tick);
+ if(state!=='failed')frame=requestAnimationFrame(tick);
 }
 function showOverlay(title,instructions){
  $('title').textContent=title;
@@ -510,7 +561,8 @@ function slide(){
  if(state==='running'){jumpTime=0;slideTime=.82;}
 }
 $('start').onclick=()=>{
- if(state==='intro')populate();
+ if(state==='failed')resetRun();
+ if(state!=='paused')populate();
  state='running';
  $('overlay').hidden=true;
  $('pause').hidden=false;
