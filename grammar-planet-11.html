@@ -21,7 +21,7 @@
 .irregular-pairs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .irregular-pairs div{background:#f2edff;border-radius:14px;padding:10px 15px}
 .irregular-pairs small{display:block}
-.time-game .quiz-options{grid-template-columns:repeat(2,minmax(0,1fr));direction:rtl}
+.time-game .run-gates{grid-template-columns:repeat(2,minmax(0,1fr))}
 .time-game .quiz-choice:first-child:not(.correct):not(.wrong){background:#fff2d5;color:#65471c;border-color:#dfbd6b}
 .time-game .quiz-choice:last-child:not(.correct):not(.wrong){background:#e6f7f3;color:#195a50;border-color:#83c7b8}
 .quiz-choice:focus-visible,.bigbutton:focus-visible,.steps a:focus-visible{outline:3px solid #9d66ff;outline-offset:3px}
@@ -99,6 +99,23 @@
 .lesson-examples h4{margin:8px 0 0}
 .more-verbs{margin:14px 0}
 .more-verbs summary{font-weight:bold;color:#5c389e;cursor:pointer;padding:8px 0}
+
+.memory-panel{background:#171332;color:#f7eeff;border:1px solid #674c9e}
+.memory-panel h2{color:#f8dcff}
+.memory-panel .quiz-meta{color:#e6caff;margin-inline:auto;max-width:660px}
+.memory-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;max-width:660px;margin:15px auto}
+.memory-card{min-height:85px;padding:8px 3px;border:2px solid #b8a1e8;border-radius:14px;background:radial-gradient(circle at 50% 0,#6c4d9e,#38245f);color:#eddcff;font:bold clamp(16px,3vw,24px) Arial,sans-serif;cursor:pointer}
+.memory-card:hover{border-color:#f5d9ff}
+.memory-card:focus-visible{outline:3px solid #ffdfa0;outline-offset:2px}
+.memory-card.face-up{background:#f1e7ff;color:#3c246a;cursor:default}
+@media(prefers-reduced-motion:no-preference){
+  .memory-card.face-up{animation:memory-flip .22s ease-out}
+}
+@keyframes memory-flip{from{transform:rotateY(85deg)}to{transform:rotateY(0)}}
+.memory-card small,.memory-card span{display:block;overflow-wrap:anywhere}
+.memory-card small{font-size:12px;margin-bottom:4px}
+.memory-card.matched{background:#b8f2dc;border-color:#59cb9f;color:#154d40}
+@media(max-width:480px){.memory-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.memory-card{min-height:69px}}
 </style></head><body><main class="wrap"><a class="back" href="level5.html">↩️ חזרה למפת הגלקסיה</a><nav class="steps" aria-label="שלבי כוכב 11"><a href="?stage=intro" data-step="intro">🌀 פתיחה</a><a href="grammar-planet-11-gates.html">🚪 שערי זמן</a><a href="?stage=positive" data-step="positive">🕰️ מילות זמן</a><a href="?stage=regular" data-step="regular">🛠️ פעלים רגילים</a><a href="?stage=irregular" data-step="irregular">✨ פעלים מיוחדים</a><a href="?stage=sentence" data-step="sentence">📚 משפט חיובי</a><a href="?stage=practice1" data-step="practice1">✨ בונים משפט</a><a href="?stage=negative" data-step="negative">🚫 שלילה</a><a href="?stage=question" data-step="question">❓ שאלות</a><a href="?stage=be" data-step="be">🧠 WAS / WERE</a><a href="?stage=finish" data-step="finish">🏆 סיום</a></nav><header><div class="orb">🌀⏳</div><h1>PAST PORTAL</h1><p>שער העבר · כוכב 11 בגלקסיית הדקדוק<br>🌟 המסע אל מה שקרה אתמול!</p></header>
 <section id="intro" class="panel"><h2>👽 זיגי מצא שער לזמן אחר!</h2><div class="ziggy">זיגי: עד עכשיו סיפרנו מה קורה <b>בדרך כלל</b> ומה קורה <b>ממש עכשיו</b>. אבל איך נספר על משהו <b>שכבר קרה ונגמר</b>? למשל, מה עשינו אתמול או בשבוע שעבר? בשביל זה יש לנו זמן חדש: <b>PAST SIMPLE!</b> 🕰️</div><div class="example-grid" style="margin-top:19px"><article class="example-card"><strong>☀️ PRESENT SIMPLE</strong><div class="sentence">Shira plays football every day. <button class="sound" onclick="speak('Shira plays football every day.')">🔊</button></div></article><article class="example-card"><strong>⏳ PAST SIMPLE</strong><div class="sentence">Shira played football yesterday. <button class="sound" onclick="speak('Shira played football yesterday.')">🔊</button></div></article></div><div class="bottom"><a class="bigbutton lesson-link" href="grammar-planet-11-gates.html">🚪 למשחק הדלתות</a></div></section>
 
@@ -109,20 +126,21 @@
   <div><h3>⏳ עבר</h3><ul class="time-list"><li><bdi lang="en">yesterday</bdi><span>אתמול</span></li><li><bdi lang="en">yesterday morning</bdi><span>אתמול בבוקר</span></li><li><bdi lang="en">yesterday afternoon</bdi><span>אתמול אחר הצהריים</span></li><li><bdi lang="en">last night</bdi><span>אתמול בלילה</span></li><li><bdi lang="en">last week</bdi><span>בשבוע שעבר</span></li><li><bdi lang="en">last month</bdi><span>בחודש שעבר</span></li><li><bdi lang="en">last year</bdi><span>בשנה שעברה</span></li><li><bdi lang="en">last summer</bdi><span>בקיץ שעבר</span></li><li><bdi lang="en">two days ago</bdi><span>לפני יומיים</span></li><li><bdi lang="en">a week ago</bdi><span>לפני שבוע</span></li><li><bdi lang="en">three months ago</bdi><span>לפני שלושה חודשים</span></li><li><bdi lang="en">a year ago</bdi><span>לפני שנה</span></li></ul></div>
   <div><h3>☀️ הווה</h3><h4>הרגלים ותדירות</h4><ul class="time-list"><li><bdi lang="en">every day</bdi><span>כל יום</span></li><li><bdi lang="en">every morning</bdi><span>כל בוקר</span></li><li><bdi lang="en">every week</bdi><span>כל שבוע</span></li><li><bdi lang="en">on Mondays</bdi><span>בימי שני</span></li><li><bdi lang="en">usually</bdi><span>בדרך כלל</span></li><li><bdi lang="en">often</bdi><span>לעיתים קרובות</span></li><li><bdi lang="en">always</bdi><span>תמיד</span></li><li><bdi lang="en">sometimes</bdi><span>לפעמים</span></li></ul><h4>פעולות שקורות עכשיו</h4><ul class="time-list"><li><bdi lang="en">now</bdi><span>עכשיו</span></li><li><bdi lang="en">right now</bdi><span>ממש עכשיו</span></li><li><bdi lang="en">at the moment</bdi><span>ברגע זה</span></li><li><bdi lang="en">at this very moment</bdi><span>ממש ברגע זה</span></li></ul></div>
 </div>
-  <div class="bottom"><button class="bigbutton" onclick="showStage('timeGame')">🚀 למיון מילות הזמן</button></div>
+  <div class="bottom"><button class="bigbutton" onclick="showStage('timeGame')">🚪 ל־Portal Run</button></div>
 </section>
 <section id="timeGame" class="hidden">
   <div class="panel practice time-game">
-    <h2>🕰️ לאיזה זמן זה שייך?</h2>
-    <p>קראו את הביטוי ובחרו את השער המתאים.</p>
+    <h2>🚪 PORTAL RUN — מילות זמן</h2>
+    <p>קראו את ביטוי הזמן והובילו את זיגי לשער העבר או לשער ההווה. במקלדת מגיעים לשערים עם Tab, עוברים ביניהם עם החצים ובוחרים עם Enter.</p>
     <div class="quiz-meta"><span id="timeGameCount"></span><span id="timeGameStars"></span></div>
     <div class="quiz-track"><div class="quiz-fill" id="timeGameFill"></div></div>
     <div id="timeGameQuestion" tabindex="-1" class="quiz-question" dir="ltr" lang="en"></div>
-    <div id="timeGameOptions" class="quiz-options" dir="ltr"></div>
+    <div id="timeGameOptions" class="quiz-options run-gates" dir="ltr"></div>
+    <div id="runTrack" class="run-track" aria-hidden="true"><span>👽</span></div>
     <div id="timeGameFeedback" class="quiz-feedback" aria-live="polite"></div>
     <button class="bigbutton secondary hidden" id="timeGameHint" onclick="showHint('timeGame')">💡 אפשר רמז?</button>
     <button class="bigbutton hidden" id="timeGameNext" onclick="nextQuestion('timeGame')">➡️ ממשיכים</button>
-    <button class="bigbutton secondary hidden" id="timeGameReplay" onclick="startRound('timeGame');renderQuiz('timeGame');document.getElementById('timeGameQuestion').focus()">🔁 סיבוב נוסף</button>
+    <button class="bigbutton secondary hidden" id="timeGameReplay" onclick="startRound();renderQuiz('timeGame');document.getElementById('timeGameQuestion').focus()">🔁 סיבוב נוסף</button>
   </div>
 </section>
 <section id="regular" class="panel hidden">
@@ -206,21 +224,19 @@
   <div><bdi lang="en">drive → drove</bdi><small>לנהוג</small></div>
 </div>
 <p>ב־<bdi lang="en">read → read</bdi> הכתיב נשאר זהה וההגייה משתנה, מ־<bdi lang="en">reed</bdi> ל־<bdi lang="en">red</bdi>.</p></details>
-  <div class="bottom"><button class="bigbutton" onclick="showStage('irregularGame')">🚪 ל־Portal Run</button></div>
+  <div class="bottom"><button class="bigbutton" onclick="showStage('irregularGame')">🃏 למשחק הזיכרון</button></div>
 </section>
 <section id="irregularGame" class="hidden">
-  <div class="panel practice ">
-    <h2>🚪 PORTAL RUN — המסע בין שערי הזמן</h2>
-    <p>בחרו שער כדי להוביל את זיגי לצורת העבר. בכל סיבוב מחכים שישה פעלים. במקלדת מגיעים לשערים עם Tab, עוברים ביניהם עם החצים ובוחרים עם Enter.</p>
-    <div class="quiz-meta"><span id="irregularGameCount"></span><span id="irregularGameStars"></span></div>
-    <div class="quiz-track"><div class="quiz-fill" id="irregularGameFill"></div></div>
-    <div id="irregularGameQuestion" tabindex="-1" class="quiz-question" dir="ltr" lang="en"></div>
-    <div id="irregularGameOptions" class="quiz-options run-gates" dir="ltr"></div>
-    <div id="runTrack" class="run-track" aria-hidden="true"><span>👽</span></div>
-    <div id="irregularGameFeedback" class="quiz-feedback" aria-live="polite"></div>
-    <button class="bigbutton secondary hidden" id="irregularGameHint" onclick="showHint('irregularGame')">💡 אפשר רמז?</button>
-    <button class="bigbutton hidden" id="irregularGameNext" onclick="nextQuestion('irregularGame')">➡️ ממשיכים</button>
-    <button class="bigbutton secondary hidden" id="irregularGameReplay" onclick="startRound('irregularGame');renderQuiz('irregularGame');document.getElementById('irregularGameQuestion').focus()">🔁 סיבוב נוסף</button>
+  <div class="panel practice memory-panel">
+    <h2 id="memoryTitle" tabindex="-1">🃏 משחק הזיכרון של שער העבר</h2>
+    <p>הפכו שני קלפים וחפשו פועל וצורת העבר שלו, כמו <bdi lang="en">go</bdi> ו־<bdi lang="en">went</bdi>.</p>
+    <div class="quiz-meta"><span id="memoryCount"></span><span id="memoryTurns"></span></div>
+    <div class="memory-grid" id="memoryCards" role="group" aria-label="קלפי הפעלים" dir="ltr"></div>
+    <div class="quiz-feedback" id="memoryFeedback" aria-live="polite"></div>
+    <div class="hidden" id="memoryActions">
+      <button class="bigbutton secondary" id="memoryReplay" type="button">🔁 סיבוב נוסף</button>
+      <button class="bigbutton" id="memoryNext" type="button" onclick="showStage('sentence')">📚 למשפט החיובי</button>
+    </div>
   </div>
 </section>
 <section id="sentence" class="panel hidden">
@@ -327,7 +343,7 @@ const stages=['intro','positive','timeGame','regular','regularGame','irregular',
 const quizNavigation={
  timeGame:{lesson:'positive',next:'regular',label:'🛠️ לפעלים רגילים'},
  regularGame:{lesson:'regular',next:'irregular',label:'✨ לפעלים מיוחדים'},
- irregularGame:{lesson:'irregular',next:'sentence',label:'📚 למשפט החיובי'},
+ irregularGame:{lesson:'irregular'},
  practice1:{lesson:'practice1',next:'negative',label:'🚫 לשלילה'},
  practice2:{lesson:'negative',next:'question',label:'❓ לשאלות בעבר'},
  questionGame:{lesson:'question',next:'be',label:'🧠 ל־WAS / WERE'},
@@ -360,54 +376,54 @@ const timeCueBank=[
   ["at this very moment", "ממש ברגע זה", "now"]
 ];
 const irregularBank=[
-  ["go", "went", "ללכת", "goed", "goes"],
-  ["eat", "ate", "לאכול", "eated", "eats"],
-  ["see", "saw", "לראות", "see", "sees"],
-  ["have", "had", "יש / היה לו", "haved", "has"],
-  ["do", "did", "לעשות", "doed", "does"],
-  ["make", "made", "להכין / ליצור", "maked", "makes"],
-  ["buy", "bought", "לקנות", "buyed", "buys"],
-  ["take", "took", "לקחת", "taked", "takes"],
-  ["come", "came", "לבוא", "comed", "comes"],
-  ["get", "got", "לקבל", "getted", "gets"],
-  ["give", "gave", "לתת", "gived", "gives"],
-  ["find", "found", "למצוא", "finded", "finds"],
-  ["drink", "drank", "לשתות", "drinked", "drinks"],
-  ["run", "ran", "לרוץ", "runned", "runs"],
-  ["swim", "swam", "לשחות", "swimmed", "swims"],
-  ["sing", "sang", "לשיר", "singged", "sings"],
-  ["sit", "sat", "לשבת", "sitted", "sits"],
-  ["stand", "stood", "לעמוד", "standed", "stands"],
-  ["sleep", "slept", "לישון", "sleeped", "sleeps"],
-  ["wake", "woke", "להתעורר", "wook", "wakes"],
-  ["write", "wrote", "לכתוב", "writed", "writes"],
-  ["read", "read", "לקרוא", "readed", "reads"],
-  ["speak", "spoke", "לדבר", "speaked", "speaks"],
-  ["say", "said", "לומר", "sayed", "says"],
-  ["tell", "told", "לספר", "telled", "tells"],
-  ["hear", "heard", "לשמוע", "heared", "hears"],
-  ["know", "knew", "לדעת", "knowed", "knows"],
-  ["think", "thought", "לחשוב", "thinked", "thinks"],
-  ["bring", "brought", "להביא", "bringed", "brings"],
-  ["catch", "caught", "לתפוס", "catched", "catches"],
-  ["teach", "taught", "ללמד", "teached", "teaches"],
-  ["feel", "felt", "להרגיש", "feeled", "feels"],
-  ["leave", "left", "לעזוב", "leaved", "leaves"],
-  ["meet", "met", "לפגוש", "meeted", "meets"],
-  ["break", "broke", "לשבור", "breaked", "breaks"],
-  ["choose", "chose", "לבחור", "choosed", "chooses"],
-  ["put", "put", "לשים", "putted", "puts"],
-  ["cut", "cut", "לחתוך", "cutted", "cuts"],
-  ["fly", "flew", "לעוף", "flyed", "flies"],
-  ["fall", "fell", "ליפול", "falled", "falls"],
-  ["draw", "drew", "לצייר", "drawed", "draws"],
-  ["forget", "forgot", "לשכוח", "forgetted", "forgets"],
-  ["begin", "began", "להתחיל", "begined", "begins"],
-  ["win", "won", "לנצח", "winned", "wins"],
-  ["lose", "lost", "לאבד / להפסיד", "loosed", "loses"],
-  ["send", "sent", "לשלוח", "sended", "sends"],
-  ["build", "built", "לבנות", "builded", "builds"],
-  ["drive", "drove", "לנהוג", "drived", "drives"]
+  ["go", "went", "ללכת"],
+  ["eat", "ate", "לאכול"],
+  ["see", "saw", "לראות"],
+  ["have", "had", "יש / היה לו"],
+  ["do", "did", "לעשות"],
+  ["make", "made", "להכין / ליצור"],
+  ["buy", "bought", "לקנות"],
+  ["take", "took", "לקחת"],
+  ["come", "came", "לבוא"],
+  ["get", "got", "לקבל"],
+  ["give", "gave", "לתת"],
+  ["find", "found", "למצוא"],
+  ["drink", "drank", "לשתות"],
+  ["run", "ran", "לרוץ"],
+  ["swim", "swam", "לשחות"],
+  ["sing", "sang", "לשיר"],
+  ["sit", "sat", "לשבת"],
+  ["stand", "stood", "לעמוד"],
+  ["sleep", "slept", "לישון"],
+  ["wake", "woke", "להתעורר"],
+  ["write", "wrote", "לכתוב"],
+  ["read", "read", "לקרוא"],
+  ["speak", "spoke", "לדבר"],
+  ["say", "said", "לומר"],
+  ["tell", "told", "לספר"],
+  ["hear", "heard", "לשמוע"],
+  ["know", "knew", "לדעת"],
+  ["think", "thought", "לחשוב"],
+  ["bring", "brought", "להביא"],
+  ["catch", "caught", "לתפוס"],
+  ["teach", "taught", "ללמד"],
+  ["feel", "felt", "להרגיש"],
+  ["leave", "left", "לעזוב"],
+  ["meet", "met", "לפגוש"],
+  ["break", "broke", "לשבור"],
+  ["choose", "chose", "לבחור"],
+  ["put", "put", "לשים"],
+  ["cut", "cut", "לחתוך"],
+  ["fly", "flew", "לעוף"],
+  ["fall", "fell", "ליפול"],
+  ["draw", "drew", "לצייר"],
+  ["forget", "forgot", "לשכוח"],
+  ["begin", "began", "להתחיל"],
+  ["win", "won", "לנצח"],
+  ["lose", "lost", "לאבד / להפסיד"],
+  ["send", "sent", "לשלוח"],
+  ["build", "built", "לבנות"],
+  ["drive", "drove", "לנהוג"]
 ];
 const quizzes={
 timeGame:[],
@@ -417,7 +433,6 @@ regularGame:[
   {"q": "try", "choices": ["tryed", "tryd", "tried"], "answer": "tried", "hint": "לפני y יש עיצור. החליפו את y ב־ied.", "why": "⁦try → tried⁩. מחליפים את y ב־ied."},
   {"q": "plan", "choices": ["planed", "planned", "plan"], "answer": "planned", "hint": "כמו ב־stop, מכפילים את האות האחרונה לפני ‎-ed.", "why": "⁦plan → planned⁩. מכפילים את n ומוסיפים ‎-ed."}
 ],
-irregularGame:[],
 practice1:[
   {"parts": ["She", "played", "yesterday"], "choices": ["played", "yesterday", "She"], "answer": "She played yesterday", "hint": "התחילו ב־She, ואז הוסיפו את הפעולה ואת הזמן.", "why": "⁦She played yesterday.⁩"},
   {"parts": ["We", "visited Grandma", "last week"], "choices": ["last week", "visit Grandma", "We", "visited Grandma"], "answer": "We visited Grandma last week", "hint": "קודם מי, אחר כך מה עשינו, ולבסוף מתי.", "why": "⁦We visited Grandma last week.⁩"},
@@ -447,9 +462,6 @@ const cueFeedback={past:'הביטוי מציין זמן שכבר עבר.', habit
 const timeQuestions=timeCueBank.map(([q,meaning,kind])=>({
  q, choices:['⏳ עבר','☀️ הווה'], answer:kind==='past'?'⏳ עבר':'☀️ הווה', hint:'הפירוש הוא '+meaning+'.', why:cueFeedback[kind]
 }));
-const verbQuestions=irregularBank.map(([q,answer,meaning,distractor,present])=>({
- q, answer, choices:[answer,distractor,present], hint:'הפירוש הוא '+meaning+'. צורת העבר מתחילה ב־'+answer[0]+'.', why:'⁦'+q+' → '+answer+'⁩'
-}));
 
 function shuffled(items){
  const copy=[...items];
@@ -462,32 +474,28 @@ function shuffled(items){
 const pastCues=timeQuestions.slice(0,12);
 const habitCues=timeQuestions.slice(12,20);
 const nowCues=timeQuestions.slice(20);
-let pastDeck=[],habitDeck=[],nowDeck=[],verbDeck=[];
-function startRound(type){
- if(type==='timeGame'){
-   if(!pastDeck.length)pastDeck=shuffled(pastCues);
-   if(!habitDeck.length)habitDeck=shuffled(habitCues);
-   if(!nowDeck.length)nowDeck=shuffled(nowCues);
-   quizzes.timeGame=shuffled([...pastDeck.splice(0,4),...habitDeck.splice(0,2),...nowDeck.splice(0,2)]);
- }else{
-   if(!verbDeck.length)verbDeck=shuffled(verbQuestions);
-   quizzes.irregularGame=verbDeck.splice(0,6).map(item=>({...item,choices:shuffled(item.choices)}));
- }
- Object.assign(state[type],{i:0,correct:0,wrong:false,answered:false,finished:false});
+let pastDeck=[],habitDeck=[],nowDeck=[];
+function startRound(){
+ if(!pastDeck.length)pastDeck=shuffled(pastCues);
+ if(!habitDeck.length)habitDeck=shuffled(habitCues);
+ if(!nowDeck.length)nowDeck=shuffled(nowCues);
+ quizzes.timeGame=shuffled([...pastDeck.splice(0,4),...habitDeck.splice(0,2),...nowDeck.splice(0,2)]);
+ Object.assign(state.timeGame,{i:0,correct:0,wrong:false,answered:false,finished:false});
 }
 
 function showStage(stage){
  const t=stages.includes(stage)?stage:'intro';
  for(const name of stages)document.getElementById(name).classList.toggle('hidden',name!==t);
  document.querySelectorAll('[data-step]').forEach(a=>{const active=a.dataset.step===(quizNavigation[t]?.lesson ?? t);a.classList.toggle('current',active);if(active)a.setAttribute('aria-current','step');else a.removeAttribute('aria-current')});
- if((t==='timeGame'||t==='irregularGame')&&(!quizzes[t].length||state[t].finished))startRound(t);
+ if(t==='timeGame'&&(!quizzes.timeGame.length||state.timeGame.finished))startRound();
+ if(t==='irregularGame'&&!memory.cards.length)startMemory();
  if(quizzes[t])renderQuiz(t);
  history.replaceState(null,'','?stage='+t);
  window.scrollTo({top:0,behavior:'smooth'});
 }
 function renderQuiz(type){
  const st=state[type],q=quizzes[type][st.i];if(!q)return;
- if(type==='irregularGame'){
+ if(type==='timeGame'){
    resetRunner();
    document.getElementById('runTrack').dataset.world=st.i%4;
  }
@@ -503,7 +511,7 @@ function renderQuiz(type){
  if(type!=='practice1'){
  options.replaceChildren();
  for(const choice of q.choices){const b=document.createElement('button');b.className='quiz-choice';b.textContent=choice;b.lang=type==='timeGame'?'he':'en';b.type='button';b.disabled=st.answered;b.onclick=()=>choose(type,choice,b);options.appendChild(b)}
- if(type==='irregularGame')options.querySelectorAll('button').forEach(b=>{
+ if(type==='timeGame')options.querySelectorAll('button').forEach(b=>{
    b.classList.toggle('correct',st.answered&&b.textContent===q.answer);
  });
  }
@@ -515,7 +523,7 @@ function renderQuiz(type){
 }
 function choose(type,choice,button){
  const st=state[type],q=quizzes[type][st.i];if(st.answered)return;
- if(type==='irregularGame')animateRunner(button,choice===q.answer);
+ if(type==='timeGame')animateRunner(button,choice===q.answer);
  if(choice!==q.answer){st.wrong=true;button.classList.add('wrong');document.getElementById(type+'Feedback').textContent='🔴 כמעט! נסו שוב — אפשר לפתוח רמז 💜';document.getElementById(type+'Hint').classList.remove('hidden');button.disabled=true;return}
  st.answered=true;st.correct++;
  button?.classList.add('correct');
@@ -538,15 +546,17 @@ function resetRunner(){
 function animateRunner(button,correct){
  const track=document.getElementById('runTrack');
  const sprite=track.firstElementChild;
- const index=[...button.parentElement.children].indexOf(button);
+ const bounds=button.getBoundingClientRect();
+ const lane=track.getBoundingClientRect();
+ const center=bounds.left+bounds.width/2-lane.left;
  clearTimeout(runnerTimer);
- track.style.setProperty('--gate-x', [17,50,83][index]+'%');
+ track.style.setProperty('--gate-x', center+'px');
  sprite.className='';
  void sprite.offsetWidth;
  sprite.className=correct?'enter':'bounce';
  if(!correct)runnerTimer=setTimeout(resetRunner,520);
 }
-document.getElementById('irregularGameOptions').addEventListener('keydown',event=>{
+document.getElementById('timeGameOptions').addEventListener('keydown',event=>{
  const steps={ArrowLeft:-1,ArrowRight:1};
  const step=steps[event.key];
  if(!step)return;
@@ -556,6 +566,92 @@ document.getElementById('irregularGameOptions').addEventListener('keydown',event
  event.preventDefault();
  gates[(index+step+gates.length)%gates.length].focus();
 });
+
+const memory = {deck:[], cards:[], first:null, resolving:false, matches:0, turns:0};
+const memoryGrid = document.getElementById('memoryCards');
+const pairCount = 6;
+
+function startMemory(){
+ if(!memory.deck.length)memory.deck=shuffled(irregularBank);
+ const pairs=memory.deck.splice(0,pairCount);
+ memory.cards=shuffled(pairs.flatMap(([base,past,meaning],pair)=>[
+   {pair,word:base,kind:'צורת בסיס',meaning},
+   {pair,word:past,kind:'עבר',meaning}
+ ]));
+ Object.assign(memory,{first:null,resolving:false,matches:0,turns:0});
+ memoryGrid.replaceChildren();
+ for(const [index,card] of memory.cards.entries()){
+   const button=document.createElement('button');
+   button.type='button';
+   button.className='memory-card';
+   button.textContent='✦';
+   button.setAttribute('aria-label','הפיכת קלף '+(index+1));
+   button.onclick=()=>flipMemoryCard(index);
+   memoryGrid.appendChild(button);
+ }
+ document.getElementById('memoryFeedback').textContent='';
+ document.getElementById('memoryActions').classList.add('hidden');
+ updateMemoryScore();
+}
+
+function updateMemoryScore(){
+ document.getElementById('memoryCount').textContent='זוגות '+memory.matches+' / '+pairCount;
+ document.getElementById('memoryTurns').textContent='ניסיונות '+memory.turns;
+}
+
+function flipMemoryCard(index){
+ const card=memory.cards[index];
+ if(memory.resolving||card.faceUp||card.matched)return;
+ const button=memoryGrid.children[index];
+ const label=document.createElement('small');
+ const word=document.createElement('span');
+ label.textContent=card.kind;
+ label.lang='he';
+ word.textContent=card.word;
+ word.lang='en';
+ button.replaceChildren(label,word);
+ button.classList.add('face-up');
+ button.setAttribute('aria-label',card.word+' · '+card.kind);
+ button.setAttribute('aria-disabled','true');
+ card.faceUp=true;
+ if(memory.first===null){
+   memory.first=index;
+   return;
+ }
+
+ const firstIndex=memory.first;
+ const first=memory.cards[firstIndex];
+ memory.first=null;
+ memory.turns++;
+ const feedback=document.getElementById('memoryFeedback');
+ if(first.pair===card.pair){
+   first.matched=card.matched=true;
+   memoryGrid.children[firstIndex].classList.add('matched');
+   button.classList.add('matched');
+   memory.matches++;
+   feedback.textContent=(memory.matches===pairCount?'🏆 מצאתם את כל הזוגות! ':'✨ מצאתם זוג! ')+card.meaning;
+   if(memory.matches===pairCount)document.getElementById('memoryActions').classList.remove('hidden');
+ }else{
+   feedback.textContent='הקלפים לא זוג. נסו לזכור איפה הם.';
+   memory.resolving=true;
+   window.setTimeout(()=>{
+     for(const position of [firstIndex,index]){
+       const previous=memoryGrid.children[position];
+       memory.cards[position].faceUp=false;
+       previous.classList.remove('face-up');
+       previous.textContent='✦';
+       previous.setAttribute('aria-label','הפיכת קלף '+(position+1));
+       previous.removeAttribute('aria-disabled');
+     }
+     memory.resolving=false;
+   },1000);
+ }
+ updateMemoryScore();
+}
+document.getElementById('memoryReplay').onclick=()=>{
+ startMemory();
+ document.getElementById('memoryTitle').focus();
+};
 
 function renderBuilder(st,q){
  const gate=document.getElementById('builderGate');
