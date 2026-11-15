@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>סדנת הרובוטים | PLAYWISE</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#101d30;color:#f7f5ec;font-family:Arial,sans-serif;line-height:1.55}
+main{max-width:900px;margin:auto;padding:18px 16px 40px}a{color:#abefe3}h1,h2,p{margin:0 0 12px}h1{font-size:clamp(32px,7vw,56px);line-height:1.12}h2{color:#182c41}
+.hero{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;padding:24px 0}.hero p{max-width:42ch;color:#d0dfef}.robot{position:relative;width:clamp(74px,19vw,144px);aspect-ratio:1;border:6px solid #7293a6;border-radius:24%;background:#263d54;box-shadow:0 7px 0 #0b1322;display:grid;place-items:center}
+.robot:before{content:"";position:absolute;top:-19px;width:9px;height:15px;border-radius:5px;background:#93a9bd}.robot-face{background:#142638;border-radius:12px;width:75%;height:46%;display:flex;justify-content:center;align-items:center;gap:20%}.eye{width:20%;aspect-ratio:1;border-radius:50%;background:#5a6e83}.ready .eye{background:#7af6cf;box-shadow:0 0 18px #7af6cf}.ready:before{background:#ffcf77}
+.progress{display:flex;gap:6px;margin:0 0 15px;padding:0;list-style:none;flex-wrap:wrap}.progress li{padding:5px 12px;border-radius:20px;background:#24374e;color:#e5edf5}.progress [aria-current=step]{background:#81ebd4;color:#122d31;font-weight:bold}
+.panel{background:#fff9eb;color:#243449;border-radius:20px;padding:clamp(16px,4vw,30px);box-shadow:0 7px 0 #0a1422}.panel[hidden],button[hidden]{display:none}
+button{font:inherit;font-weight:bold;cursor:pointer;border-radius:12px;padding:10px 15px;border:2px solid #778ea2;background:white;color:#22384e;min-height:44px}button.primary{background:#11605a;color:#fff;border-color:#11605a}button:focus-visible,a:focus-visible{outline:3px solid #cb7729;outline-offset:3px}button[aria-current=true]{border-color:#11605a;background:#d0f6eb}button:disabled{cursor:default}.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
+.letter-tabs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px;margin-bottom:15px}.letter-tabs button{padding:5px}.example{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:20px;background:#e8f3ee;padding:15px;border-radius:14px}.pair{font-size:clamp(42px,12vw,80px);line-height:1.1}.word{font-size:23px;font-weight:bold}output{display:block;min-height:1.65em;margin-top:10px;font-weight:bold}.dial{background:#142b3b;border:4px solid #437884;border-radius:30px;padding:14px;color:#fff;max-width:390px;margin:12px auto}.dial-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;direction:ltr}.dial-grid button{background:#e1fbf2;border-color:#77bcb2;min-height:52px;font-size:22px}.dial-grid .correct{background:#8cf5bd}.dial-grid .wrong{background:#ffd9ca}.dial p{text-align:center}.compass{height:92px;width:92px;margin:0 auto 8px;border:3px solid #7bdcca;border-radius:50%;display:grid;place-items:center;background:repeating-conic-gradient(#214453 0deg 29deg,#437a82 29deg 30deg);box-shadow:inset 0 0 0 5px #183340}.compass span{font-size:35px;line-height:1;color:#ffce78;transform:rotate(var(--heading,0deg));transition:transform .45s ease}.dial-grid button:disabled{opacity:1}@media(prefers-reduced-motion:reduce){.compass span{transition:none}}.trace{position:relative;margin:10px 0;background:white;border:2px solid #abbccb;border-radius:12px;max-width:620px}
+.trace svg{display:block;width:100%;height:auto;touch-action:none;cursor:crosshair}.guide{fill:none;stroke:#596b7d;stroke-width:1.7;stroke-dasharray:3 4;stroke-linecap:round;stroke-linejoin:round}.guide.model{stroke-dasharray:none;stroke:#162a43}.ink{fill:none;stroke:#263c78;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round}.pencil{position:absolute;pointer-events:none;transform:translate(-8%,-91%);font-size:30px;line-height:1}.rule{stroke:#a5b6c8;stroke-width:1}.rule.middle{stroke-dasharray:3 4}.rule.base{stroke:#5d809d}.status{color:#285752}
+</style>
+</head>
+<body><main>
+<a href="level1.html">↩ לשלב האותיות והצלילים</a>
+<header class="hero"><div><h1>סדנת הרובוטים</h1><p id="mission">הרובוט מושבת. הכירו את האותיות A–F, כוונו את מצפן הצלילים והפעילו את הלוח הראשון שלו.</p></div><div id="robot" class="robot" role="img" aria-label="הרובוט כבוי"><div class="robot-face"><i class="eye"></i><i class="eye"></i></div></div></header>
+<ol class="progress"><li id="learnStep" aria-current="step">מכירים</li><li id="gameStep">משחקים</li><li id="writeStep">כותבים</li></ol>
+<section class="panel" id="learn"><h2 tabindex="-1">שם האות והצליל שלה</h2>
+<p>לאות יש שם, ויכולים להיות לה כמה צלילים. כאן נכיר צליל אחד של כל אות. האות הגדולה והקטנה הן שתי צורות של אותה אות.</p>
+<div id="letterTabs" class="letter-tabs" role="group" aria-label="בחירת אות"></div>
+<div class="example"><strong id="pair" class="pair" dir="ltr" lang="en"></strong><div><div id="word" class="word" lang="en" dir="ltr"></div><div id="explain"></div><div id="soundTip"></div></div></div>
+<div class="controls"><button id="letterSound">🔊 שם האות</button><button id="wordSound">🔊 המילה לדוגמה</button><button id="nextLetter" class="primary"></button></div>
+</section>
+<section class="panel" id="game" hidden><h2 tabindex="-1">מצפן הצלילים</h2><p>האזינו למילה או קראו את הרמז. בחרו את האות ששומעים בתחילת המילה כדי לכוון את המצפן.</p>
+<div class="dial"><div class="compass" aria-hidden="true"><span id="needle">▲</span></div><p id="clue"></p><div id="choices" class="dial-grid" role="group" aria-label="אותיות במצפן"></div></div>
+<output id="gameFeedback"></output>
+<div class="controls"><button id="hearClue">🔊 לשמוע את המילה</button><button class="primary" id="nextClue" hidden></button><button id="review">חזרה לאותיות</button></div></section>
+<section class="panel" id="write" hidden><h2 id="writeTitle" tabindex="-1"></h2><p>האות הראשונה היא דוגמה. התחילו בנקודה הירוקה של אחת הדוגמאות המקווקוות ועברו עליה בעיפרון. השתמשו באצבע או בעכבר.</p>
+<div class="trace" id="surface">
+<svg id="sheet" viewBox="0 0 320 126" aria-label="משטח כתיבה עם אותיות מקווקוות">
+<path class="rule" d="M6 26H314M6 112H314"/><path class="rule middle" d="M6 49H314"/><path class="rule base" d="M6 91H314"/>
+<g id="template"></g><g id="drawing"></g></svg><span id="pencil" class="pencil" aria-hidden="true" hidden>✏️</span></div>
+<output id="traceFeedback" class="status"></output>
+<div class="controls"><button id="erase">מחיקה</button><button id="prevTrace">חזרה</button><button id="nextTrace" class="primary">הבא</button></div></section>
+<section class="panel" id="done" hidden><h2 tabindex="-1">הלוח הראשון נדלק!</h2><p>הרובוט פקח עיניים. הכרתם את האותיות A–F, כיוונתם את המצפן ותרגלתם כתיבה.</p><button class="primary" id="replay">לתרגל שוב</button></section>
+<output id="audioFeedback" aria-live="polite"></output>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+const letters = [
+ {letter:'A',word:'apple',he:'תפוח',icon:'🍎',sound:'/æ/',upper:'M10 91L32 26L54 91 M18 68H46',lower:'M49 58 C38 42 12 48 12 70 C12 95 39 97 49 79 M49 49V91'},
+ {letter:'B',word:'ball',he:'כדור',icon:'⚽',sound:'/b/',upper:'M13 26V91 M13 26H31C57 26 57 57 31 57H13 M31 57C63 57 63 91 31 91H13',lower:'M13 26V91 M13 60C24 42 52 47 52 70C52 95 24 97 13 80'},
+ {letter:'C',word:'cat',he:'חתול',icon:'🐱',sound:'/k/',upper:'M55 36C38 13 11 31 11 58C11 85 37 104 55 82',lower:'M51 56C36 40 13 50 13 70C13 91 37 98 51 84'},
+ {letter:'D',word:'dog',he:'כלב',icon:'🐶',sound:'/d/',upper:'M13 26V91 M13 26H27C66 26 66 91 27 91H13',lower:'M50 26V91 M50 60C39 42 12 47 12 70C12 95 39 97 50 80'},
+ {letter:'E',word:'egg',he:'ביצה',icon:'🥚',sound:'/ɛ/',upper:'M13 26V91 M13 26H53 M13 57H45 M13 91H53',lower:'M13 70H51C51 43 13 43 13 70C13 92 37 98 52 83'},
+ {letter:'F',word:'fish',he:'דג',icon:'🐟',sound:'/f/',upper:'M13 26V91 M13 26H53 M13 57H45',lower:'M48 29C36 22 26 28 26 42V91 M12 50H44'}
+];
+const soundTips = [
+ 'פותחים את הפה לצליל הקצר ששומעים בתחילת apple.',
+ 'מצמידים את השפתיים ופותחים אותן בצליל קצר, כמו בתחילת ball.',
+ 'במילה cat האות C נשמעת כמו ק׳. במילים אחרות היא יכולה להישמע אחרת.',
+ 'נוגעים עם קצה הלשון מאחורי השיניים העליונות ומשחררים, כמו בתחילת dog.',
+ 'פותחים את הפה מעט לצליל הקצר ששומעים בתחילת egg.',
+ 'נוגעים עם השיניים העליונות בשפה התחתונה ונושפים בעדינות, כמו בתחילת fish.'
+];
+const lesson = ['learn','game','write','done'];
+let current = 0, round = [], turn = 0, answered = false, trace = 0;
+let pointer = null, stroke = null, guides = [], lastPoint = null;
+const ns = 'http://www.w3.org/2000/svg';
+const letterLabel = data => data.letter + data.letter.toLowerCase();
+function show(stage){
+ for(const name of lesson){
+  $(name).hidden = name !== stage;
+  const step = $(name+'Step');
+  if(!step)continue;
+  if(name===stage)step.setAttribute('aria-current','step');
+  else step.removeAttribute('aria-current');
+ }
+ $('audioFeedback').textContent = '';
+ $(stage).querySelector('h2').focus({preventScroll:true});
+}
+function speak(text){
+ if(!('speechSynthesis' in window)){
+  $('audioFeedback').textContent='השמעה אינה זמינה בדפדפן הזה. אפשר להמשיך לפי הדוגמה או התמונה.';
+  return;
+ }
+ speechSynthesis.cancel();
+ const speech = new SpeechSynthesisUtterance(text);
+ speech.lang='en-US';
+ speech.rate=.78;
+ speech.onerror=event=>{
+  if(!['canceled','interrupted'].includes(event.error)) $('audioFeedback').textContent='ההשמעה אינה זמינה כרגע. אפשר להשתמש ברמז שעל המסך.';
+ };
+ speechSynthesis.speak(speech);
+}
+function renderLetter(){
+ const data=letters[current];
+ $('pair').textContent=letterLabel(data);
+ $('word').textContent=data.icon+' '+data.word;
+ $('explain').textContent=data.he+' · צליל ראשון '+data.sound;
+ $('soundTip').textContent=soundTips[current];
+ $('letterTabs').querySelectorAll('button').forEach((button,index)=>button.setAttribute('aria-current',String(index===current)));
+ $('nextLetter').textContent=current===letters.length-1?'למצפן הצלילים':'לאות הבאה';
+}
+letters.forEach((data,index)=>{
+ const button=document.createElement('button');
+ button.textContent=letterLabel(data);
+ button.lang='en';
+ button.onclick=()=>{current=index;renderLetter();};
+ $('letterTabs').append(button);
+});
+$('letterSound').onclick=()=>speak(letters[current].letter);
+$('wordSound').onclick=()=>speak(letters[current].word);
+$('nextLetter').onclick=()=>{
+ if(current<letters.length-1){current++;renderLetter();return;}
+ round=[...letters];
+ for(let i=round.length-1;i>0;i--){
+  const j=Math.floor(Math.random()*(i+1));
+  [round[i],round[j]]=[round[j],round[i]];
+ }
+ turn=0;
+ show('game');
+ renderGame();
+};
+$('review').onclick=()=>{show('learn');renderLetter();};
+function renderGame(){
+ answered=false;
+ const data=round[turn];
+ $('clue').textContent=(turn+1)+' / '+round.length+' · '+data.icon+' '+data.he;
+ $('gameFeedback').textContent='';
+ $('nextClue').hidden=true;
+ $('needle').style.setProperty('--heading',(turn*60)+'deg');
+ $('choices').replaceChildren();
+ for(const letter of letters){
+  const button=document.createElement('button');
+  button.textContent=letterLabel(letter);
+  button.lang='en';
+  button.onclick=()=>{
+   if(answered)return;
+   if(letter!==data){
+    button.classList.add('wrong');
+    $('gameFeedback').textContent='כמעט! האזינו שוב לצליל הראשון.';
+    return;
+   }
+   answered=true;
+   button.classList.add('correct');
+   $('needle').style.setProperty('--heading',((turn+1)*60)+'deg');
+   $('choices').querySelectorAll('button').forEach(choice=>choice.disabled=true);
+   $('gameFeedback').textContent='נכון! '+data.word+' מתחילה ב־'+data.letter+'.';
+   $('nextClue').textContent=turn===round.length-1?'לעיפרון וללוח הבקרה':'לצליל הבא';
+   $('nextClue').hidden=false;
+  };
+  $('choices').append(button);
+ }
+}
+$('hearClue').onclick=()=>speak(round[turn].word);
+$('nextClue').onclick=()=>{
+ if(!answered)return;
+ if(++turn<round.length){renderGame();return;}
+ trace=0;
+ show('write');
+ renderTrace();
+};
+function renderTrace(){
+ const data=letters[Math.floor(trace/3)];
+ const mode=trace%3;
+ const forms=[data.letter,data.letter.toLowerCase(),letterLabel(data)];
+ $('writeTitle').textContent='כותבים '+forms[mode]+' · '+(trace+1)+' / '+letters.length*3;
+ $('nextTrace').textContent=trace===letters.length*3-1?'להדליק את הלוח':'לדוגמה הבאה';
+ const group=$('template');
+ group.replaceChildren();
+ guides=[];
+ for(const offset of [14,118,222]){
+  const paths=mode===0?[[data.upper,0,1]]:mode===1?[[data.lower,0,1]]:[[data.upper,0,.72],[data.lower,45,.72]];
+  for(const [shape,dx,scale] of paths){
+   const path=document.createElementNS(ns,'path');
+   path.setAttribute('class',offset===14?'guide model':'guide');
+   path.setAttribute('d',shape);
+   const left=offset+dx, top=91*(1-scale);
+   path.setAttribute('transform','translate('+left+' '+top+') scale('+scale+')');
+   group.append(path);
+   const length=path.getTotalLength();
+   const points=Array.from({length:32},(_,i)=>{
+    const point=path.getPointAtLength(length*i/31);
+    return [left+point.x*scale,top+point.y*scale];
+   });
+   if(offset===14)continue;
+   guides.push({offset,points,marks:new Set()});
+   const dot=document.createElementNS(ns,'circle');
+   dot.setAttribute('cx',points[0][0]);dot.setAttribute('cy',points[0][1]);dot.setAttribute('r',2.5);dot.setAttribute('fill','#138773');
+   group.append(dot);
+  }
+ }
+ erase();
+}
+function erase(){
+ if(pointer!==null&&$('sheet').hasPointerCapture(pointer))$('sheet').releasePointerCapture(pointer);
+ pointer=null;stroke=null;
+ for(const guide of guides)guide.marks.clear();
+ $('drawing').replaceChildren();
+ $('pencil').hidden=true;
+ $('traceFeedback').textContent='';
+}
+function draw(event){
+ const sheet=$('sheet');
+ const screen=sheet.getScreenCTM();
+ if(!screen)return;
+ const point=sheet.createSVGPoint();
+ point.x=event.clientX;point.y=event.clientY;
+ const {x,y}=point.matrixTransform(screen.inverse());
+ stroke.points.appendItem(pointForInk(sheet,x,y));
+ const {x:fromX,y:fromY}=lastPoint || {x,y};
+ const dx=x-fromX,dy=y-fromY,lengthSquared=dx*dx+dy*dy;
+ for(const {points,marks} of guides){
+  points.forEach(([gx,gy],index)=>{
+   const fraction=lengthSquared?Math.max(0,Math.min(1,((gx-fromX)*dx+(gy-fromY)*dy)/lengthSquared)):0;
+   if(Math.hypot(gx-fromX-fraction*dx,gy-fromY-fraction*dy)<7)marks.add(index);
+  });
+ }
+ lastPoint={x,y};
+ const bounds=$('surface').getBoundingClientRect();
+ $('pencil').style.left=(event.clientX-bounds.left)+'px';
+ $('pencil').style.top=(event.clientY-bounds.top)+'px';
+}
+function pointForInk(sheet,x,y){
+ const point=sheet.createSVGPoint();
+ point.x=x;point.y=y;
+ return point;
+}
+$('sheet').addEventListener('pointerdown',event=>{
+ if(pointer!==null||event.button!==0)return;
+ lastPoint=null;
+ pointer=event.pointerId;
+ $('sheet').setPointerCapture(pointer);
+ stroke=document.createElementNS(ns,'polyline');
+ stroke.setAttribute('class','ink');
+ $('drawing').append(stroke);
+ $('pencil').hidden=false;
+ draw(event);
+});
+$('sheet').addEventListener('pointermove',event=>{if(pointer===event.pointerId)draw(event);});
+for(const name of ['pointerup','pointercancel','lostpointercapture']){
+ $('sheet').addEventListener(name,event=>{
+  if(pointer!==event.pointerId)return;
+  if(name==='pointerup')draw(event);
+  pointer=null;stroke=null;$('pencil').hidden=true;
+  if(hasTracedExample()) $('traceFeedback').textContent='יפה! אפשר להמשיך לדוגמה הבאה.';
+ });
+}
+$('erase').onclick=erase;
+$('prevTrace').onclick=()=>{if(trace>0){trace--;renderTrace();}else{turn=round.length-1;show('game');renderGame();}};
+function hasTracedExample(){
+ return [118,222].some(offset=>guides.filter(guide=>guide.offset===offset)
+  .every(guide=>guide.marks.size>=guide.points.length*.68));
+}
+$('nextTrace').onclick=()=>{
+ if(!hasTracedExample()){
+  $('traceFeedback').textContent='עברו על הקווים של אחת הדוגמאות המקווקוות לפני שממשיכים.';
+  return;
+ }
+ if(++trace<letters.length*3){renderTrace();return;}
+ $('robot').classList.add('ready');
+ $('robot').setAttribute('aria-label','הלוח הראשון של הרובוט פעיל');
+ show('done');
+};
+$('replay').onclick=()=>{
+ current=0;
+ $('robot').classList.remove('ready');
+ $('robot').setAttribute('aria-label','הרובוט כבוי');
+ show('learn');
+ renderLetter();
+};
+renderLetter();
+</script></body></html>
