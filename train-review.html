@@ -47,16 +47,31 @@ function advance(){
  if(index>=letters.length){state='won';updateHUD();showOverlay('🏆 כל הכבוד!','חציתם את כל המסילות והגעתם לכל האותיות מ־A עד '+letters.at(-1)+'!','לשחק שוב');return}
  resetRoad();stagePause=.9;
 }
+function trainHitAt(crossX,fromY,toY){
+ const low=Math.min(fromY,toY),high=Math.max(fromY,toY);
+ return trains.some(t=>rows[t.lane]>=low-18&&rows[t.lane]<=high+18&&Math.abs(crossX-t.x)<t.width/2+20);
+}
+function loseLife(){
+ lives--;updateHUD();
+ if(lives<=0){fail();return}
+ x=W/2;y=startY;invincible=1.2;stagePause=.45;
+}
 function move(direction){
  if(state!=='playing'||stagePause>0)return;
- if(direction==='left')x=Math.max(35,x-72);
- if(direction==='right')x=Math.min(W-35,x+72);
- if(direction==='up')y=Math.max(goalY,y-step);
- if(direction==='down')y=Math.min(startY,y+step);
+ const oldX=x,oldY=y;
+ let newX=x,newY=y;
+ if(direction==='left')newX=Math.max(35,x-72);
+ if(direction==='right')newX=Math.min(W-35,x+72);
+ if(direction==='up')newY=Math.max(goalY,y-step);
+ if(direction==='down')newY=Math.min(startY,y+step);
+ // חצייה מתבצעת בקפיצות של 112 פיקסלים: בודקים את כל נתיב התנועה,
+ // ולא רק את נקודת הנחיתה שבין המסילות.
+ if(invincible<=0&&trainHitAt(newX,oldY,newY)){loseLife();return}
+ x=newX;y=newY;
  if(y<=goalY+10){
   const slot=Math.max(0,Math.min(2,Math.round((x-110)/220)));
   if(choices[slot]===letters[index]){stagePause=.6;state='transition';setTimeout(()=>{if(state==='transition'){state='playing';advance()}},650)}
-  else {lives--;updateHUD();if(lives<=0)fail();else {x=W/2;y=startY;invincible=1.2;stagePause=.5}}
+  else loseLife();
  }
 }
 document.querySelectorAll('[data-move]').forEach(b=>b.onclick=()=>move(b.dataset.move));
@@ -137,7 +152,7 @@ function tick(timestamp){
   for(const t of trains){t.x+=t.dir*t.speed*dt;if(t.dir>0&&t.x>W+t.width)t.x=-t.width;if(t.dir<0&&t.x< -t.width)t.x=W+t.width}
   if(state==='playing'&&invincible<=0){
    for(const t of trains){if(Math.abs(y-rows[t.lane])<34&&Math.abs(x-t.x)<t.width/2+16){
-    lives--;invincible=1.6;x=W/2;y=startY;updateHUD();if(lives<=0)fail();break;
+    loseLife();break;
    }}
   }
  }
