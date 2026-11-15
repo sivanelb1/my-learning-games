@@ -116,6 +116,27 @@
 .memory-card small{font-size:12px;margin-bottom:4px}
 .memory-card.matched{background:#b8f2dc;border-color:#59cb9f;color:#154d40}
 @media(max-width:480px){.memory-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.memory-card{min-height:69px}}
+.album-panel{background:#211936;color:#fff3f0;border:1px solid #765e9c}
+.album-panel h2{color:#ffddac}
+.album-panel .quiz-meta{color:#f5dcfa}
+.album-panel .quiz-track{background:#4a3560}
+.album-progress{display:flex;justify-content:center;gap:clamp(4px,1.4vw,10px);margin:14px auto;direction:ltr}
+.album-progress span{display:grid;place-items:center;flex:0 1 44px;min-height:36px;border-radius:7px;background:#49385f;filter:grayscale(1);opacity:.72}
+.album-progress .restored{filter:none;opacity:1;background:#64467b}
+.album-progress span[aria-current="true"]{outline:2px solid #ffcf88;outline-offset:2px}
+.album-photo{margin:16px auto;max-width:550px;padding:10px;background:#fff5e3;border-radius:14px;box-shadow:0 8px 28px #08061088}
+.album-scene{position:relative;isolation:isolate;overflow:hidden;min-height:clamp(140px,31vw,220px);border-radius:8px;display:grid;grid-template-columns:1fr 1fr;align-items:end;padding:18px 10px;filter:grayscale(1);transition:filter .65s ease;
+ background:radial-gradient(circle at 78% 20%,#fff1a2 0 12px,transparent 13px),linear-gradient(#82d7f5 65%,#80cfa4 65%)}
+.album-scene[data-scene="beach"]{background:linear-gradient(#a9effa 43%,#56bedb 43% 62%,#f7cf8d 62%)}
+.album-scene[data-scene="school"]{background:linear-gradient(#f7c0a7,#f9e9ba 65%,#a2cd92 65%)}
+.album-scene[data-scene="library"]{background:repeating-linear-gradient(90deg,#ddb98c 0 30px,#e9cea4 30px 32px)}
+.album-place{font-size:clamp(62px,14vw,120px);line-height:1}
+.album-people{font-size:clamp(30px,7vw,60px);line-height:1.2}
+.album-photo.restored .album-scene{filter:none}
+.album-photo .quiz-question{margin:0;background:transparent;padding:10px 4px 5px;line-height:1.35}
+.album-panel .quiz-options{grid-template-columns:repeat(2,minmax(0,1fr));max-width:440px}
+@media(prefers-reduced-motion:reduce){.album-scene{transition:none}}
+
 </style></head><body><main class="wrap"><a class="back" href="level5.html">↩️ חזרה למפת הגלקסיה</a><nav class="steps" aria-label="שלבי כוכב 11"><a href="?stage=intro" data-step="intro">🌀 פתיחה</a><a href="grammar-planet-11-gates.html">🚪 שערי זמן</a><a href="?stage=positive" data-step="positive">🕰️ מילות זמן</a><a href="?stage=regular" data-step="regular">🛠️ פעלים רגילים</a><a href="?stage=irregular" data-step="irregular">✨ פעלים מיוחדים</a><a href="?stage=sentence" data-step="sentence">📚 משפט חיובי</a><a href="?stage=practice1" data-step="practice1">✨ בונים משפט</a><a href="?stage=negative" data-step="negative">🚫 שלילה</a><a href="?stage=question" data-step="question">❓ שאלות</a><a href="?stage=be" data-step="be">🧠 WAS / WERE</a><a href="?stage=finish" data-step="finish">🏆 סיום</a></nav><header><div class="orb">🌀⏳</div><h1>PAST PORTAL</h1><p>שער העבר · כוכב 11 בגלקסיית הדקדוק<br>🌟 המסע אל מה שקרה אתמול!</p></header>
 <section id="intro" class="panel"><h2>👽 זיגי מצא שער לזמן אחר!</h2><div class="ziggy">זיגי: עד עכשיו סיפרנו מה קורה <b>בדרך כלל</b> ומה קורה <b>ממש עכשיו</b>. אבל איך נספר על משהו <b>שכבר קרה ונגמר</b>? למשל, מה עשינו אתמול או בשבוע שעבר? בשביל זה יש לנו זמן חדש: <b>PAST SIMPLE!</b> 🕰️</div><div class="example-grid" style="margin-top:19px"><article class="example-card"><strong>☀️ PRESENT SIMPLE</strong><div class="sentence">Shira plays football every day. <button class="sound" onclick="speak('Shira plays football every day.')">🔊</button></div></article><article class="example-card"><strong>⏳ PAST SIMPLE</strong><div class="sentence">Shira played football yesterday. <button class="sound" onclick="speak('Shira played football yesterday.')">🔊</button></div></article></div><div class="bottom"><a class="bigbutton lesson-link" href="grammar-planet-11-gates.html">🚪 למשחק הדלתות</a></div></section>
 
@@ -322,15 +343,22 @@
   </div>
   <p>בשאלה מעבירים את <bdi lang="en">was / were</bdi> להתחלה. בשלילה משתמשים ב־<bdi lang="en">wasn't / weren't</bdi>.</p>
   <div class="sentence" lang="en"><b>Was</b> she happy?<br>They <b>weren't</b> at home.</div>
-  <div class="bottom"><button class="bigbutton" onclick="showStage('beGame')">🎯 לתרגול WAS / WERE</button></div>
+  <div class="bottom"><button class="bigbutton" onclick="showStage('beGame')">📸 לאלבום של זיגי</button></div>
 </section>
 <section id="beGame" class="hidden">
-  <div class="panel practice">
-    <h2>🧠 בוחרים WAS או WERE</h2>
-    <p>בחרו את הצורה שמתאימה למשפט, לשאלה או לשלילה.</p>
+  <div class="panel practice album-panel">
+    <h2>📸 אלבום הזיכרונות של זיגי</h2>
+    <p>השלימו את הכיתוב כדי להחזיר את הצבע לתמונה. שחזרו את כל שש התמונות באלבום.</p>
     <div class="quiz-meta"><span id="beGameCount"></span><span id="beGameStars"></span></div>
     <div class="quiz-track"><div class="quiz-fill" id="beGameFill"></div></div>
-    <div id="beGameQuestion" class="quiz-question" dir="ltr" lang="en"></div>
+    <div id="albumProgress" class="album-progress" aria-label="תמונות באלבום"></div>
+    <figure class="album-photo" id="albumPhoto">
+      <div class="album-scene" role="img" id="albumScene">
+        <span class="album-place" aria-hidden="true"></span>
+        <span class="album-people" aria-hidden="true"></span>
+      </div>
+      <figcaption id="beGameQuestion" class="quiz-question" dir="ltr" lang="en"></figcaption>
+    </figure>
     <div id="beGameOptions" class="quiz-options" dir="ltr"></div>
     <div id="beGameFeedback" class="quiz-feedback" aria-live="polite"></div>
     <button class="bigbutton secondary hidden" id="beGameHint" onclick="showHint('beGame')">💡 אפשר רמז?</button>
@@ -452,10 +480,12 @@ questionGame:[
   {"q": "Did they ___ football last week?", "choices": ["played", "plays", "play"], "answer": "play", "hint": "Did כבר מסמן עבר. בחרו את צורת הבסיס.", "why": "Did they play football last week?"}
 ],
 beGame:[
-  {"q": "She ___ happy yesterday.", "choices": ["was", "were", "are"], "answer": "was", "hint": "עם she משתמשים ב־was.", "why": "She was happy yesterday."},
-  {"q": "We ___ at home last night.", "choices": ["is", "was", "were"], "answer": "were", "hint": "עם we משתמשים ב־were.", "why": "We were at home last night."},
-  {"q": "___ they tired yesterday?", "choices": ["Was", "Were", "Did"], "answer": "Were", "hint": "מעבירים את צורת העבר של BE להתחלת השאלה. איזו צורה מתאימה ל־they?", "why": "Were they tired yesterday?"},
-  {"q": "He ___ at school yesterday. (−)", "choices": ["weren't", "isn't", "wasn't"], "answer": "wasn't", "hint": "עם he משתמשים ב־was. איזו אפשרות היא השלילה שלו?", "why": "He wasn't at school yesterday."}
+  {"q": "She ___ at the park yesterday.", "choices": ["were", "was"], "answer": "was", "hint": "עם she משתמשים ב־was.", "why": "She was at the park yesterday.", "place": "🌳", "people": "👧", "description": "ילדה בפארק", "scene": "park"},
+  {"q": "They ___ at the beach yesterday.", "choices": ["were", "was"], "answer": "were", "hint": "עם they משתמשים ב־were.", "why": "They were at the beach yesterday.", "place": "🏖️", "people": "🧒 👧", "description": "שני ילדים בחוף הים", "scene": "beach"},
+  {"q": "___ he at school yesterday?", "choices": ["Was", "Were"], "answer": "Was", "hint": "בשאלה שמים was בתחילת המשפט כשמדברים על he.", "why": "Was he at school yesterday?", "place": "🏫", "people": "👦", "description": "ילד ליד בית ספר", "scene": "school"},
+  {"q": "___ you at the zoo yesterday?", "choices": ["Was", "Were"], "answer": "Were", "hint": "עם you משתמשים ב־were, גם כשמדברים אל אדם אחד.", "why": "Were you at the zoo yesterday?", "place": "🦒", "people": "🧒", "description": "ילד ליד ג׳ירפה בגן החיות", "scene": "park"},
+  {"q": "She ___ at home yesterday. She was at the library.", "choices": ["weren't", "wasn't"], "answer": "wasn't", "hint": "עם she משתמשים ב־was. צורת השלילה היא wasn't.", "why": "She wasn't at home yesterday. She was at the library.", "place": "📚", "people": "👧", "description": "ילדה בספרייה", "scene": "library"},
+  {"q": "We ___ indoors yesterday. We were at the park.", "choices": ["weren't", "wasn't"], "answer": "weren't", "hint": "עם we משתמשים ב־were. צורת השלילה היא weren't.", "why": "We weren't indoors yesterday. We were at the park.", "place": "🌳", "people": "👽 🧒", "description": "זיגי וילד בפארק", "scene": "park"}
 ]};
 const state=Object.fromEntries(Object.keys(quizzes).map(type=>[type,{i:0,correct:0,wrong:false,answered:false}]));
 const cueFeedback={past:'הביטוי מציין זמן שכבר עבר.', habit:'הביטוי מציין הרגל או תדירות בהווה.', now:'הביטוי מציין משהו שקורה עכשיו.'};
@@ -497,6 +527,7 @@ function showStage(stage){
 }
 function renderQuiz(type){
  const st=state[type],q=quizzes[type][st.i];if(!q)return;
+ if(type==='beGame')renderAlbum(st,q);
  if(type==='timeGame'){
    resetRunner();
    document.getElementById('runTrack').dataset.world=st.i%4;
@@ -508,7 +539,7 @@ function renderQuiz(type){
  document.getElementById(type+'Count').textContent='שאלה '+(st.i+1)+' מתוך '+quizzes[type].length;
  document.getElementById(type+'Stars').textContent='⭐ '+st.correct+' / '+quizzes[type].length;
  document.getElementById(type+'Fill').style.width=((st.i+Number(st.answered))/quizzes[type].length*100)+'%';
- if(type!=='practice1')document.getElementById(type+'Question').textContent=q.q;
+ if(type!=='practice1'&&type!=='beGame')document.getElementById(type+'Question').textContent=q.q;
  const options=document.getElementById(type+'Options');
  if(type!=='practice1'){
  options.replaceChildren();
@@ -523,11 +554,34 @@ function renderQuiz(type){
  document.getElementById(type+'Next').textContent=st.i===quizzes[type].length-1?quizNavigation[type].label:'🚀 לשאלה הבאה';
  document.getElementById(type+'Replay')?.classList.toggle('hidden',!st.answered||st.i!==quizzes[type].length-1);
 }
+function renderAlbum(st,q){
+ const scene=document.getElementById('albumScene');
+ scene.dataset.scene=q.scene;
+ scene.setAttribute('aria-label',q.description);
+ scene.querySelector('.album-place').textContent=q.place;
+ scene.querySelector('.album-people').textContent=q.people;
+ document.getElementById('albumPhoto').classList.toggle('restored',st.answered);
+ const caption=document.getElementById('beGameQuestion');
+ caption.textContent=st.answered?q.why:q.q;
+ const progress=document.getElementById('albumProgress');
+ progress.replaceChildren();
+ quizzes.beGame.forEach((photo,index)=>{
+   const item=document.createElement('span');
+   const restored=index<st.i||(index===st.i&&st.answered);
+   item.classList.toggle('restored',restored);
+   item.textContent=photo.place;
+   item.setAttribute('role','img');
+   item.setAttribute('aria-label','תמונה '+(index+1)+(restored?' שוחזרה':' ממתינה לשחזור'));
+   if(index===st.i)item.setAttribute('aria-current','true');
+   progress.appendChild(item);
+ });
+}
 function choose(type,choice,button){
  const st=state[type],q=quizzes[type][st.i];if(st.answered)return;
  if(type==='timeGame')animateRunner(button,choice===q.answer);
  if(choice!==q.answer){st.wrong=true;button.classList.add('wrong');document.getElementById(type+'Feedback').textContent='🔴 כמעט! נסו שוב — אפשר לפתוח רמז 💜';document.getElementById(type+'Hint').classList.remove('hidden');button.disabled=true;return}
  st.answered=true;st.correct++;
+ if(type==='beGame')renderAlbum(st,q);
  button?.classList.add('correct');
  document.querySelectorAll('#'+type+'Options button').forEach(b=>b.disabled=true);
  document.getElementById(type+'Stars').textContent='⭐ '+st.correct+' / '+quizzes[type].length;
