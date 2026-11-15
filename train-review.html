@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>מסע הרכבות · משחק חזרה | PLAYWISE</title>
+<link rel="stylesheet" href="alphabet-task-nav.css">
+<style>
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#0d2838,#214d5a);color:#fff9df;font:18px/1.5 Arial,sans-serif}main{max-width:1000px;margin:auto;padding:15px}a{color:#c6f5eb}h1{margin:12px 0 5px;font-size:clamp(28px,5vw,45px)}p{margin:5px 0 14px}.hud{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;background:#193e51;border-radius:15px;padding:12px;margin:12px 0}.hud strong{color:#ffe28b}.game-wrap{position:relative;width:min(100%,680px);margin:auto}canvas{display:block;width:100%;height:auto;border:5px solid #85c5c4;border-radius:18px;background:#c9ecdc;touch-action:none}.overlay{position:absolute;inset:0;background:#092536df;display:grid;place-content:center;text-align:center;gap:14px;padding:25px;border-radius:18px}.overlay[hidden]{display:none}.overlay h2{font-size:clamp(27px,5vw,42px);margin:0}.overlay p{margin:0}.controls{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:14px auto}.controls button,.overlay button{border:0;border-radius:15px;background:#ffda7a;color:#153746;font:bold 21px Arial;min-width:78px;min-height:56px;cursor:pointer;padding:12px}.overlay button{margin:auto}.controls button:focus-visible,.overlay button:focus-visible{outline:4px solid white}.help{text-align:center;font-size:15px;color:#d3eae4}.task-navigation{margin-bottom:12px}@media(max-width:500px){.controls button{min-width:68px}}
+</style></head><body><main>
+<a href="abc-sounds-level.html">↩ שלב 1 · רכבת הצלילים</a>
+<h1>🚂 מסע הרכבות — משחק חזרה</h1><p id="intro"></p>
+<nav id="taskNavigation" class="task-navigation" aria-label="כל משימות רכבת הצלילים" hidden></nav>
+<div class="hud"><span>האות הבאה: <strong id="goal">A</strong></span><span>התקדמות: <strong id="progress">0 / 6</strong></span><span>חיים: <strong id="hearts">❤️❤️❤️</strong></span></div>
+<div class="game-wrap"><canvas id="board" width="660" height="610" aria-label="משחק חציית מסילות עם רכבות נעות, מתקדמים לכיוון האות הבאה"></canvas>
+<div id="overlay" class="overlay"><h2 id="overlayTitle">🚂 מוכנים לחצות?</h2><p id="overlayText">חוצים שלוש מסילות בין רכבות קטנות, ומגיעים לאות הבאה לפי הסדר.</p><button id="start">מתחילים!</button></div></div>
+<div class="controls" aria-label="תנועה"><button data-move="left" aria-label="שמאלה">⬅️</button><button data-move="up" aria-label="קדימה">⬆️</button><button data-move="down" aria-label="אחורה">⬇️</button><button data-move="right" aria-label="ימינה">➡️</button></div>
+<p class="help">אפשר לשחק גם עם חיצי המקלדת. בכל אות חוצים שלוש מסילות, מגיעים לשער האות וממשיכים לאות הבאה. פגיעה ברכבת מורידה חיים.</p>
+</main><script src="alphabet-stations.js"></script><script src="task-nav.js"></script><script>
+const $=id=>document.getElementById(id);
+const groupEnd=alphabetGroups.slice(0,station+1).join('');
+const letters=groupEnd.split('');
+$('intro').textContent='חזרה מצטברת על כל האותיות שלמדנו: A–'+letters.at(-1)+'. מתחילים ב־A ומגיעים לכל האותיות לפי הסדר!';
+const selectTask=mountTaskNavigation('review');
+const canvas=$('board'),ctx=canvas.getContext('2d'),W=canvas.width,H=canvas.height;
+const rows=[500,388,276],goalY=152,startY=554,step=112;
+let state='ready',index=0,lives=3,x=W/2,y=startY,trains=[],last=0,invincible=0,stagePause=0;
+function updateHUD(){$('goal').textContent=letters[index]||'🏆';$('progress').textContent=index+' / '+letters.length;$('hearts').textContent='❤️'.repeat(lives)+'🤍'.repeat(3-lives)}
+function resetRoad(){
+ x=W/2;y=startY;invincible=0;stagePause=0;
+ trains=[];
+ const speed=85+index*4;
+ for(let lane=0;lane<3;lane++){
+  const dir=(lane+index)%2?1:-1;
+  const gap=205+lane*18;
+  for(let j=0;j<3;j++)trains.push({lane,x:(j*gap+lane*115+index*63)%840-90,dir,speed:speed+lane*22,width:95+lane*12});
+ }
+ updateHUD();
+}
+function begin(){index=0;lives=3;state='playing';$('overlay').hidden=true;resetRoad()}
+function showOverlay(title,message,button){$('overlayTitle').textContent=title;$('overlayText').textContent=message;$('start').textContent=button;$('overlay').hidden=false}
+function fail(){state='failed';showOverlay('🚂 נגמרו החיים','הגעתם עד האות '+letters[index]+'. אפשר לנסות שוב מהאות A.','לנסות שוב')}
+function advance(){
+ index++;
+ if(index>=letters.length){state='won';updateHUD();showOverlay('🏆 כל הכבוד!','חציתם את כל המסילות והגעתם לכל האותיות מ־A עד '+letters.at(-1)+'!','לשחק שוב');return}
+ resetRoad();stagePause=.9;
+}
+function move(direction){
+ if(state!=='playing'||stagePause>0)return;
+ if(direction==='left')x=Math.max(35,x-72);
+ if(direction==='right')x=Math.min(W-35,x+72);
+ if(direction==='up')y=Math.max(goalY,y-step);
+ if(direction==='down')y=Math.min(startY,y+step);
+ if(y<=goalY+10){stagePause=.6;state='transition';setTimeout(()=>{if(state==='transition'){state='playing';advance()}},650)}
+}
+document.querySelectorAll('[data-move]').forEach(b=>b.onclick=()=>move(b.dataset.move));
+document.addEventListener('keydown',e=>{const d={ArrowLeft:'left',ArrowRight:'right',ArrowUp:'up',ArrowDown:'down'}[e.key];if(d){e.preventDefault();move(d)}});
+$('start').onclick=begin;
+function rounded(x,y,w,h,r,color){ctx.fillStyle=color;ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fill()}
+function drawTrain(t){
+ const yy=rows[t.lane],xx=t.x;
+ ctx.save();ctx.translate(xx,yy);rounded(-t.width/2,-23,t.width,45,9,t.lane===0?'#d76a7b':t.lane===1?'#5489c6':'#a474c6');
+ rounded(-t.width/2+10,-16,t.width-20,17,5,'#d5f6ff');
+ ctx.fillStyle='#17364a';for(const dx of [-t.width/3,t.width/3]){ctx.beginPath();ctx.arc(dx,25,8,0,Math.PI*2);ctx.fill()}
+ ctx.font='24px Arial';ctx.textAlign='center';ctx.fillText('🚂',t.dir>0?-t.width/2+12:t.width/2-12,8);ctx.restore();
+}
+function draw(){
+ ctx.clearRect(0,0,W,H);
+ rounded(0,0,W,H,0,'#bce6d2');
+ for(let i=0;i<3;i++){
+  const yy=rows[i];
+  rounded(0,yy-44,W,88,0,'#486c77');
+  for(const dy of [-25,25])rounded(0,yy+dy,W,5,0,'#c5d5d4');
+  ctx.fillStyle='#b3a17c';for(let j=0;j<22;j++)ctx.fillRect(j*32,yy-35,9,70);
+ }
+ rounded(0,goalY-42,W,77,0,'#77c6a1');
+ rounded(0,startY-42,W,87,0,'#83d2a9');
+ rounded(W/2-62,goalY-39,124,65,15,'#fff0a7');
+ ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='bold 47px Arial';ctx.fillStyle='#1e4659';ctx.fillText(letters[index]||'★',W/2,goalY-7);
+ ctx.font='bold 17px Arial';ctx.fillText('יעד',W/2+94,goalY-4);
+ for(const t of trains)drawTrain(t);
+ if(invincible<=0||Math.floor(invincible*9)%2===0){ctx.font='47px Arial';ctx.fillText('🐸',x,y-6)}
+ ctx.fillStyle='#244c58';ctx.font='bold 17px Arial';ctx.fillText('התחלה',W/2,startY+39);
+}
+function tick(timestamp){
+ const dt=Math.min(.05,(timestamp-last)/1000||0);last=timestamp;
+ if(state==='playing'||state==='transition'){
+  if(invincible>0)invincible-=dt;
+  if(stagePause>0)stagePause-=dt;
+  for(const t of trains){t.x+=t.dir*t.speed*dt;if(t.dir>0&&t.x>W+t.width)t.x=-t.width;if(t.dir<0&&t.x< -t.width)t.x=W+t.width}
+  if(state==='playing'&&invincible<=0){
+   for(const t of trains){if(Math.abs(y-rows[t.lane])<34&&Math.abs(x-t.x)<t.width/2+16){
+    lives--;invincible=1.6;x=W/2;y=startY;updateHUD();if(lives<=0)fail();break;
+   }}
+  }
+ }
+ draw();requestAnimationFrame(tick)
+}
+resetRoad();requestAnimationFrame(tick);
+</script></body></html>
