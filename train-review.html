@@ -46,7 +46,7 @@ $('overlayText').textContent='במשחק הזה חוזרים על כל האות�
 const canvas=$('board'),ctx=canvas.getContext('2d'),W=canvas.width,H=canvas.height;
 const rows=[500,388,276],goalY=152,startY=554,step=112;
 let state='ready',index=0,lives=3,x=W/2,y=startY,trains=[],last=0,invincible=0,stagePause=0,choices=[],correctSlot=0,heartBonus=null;
-function updateHUD(){$('goal').textContent=letters[index]||'🏆';$('progress').textContent=index+' / '+letters.length;$('hearts').textContent='❤️'.repeat(lives)+'🤍'.repeat(3-lives)}
+function updateHUD(){$('goal').textContent=index>=letters.length?'🏆':'?';$('progress').textContent=index+' / '+letters.length;$('hearts').textContent='❤️'.repeat(lives)+'🤍'.repeat(3-lives)}
 function resetRoad(){
  const answer=letters[index];
  const distractors=letters.filter(letter=>letter!==answer);
