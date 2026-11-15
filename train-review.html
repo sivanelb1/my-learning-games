@@ -193,7 +193,9 @@ function tick(timestamp){
  if(state==='playing'||state==='transition'){
   if(invincible>0)invincible-=dt;
   if(stagePause>0)stagePause-=dt;
-  const targetCamera=y-500;cameraY+=(targetCamera-cameraY)*Math.min(1,dt*4.5);
+  const stepsForward=Math.max(0,Math.round((stageStart-y)/step));
+  const targetCamera=stepsForward>=2?y-500:stageStart-554;
+  cameraY+=(targetCamera-cameraY)*Math.min(1,dt*4.5);
   for(const t of trains){t.x+=t.dir*t.speed*dt;if(t.dir>0&&t.x>W+t.width)t.x=-t.width;if(t.dir<0&&t.x< -t.width)t.x=W+t.width}
   if(state==='playing'&&invincible<=0){
    for(const t of trains){if(Math.abs(y-rows[t.lane])<34&&Math.abs(x-t.x)<t.width/2+16){
