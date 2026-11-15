@@ -14,6 +14,8 @@ main{max-width:900px;margin:auto;padding:18px 16px 40px}a{color:#abefe3}h1,h2,p{
 button{font:inherit;font-weight:bold;cursor:pointer;border-radius:12px;padding:10px 15px;border:2px solid #778ea2;background:white;color:#22384e;min-height:44px}button.primary{background:#11605a;color:#fff;border-color:#11605a}button:focus-visible,a:focus-visible{outline:3px solid #cb7729;outline-offset:3px}button[aria-current=true]{border-color:#11605a;background:#d0f6eb}button:disabled{cursor:default}.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
 .letter-tabs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px;margin-bottom:15px}.letter-tabs button{padding:5px}.example{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:20px;background:#e8f3ee;padding:15px;border-radius:14px}.pair{font-size:clamp(42px,12vw,80px);line-height:1.1}.word{font-size:23px;font-weight:bold}output{display:block;min-height:1.65em;margin-top:10px;font-weight:bold}.dial{background:#142b3b;border:4px solid #437884;border-radius:30px;padding:14px;color:#fff;max-width:390px;margin:12px auto}.dial-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;direction:ltr}.dial-grid button{background:#e1fbf2;border-color:#77bcb2;min-height:52px;font-size:22px}.dial-grid .correct{background:#8cf5bd}.dial-grid .wrong{background:#ffd9ca}.dial p{text-align:center}.compass{height:92px;width:92px;margin:0 auto 8px;border:3px solid #7bdcca;border-radius:50%;display:grid;place-items:center;background:repeating-conic-gradient(#214453 0deg 29deg,#437a82 29deg 30deg);box-shadow:inset 0 0 0 5px #183340}.compass span{font-size:35px;line-height:1;color:#ffce78;transform:rotate(var(--heading,0deg));transition:transform .45s ease}.dial-grid button:disabled{opacity:1}@media(prefers-reduced-motion:reduce){.compass span{transition:none}}.trace{position:relative;margin:10px 0;background:white;border:2px solid #abbccb;border-radius:12px;max-width:620px}
 .trace svg{display:block;width:100%;height:auto;touch-action:none;cursor:crosshair}.guide{fill:none;stroke:#596b7d;stroke-width:1.7;stroke-dasharray:3 4;stroke-linecap:round;stroke-linejoin:round}.guide.model{stroke-dasharray:none;stroke:#162a43}.ink{fill:none;stroke:#263c78;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round}.pencil{position:absolute;pointer-events:none;transform:translate(-8%,-91%);font-size:30px;line-height:1}.rule{stroke:#a5b6c8;stroke-width:1}.rule.middle{stroke-dasharray:3 4}.rule.base{stroke:#5d809d}.status{color:#285752}
+.example{grid-template-columns:auto minmax(0,1fr);align-items:start}.sound-examples{display:grid;gap:8px}.sound-example{background:#fff;padding:10px;border-radius:10px}.sound-example p{margin:4px 0}.sound-example .controls{margin-top:8px}.sound-example button{padding:7px 10px}.sound-example .word{display:inline-block}.sound-example .ipa{display:inline-block;margin-inline-start:8px}
+@media(max-width:460px){.example{grid-template-columns:minmax(0,1fr);gap:8px}.pair{font-size:52px}}
 </style>
 </head>
 <body><main>
@@ -21,10 +23,10 @@ button{font:inherit;font-weight:bold;cursor:pointer;border-radius:12px;padding:1
 <header class="hero"><div><h1>סדנת הרובוטים</h1><p id="mission">הרובוט מושבת. הכירו את האותיות A–F, כוונו את מצפן הצלילים והפעילו את הלוח הראשון שלו.</p></div><div id="robot" class="robot" role="img" aria-label="הרובוט כבוי"><div class="robot-face"><i class="eye"></i><i class="eye"></i></div></div></header>
 <ol class="progress"><li id="learnStep" aria-current="step">מכירים</li><li id="gameStep">משחקים</li><li id="writeStep">כותבים</li></ol>
 <section class="panel" id="learn"><h2 tabindex="-1">שם האות והצליל שלה</h2>
-<p>לאות יש שם, ויכולים להיות לה כמה צלילים. כאן נכיר צליל אחד של כל אות. האות הגדולה והקטנה הן שתי צורות של אותה אות.</p>
+<p>לאות יש שם, ויכולים להיות לה כמה צלילים. נשמע צלילים נפוצים של האותיות A–F. האות הגדולה והקטנה הן שתי צורות של אותה אות.</p>
 <div id="letterTabs" class="letter-tabs" role="group" aria-label="בחירת אות"></div>
-<div class="example"><strong id="pair" class="pair" dir="ltr" lang="en"></strong><div><div id="word" class="word" lang="en" dir="ltr"></div><div id="explain"></div><div id="soundTip"></div></div></div>
-<div class="controls"><button id="letterSound">🔊 שם האות</button><button id="wordSound">🔊 המילה לדוגמה</button><button id="nextLetter" class="primary"></button></div>
+<div class="example"><strong id="pair" class="pair" dir="ltr" lang="en"></strong><div id="soundExamples" class="sound-examples"></div></div>
+<div class="controls"><button id="letterSound">🔊 שם האות</button><button id="nextLetter" class="primary"></button></div>
 </section>
 <section class="panel" id="game" hidden><h2 tabindex="-1">מצפן הצלילים</h2><p>האזינו למילה או קראו את הרמז. בחרו את האות ששומעים בתחילת המילה כדי לכוון את המצפן.</p>
 <div class="dial"><div class="compass" aria-hidden="true"><span id="needle">▲</span></div><p id="clue"></p><div id="choices" class="dial-grid" role="group" aria-label="אותיות במצפן"></div></div>
@@ -43,21 +45,55 @@ button{font:inherit;font-weight:bold;cursor:pointer;border-radius:12px;padding:1
 <script>
 const $ = id => document.getElementById(id);
 const letters = [
- {letter:'A',word:'apple',he:'תפוח',icon:'🍎',sound:'/æ/',upper:'M10 91L32 26L54 91 M18 68H46',lower:'M49 58 C38 42 12 48 12 70 C12 95 39 97 49 79 M49 49V91'},
- {letter:'B',word:'ball',he:'כדור',icon:'⚽',sound:'/b/',upper:'M13 26V91 M13 26H31C57 26 57 57 31 57H13 M31 57C63 57 63 91 31 91H13',lower:'M13 26V91 M13 60C24 42 52 47 52 70C52 95 24 97 13 80'},
- {letter:'C',word:'cat',he:'חתול',icon:'🐱',sound:'/k/',upper:'M55 36C38 13 11 31 11 58C11 85 37 104 55 82',lower:'M51 56C36 40 13 50 13 70C13 91 37 98 51 84'},
- {letter:'D',word:'dog',he:'כלב',icon:'🐶',sound:'/d/',upper:'M13 26V91 M13 26H27C66 26 66 91 27 91H13',lower:'M50 26V91 M50 60C39 42 12 47 12 70C12 95 39 97 50 80'},
- {letter:'E',word:'egg',he:'ביצה',icon:'🥚',sound:'/ɛ/',upper:'M13 26V91 M13 26H53 M13 57H45 M13 91H53',lower:'M13 70H51C51 43 13 43 13 70C13 92 37 98 52 83'},
- {letter:'F',word:'fish',he:'דג',icon:'🐟',sound:'/f/',upper:'M13 26V91 M13 26H53 M13 57H45',lower:'M48 29C36 22 26 28 26 42V91 M12 50H44'}
+ {letter:'A',clip:'a-short',word:'apple',he:'תפוח',icon:'🍎',sound:'/æ/',upper:'M10 91L32 26L54 91 M18 68H46',lower:'M49 58 C38 42 12 48 12 70 C12 95 39 97 49 79 M49 49V91'},
+ {letter:'B',clip:'b',word:'ball',he:'כדור',icon:'⚽',sound:'/b/',upper:'M13 26V91 M13 26H31C57 26 57 57 31 57H13 M31 57C63 57 63 91 31 91H13',lower:'M13 26V91 M13 60C24 42 52 47 52 70C52 95 24 97 13 80'},
+ {letter:'C',clip:'c-hard',word:'cat',he:'חתול',icon:'🐱',sound:'/k/',upper:'M55 36C38 13 11 31 11 58C11 85 37 104 55 82',lower:'M51 56C36 40 13 50 13 70C13 91 37 98 51 84'},
+ {letter:'D',clip:'d',word:'dog',he:'כלב',icon:'🐶',sound:'/d/',upper:'M13 26V91 M13 26H27C66 26 66 91 27 91H13',lower:'M50 26V91 M50 60C39 42 12 47 12 70C12 95 39 97 50 80'},
+ {letter:'E',clip:'e-short',word:'egg',he:'ביצה',icon:'🥚',sound:'/ɛ/',upper:'M13 26V91 M13 26H53 M13 57H45 M13 91H53',lower:'M13 70H51C51 43 13 43 13 70C13 92 37 98 52 83'},
+ {letter:'F',clip:'f',word:'fish',he:'דג',icon:'🐟',sound:'/f/',upper:'M13 26V91 M13 26H53 M13 57H45',lower:'M48 29C36 22 26 28 26 42V91 M12 50H44'}
 ];
 const soundTips = [
  'פותחים את הפה לצליל הקצר ששומעים בתחילת apple.',
  'מצמידים את השפתיים ופותחים אותן בצליל קצר, כמו בתחילת ball.',
- 'במילה cat האות C נשמעת כמו ק׳. במילים אחרות היא יכולה להישמע אחרת.',
+ 'הצליל נשמע כמו ק׳ או כּ, כמו בתחילת cat.',
  'נוגעים עם קצה הלשון מאחורי השיניים העליונות ומשחררים, כמו בתחילת dog.',
  'פותחים את הפה מעט לצליל הקצר ששומעים בתחילת egg.',
  'נוגעים עם השיניים העליונות בשפה התחתונה ונושפים בעדינות, כמו בתחילת fish.'
 ];
+const extraSounds = {
+ A: {letter:'A',clip:'a-long',word:'acorn',he:'בלוט',icon:'🌰',sound:'/eɪ/',tip:'במילה acorn הצליל הראשון נשמע כמו השם של האות A.'},
+ C: {letter:'C',clip:'c-soft',word:'city',he:'עיר',icon:'🏙️',sound:'/s/',tip:'הצליל נשמע כמו ס׳. לפני e, i או y האות C נשמעת בדרך כלל כך.'},
+ E: {letter:'E',clip:'e-long',word:'eagle',he:'עיט',icon:'🦅',sound:'/iː/',tip:'במילה eagle הצליל הראשון נשמע כמו השם של האות E.'}
+};
+const soundClips = {
+ "a-short": "SUQzBAAAAAAAIlRTU0UAAAAOAAADTGF2ZjYxLjcuMTAzAAAAAAAAAAAAAAD/80jEAAAAA0gAAAAATEFNRVVVVeskgedNMDHBCPJU267DwTRV9uH7hqsZMZj+6pdLZkX0/22TckFSeFsGT/pqNCcaxgJ7AGGCwCaEAA3z/5aL8nETc0IYNAcoAqAAwxcYJxADmDbD/9O7ObmBUJyggBmAPIN2GIgoGxh+Am0LVhicNVgKA//7fUghoXkFMhn/80jEfAAAA0gBQAAAQlkyQMiPJ0pEsYEBGTG3///t///QNDNInC4zHlvQee21lmRAAN09331f8QzHxUnDGowwEuYaIIQhaXY1yIgVFPLcM0kQEJBzNA5CBl1tYQmiEwC46i5FBHWLVmEIOHRztd4mILvkeEtaUXgLgKgf9/I2wBCQ7l6pMR1MRgnJRjDETlH/80jE/yZ77nQBjZgAOTczImmQRLJTE3giGFipS37FunqXK+uW6e/crSm/K6bdJMy6/S03alumjdmO3KXHOj7hXu7z+tvvPy7hnc+z+dXO5hl92x/ec5+tfhhn/Pw/Lf/rn///rX/3+95+dX8+flnL7lqW8npinjHKS3lVn7GNnf1dc/urAx1tHrPL/ef4FUf/80jE6DmbhrJf2cABBiiBwEpR7xfqqOqMt7+pW7LH0yR7GNCinDj6lxYP5rUSEbEE8B0e7b+kmwy40ZjL6AyimKW93MgwKkD3N6Qj+SMbMez5Cy8Po1nqJAGFZO1KpRIUV+YsiuP493e/PZvZPjebMLv/NVwr/e23x16jtsJ8+aMarBer932IBr5m9Dv5SFb/80jEhCrjRq7Gw8UYlmZyswJUTu33T238rLQju5VYaO6GAXKpFBhx0+yV31ixxAqIFqW+tUQDQXn+8rMoSoNqSJTjsUUy/5E7DjuxFm9RFyasy+3YiwTMRQgCRHBfAHyCpLNiqWxcgA6ppnnKYjgN6TNi+iRcLpH0zyRDxSYIlOF0oEFHyF5iGoEyaJEEEpH/80jEWy5zSqXlWZAA9M2LpYFcG/OnnQHNRWjMEB3Op0TcSI1WxeTHWMBJExRMyLGqFE0L5o9SZgibVtmaNdBb0Humzosmo8pVF0kr3t9f/9q6qlVLQpPQTQRdVajwwPD679rgkXPRIcNDmaEgMBKABKFAiwxwOCQSsYwgkGtVdGk+RCi2yC0zKRo2XQhR2EX/80jEJCZjfq5XmZgBsQlOgVkOURcPR44wBQCEwe0WxmUTIxbHcPknjMTqmTKSjP6IrUeRwoF4vF4yMnR/KJaUo2dLZTpL/qI1yiXTpqgicJ5SXV/6i8iZIFJRTl+npVI2Us8j/+dNEaWutBEqH1/+9IxS//5WIedRRWi2qh/SMYpJtQQudGJ2QjTJhsHHEbb/80jEDRnQ/awB2UgAMShmkuLBBQMxAUcYIUCUGdaZhp/n+l2cpjNLxUUhklgiRNb5LIpbFChshFLKyJFqspbcY5JEAgafwVOiJwdlToKjAa/rO/lcOlngqMPCL///Eq3CKdJKPfeIlUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/80jEKAAAA0gAAAAAVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/80jEfAAAA0gAAAAAVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/80jEfAAAA0gAAAAAVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/80jEfAAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVU=",
+ "a-long": "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",
+ "b": "SUQzBAAAAAAAIlRTU0UAAAAOAAADTGF2ZjYxLjcuMTAzAAAAAAAAAAAAAAD/80jEAAAAA0gAAAAATEFNRVVVVSyQCW2f9RpUJmoYanv/4OCwcDmjmhjCV/xKKA4UBID1IMCuByzP0OY1t/6mKZgj+pvKSKCBh/v9llrPRPf9ObqZk3TIAyxhC8amJmSxn/+nTUzoabm7n0SWNSOPcuLcqIf//tvTc3OGjoMmPIoKRLg7yYSA5iWKykTigWf/80jEfAAAA0gBQAAA//+9NTdk3dTILdPLx8wJIxlZsPUkRuODnKzUkS8UCmZqRDMZ0EAiEwDsTIYmNxLc0mRzDoyNdicwefTsZhMiFcIIimBEFVC0IwuD0LN6U4h3pZcnItz+bc3v42qeal8RKYpbvtwfebO9++YGd3/19/d921G8+/9QbvLbr7bnfqqJu9L/80jE/yccFnDLm2gAvx3kJ9Dz595nfsud18b/GqUni7pBkxvUCL5L2zGxa+qS+nfVkkvFl1C1n5l13LGfrvIO86vfFd+0eA8tNBzLqLmNnECaNje/ApJaXcDcaNaDue2LY8v3mLCgQa1khw8XrApfWdy5pt9V9Gg4jRI1iRxfTuVupIBEMiEsIAIEPhCRsiD/80jE5TP0DnwBnHgBsPaYgnojwoa/1qRBDF1tJXwha4ZDRFvG+A6qQ/kMcY9iwLK9QW1ONKmzOh6Hs7ezLlVvHcSLCvRgiMmcPpES2s02aK7FpU44X1JE6ORuMVZ1fb49oPv49Ij/dM0hRpI6oxWLl7mDStdQX93kTv9+Pv7UEGq7coUB5SHCu91/avhVrj//80jEmDVj9sW/mHgB973p/uBEprN7339eHakKLp02UtbOv/mE+nhXpX3iavf/H8T+m/q/h+9frfxS974hsbPLE3qDmtf/86guG9phHSS+RWXVPspSFQCpEwMwFCSXhTBhwucZ2G9ikS5xjAXyi7WYFZEkMDkwD0TrRNW/ta2nGxs1xsbOlE1NbRNahzpNXcL/80jERSyL0lQR2FgBRtaJqaulra3OdTnHnbWtuWt+Wtdy01aoSh3HUjY9Lah1f+5I9TnX1BsbUkbOltJGzYdfwkbU42d/Dqh1///DrlE1ttQ5yI7Q8m0mpqa0kO4PR1I2NrlrW7Wt////lv7W8ONm8Oc6WmrvFcCuBVVMQU1FMy4xMDBVVVVVVVVVVVVVVVX/80jEFQAAA0gAAAAAVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/80jEfAAAA0gAAAAAVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/80jEfAAAA0gAAAAAVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/80jEfAAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVU=",
+ "c-hard": "SUQzBAAAAAAAIlRTU0UAAAAOAAADTGF2ZjYxLjcuMTAzAAAAAAAAAAAAAAD/80jEAAAAA0gAAAAATEFNRVVVVf+XOQGLnDP/3sVamI/9P2PTHmRSpb+Y88f/+Si3Mf/ujHEZOYPhV/mdrqPRDidC8H3/z3Z+PR8IguLYyJRbC+//MZj5+Lbs40HoKScuIoSxFQviwqf/9Tzz4/QkM3ICQwhBYGIgjjwahAk40FsSBPFV///8yyuyuy57tkj/80jEfAAAA0gBQAAArliQaEo3NFgkLDQupKNycQhUFkqUdC9EpK3JD4eVEG2jtxwtZznKZdGH/rDkORO9//+HNYZWaeX///r/1h95+56njH//9wt//cPfqMZvnKJDyvq1vWs7nM7lm+6DM061zr+XO3DmeOt5Y59iEsswG47ryvqp3aaaRAv2YxijyCQwCD3/80jE/yREFnQBmVAAHKnP1zu9c7jtp+Ve1Ocw1vtSfAwCu2kkpShCfDXF6Om1T1hP5X13nMvt83/c7mssMH4pLFPlYgSG7cPsDbd9HcbGsOriQrXWOrfEVPJdqD63nh/da/v9/9c7v/ppycr38tcz7qWV8uf9TXoVMlWjL6aNVctuhArI38jbiSFidFG7ytf/80jE8TvcFqQBmMgAa+7srs8Q8beSpBoNyQNakqeyfs1PJak0lFkvmk4uCv1N8vzcjQWtkUMRCpGEPMky6Yk2KyMuKkIAjmkVIaaF5IUqAZiSiviwGRuZkwMs6KLJEPLo7B3mQyaJeGeIq5pqSqMyGlE4OkcI6lGylEWH8jfrWaHzMiTycHSSxqs6RFJzUyT/80jEhDW7vwJ/mIADv+I9FIjoLxSKqBw+xPHEiLJGJyy3Mi9//LRibJmKTG5wxICTxSIxKdLzprbRWZJGJ2v/+O+UziCkloIUS6ZGRoVi8byom5iYIpKzikikQ0tH0oWCKFuE2Jc5MJymioYZymiqW5DlFGgvnz6NvNYNZJFTaZmvZm+Vrla4b4ZuVqG2bVb/80jEMCbDGeAJz0ABobZr1VdSTaKFmkVsk2oayRUaCkPSAVALB8IICpwch6OKFjpJudhYWskVtVgoWskVcVFYDoGxxINR5IqsM1z+zNqbIqKoLCxxIq0qtcM2zNeqrIqbRQsdIqlBXQjgpsVlx8XzpfN///rgXg1MQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVX/80jEGAAAA0gAAAAAVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/80jEfAAAA0gAAAAAVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/80jEfAAAA0gAAAAAVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/80jEfAAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVU=",
+ "c-soft": "SUQzBAAAAAAAIlRTU0UAAAAOAAADTGF2ZjYxLjcuMTAzAAAAAAAAAAAAAAD/80jEAAAAA0gAAAAATEFNRVVVVfcaB6HX5w0Ep/zQ44i9DZND/PIoHP/ZOs/+/zJSCSCf/+myDoqQ//1Ia6CB0rF88X//1N09abm5uRc8fUQxE3J0dBMET//6mNG7pqYuIm6BPjLk4MwSA9FQgA5gpMSmPkZcNWB7///+ibvdk3JwzNybPlyggm8XAJQDYyX/80jEfAAAA0gBQAAATYrh6hiLaIIBigMwITB6Y4wKQBmGYlMbSkbpHJJI4ALLqjWG5UEhUXTF6DDgAjv///rmtYfhhvv91jnWw1zuH4f9jv73nrLVjvPwtawz7eq2q9r+a3rv6y5U/PerlTPe+1sebw1Xl9SfiFjd+xcsVcsJZXl/KSxh3PP9/rnNYYasf/P/80jE/yUcFmgBi4gAn/+8//PDt3f/2pnU5j/O17dT6mGuXs5vPDObmMbVfCtUfzCGIYqOHC5RLLDWIOciH24rra++D207L6ePO2s+KP7ClyPyoG5cVkz/KUKtQBqXiEECimoMzmJBYARDgItiYjGOQoxmDaWBAYOfAAzkmOGm0TKAAZBVV5hHGMAryHH/axX/80jE7TscFpW9w8gAu/9dohvrZGQPf6TcVlmfRlhBu6qDbC86p+iwXEQTkjwkD0sJz6F3lFe5iVHsPg7FWerSYhmSynnpsejw/caVfpwv3d/fHX/O8KqSZVZd6pEpTc1XE///Ppv71XURvzdf////1+9K/3NxafXSpb3f7cVsq/cRaWSkCHDnDig5FAjE4gD/80jEgySD/tp/SUADEgXh4CgJxEgSGC4IUWGbs0m2+v2+33Gos8mLAIQljgSEYok+tIjhBRgvs3m4iCBAcYYdhjIuq0pCMm8DVBFDEYocBnfsB+EwQuG12tnumdQqtDISodMb3WMfvnB5e+VcX4lTgo05//+kiDOD+IdTVtWn8xNcST///sTYtuSmZC5jnJb/80jEdDXTxuZfmXkiywJJWFmNFqt/jdc4z3cV+jZqSQG07pTIvFe0tmLaC2Huc3////+cwr/69LY3eLhtTyu3q2qvrVtFYVassP///////q9paFR9CjumNvwfKlPIkStfOWI2N2tv/wYSufSPoWI1VVggXUFKDdPEnwhQ4n5bUOjSp05TpiH8TpwOY0nJhQ3/80jEHxnD9cQTzxABUNGIBbMZ1L1bQ2Z//+Y2XT+pf//m/q0pZjOpXl///obaUtDPLl/meUrIaj/+UtDTGlKyG3////mNlzTGqVkNMaUrGAmCkoLCTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/80jEOwAAA0gAAAAAVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/80jEfAAAA0gAAAAAVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/80jEfAAAA0gAAAAAVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/80jEfAAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVU=",
+ "d": "SUQzBAAAAAAAIlRTU0UAAAAOAAADTGF2ZjYxLjcuMTAzAAAAAAAAAAAAAAD/80jEAAAAA0gAAAAATEFNRVVVVdjMWIn+8LMk+4W8Tv8k2/5Um6f98+RQiZfN//2KBOF83Q/v13OFAiBNnzAr/+79Ny+ZmBkYIl0g5HANv/9SCCDMpl0Dw7iHjcFgJsPcHLFxh6oWzIO3//T9E3pqQQTcvgEAQYRgxoYzHkQEL44DcZcjTAhhFP//92+yC37/80jEfAAAA0gBQAAA9kLi6FgIYTpPl8yOmpTMisRQnCFJwc8g6JzXZJRXGcUQTpwjV+mK7pLi3PekfcfebaxG9t5164+Pre71tPv4/pTWa7+/nVf/86xaV/Gw83SM5YrjWdXpn+AwNb9YgLqfcsSGuTnVR6wMeRmaoywzqRPMG22G5VVkVHzqOCfCQSpuL8T/80jE/yWEFoABjYgAtI8Lgok2yVYYFmKPKQoaqATCVeQVeyR2dqZHagkdxVSXNQ5VCy0OacJGrzzVyNL4uHrmwl8WHNfJEI64m6EiI3MzxXHT+0WeFV9DV7O4Ns7lnI3CFuUy6R7nETja2E9JOh8c6GBXs+jnL6azJAmkjwZC5m2LoLfCShzHs6gqQBA9//v/80jE7DmcFrABjHgA+6wSCIbTvRPC6cynKcZK6BEsgLLuw0qpOhceXSVhpBNpBQR3ysJR8GHnZmBgvmxwtqYtEBTZx9yxDOJXfOHVstXzhMoIq0yoy7NrLmHfXQsVk4EQUHMKTeay35vYmedcKh92rIToQSyPMFrZactaSmWmWdaWMGxXafcbps6ZWbYH5rL/80jEiDUbwrEbmWAA0zM7WZZxEOqZDjSJ4icQQ1LwdD0DIorIlTZ9OWMmblZtD2uTXazNZ2syvbP3KS1fehSsPCgqHJTYwm1l/M3GtopPnimw2vit9gTBUlUjIUVWzF5jFIARye5nPnJGRFGEqbS5nAskL/ILQ+nKu53nad6HqaVP87xgKgAwfSHIrRVQzNf/80jENij0BggD2UABqtyqrUMLVDNfKr6qvDNs2q7HUzXzX7XquULUULHartDNqsCwtQsLHStFC1MzXqtars2psipsCws4cg1OJFTYa5JuV4a1XVahrU2yRVai/lVr9V1XZskVtVX////////2Zsk2SRWmayRWyRU3CsVMQU1FMy4xMDBVVVVVVVVVVVVVVVX/80jEFQAAA0gAAAAAVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/80jEfAAAA0gAAAAAVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/80jEfAAAA0gAAAAAVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/80jEfAAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVU=",
+ "e-short": "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",
+ "e-long": "SUQzBAAAAAAAIlRTU0UAAAAOAAADTGF2ZjYxLjcuMTAzAAAAAAAAAAAAAAD/80jEAAAAA0gAAAAATEFNRVVVVQAhgAiihgP+HmcMTMLGP+QTp3CwbCg/8jhwyJ0CITlxCOQNhv8zqb//f/+9S//7m9RcFbhZ8T8Gyf8mDQ8X3IOfQNA6gFwKQAKBFhwCcxZYlP/8zNzMnz5mT7k+TZXIuLIFaCCo0yDCMxlhtCCwe4JYIX//5Fzc3T9tNSD/80jEfAAAA0gBQAAA5YGOHMIAgRMvnpIFcuEuRciX//////02TSOpYF5iNKqBA222olb2LVXRllpfAjQTwTUSORABgwOKgFYZUCUAImH7pY5epmwAE3hUDdzY2wAYMf2hdSjAB0OVaxH7xCXH/d4TAz2rl9WIgH9WyC6lTxtNcuce8+fnVNJO7bE8HpE4lVL/80jE/ybL4nVVm4gBPZjrNAmpltZ7r56Qy3hBGEb53mGgnhKzborWQ64xIFmNHtEhJxugw4cniNk1ouXKK1rp/iE2xnx7qKbDkmIrAmnLVcbjucGfN4seRbdPoMeC/aZsvqS0qrpsWcJ8RI73cCIvt7i7VvXDxxV7JJR/HnZ/K+1mLS/1impomYfHmE0pTYD/80jE5jkropW923gCAv/6IAlO63E6eVuGYtIsrLZfBr1o9prFlVe3KRrcLlkuh63Xt1CoHkdx2KhDzsT59J+QniEpY6VUrl07iR9XnjYvuJA38fFN+tdXv////jOt31///v5xi27eBfOdVrSf4jWLOKqJRyPjSqhZgoXEZZA0GyqoZdSHjuz7Dp0isDKd7E//80jEhCKpwrm/WXgCnx5UOCeRQjPUJTeZSTAoIQYA3+aWwoYnBuFQLCoBf5haFBhyJicVJ/gSAB1WB4cLOH2QDg1MFqQ2IUGQ4ZoZ0x8qCcBjB1kKTpSMjYo/IuRxOEAHPGMRNTJJ1fkQEXAUCHsBv4jAhySJSJo+iZfwFjhhULhgbRDkg1UOwMTDNOYzIon/80jEfDMjclgBnZgAigdR/4zI5Y4iGC4isMyLsUEH7B9hQqjFFl5iipaP/4tgaiGQRgDMksLiH0RUfxRSKDjHIJ1q0TJVWZJOpX//My0WCucWiiZLc2RVLqzZX166TEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqr/80jEMgAAA0gBwAAAqqqqqqqqqkxBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqr/80jEfAAAA0gAAAAAqqqqqqqqqkxBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqr/80jEfAAAA0gAAAAAqqqqqqqqqkxBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqr/80jEfAAAA0gAAAAAqqqqqqqqqkxBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqr/80jEfAAAA0gAAAAAqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqo=",
+ "f": "SUQzBAAAAAAAIlRTU0UAAAAOAAADTGF2ZjYxLjcuMTAzAAAAAAAAAAAAAAD/80jEAAAAA0gAAAAATEFNRVVVVf7KwsjT/mVhaKj+tzRZunmhLv9bz5ocJD/yg7sh+23NS+RhhCz+ghQbLw+kuF0HiS5R/6brToNmAlgzjyLByFFME4//Qa7G6kE83IB4fx3Gh8YYbJeHAMN//zBjRD31uhJg2g72My6E/GWOwsJcT0OMkyf///276C3TefT/80jEfAAAA0gBQAAAPJxPMS8sfigsnlZeC7j2iGEsAzDhMPKKeDKMQx0zbGeSl2jjwKz+HHxb/0r/Ep5JomqYxN2ymsz5p4+IkeHv2nc1YpH0OOcZcFRH3Z6/j0UiT0ioiENbDEbZaYOu1NwrPnkrg2vny0hkezkP5UoezIWXgiiMC2E/UyzDu/eMGqPHCOX/80jE/ySsFoQBj2gA4RamR6pU7pwc11EZTikFuVSObJD5OpCVpSQ8U8SaTMV/RVwnCBiSNEf9WM71uXR0Ichq9idDcYjO1cwPnJgO9eeyYkpS9ZtQIrG+Y3Fprt/zqVCobDLQ3x2lXWTKuLaVZxwEPfYR65IMp4CNgMZgtS7Oc2xjEzirhzOuBZRFZHuWqLz/80jE7znsFrABiXgAqL2W1sotLDRDDkBzzeVcVR2Uu23txWUqHAYjps9WcSxdEoil468q9ILqiNqYROmtsi2s5Rn75+vv1QwlWo0JG782ao7ZfUXDbB9o0NkduqmQeCzVmfsT7TnChMNMwYvtusaZpiUeR4cCFtjtqCp/aE2wIMXed1j6xTXt74c4r/VfBs//80jEijTcAucdmHgBJJ426UvWuLQZI0GmfvX+/m+4D2JqtfGzrWqVnzXUS/3///6RpMQLYrS2vncnkpaNDvvx4m5qZ+ren1WDu72bN8Y38/Gf/iPcSqoGcAmYzMMqTGYM2EEDMhVLmYoSUiV0xWaf5/ozZ5lTU3d0rSq1szcMzcqtyqrwzLw16ioe2SKmwxz/80jEOSeD9nxR2EABzSqqq1DKq/6r+zNJIqLCzXKqtfBQsLHSS1yKiorAKgFjShYWb///VV1JNVfhSVpimv/lVr//1VeVXYoOg+ooWtVooWooWOtahtmZv/////WuGWthZiQUgKnByDUPTYFhYWXLEVtMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqr/80jEHgAAA0gAAAAAqqqqqqqqqkxBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqr/80jEfAAAA0gAAAAAqqqqqqqqqkxBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqr/80jEfAAAA0gAAAAAqqqqqqqqqkxBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqr/80jEfAAAA0gAAAAAqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqo="
+};
+const phonemeAudio = new Audio();
+let soundRequest = 0;
+
+function stopAudio(){
+ soundRequest++;
+ phonemeAudio.pause();
+ if('speechSynthesis' in window) window.speechSynthesis.cancel();
+ $('audioFeedback').textContent='';
+}
+function playSound(example){
+ stopAudio();
+ const request=soundRequest;
+ phonemeAudio.src='data:audio/mpeg;base64,'+soundClips[example.clip];
+ phonemeAudio.play().catch(()=>{
+  if(request===soundRequest) $('audioFeedback').textContent='לא הצלחנו להשמיע את הצליל. נסו שוב או לחצו על השמעת המילה.';
+ });
+}
+
 const lesson = ['learn','game','write','done'];
 let current = 0, round = [], turn = 0, answered = false, trace = 0;
 let pointer = null, stroke = null, guides = [], lastPoint = null;
@@ -71,10 +107,12 @@ function show(stage){
   if(name===stage)step.setAttribute('aria-current','step');
   else step.removeAttribute('aria-current');
  }
- $('audioFeedback').textContent = '';
+ stopAudio();
  $(stage).querySelector('h2').focus({preventScroll:true});
 }
 function speak(text){
+ stopAudio();
+ const request=soundRequest;
  if(!('speechSynthesis' in window)){
   $('audioFeedback').textContent='השמעה אינה זמינה בדפדפן הזה. אפשר להמשיך לפי הדוגמה או התמונה.';
   return;
@@ -84,16 +122,44 @@ function speak(text){
  speech.lang='en-US';
  speech.rate=.78;
  speech.onerror=event=>{
-  if(!['canceled','interrupted'].includes(event.error)) $('audioFeedback').textContent='ההשמעה אינה זמינה כרגע. אפשר להשתמש ברמז שעל המסך.';
+  if(request===soundRequest&&!['canceled','interrupted'].includes(event.error)) $('audioFeedback').textContent='ההשמעה אינה זמינה כרגע. אפשר להשתמש ברמז שעל המסך.';
  };
  speechSynthesis.speak(speech);
 }
 function renderLetter(){
  const data=letters[current];
  $('pair').textContent=letterLabel(data);
- $('word').textContent=data.icon+' '+data.word;
- $('explain').textContent=data.he+' · צליל ראשון '+data.sound;
- $('soundTip').textContent=soundTips[current];
+ stopAudio();
+ const examples=[{...data,tip:soundTips[current]}];
+ if(extraSounds[data.letter]) examples.push(extraSounds[data.letter]);
+ const container=$('soundExamples');
+ container.replaceChildren();
+ for(const example of examples){
+  const card=document.createElement('div');
+  card.className='sound-example';
+  const word=document.createElement('bdi');
+  word.className='word';
+  word.lang='en';
+  word.textContent=example.word;
+  const symbol=document.createElement('bdi');
+  symbol.className='ipa';
+  symbol.textContent=example.sound;
+  const tip=document.createElement('p');
+  tip.textContent=example.icon+' '+example.he+' · '+example.tip;
+  const controls=document.createElement('div');
+  controls.className='controls';
+  const soundButton=document.createElement('button');
+  soundButton.textContent='🔊 רק הצליל';
+  soundButton.setAttribute('aria-label','השמעת הצליל בתחילת '+example.word);
+  soundButton.onclick=()=>playSound(example);
+  const wordButton=document.createElement('button');
+  wordButton.textContent='🔊 כל המילה';
+  wordButton.setAttribute('aria-label','השמעת המילה '+example.word);
+  wordButton.onclick=()=>speak(example.word);
+  controls.append(soundButton,wordButton);
+  card.append(word,symbol,tip,controls);
+  container.append(card);
+ }
  $('letterTabs').querySelectorAll('button').forEach((button,index)=>button.setAttribute('aria-current',String(index===current)));
  $('nextLetter').textContent=current===letters.length-1?'למצפן הצלילים':'לאות הבאה';
 }
@@ -105,10 +171,9 @@ letters.forEach((data,index)=>{
  $('letterTabs').append(button);
 });
 $('letterSound').onclick=()=>speak(letters[current].letter);
-$('wordSound').onclick=()=>speak(letters[current].word);
 $('nextLetter').onclick=()=>{
  if(current<letters.length-1){current++;renderLetter();return;}
- round=[...letters];
+ round=[...letters,...Object.values(extraSounds)];
  for(let i=round.length-1;i>0;i--){
   const j=Math.floor(Math.random()*(i+1));
   [round[i],round[j]]=[round[j],round[i]];
@@ -119,12 +184,13 @@ $('nextLetter').onclick=()=>{
 };
 $('review').onclick=()=>{show('learn');renderLetter();};
 function renderGame(){
+ stopAudio();
  answered=false;
  const data=round[turn];
  $('clue').textContent=(turn+1)+' / '+round.length+' · '+data.icon+' '+data.he;
  $('gameFeedback').textContent='';
  $('nextClue').hidden=true;
- $('needle').style.setProperty('--heading',(turn*60)+'deg');
+ $('needle').style.setProperty('--heading',(turn*360/round.length)+'deg');
  $('choices').replaceChildren();
  for(const letter of letters){
   const button=document.createElement('button');
@@ -132,14 +198,14 @@ function renderGame(){
   button.lang='en';
   button.onclick=()=>{
    if(answered)return;
-   if(letter!==data){
+   if(letter.letter!==data.letter){
     button.classList.add('wrong');
     $('gameFeedback').textContent='כמעט! האזינו שוב לצליל הראשון.';
     return;
    }
    answered=true;
    button.classList.add('correct');
-   $('needle').style.setProperty('--heading',((turn+1)*60)+'deg');
+   $('needle').style.setProperty('--heading',((turn+1)*360/round.length)+'deg');
    $('choices').querySelectorAll('button').forEach(choice=>choice.disabled=true);
    $('gameFeedback').textContent='נכון! '+data.word+' מתחילה ב־'+data.letter+'.';
    $('nextClue').textContent=turn===round.length-1?'לעיפרון וללוח הבקרה':'לצליל הבא';
