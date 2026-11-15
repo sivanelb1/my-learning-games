@@ -3,7 +3,7 @@
 <title>תחנת המיון הגדולה 🚂 | PLAYWISE</title><link rel="stylesheet" href="alphabet-task-nav.css">
 <style>
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#3a7384,#102c42 80%);color:#fff9e8;font:18px/1.45 Arial,sans-serif}main{max-width:1080px;margin:auto;padding:16px}a{color:#d1fff3}h1{font-size:clamp(28px,5vw,44px);margin:10px 0 4px}p{margin:6px 0 12px}.hud{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;background:#183f52;padding:11px 16px;border-radius:14px;margin:12px 0}.hud strong{color:#ffe59c}.scene{position:relative;border:5px solid #8cd7cb;border-radius:22px;overflow:hidden;background:#c6e9db;max-width:930px;margin:auto}svg{display:block;width:100%;height:auto;touch-action:none;user-select:none}.scene .overlay{position:absolute;inset:0;display:grid;place-content:center;gap:14px;text-align:center;padding:24px;background:#102b42ed;z-index:5}.overlay[hidden]{display:none}.overlay h2{margin:0;font-size:clamp(28px,5vw,42px)}.overlay p{max-width:520px;margin:auto}.overlay button{background:#ffe08e;color:#183b4b;border:0;border-radius:15px;font:bold 22px Arial;padding:13px 30px;cursor:pointer}.car{cursor:grab;touch-action:none}.car:active{cursor:grabbing}.car text{pointer-events:none}.drop-zone{cursor:default}.progress{position:absolute;z-index:3;top:10px;left:12px;right:12px;display:flex;gap:5px;overflow:hidden;direction:ltr;justify-content:flex-start;align-items:center;min-height:58px;padding:8px 12px;background:#173f52ed;border:2px solid #a2e7d8;border-radius:16px;box-shadow:0 5px 14px #153a4b55;pointer-events:none}.progress span{flex:0 0 auto;display:grid;place-items:center;min-width:40px;height:42px;border-radius:9px;background:#ffe29a;color:#1a4356;font:bold 27px Arial}.progress span.current{background:#abf0e4;border:3px solid #fff}.message{min-height:29px;text-align:center;font-weight:bold;color:#ffedac}.speed-controls{position:absolute;right:12px;bottom:12px;z-index:4;display:flex;flex-direction:column;align-items:stretch;gap:7px;max-width:165px;direction:rtl}.speed-controls button{background:#fff0b9;color:#17455a;border:2px solid #438d97;border-radius:12px;padding:9px 10px;font:bold 15px Arial;cursor:pointer;box-shadow:0 3px 0 #36727a}.speed-controls button:disabled{opacity:.48;cursor:default}.speed-controls output{background:#163d51e8;color:#fff;border-radius:9px;text-align:center;font:bold 14px Arial;padding:4px}.help{text-align:center;font-size:15px;color:#cce9e3}.task-navigation{margin-bottom:12px}@media(max-width:580px){.progress span{min-width:31px;height:34px;font-size:21px}.hud{font-size:15px}}
-</style></head><body><main>
+.recap-toggle{display:block;margin:0 auto;background:#c5f3e5!important;color:#17455a!important;border:2px solid #8bd3c3!important;border-radius:13px;padding:10px 16px;font:bold 17px Arial;cursor:pointer}.recap-list{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;max-width:550px;margin:0 auto;padding:10px;background:#21495b;border-radius:14px}.recap-list[hidden]{display:none}.recap-list span{display:inline-grid;place-items:center;background:#ffe4a2;color:#1c4355;border-radius:8px;min-width:35px;padding:4px;font:bold 24px Arial}.recap-note{font-size:15px;color:#e0f8ee}</style></head><body><main>
 <a href="abc-sounds-level.html">↩ שלב 1 · רכבת הצלילים</a><h1>🚂 תחנת המיון הגדולה</h1><p id="intro"></p>
 <nav id="taskNavigation" class="task-navigation" aria-label="כל משימות רכבת הצלילים" hidden></nav>
 <div class="hud"><span>סדרו את האותיות לפי ה־ABC <strong id="next">· מתחילים ב־A</strong></span><span>נאספו: <strong id="count">0</strong></span><span>חיים: <strong id="hearts">❤️❤️❤️</strong></span></div>
@@ -33,10 +33,34 @@
 </main><script src="alphabet-stations.js"></script><script src="task-nav.js"></script>
 <script>
 const $=id=>document.getElementById(id);
+function setupSummaryIntro(){
+ const overlay=$('overlay'),start=$('start'),text=$('overlayText');
+ const recap=document.createElement('div');recap.className='recap-list';recap.hidden=true;recap.id='recapList';
+ for(const letter of letters){const item=document.createElement('span');item.textContent=letter;recap.append(item)}
+ const toggle=document.createElement('button');toggle.type='button';toggle.className='recap-toggle';toggle.textContent='🔤 רוצים להיזכר באותיות שלמדנו עד עכשיו?';
+ toggle.onclick=()=>{recap.hidden=!recap.hidden;toggle.textContent=recap.hidden?'🔤 רוצים להיזכר באותיות שלמדנו עד עכשיו?':'🙈 הסתרת האותיות'};
+ text.insertAdjacentElement('afterend',recap);text.insertAdjacentElement('afterend',toggle);
+ const originalClick=start.onclick;
+ start.onclick=()=>{recap.hidden=true;toggle.textContent='🔤 רוצים להיזכר באותיות שלמדנו עד עכשיו?';originalClick()};
+}
+function sayLetter(letter){
+ if(!('speechSynthesis' in window))return;
+ try{
+  window.speechSynthesis.cancel();
+  const utterance=new SpeechSynthesisUtterance(letter);
+  utterance.lang='en-US';utterance.rate=.78;utterance.pitch=1;
+  const voices=window.speechSynthesis.getVoices();
+  const english=voices.find(v=>v.lang.toLowerCase().startsWith('en'));
+  if(english)utterance.voice=english;
+  window.speechSynthesis.speak(utterance);
+ }catch(error){console.warn('Letter pronunciation unavailable',error)}
+}
+
 const lastStation=station===4?4:3;
 const letters=alphabetGroups.slice(0,lastStation+1).join('').split('');
 $('intro').textContent='משחק סיכום '+(lastStation===3?'A–U':'A–Z')+' · אוספים את כל האותיות לפי הסדר, מ־A ועד '+letters.at(-1);
 mountTaskNavigation('review');
+$('overlayText').textContent='כאן חוזרים על כל האותיות שלמדנו עד עכשיו, מ־A ועד '+letters.at(-1)+'. רכבות עם אותיות נוסעות במסילה המתפתלת. גררו לתחנת האיסוף את האותיות לפי סדר ה־ABC. קרון שלא נאסף ממשיך בדרכו, ואחר מגיע במקומו.';
 const svg=$('game'),route=$('route'),carsLayer=$('cars'),dragLayer=$('dragLayer'),length=route.getTotalLength();
 const NS='http://www.w3.org/2000/svg';
 let index=0,lives=3,running=false,cars=[],last=0,spawnTimer=0,serial=0,drag=null,token=0;
@@ -78,7 +102,7 @@ function choose(car){
  if(!running||!cars.includes(car))return;
  cars=cars.filter(c=>c!==car);car.group.remove();
  if(car.letter===letters[index]){
-  index++;$('message').textContent='⭐ נהדר! האות '+car.letter+' נאספה. מה בא אחריה?';
+  sayLetter(car.letter);index++;$('message').textContent='⭐ נהדר! האות '+car.letter+' נאספה. מה בא אחריה?';
   if(index%5===0&&lives<3){lives++;$('message').textContent+=' · קיבלתם לב נוסף ❤️'}
   hud();
   if(index===letters.length)finish('🏆 סידרתם את כל האלפבית!','כל הקרונות נאספו לפי הסדר מ־A ועד '+letters.at(-1)+'! כל הכבוד!');
@@ -92,6 +116,7 @@ function reset(){
  for(let i=0;i<4;i++){createCar();cars.at(-1).d=i*175}
 }
 $('start').onclick=reset;
+setupSummaryIntro();
 function frame(time){
  const dt=last?Math.min(.05,(time-last)/1000):0;last=time;
  if(running){
