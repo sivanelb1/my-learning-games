@@ -15,9 +15,9 @@ function mountTaskNavigation(activeTask){
   const row=document.createElement('div');
   row.className='task-group';
   const range=stationRange(group);
-  for(const [task,label] of [['run','רכבת'],['learn','הסבר אותיות'],['game',index%2?'מתיחת קווים':'זיכרון'],['write','כתיבה'],['review','משחק סיכום']]){
+  for(const [task,label] of [['run','רכבת'],['learn','הסבר אותיות'],['game',index%2?'מתיחת קווים':'זיכרון'],['write','כתיבה'],['review',index>=3?'תחנת המיון':'משחק סיכום']]){
    const link=document.createElement('a');
-   link.href=task==='run'?runnerUrl(index):task==='review'?'train-review.html'+(index?'?'+stationQuery(index):''):workshopTaskUrl(index,task);
+   link.href=task==='run'?runnerUrl(index):task==='review'?(index>=3?'train-sorting.html?'+stationQuery(index):'train-review.html'+(index?'?'+stationQuery(index):'')):workshopTaskUrl(index,task);
    const letters=document.createElement('bdi');
    letters.textContent=range;
    letters.dir='ltr';
