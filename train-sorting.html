@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>תחנת המיון הגדולה 🚂 | PLAYWISE</title><link rel="stylesheet" href="alphabet-task-nav.css">
+<style>
+*{box-sizing:border-box}body{margin:0;font:18px/1.45 Arial,sans-serif;background:radial-gradient(circle at top,#376879,#102d42 75%);color:#fff8e6}main{max-width:1020px;margin:auto;padding:18px}a{color:#c5f8ee}h1{font-size:clamp(29px,5vw,46px);margin:14px 0 4px}.sub{margin:0 0 16px}.hud{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;padding:12px 16px;border-radius:16px;background:#173e53;margin:15px 0}.hud strong{color:#ffe08c}.yard{background:linear-gradient(#a7e8ed 0%,#e0f7e9 57%,#80bda6 57%,#72ad94 100%);border:6px solid #7ed0c9;border-radius:24px;padding:16px;color:#153d52;position:relative;overflow:hidden;min-height:460px}.yard:before{content:"";position:absolute;left:0;right:0;bottom:26px;height:72px;background:repeating-linear-gradient(90deg,#aa8e69 0 13px,#486a73 13px 26px,#486a73 26px 52px);border-top:7px solid #d1e3e2;border-bottom:7px solid #d1e3e2;opacity:.8}.yard> *{position:relative}.station-sign{background:#fff3bf;border:4px solid #4c8c9d;border-radius:15px;text-align:center;padding:12px;max-width:550px;margin:0 auto 18px;font-weight:700}.target{font-size:clamp(44px,10vw,82px);line-height:1.1;display:block;color:#20526a}.platforms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;direction:ltr;margin:0 0 25px}.platform{border:4px solid #477d91;border-radius:18px;background:#fff3c7;color:#173e53;min-height:160px;padding:9px;cursor:pointer;box-shadow:0 8px #3c7785;transition:transform .2s}.platform:hover,.platform:focus-visible{transform:translateY(-5px);outline:3px solid #ffbc55}.platform:disabled{cursor:default;opacity:.7}.platform .letter{font:bold clamp(38px,8vw,65px) Arial;display:block}.platform .track{display:block;margin-top:10px;font-size:clamp(34px,6vw,52px)}.platform .number{display:block;font-size:14px}.train{font-size:clamp(54px,12vw,94px);text-align:center;transition:transform .55s ease-out;transform:translateX(0);filter:drop-shadow(0 6px 2px #2e5b63)}.train.move-left{transform:translateX(-42%)}.train.move-right{transform:translateX(42%)}.train.move-mid{transform:translateY(-10px)}.feedback{text-align:center;font-weight:bold;min-height:36px;margin-top:15px}.overlay{position:absolute;inset:0;display:grid;place-content:center;text-align:center;background:#102c40e9;color:#fff;padding:25px;gap:14px;z-index:5}.overlay[hidden]{display:none}.overlay h2{margin:0;font-size:clamp(28px,5vw,44px)}.overlay p{max-width:480px;margin:0 auto}.overlay button{border:0;border-radius:15px;padding:14px 28px;background:#ffda7a;color:#153746;font:bold 22px Arial;cursor:pointer}.robot{font-size:55px}.progress-letters{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0;justify-content:center}.progress-letters span{padding:4px 10px;border-radius:9px;background:#27536a}.progress-letters .done{background:#ffe4a0;color:#21475a}@media(max-width:560px){.yard{padding:8px;min-height:420px}.platforms{gap:5px}.platform{min-height:128px;padding:4px;border-width:3px}.platform .number{font-size:11px}.platform .track{font-size:32px}.station-sign{padding:8px}}
+@media(prefers-reduced-motion:reduce){.train,.platform{transition:none}}
+</style></head><body><main><a href="abc-sounds-level.html">↩ שלב 1 · רכבת הצלילים</a><h1>🚂 תחנת המיון הגדולה</h1><p class="sub" id="intro"></p>
+<nav id="taskNavigation" class="task-navigation" aria-label="כל משימות רכבת הצלילים" hidden></nav>
+<div class="hud"><span>משימה: <strong id="count">0 / 12</strong></span><span>כוכבים: <strong id="stars">⭐ 0</strong></span><span>חיים: <strong id="hearts">❤️❤️❤️</strong></span></div>
+<div id="collected" class="progress-letters" aria-label="האותיות שזיהינו"></div>
+<section class="yard" aria-label="תחנת המיון">
+<div class="station-sign">שלחו את הקרון לרציף של האות <span class="target" id="target">A</span></div>
+<div id="platforms" class="platforms" aria-label="שלושה רציפים לבחירה"></div>
+<div class="train" id="train" aria-hidden="true">🚂🚃</div><div class="feedback" id="feedback" role="status" aria-live="polite">בחרו את הרציף המתאים!</div>
+<div class="overlay" id="overlay"><div class="robot" aria-hidden="true">🤖</div><h2 id="overlayTitle">ברוכים הבאים לתחנת המיון!</h2><p id="overlayText">בכל סיבוב תופיע אות. בחרו אחד משלושת הרציפים כדי לשלוח את הרכבת למקום הנכון.</p><button id="start">מתחילים!</button></div>
+</section><p style="text-align:center;font-size:15px">מזהים אותיות מכל מה שלמדנו עד עכשיו. האותיות החדשות מופיעות יותר פעמים. אחרי כמה תשובות נכונות אפשר להחזיר לב שאבד.</p>
+</main><script src="alphabet-stations.js"></script><script src="task-nav.js"></script><script>
+const $=id=>document.getElementById(id);
+const lastStation=station===4?4:3;
+const pool=alphabetGroups.slice(0,lastStation+1).join('').split('');
+const recent=alphabetGroups[lastStation].split('');
+const total=lastStation===3?12:15;
+$('intro').textContent='משחק סיכום '+(lastStation===3?'A–U':'A–Z')+' · '+total+' קרונות למיון · שלושה רציפים בכל סיבוב';
+mountTaskNavigation('review');
+let round=0,lives=3,stars=0,locked=true,queue=[],correct='',correctSlot=0,history=[],runToken=0;
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function makeQueue(){
+ // כל האותיות החדשות מובטחות לפחות פעם אחת; היתר מכל האותיות שנלמדו.
+ const q=[...recent];
+ while(q.length<total){
+  const source=Math.random()<.42?recent:pool;
+  const choices=source.filter(l=>l!==q.at(-1));
+  q.push(choices[Math.floor(Math.random()*choices.length)]);
+ }
+ return shuffle(q);
+}
+function hud(){
+ $('count').textContent=round+' / '+total;
+ $('stars').textContent='⭐ '+stars;
+ $('hearts').textContent='❤️'.repeat(lives)+'🤍'.repeat(3-lives);
+ $('collected').replaceChildren(...history.map(letter=>{const el=document.createElement('span');el.className='done';el.textContent=letter;return el}));
+}
+function show(title,message,button){locked=true;$('overlayTitle').textContent=title;$('overlayText').textContent=message;$('start').textContent=button;$('overlay').hidden=false}
+function newRound(){
+ if(round>=total){hud();show('🏆 כל הכבוד!','מיינתם '+total+' קרונות וזיהיתם אותיות מכל מה שלמדנו!','לשחק שוב');return}
+ locked=false;correct=queue[round];correctSlot=Math.floor(Math.random()*3);
+ const wrong=shuffle(pool.filter(l=>l!==correct)).slice(0,2);
+ const letters=[...wrong];letters.splice(correctSlot,0,correct);
+ $('target').textContent=correct;
+ $('feedback').textContent='בחרו את הרציף המתאים!';
+ $('train').className='train';
+ $('platforms').replaceChildren(...letters.map((letter,i)=>{
+  const b=document.createElement('button');b.className='platform';b.type='button';b.setAttribute('aria-label','רציף '+(i+1)+', האות '+letter);
+  const l=document.createElement('span');l.className='letter';l.textContent=letter;
+  const n=document.createElement('span');n.className='number';n.textContent='רציף '+(i+1);
+  const icon=document.createElement('span');icon.className='track';icon.textContent='🚃';
+  b.append(l,n,icon);b.onclick=()=>choose(i);return b;
+ }));
+ hud();
+}
+function choose(i){
+ if(locked)return;locked=true;const token=runToken;
+ const buttons=[...$('platforms').children];buttons.forEach(b=>b.disabled=true);
+ $('train').className='train '+(i===0?'move-left':i===2?'move-right':'move-mid');
+ if(i===correctSlot){
+  stars++;history.push(correct);round++;
+  const gained=round%5===0&&lives<3;
+  if(gained)lives++;
+  $('feedback').textContent=gained?'⭐ נכון! הרווחתם גם לב נוסף ❤️':'⭐ נכון מאוד! הרכבת הגיעה לרציף!';
+  hud();
+  setTimeout(()=>{if(token===runToken)newRound()},850);
+ }else{
+  lives--;hud();$('feedback').textContent='כמעט! זה הרציף של האות '+buttons[i].querySelector('.letter').textContent+'. חפשו את '+correct;
+  if(lives<=0){setTimeout(()=>{if(token===runToken)show('נגמרו החיים ❤️','הצלחתם למיין '+round+' קרונות. אפשר להתחיל שוב ולנסות לשפר!','לנסות שוב')},850)}
+  else setTimeout(()=>{if(token===runToken)newRound()},1300);
+ }
+}
+$('start').onclick=()=>{runToken++;round=0;lives=3;stars=0;history=[];queue=makeQueue();$('overlay').hidden=true;newRound()};
+</script></body></html>
