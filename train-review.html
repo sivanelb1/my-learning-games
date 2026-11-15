@@ -12,7 +12,7 @@
 <div class="game-wrap"><canvas id="board" width="660" height="610" aria-label="משחק חציית מסילות עם רכבות נעות, מתקדמים לכיוון האות הבאה"></canvas>
 <div id="overlay" class="overlay"><h2 id="overlayTitle">🚂 מוכנים לחצות?</h2><p id="overlayText">חוצים שלוש מסילות בין רכבות קטנות, ובוחרים אחת משלוש אותיות — רק אחת נכונה.</p><button id="start">מתחילים!</button></div></div>
 <div class="controls" aria-label="תנועה"><button data-move="left" aria-label="שמאלה">⬅️</button><button data-move="up" aria-label="קדימה">⬆️</button><button data-move="down" aria-label="אחורה">⬇️</button><button data-move="right" aria-label="ימינה">➡️</button></div>
-<p class="help">אפשר לשחק גם עם חיצי המקלדת. בכל אות חוצים שלוש מסילות ובוחרים את האות הנכונה מתוך שלוש אפשרויות. פגיעה ברכבת מורידה חיים. מדי כמה אותיות יופיע לב שאפשר לאסוף כדי להחזיר חיים שאבדו (עד שלושה).</p>
+<p class="help">אפשר לשחק גם עם חיצי המקלדת. בכל אות חוצים שתי מסילות ובוחרים את האות הנכונה מתוך שלוש אפשרויות. פגיעה ברכבת מורידה חיים. מדי כמה אותיות יופיע לב שאפשר לאסוף כדי להחזיר חיים שאבדו (עד שלושה).</p>
 </main><script src="alphabet-stations.js"></script><script src="task-nav.js"></script><script>
 const $=id=>document.getElementById(id);
 function setupSummaryIntro(){
@@ -42,36 +42,37 @@ const groupEnd=alphabetGroups.slice(0,station+1).join('');
 const letters=groupEnd.split('');
 $('intro').textContent='חזרה מצטברת על כל האותיות שלמדנו: A–'+letters.at(-1)+'. מתחילים ב־A ומגיעים לכל האותיות לפי הסדר!';
 const selectTask=mountTaskNavigation('review');
-$('overlayText').textContent='במשחק הזה חוזרים על כל האותיות שלמדנו עד עכשיו, מ־A ועד '+letters.at(-1)+'. חצו שלוש מסילות בלי להיפגע ברכבות, ובחרו בכל פעם את האות הבאה לפי הסדר מתוך שלוש אפשרויות.';
+$('overlayText').textContent='במשחק הזה חוזרים על כל האותיות שלמדנו עד עכשיו, מ־A ועד '+letters.at(-1)+'. חצו שתי מסילות בלי להיפגע ברכבות, ובחרו בכל פעם את האות הבאה לפי הסדר מתוך שלוש אפשרויות.';
 const canvas=$('board'),ctx=canvas.getContext('2d'),W=canvas.width,H=canvas.height;
-const rows=[500,388,276],goalY=152,startY=554,step=112;
-let state='ready',index=0,lives=3,x=W/2,y=startY,trains=[],last=0,invincible=0,stagePause=0,choices=[],correctSlot=0,heartBonus=null;
+const step=112,stageGap=448,initialStartY=554;
+let state='ready',index=0,lives=3,x=W/2,y=initialStartY,trains=[],last=0,invincible=0,stagePause=0,choices=[],correctSlot=0,heartBonus=null,cameraY=0,stageStart=initialStartY,goalY=stageStart-3*step,rows=[],transitionUntil=0;
 function updateHUD(){$('goal').textContent=index>=letters.length?'🏆':'?';$('progress').textContent=index+' / '+letters.length;$('hearts').textContent='❤️'.repeat(lives)+'🤍'.repeat(3-lives)}
-function resetRoad(){
- const answer=letters[index];
- const distractors=letters.filter(letter=>letter!==answer);
+function resetRoad(first=false){
+ stageStart=initialStartY-index*stageGap;
+ goalY=stageStart-3*step;
+ rows=[stageStart-step,stageStart-2*step];
+ const answer=letters[index],distractors=letters.filter(letter=>letter!==answer);
  for(let i=distractors.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[distractors[i],distractors[j]]=[distractors[j],distractors[i]]}
  correctSlot=Math.floor(Math.random()*3);
  choices=Array.from({length:3},(_,slot)=>slot===correctSlot?answer:distractors[slot<correctSlot?slot:slot-1]);
- x=W/2;y=startY;invincible=0;stagePause=0;
- // בכל אות רביעית מציעים לב להשלמת החיים, במסלול בטוח בין המסילות.
- heartBonus=(index>0&&(index+1)%4===0&&lives<3)?{x:W/2,y:startY-step}:null;
+ if(first){x=W/2;y=stageStart;cameraY=0}else{y=stageStart}
+ invincible=first?0:.8;stagePause=first?0:.45;
+ heartBonus=(index>0&&(index+1)%4===0&&lives<3)?{x:W/2,y:stageStart-step}:null;
  trains=[];
- const speed=85+index*4;
- for(let lane=0;lane<3;lane++){
-  const dir=(lane+index)%2?1:-1;
-  const gap=205+lane*18;
-  for(let j=0;j<3;j++)trains.push({lane,x:(j*gap+lane*115+index*63)%840-90,dir,speed:speed+lane*22,width:95+lane*12});
+ const speed=95+index*4;
+ for(let lane=0;lane<2;lane++){
+  const dir=(lane+index)%2?1:-1,gap=215+lane*22;
+  for(let j=0;j<3;j++)trains.push({lane,x:(j*gap+lane*115+index*63)%840-90,dir,speed:speed+lane*24,width:95+lane*12});
  }
  updateHUD();
 }
-function begin(){index=0;lives=3;state='playing';$('overlay').hidden=true;resetRoad()}
+function begin(){index=0;lives=3;state='playing';$('overlay').hidden=true;resetRoad(true)}
 function showOverlay(title,message,button){$('overlayTitle').textContent=title;$('overlayText').textContent=message;$('start').textContent=button;$('overlay').hidden=false}
 function fail(){state='failed';showOverlay('🚂 נגמרו החיים','הגעתם עד האות '+letters[index]+'. אפשר לנסות שוב מהאות A.','לנסות שוב')}
 function advance(){
  index++;
  if(index>=letters.length){state='won';updateHUD();showOverlay('🏆 כל הכבוד!','חציתם את כל המסילות והגעתם לכל האותיות מ־A עד '+letters.at(-1)+'!','לשחק שוב');return}
- resetRoad();stagePause=.9;
+ resetRoad();stagePause=.5;
 }
 function trainHitAt(crossX,fromY,toY){
  const low=Math.min(fromY,toY),high=Math.max(fromY,toY);
@@ -80,18 +81,15 @@ function trainHitAt(crossX,fromY,toY){
 function loseLife(){
  lives--;updateHUD();
  if(lives<=0){fail();return}
- x=W/2;y=startY;invincible=1.2;stagePause=.45;
+ x=W/2;y=stageStart;invincible=1.2;stagePause=.45;
 }
 function move(direction){
  if(state!=='playing'||stagePause>0)return;
- const oldX=x,oldY=y;
- let newX=x,newY=y;
+ const oldY=y;let newX=x,newY=y;
  if(direction==='left')newX=Math.max(35,x-72);
  if(direction==='right')newX=Math.min(W-35,x+72);
  if(direction==='up')newY=Math.max(goalY,y-step);
- if(direction==='down')newY=Math.min(startY,y+step);
- // חצייה מתבצעת בקפיצות של 112 פיקסלים: בודקים את כל נתיב התנועה,
- // ולא רק את נקודת הנחיתה שבין המסילות.
+ if(direction==='down')newY=Math.min(stageStart,y+step);
  if(invincible<=0&&trainHitAt(newX,oldY,newY)){loseLife();return}
  x=newX;y=newY;
  if(heartBonus&&Math.abs(x-heartBonus.x)<43&&Math.abs(y-heartBonus.y)<35){
@@ -99,8 +97,10 @@ function move(direction){
  }
  if(y<=goalY+10){
   const slot=Math.max(0,Math.min(2,Math.round((x-110)/220)));
-  if(choices[slot]===letters[index]){sayLetter(letters[index]);stagePause=.6;state='transition';setTimeout(()=>{if(state==='transition'){state='playing';advance()}},650)}
-  else loseLife();
+  if(choices[slot]===letters[index]){
+   sayLetter(letters[index]);stagePause=.65;state='transition';
+   setTimeout(()=>{if(state==='transition'){state='playing';advance()}},650);
+  }else loseLife();
  }
 }
 document.querySelectorAll('[data-move]').forEach(b=>b.onclick=()=>move(b.dataset.move));
@@ -140,50 +140,60 @@ function drawRobot(px,py){
 function draw(){
  ctx.clearRect(0,0,W,H);
  rounded(0,0,W,H,0,'#bce6d2');
- // חלון האותיות שנאספו: האות החדשה נכנסת מימין, הישנות נעות שמאלה.
- rounded(12,12,W-24,103,16,'#eaf8f0');
+ // The camera follows the robot, revealing the next section of railway above.
+ ctx.save();ctx.translate(0,-cameraY);
+ // Distant scenery and railway sections make the world feel continuous.
+ for(let section=Math.max(0,index-2);section<=Math.min(letters.length-1,index+2);section++){
+  const start=initialStartY-section*stageGap,top=start-3*step;
+  rounded(0,start-45,W,90,0,'#83d2a9');
+  rounded(0,top-42,W,77,0,'#77c6a1');
+  for(let lane=0;lane<2;lane++){
+   const yy=start-(lane+1)*step;
+   rounded(0,yy-44,W,88,0,'#486c77');
+   for(const dy of [-25,25])rounded(0,yy+dy,W,5,0,'#c5d5d4');
+   ctx.fillStyle='#b3a17c';for(let j=0;j<22;j++)ctx.fillRect(j*32,yy-35,9,70);
+  }
+  if(section===index){
+   ctx.textAlign='center';ctx.textBaseline='middle';
+   for(let i=0;i<3;i++){
+    const bx=110+i*220;
+    rounded(bx-78,top-40,156,69,15,'#fff0a7');
+    ctx.font='bold 47px Arial';ctx.fillStyle='#1e4659';ctx.fillText(choices[i]||'★',bx,top-7);
+   }
+   ctx.font='bold 16px Arial';ctx.fillStyle='#1e4659';ctx.fillText('בחרו את האות הנכונה!',W/2,top+53);
+  }else if(section>index){
+   // The next station is visible ahead, but its answers are not revealed early.
+   ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='bold 23px Arial';ctx.fillStyle='#24566a';
+   ctx.fillText('🚂 התחנה הבאה',W/2,top-5);
+  }
+ }
+ for(const t of trains)drawTrain(t);
+ if(heartBonus){
+  ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='bold 37px Arial';
+  ctx.fillText('❤️',heartBonus.x,heartBonus.y-8);
+  ctx.font='bold 14px Arial';ctx.fillStyle='#21485b';ctx.fillText('+1 חיים',heartBonus.x,heartBonus.y+23);
+ }
+ if(invincible<=0||Math.floor(invincible*9)%2===0)drawRobot(x,y);
+ ctx.fillStyle='#244c58';ctx.font='bold 17px Arial';ctx.textAlign='center';ctx.fillText(index===0?'התחלה':'ממשיכים!',W/2,stageStart+40);
+ ctx.restore();
+ // Fixed overlay for collected letters, independent of camera movement.
+ rounded(12,12,W-24,103,16,'#eaf8f0ed');
  ctx.textAlign='right';ctx.textBaseline='middle';ctx.fillStyle='#235269';ctx.font='bold 18px Arial';
  ctx.fillText('האותיות שאספנו 🚂',W-27,34);
- const collected=letters.slice(0,index);
- const visible=collected.slice(-8);
- const cell=72,space=8,right=W-28;
+ const visible=letters.slice(Math.max(0,index-8),index),cell=72,space=8,right=W-28;
  for(let i=0;i<visible.length;i++){
   const letter=visible[visible.length-1-i],bx=right-(i+1)*cell;
   rounded(bx,53,cell-space,49,10,'#ffe7a0');
   ctx.fillStyle='#1c4155';ctx.textAlign='center';ctx.font='bold 29px Arial';
   ctx.fillText(letter,bx+(cell-space)/2,78);
  }
- ctx.textAlign='center';
-
- for(let i=0;i<3;i++){
-  const yy=rows[i];
-  rounded(0,yy-44,W,88,0,'#486c77');
-  for(const dy of [-25,25])rounded(0,yy+dy,W,5,0,'#c5d5d4');
-  ctx.fillStyle='#b3a17c';for(let j=0;j<22;j++)ctx.fillRect(j*32,yy-35,9,70);
- }
- rounded(0,goalY-42,W,77,0,'#77c6a1');
- rounded(0,startY-42,W,87,0,'#83d2a9');
- ctx.textAlign='center';ctx.textBaseline='middle';
- for(let i=0;i<3;i++){
-  const bx=110+i*220;
-  rounded(bx-78,goalY-40,156,69,15,'#fff0a7');
-  ctx.font='bold 47px Arial';ctx.fillStyle='#1e4659';ctx.fillText(choices[i]||'★',bx,goalY-7);
- }
- ctx.font='bold 16px Arial';ctx.fillStyle='#1e4659';ctx.fillText('בחרו את האות הנכונה!',W/2,goalY+53);
- for(const t of trains)drawTrain(t);
- if(heartBonus){
-  ctx.textAlign="center";ctx.textBaseline="middle";ctx.font="bold 37px Arial";
-  ctx.fillText("❤️",heartBonus.x,heartBonus.y-8);
-  ctx.font="bold 14px Arial";ctx.fillStyle="#21485b";ctx.fillText("+1 חיים",heartBonus.x,heartBonus.y+23);
- }
- if(invincible<=0||Math.floor(invincible*9)%2===0)drawRobot(x,y);
- ctx.fillStyle='#244c58';ctx.font='bold 17px Arial';ctx.fillText('התחלה',W/2,startY+39);
 }
 function tick(timestamp){
  const dt=Math.min(.05,(timestamp-last)/1000||0);last=timestamp;
  if(state==='playing'||state==='transition'){
   if(invincible>0)invincible-=dt;
   if(stagePause>0)stagePause-=dt;
+  const targetCamera=y-500;cameraY+=(targetCamera-cameraY)*Math.min(1,dt*4.5);
   for(const t of trains){t.x+=t.dir*t.speed*dt;if(t.dir>0&&t.x>W+t.width)t.x=-t.width;if(t.dir<0&&t.x< -t.width)t.x=W+t.width}
   if(state==='playing'&&invincible<=0){
    for(const t of trains){if(Math.abs(y-rows[t.lane])<34&&Math.abs(x-t.x)<t.width/2+16){
