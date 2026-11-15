@@ -66,8 +66,8 @@ canvas{height:auto;aspect-ratio:900/610;object-fit:fill}
 <script>
 const $=id=>document.getElementById(id);
 const canvas=$('tracks'),ctx=canvas.getContext('2d');
-const width=900,height=610,horizon=164,runnerZ=8,railGap=2.25,roofHeight=1.65;
-const focal=380, cameraHeight=3.05, viewDistance=94, rampLength=5;
+const width=900,height=610,horizon=164,runnerZ=6.5,railGap=2.25,roofHeight=1.65;
+const focal=380, cameraHeight=3.2, viewDistance=94, rampLength=5;
 let cameraLane=0, cameraLift=0;
 let hoverTime=0, bank=0, dip=0;
 function point(x,z,y=0){
@@ -176,7 +176,7 @@ function drawItem(item){
   ctx.fillStyle='#fff1c3';ctx.font='bold '+(.57*sign.scale)+'px Arial';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('↓',sign.x,sign.y);
  }else{
   const isLetter=item.kind==='letter';
-  const p=point(x,item.z,(item.altitude||0)+(isLetter?1.03:.77));
+  const p=point(x,item.z,(item.altitude||0)+(isLetter?1.03:(item.roof ? .94 : .77)));
   ctx.save();ctx.translate(p.x,p.y);ctx.scale(p.scale,p.scale);
   ctx.lineWidth=.045;ctx.strokeStyle='#fff0a4';ctx.fillStyle=isLetter?'#684cbd':'#ffc547';
   ctx.beginPath();
@@ -193,12 +193,14 @@ function drawRunner(){
  const shadow=point(x,runnerZ,getSurface());
  const gap=.34-.24*dip+.045*Math.sin(hoverTime*5)*(1-dip);
  const p=point(x,runnerZ,runnerElevation+gap);
- const shadowScale=1/(1+Math.max(0,shadow.y-p.y)/100);
+ const size=p.scale/(focal/8);
+ const shadowScale=size/(1+Math.max(0,shadow.y-p.y)/100);
  ctx.fillStyle='#192c3e66';
  ctx.beginPath();ctx.ellipse(shadow.x,shadow.y,19*shadowScale,4*shadowScale,0,0,Math.PI*2);ctx.fill();
 
  ctx.save();
  ctx.translate(p.x,p.y);
+ ctx.scale(size,size);
  ctx.rotate(bank);
  ctx.scale(1+.08*dip,1-.42*dip);
  const glow=ctx.createLinearGradient(0,-12,0,11);
@@ -241,11 +243,18 @@ function draw(){
  drawBackdrop();
  const scenery=[];
  for(let z=12-travel%12,n=0;z<viewDistance;z+=12,n++)if(z>2)scenery.push({z,index:n+Math.floor(travel/12)});
- // A roof or ramp can extend across the runner's depth. Paint its entire surface first.
+ // Train surfaces span several depths. Draw their coins and the supported runner over them.
  const support=ground>0?supportingTrain():undefined;
- const runnerDepth=support?Math.min(runnerZ,support.z-(support.ramp?rampLength:0))-.01:runnerZ;
- const scene=[...scenery.map(p=>({...p,kind:'scenery'})),...objects.filter(item=>!item.used),{kind:'runner',z:runnerDepth}].sort((a,b)=>b.z-a.z);
- for(const item of scene){
+ const surfaceDepth=train=>train.z-(train.ramp?rampLength:0);
+ const runnerDepth=support?Math.min(runnerZ,surfaceDepth(support))-.01:runnerZ;
+ const scene=[
+  ...scenery.map(p=>({item:{...p,kind:'scenery'},depth:p.z})),
+  ...objects.filter(item=>!item.used).map(item=>({
+   item,depth:item.roof?surfaceDepth(item.roof)-.005:item.kind==='train'?surfaceDepth(item):item.z
+  })),
+  {item:{kind:'runner',z:runnerZ},depth:runnerDepth}
+ ].sort((a,b)=>b.depth-a.depth||b.item.z-a.item.z);
+ for(const {item} of scene){
   if(item.kind==='scenery')drawScenery(item.z,item.index);
   else if(item.kind==='runner')drawRunner();
   else drawItem(item);
@@ -287,8 +296,11 @@ function addRow(distance){
  const z=distance-travel;
  for(let i=0;i<5;i++)objects.push({kind:'coin',lane:safe,z:z+i*2.4});
  if(rowNumber>0){
-  objects.push({kind:'train',lane:train,z:z+6,length:15,ramp,paint:rowNumber%2});
-  if(ramp)for(let i=0;i<5;i++)objects.push({kind:'coin',lane:train,z:z+8+i*2.5,altitude:roofHeight});
+  const car={kind:'train',lane:train,z:z+6,length:15,ramp,paint:rowNumber%2};
+  objects.push(car);
+  if(ramp)for(let i=0;i<5;i++){
+   objects.push({kind:'coin',lane:train,z:z+8+i*2.5,altitude:roofHeight,roof:car});
+  }
  }
  if(barrier!==undefined)objects.push({kind:'barrier',lane:barrier,z:z+8});
  if(gantry!==undefined)objects.push({kind:'gantry',lane:gantry,z:z+8});
@@ -381,7 +393,7 @@ function tick(timestamp){
  hoverTime+=dt;
  bank+=(Math.max(-1,Math.min(1,laneDelta))*.24-bank)*(1-Math.exp(-dt*12));
  dip+=((slideTime>0?1:0)-dip)*(1-Math.exp(-dt*24));
- cameraLane+=(visualLane*.55-cameraLane)*(1-Math.exp(-dt*4));
+ cameraLane+=(visualLane*.65-cameraLane)*(1-Math.exp(-dt*4));
  jumpTime=jumpTime?jumpTime+dt:0;
  if(jumpTime>=jumpDuration)jumpTime=0;
  slideTime=Math.max(0,slideTime-dt);
@@ -406,7 +418,7 @@ function tick(timestamp){
   if(surface<ground)ground=Math.max(surface,ground-dt*6);
   else if(surface<roofHeight-.01||oldGround>=roofHeight-.44)ground=surface;
   runnerElevation=ground+(jumpTime?1.22*Math.sin(Math.PI*jumpTime/jumpDuration):0);
-  cameraLift+=(ground*.72-cameraLift)*Math.min(1,dt*5);
+  cameraLift+=(ground*.86-cameraLift)*Math.min(1,dt*5);
   for(const item of objects){
    resolve(item,item.z+delta,oldGround);
    if(hold||state!=='running')break;
