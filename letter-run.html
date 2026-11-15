@@ -326,6 +326,24 @@ function addRow(distance){
   if(rowNumber%2)barrier=spare;else gantry=spare;
  }
  const z=distance-travel;
+ // בכל קבוצת אותיות מתקדמת יש מקטע חובה: שלוש המסילות חסומות
+ // באותו קו. אין מסלול עוקף — צריך לקפוץ או להתכופף כדי להגיע לאות.
+ if(station>0&&rowNumber>0&&rowNumber%3===1){
+  const challengeType=Math.floor(rowNumber/3)%2===0?'barrier':'gantry';
+  const targetLane=lanes[(Math.floor(rowNumber/3)+station)%lanes.length];
+  for(const challengeLane of lanes){
+   objects.push({kind:challengeType,lane:challengeLane,z:z+8});
+   // מטבעות אחרי המכשול, כדי לעודד השלמת התנועה.
+   for(let i=0;i<3;i++)objects.push({kind:'coin',lane:challengeLane,z:z+4.4-i*1.3});
+  }
+  if(letterIndex<alphabet.length&&rowNumber>=nextLetterRow
+    &&!objects.some(item=>item.kind==='letter'&&!item.used)){
+   objects.push({kind:'letter',letter:alphabet[letterIndex],lane:targetLane,z:z+2.4});
+   nextLetterRow=rowNumber+3;
+  }
+  rowNumber++;
+  return;
+ }
  for(let i=0;i<5;i++)objects.push({kind:'coin',lane:safe,z:z+i*2.4});
  if(rowNumber>0){
   const car={kind:'train',lane:train,z:z+6,length:15,ramp,paint:rowNumber%2};
@@ -348,7 +366,7 @@ function addRow(distance){
    objects.push({kind:'power',power,lane:rowNumber%2&&challengeLane!==undefined?challengeLane:safe,z:z+17});
   }
  }
- if(letterIndex<alphabet.length&&rowNumber>=nextLetterRow&&!objects.some(item=>item.kind==='letter'&&!item.used)){
+ if(station===0&&letterIndex<alphabet.length&&rowNumber>=nextLetterRow&&!objects.some(item=>item.kind==='letter'&&!item.used)){
   // בתחנה הראשונה משאירים איסוף נוח. בתחנות המתקדמות האותיות
   // מופיעות אחרי מכשול או על גג רכבת עם רמפה נגישה.
   let letterLane=safe,letterZ=z+13,letterAltitude=0,letterRoof=null;
