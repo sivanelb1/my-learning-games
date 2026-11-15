@@ -52,7 +52,7 @@ button{font:inherit;font-weight:bold;cursor:pointer;border-radius:12px;padding:1
 <p>האות הגדולה והקטנה הן שתי צורות של אותה אות. ליד כל אות מופיעה מילה לדוגמה.</p>
 <div id="letterTabs" class="letter-tabs" role="group" aria-label="בחירת אות"></div>
 <div class="example"><strong id="pair" class="pair" dir="ltr" lang="en"></strong><div id="soundExamples" class="sound-examples"></div></div>
-<div class="controls"><button id="nextLetter" class="primary"></button></div>
+<div class="controls"><button id="letterSound" type="button">🔊 שם האות</button><button id="nextLetter" class="primary"></button></div>
 </section>
 <section class="panel" id="game" hidden>
  <h2 tabindex="-1">משחק זיכרון · אות ותמונה</h2>
@@ -88,6 +88,8 @@ button{font:inherit;font-weight:bold;cursor:pointer;border-radius:12px;padding:1
 <script src="alphabet-stations.js"></script>
 <script src="task-nav.js"></script>
 <script src="alphabet-pair-audio.js"></script>
+<script src="alphabet-name-audio.js"></script>
+<script src="alphabet-word-audio.js"></script>
 <script>
 const $ = id => document.getElementById(id);
 const firstLetters = [
@@ -123,19 +125,19 @@ const extraSounds = {
  Y:{word:'fly',he:'לעוף',icon:'🪰',sound:'/aɪ/',tip:'כאן Y מופיעה בסוף המילה ונשמעת כמו שם האות I.'},
  E: {letter:'E',clip:'e-long',word:'eagle',he:'עיט',icon:'🦅',sound:'/iː/',tip:'במילה eagle הצליל הראשון נשמע כמו השם של האות E.'}
 };
-const phonemeAudio = new Audio();
+const lessonAudio = new Audio();
 let soundRequest = 0;
 
 function stopAudio(){
  soundRequest++;
- phonemeAudio.pause();
+ lessonAudio.pause();
  $('audioFeedback').textContent='';
 }
 function playClip(clip){
  stopAudio();
  const request=soundRequest;
- phonemeAudio.src='data:audio/mpeg;base64,'+clip;
- phonemeAudio.play().catch(()=>{
+ lessonAudio.src='data:audio/mpeg;base64,'+clip;
+ lessonAudio.play().catch(()=>{
   if(request===soundRequest) $('audioFeedback').textContent='לא הצלחנו להשמיע את ההקלטה. אפשר לנסות שוב.';
  });
 }
@@ -178,7 +180,15 @@ function renderLetter(){
   symbol.textContent=example.sound;
   const tip=document.createElement('p');
   tip.textContent=example.icon+' '+example.he+(example.tip?' · '+example.tip:'');
-  card.append(word,symbol,tip);
+  const controls=document.createElement('div');
+  controls.className='controls';
+  const wordButton=document.createElement('button');
+  wordButton.type='button';
+  wordButton.textContent='🔊 כל המילה';
+  wordButton.setAttribute('aria-label','השמעת המילה '+example.word);
+  wordButton.onclick=()=>playClip(wordClips[example.word]);
+  controls.append(wordButton);
+  card.append(word,symbol,tip,controls);
   container.append(card);
  }
  $('letterTabs').querySelectorAll('button').forEach((button,index)=>button.setAttribute('aria-current',String(index===current)));
@@ -191,6 +201,7 @@ letters.forEach((data,index)=>{
  button.onclick=()=>{current=index;renderLetter();};
  $('letterTabs').append(button);
 });
+$('letterSound').onclick=()=>playClip(nameClips[letters[current].letter]);
 $('nextLetter').onclick=()=>{
  if(current<letters.length-1){current++;renderLetter();return;}
  startPractice();
