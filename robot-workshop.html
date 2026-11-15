@@ -55,6 +55,11 @@ button{font:inherit;font-weight:bold;cursor:pointer;border-radius:12px;padding:1
  <h2 tabindex="-1">משחק זיכרון · אות ותמונה</h2>
  <p>הפכו שני קלפים. חפשו אות ותמונה ששמה באנגלית מתחיל באותה אות. למשל <bdi lang="en">A</bdi> ו־<bdi lang="en">apple</bdi> 🍎.</p>
  <p id="memoryCount"></p>
+ <div id="connections" class="connections" hidden>
+  <svg id="connectionInk" aria-hidden="true"></svg>
+  <div id="letterTargets" class="targets" role="group" aria-label="אותיות"></div>
+  <div id="wordTargets" class="targets" role="group" aria-label="תמונות ומילים"></div>
+ </div>
  <div id="memoryBoard" class="memory-board" role="group" aria-label="קלפי הזיכרון"></div>
  <output id="gameFeedback"></output>
  <div class="controls"><button id="hearPair" hidden>🔊 לשמוע שוב</button><button class="primary" id="memoryNext" hidden></button><button id="review">חזרה לאותיות</button></div>
