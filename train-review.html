@@ -10,9 +10,9 @@
 <nav id="taskNavigation" class="task-navigation" aria-label="כל משימות רכבת הצלילים" hidden></nav>
 <div class="hud"><span>האות הבאה: <strong id="goal">A</strong></span><span>התקדמות: <strong id="progress">0 / 6</strong></span><span>חיים: <strong id="hearts">❤️❤️❤️</strong></span></div>
 <div class="game-wrap"><canvas id="board" width="660" height="610" aria-label="משחק חציית מסילות עם רכבות נעות, מתקדמים לכיוון האות הבאה"></canvas>
-<div id="overlay" class="overlay"><h2 id="overlayTitle">🚂 מוכנים לחצות?</h2><p id="overlayText">חוצים שלוש מסילות בין רכבות קטנות, ומגיעים לאות הבאה לפי הסדר.</p><button id="start">מתחילים!</button></div></div>
+<div id="overlay" class="overlay"><h2 id="overlayTitle">🚂 מוכנים לחצות?</h2><p id="overlayText">חוצים שלוש מסילות בין רכבות קטנות, ובוחרים אחת משלוש אותיות — רק אחת נכונה.</p><button id="start">מתחילים!</button></div></div>
 <div class="controls" aria-label="תנועה"><button data-move="left" aria-label="שמאלה">⬅️</button><button data-move="up" aria-label="קדימה">⬆️</button><button data-move="down" aria-label="אחורה">⬇️</button><button data-move="right" aria-label="ימינה">➡️</button></div>
-<p class="help">אפשר לשחק גם עם חיצי המקלדת. בכל אות חוצים שלוש מסילות, מגיעים לשער האות וממשיכים לאות הבאה. פגיעה ברכבת מורידה חיים.</p>
+<p class="help">אפשר לשחק גם עם חיצי המקלדת. בכל אות חוצים שלוש מסילות ובוחרים את האות הנכונה מתוך שלוש אפשרויות. פגיעה ברכבת מורידה חיים.</p>
 </main><script src="alphabet-stations.js"></script><script src="task-nav.js"></script><script>
 const $=id=>document.getElementById(id);
 const groupEnd=alphabetGroups.slice(0,station+1).join('');
@@ -21,9 +21,14 @@ $('intro').textContent='חזרה מצטברת על כל האותיות שלמד�
 const selectTask=mountTaskNavigation('review');
 const canvas=$('board'),ctx=canvas.getContext('2d'),W=canvas.width,H=canvas.height;
 const rows=[500,388,276],goalY=152,startY=554,step=112;
-let state='ready',index=0,lives=3,x=W/2,y=startY,trains=[],last=0,invincible=0,stagePause=0;
+let state='ready',index=0,lives=3,x=W/2,y=startY,trains=[],last=0,invincible=0,stagePause=0,choices=[],correctSlot=0;
 function updateHUD(){$('goal').textContent=letters[index]||'🏆';$('progress').textContent=index+' / '+letters.length;$('hearts').textContent='❤️'.repeat(lives)+'🤍'.repeat(3-lives)}
 function resetRoad(){
+ const answer=letters[index];
+ const distractors=letters.filter(letter=>letter!==answer);
+ for(let i=distractors.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[distractors[i],distractors[j]]=[distractors[j],distractors[i]]}
+ correctSlot=Math.floor(Math.random()*3);
+ choices=Array.from({length:3},(_,slot)=>slot===correctSlot?answer:distractors[slot<correctSlot?slot:slot-1]);
  x=W/2;y=startY;invincible=0;stagePause=0;
  trains=[];
  const speed=85+index*4;
@@ -48,7 +53,11 @@ function move(direction){
  if(direction==='right')x=Math.min(W-35,x+72);
  if(direction==='up')y=Math.max(goalY,y-step);
  if(direction==='down')y=Math.min(startY,y+step);
- if(y<=goalY+10){stagePause=.6;state='transition';setTimeout(()=>{if(state==='transition'){state='playing';advance()}},650)}
+ if(y<=goalY+10){
+  const slot=Math.max(0,Math.min(2,Math.round((x-110)/220)));
+  if(choices[slot]===letters[index]){stagePause=.6;state='transition';setTimeout(()=>{if(state==='transition'){state='playing';advance()}},650)}
+  else {lives--;updateHUD();if(lives<=0)fail();else {x=W/2;y=startY;invincible=1.2;stagePause=.5}}
+ }
 }
 document.querySelectorAll('[data-move]').forEach(b=>b.onclick=()=>move(b.dataset.move));
 document.addEventListener('keydown',e=>{const d={ArrowLeft:'left',ArrowRight:'right',ArrowUp:'up',ArrowDown:'down'}[e.key];if(d){e.preventDefault();move(d)}});
@@ -61,6 +70,28 @@ function drawTrain(t){
  ctx.fillStyle='#17364a';for(const dx of [-t.width/3,t.width/3]){ctx.beginPath();ctx.arc(dx,25,8,0,Math.PI*2);ctx.fill()}
  ctx.font='24px Arial';ctx.textAlign='center';ctx.fillText('🚂',t.dir>0?-t.width/2+12:t.width/2-12,8);ctx.restore();
 }
+function drawRobot(px,py){
+ ctx.save();ctx.translate(px,py+17);ctx.scale(.76,.76);
+ const glow=ctx.createRadialGradient(0,-28,2,0,-28,52);
+ glow.addColorStop(0,'#a4fff5a0');glow.addColorStop(1,'#49efec00');
+ ctx.fillStyle=glow;ctx.beginPath();ctx.ellipse(0,-29,49,52,0,0,Math.PI*2);ctx.fill();
+ ctx.fillStyle='#183c4a55';ctx.beginPath();ctx.ellipse(0,1,26,5,0,0,Math.PI*2);ctx.fill();
+ ctx.strokeStyle='#233952';ctx.lineWidth=4;ctx.lineCap='round';
+ ctx.beginPath();ctx.moveTo(0,-65);ctx.lineTo(3,-75);ctx.stroke();
+ ctx.fillStyle='#ffdf7b';ctx.beginPath();ctx.arc(3,-77,5,0,Math.PI*2);ctx.fill();
+ const shell=ctx.createLinearGradient(0,-66,0,-15);
+ shell.addColorStop(0,'#f6ffe8');shell.addColorStop(.42,'#74e0de');shell.addColorStop(1,'#278a9a');
+ ctx.fillStyle='#24485b';
+ for(const side of [-1,1]){ctx.beginPath();ctx.roundRect(side*22-6,-53,12,24,5);ctx.fill()}
+ ctx.lineWidth=2.5;ctx.strokeStyle='#203c53';ctx.fillStyle=shell;
+ ctx.beginPath();ctx.roundRect(-25,-66,50,47,[19,19,16,16]);ctx.fill();ctx.stroke();
+ ctx.fillStyle='#183a52';ctx.beginPath();ctx.roundRect(-15,-55,30,23,8);ctx.fill();
+ ctx.fillStyle='#a8fff2';ctx.beginPath();ctx.roundRect(-9,-49,18,3,1.5);ctx.fill();
+ ctx.fillStyle='#ffdb73';for(const dx of [-7,0,7]){ctx.beginPath();ctx.arc(dx,-39,1.5,0,Math.PI*2);ctx.fill()}
+ ctx.fillStyle='#213958';ctx.beginPath();ctx.roundRect(-11,-24,22,7,3);ctx.fill();
+ ctx.fillStyle='#e6fffa';ctx.beginPath();ctx.roundRect(-8,-20,16,3,1.5);ctx.fill();
+ ctx.restore();
+}
 function draw(){
  ctx.clearRect(0,0,W,H);
  rounded(0,0,W,H,0,'#bce6d2');
@@ -72,11 +103,15 @@ function draw(){
  }
  rounded(0,goalY-42,W,77,0,'#77c6a1');
  rounded(0,startY-42,W,87,0,'#83d2a9');
- rounded(W/2-62,goalY-39,124,65,15,'#fff0a7');
- ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='bold 47px Arial';ctx.fillStyle='#1e4659';ctx.fillText(letters[index]||'★',W/2,goalY-7);
- ctx.font='bold 17px Arial';ctx.fillText('יעד',W/2+94,goalY-4);
+ ctx.textAlign='center';ctx.textBaseline='middle';
+ for(let i=0;i<3;i++){
+  const bx=110+i*220;
+  rounded(bx-78,goalY-40,156,69,15,'#fff0a7');
+  ctx.font='bold 47px Arial';ctx.fillStyle='#1e4659';ctx.fillText(choices[i]||'★',bx,goalY-7);
+ }
+ ctx.font='bold 16px Arial';ctx.fillStyle='#1e4659';ctx.fillText('בחרו את האות הנכונה!',W/2,goalY+53);
  for(const t of trains)drawTrain(t);
- if(invincible<=0||Math.floor(invincible*9)%2===0){ctx.font='47px Arial';ctx.fillText('🐸',x,y-6)}
+ if(invincible<=0||Math.floor(invincible*9)%2===0)drawRobot(x,y);
  ctx.fillStyle='#244c58';ctx.font='bold 17px Arial';ctx.fillText('התחלה',W/2,startY+39);
 }
 function tick(timestamp){
