@@ -483,7 +483,9 @@ function startRound(){
  Object.assign(state.timeGame,{i:0,correct:0,wrong:false,answered:false,finished:false});
 }
 
+let timeAdvanceTimer;
 function showStage(stage){
+ clearTimeout(timeAdvanceTimer);
  const t=stages.includes(stage)?stage:'intro';
  for(const name of stages)document.getElementById(name).classList.toggle('hidden',name!==t);
  document.querySelectorAll('[data-step]').forEach(a=>{const active=a.dataset.step===(quizNavigation[t]?.lesson ?? t);a.classList.toggle('current',active);if(active)a.setAttribute('aria-current','step');else a.removeAttribute('aria-current')});
@@ -517,7 +519,7 @@ function renderQuiz(type){
  }
  document.getElementById(type+'Feedback').textContent=st.answered?'🟢 מצוין! '+q.why:'';
  document.getElementById(type+'Hint').classList.toggle('hidden',!st.wrong||st.answered);
- document.getElementById(type+'Next').classList.toggle('hidden',!st.answered);
+ updateNextButton(type);
  document.getElementById(type+'Next').textContent=st.i===quizzes[type].length-1?quizNavigation[type].label:'🚀 לשאלה הבאה';
  document.getElementById(type+'Replay')?.classList.toggle('hidden',!st.answered||st.i!==quizzes[type].length-1);
 }
@@ -532,9 +534,22 @@ function choose(type,choice,button){
  document.getElementById(type+'Fill').style.width=((st.i+1)/quizzes[type].length*100)+'%';
  document.getElementById(type+'Feedback').textContent='🟢 '+q.why;
  document.getElementById(type+'Hint').classList.add('hidden');
- document.getElementById(type+'Next').classList.remove('hidden');
+ updateNextButton(type);
  document.getElementById(type+'Next').textContent=st.i===quizzes[type].length-1?quizNavigation[type].label:'🚀 לשאלה הבאה';
  document.getElementById(type+'Replay')?.classList.toggle('hidden',!st.answered||st.i!==quizzes[type].length-1);
+}
+function updateNextButton(type){
+ const st=state[type];
+ const advanceAutomatically=type==='timeGame'&&st.i<quizzes[type].length-1;
+ document.getElementById(type+'Next').classList.toggle('hidden',!st.answered||advanceAutomatically);
+ if(!st.answered||!advanceAutomatically)return;
+ clearTimeout(timeAdvanceTimer);
+ timeAdvanceTimer=setTimeout(()=>{
+   const focus=document.activeElement;
+   const restoreFocus=focus===document.body||document.getElementById('timeGame').contains(focus);
+   nextQuestion('timeGame');
+   if(restoreFocus)document.getElementById('timeGameQuestion').focus({preventScroll:true});
+ },1100);
 }
 let runnerTimer;
 function resetRunner(){
