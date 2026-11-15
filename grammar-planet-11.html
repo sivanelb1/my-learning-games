@@ -25,8 +25,9 @@
 .time-game .quiz-choice:first-child:not(.correct):not(.wrong){background:#fff2d5;color:#65471c;border-color:#dfbd6b}
 .time-game .quiz-choice:last-child:not(.correct):not(.wrong){background:#e6f7f3;color:#195a50;border-color:#83c7b8}
 .quiz-choice:focus-visible,.bigbutton:focus-visible,.steps a:focus-visible{outline:3px solid #9d66ff;outline-offset:3px}
-</style></head><body><main class="wrap"><a class="back" href="level5.html">↩️ חזרה למפת הגלקסיה</a><nav class="steps" aria-label="שלבי כוכב 11"><a href="?stage=intro" data-step="intro">🌀 פתיחה</a><a href="?stage=positive" data-step="positive">🕰️ מילות זמן</a><a href="?stage=regular" data-step="regular">🛠️ פעלים רגילים</a><a href="?stage=irregular" data-step="irregular">✨ פעלים מיוחדים</a><a href="?stage=sentence" data-step="sentence">📚 משפט חיובי</a><a href="?stage=practice1" data-step="practice1">🎯 תרגול 1</a><a href="?stage=negative" data-step="negative">📖 שלילה ושאלה</a><a href="?stage=practice2" data-step="practice2">🎯 תרגול 2</a><a href="?stage=finish" data-step="finish">🏆 סיום</a><a href="grammar-planet-11-gates.html">🚪 אתגר 1 · שערי זמן</a></nav><header><div class="orb">🌀⏳</div><h1>PAST PORTAL</h1><p>שער העבר · כוכב 11 בגלקסיית הדקדוק<br>🌟 המסע אל מה שקרה אתמול!</p></header>
-<section id="intro" class="panel"><h2>👽 זיגי מצא שער לזמן אחר!</h2><div class="ziggy">זיגי: עד עכשיו סיפרנו מה קורה <b>בדרך כלל</b> ומה קורה <b>ממש עכשיו</b>. אבל איך נספר על משהו <b>שכבר קרה ונגמר</b>? למשל, מה עשינו אתמול או בשבוע שעבר? בשביל זה יש לנו זמן חדש: <b>PAST SIMPLE!</b> 🕰️</div><div class="example-grid" style="margin-top:19px"><article class="example-card"><strong>☀️ PRESENT SIMPLE</strong><div class="sentence">Shira plays football every day. <button class="sound" onclick="speak('Shira plays football every day.')">🔊</button></div></article><article class="example-card"><strong>⏳ PAST SIMPLE</strong><div class="sentence">Shira played football yesterday. <button class="sound" onclick="speak('Shira played football yesterday.')">🔊</button></div></article></div><div class="bottom"><button class="bigbutton" onclick="showStage('positive')">🚀 מתחילים עם מילות זמן</button></div></section>
+.lesson-link{display:inline-block;text-decoration:none}
+</style></head><body><main class="wrap"><a class="back" href="level5.html">↩️ חזרה למפת הגלקסיה</a><nav class="steps" aria-label="שלבי כוכב 11"><a href="?stage=intro" data-step="intro">🌀 פתיחה</a><a href="grammar-planet-11-gates.html">🚪 שערי זמן</a><a href="?stage=positive" data-step="positive">🕰️ מילות זמן</a><a href="?stage=regular" data-step="regular">🛠️ פעלים רגילים</a><a href="?stage=irregular" data-step="irregular">✨ פעלים מיוחדים</a><a href="?stage=sentence" data-step="sentence">📚 משפט חיובי</a><a href="?stage=practice1" data-step="practice1">🎯 תרגול 1</a><a href="?stage=negative" data-step="negative">🚫 שלילה</a><a href="?stage=question" data-step="question">❓ שאלות</a><a href="?stage=be" data-step="be">🧠 WAS / WERE</a><a href="?stage=finish" data-step="finish">🏆 סיום</a></nav><header><div class="orb">🌀⏳</div><h1>PAST PORTAL</h1><p>שער העבר · כוכב 11 בגלקסיית הדקדוק<br>🌟 המסע אל מה שקרה אתמול!</p></header>
+<section id="intro" class="panel"><h2>👽 זיגי מצא שער לזמן אחר!</h2><div class="ziggy">זיגי: עד עכשיו סיפרנו מה קורה <b>בדרך כלל</b> ומה קורה <b>ממש עכשיו</b>. אבל איך נספר על משהו <b>שכבר קרה ונגמר</b>? למשל, מה עשינו אתמול או בשבוע שעבר? בשביל זה יש לנו זמן חדש: <b>PAST SIMPLE!</b> 🕰️</div><div class="example-grid" style="margin-top:19px"><article class="example-card"><strong>☀️ PRESENT SIMPLE</strong><div class="sentence">Shira plays football every day. <button class="sound" onclick="speak('Shira plays football every day.')">🔊</button></div></article><article class="example-card"><strong>⏳ PAST SIMPLE</strong><div class="sentence">Shira played football yesterday. <button class="sound" onclick="speak('Shira played football yesterday.')">🔊</button></div></article></div><div class="bottom"><a class="bigbutton lesson-link" href="grammar-planet-11-gates.html">🚪 למשחק הדלתות</a></div></section>
 
 <section id="positive" class="panel hidden">
   <h2>🕰️ מילות זמן</h2>
@@ -108,24 +109,84 @@
   <div class="bottom"><button class="bigbutton" onclick="showStage('practice1')">🎯 לתרגול המשפט החיובי</button></div>
 </section>
 <section id="practice1" class="hidden"><div class="panel practice"><h2>🎯 תרגול 1 — מה קרה אתמול?</h2><p>בחרו את הפועל הנכון כדי להשלים משפט חיובי בעבר. טעיתם? אפשר לבקש רמז ולנסות שוב.</p><div class="quiz-meta"><span id="practice1Count"></span><span id="practice1Stars"></span></div><div class="quiz-track"><div class="quiz-fill" id="practice1Fill"></div></div><div id="practice1Question" class="quiz-question" dir="ltr"></div><div id="practice1Options" class="quiz-options" dir="ltr"></div><div id="practice1Feedback" class="quiz-feedback" aria-live="polite"></div><button class="bigbutton secondary hidden" id="practice1Hint" onclick="showHint('practice1')">💡 אפשר רמז?</button><button class="bigbutton hidden" id="practice1Next" onclick="nextQuestion('practice1')">➡️ ממשיכים</button></div></section>
-<section id="negative" class="hidden">
-<div class="panel"><div class="ziggy">👽 זיגי: מצוין! עכשיו כשאנחנו יודעים לספר מה <b>קרה</b> בעבר, נגלה גם איך אומרים מה <b>לא קרה</b> ואיך <b>שואלים</b> שאלות על העבר. 💜</div></div>
-<article class="panel"><h2>4. 🚫 משפט שלילה בעבר</h2><div class="formula">Subject + did not (didn't) + Base Verb</div><div class="sentence">Shira did not play football yesterday.</div><div class="sentence">They didn't go to school yesterday.</div><div class="note">⭐ אחרי <b>DIDN'T</b> הפועל חוזר לצורת הבסיס: <b dir="ltr">didn't go</b> ולא <s dir="ltr">didn't went</s>.</div></article>
-<article class="panel"><h2>5. ❓ שאלה בעבר</h2><div class="formula">Did + Subject + Base Verb + ... ?</div><div class="sentence">Did Shira play football yesterday?</div><div class="sentence">Did they go to school yesterday?</div><p><b>תשובות קצרות:</b> <span dir="ltr">Yes, she did. / No, she didn't.</span></p><div class="note">💡 גם בשאלה, אחרי <b>DID</b> משתמשים בפועל בסיסי: <b dir="ltr">Did she eat?</b> ולא <s dir="ltr">Did she ate?</s>.</div></article>
-<article class="panel"><h2>6. 🧠 ומה עם WAS / WERE?</h2><p>לפועל <b>BE</b> יש צורת עבר מיוחדת. כאן לא משתמשים ב־DID בשאלות ובשלילה עם BE.</p><div class="comparison"><div><h3>WAS</h3><div class="sentence">I was happy.<br>She was tired.</div><p>I / he / she / it</p></div><div><h3>WERE</h3><div class="sentence">We were happy.<br>They were tired.</div><p>you / we / they</p></div></div><div class="sentence">Was she happy?<br>She wasn't tired.<br>Were they at home?</div><div class="note">✅ <b>Was she happy?</b> ולא <s>Did she be happy?</s>.</div></article>
-<article class="panel"><h2>🌟 זיגי מסכם</h2><div class="rule-grid"><div class="rule"><strong>✅ חיוב</strong><div class="sentence">She played.</div>פועל בעבר</div><div class="rule"><strong>🚫 שלילה</strong><div class="sentence">She didn't play.</div>didn't + פועל בסיסי</div><div class="rule"><strong>❓ שאלה</strong><div class="sentence">Did she play?</div>Did + נושא + פועל בסיסי</div></div><p style="text-align:center">👽 מצוין! עכשיו אנחנו מוכנים להתחיל את אתגרי שער העבר.</p><div class="bottom"><a class="bigbutton secondary" style="display:inline-block;text-decoration:none" href="level5.html">🪐 חזרה למפת הגלקסיה</a><button class="bigbutton" onclick="showStage('intro')">🔁 הסבר מההתחלה</button></div></article>
-<div class="panel bottom"><h2>🌟 מוכנים לתרגול השני?</h2><p>ארבע שאלות קלילות על <b>didn't</b>, <b>Did</b> ו־<b>was / were</b>.</p><button class="bigbutton" onclick="showStage('practice2')">🎯 לתרגול השלילה והשאלה</button></div>
+<section id="negative" class="panel hidden">
+  <h2>🚫 שלילה בעבר</h2>
+  <p>כדי לומר שמשהו לא קרה, שמים <bdi lang="en">didn't</bdi> לפני הפועל בצורת הבסיס.</p>
+  <div class="formula" lang="en">Subject + didn't + Base Verb</div>
+  <div class="sentence" lang="en">Shira <b>didn't play</b> football yesterday.</div>
+  <div class="sentence" lang="en">They <b>didn't go</b> to school yesterday.</div>
+  <p>אחרי <bdi lang="en">didn't</bdi> משתמשים ב־<bdi lang="en">go</bdi>, צורת הבסיס של <bdi lang="en">went</bdi>.</p>
+  <div class="bottom"><button class="bigbutton" onclick="showStage('practice2')">🎯 לתרגול השלילה</button></div>
 </section>
-<section id="practice2" class="hidden"><div class="panel practice"><h2>🎯 תרגול 2 — שלילה או שאלה?</h2><p>בחרו את המילה החסרה. זכרו: אחרי Did ו־didn’t משתמשים בפועל הבסיסי.</p><div class="quiz-meta"><span id="practice2Count"></span><span id="practice2Stars"></span></div><div class="quiz-track"><div class="quiz-fill" id="practice2Fill"></div></div><div id="practice2Question" class="quiz-question" dir="ltr"></div><div id="practice2Options" class="quiz-options" dir="ltr"></div><div id="practice2Feedback" class="quiz-feedback" aria-live="polite"></div><button class="bigbutton secondary hidden" id="practice2Hint" onclick="showHint('practice2')">💡 אפשר רמז?</button><button class="bigbutton hidden" id="practice2Next" onclick="nextQuestion('practice2')">➡️ ממשיכים</button></div></section>
-<section id="finish" class="hidden"><div class="panel bottom"><h2>🏆 שער העבר נפתח!</h2><div style="font-size:60px">👽🌀⏳</div><p style="font-size:20px">כל הכבוד! עברתם את שני התרגולים. עכשיו אתם מוכנים לאתגרים המהנים של כוכב 11!</p><div class="note">💜 זיגי מזכיר: בעבר רגיל משתמשים בפועל בעבר; בשאלה ובשלילה משתמשים ב־<b>Did / didn't + verb</b> בצורת הבסיס.</div><button class="bigbutton secondary" onclick="showStage('sentence')">📚 לחזור להסבר</button><a class="bigbutton secondary" style="display:inline-block;text-decoration:none" href="level5.html">🪐 מפת הגלקסיה</a><p style="margin-top:16px"><a class="bigbutton" href="grammar-planet-11-gates.html" style="display:inline-block;text-decoration:none">🚪 אתגר 1 — בואו נפתח שערי זמן!</a></p></div></section>
+<section id="practice2" class="hidden">
+  <div class="panel practice">
+    <h2>🚫 מה לא קרה?</h2>
+    <p>בחרו את המילה שמשלימה את משפט השלילה.</p>
+    <div class="quiz-meta"><span id="practice2Count"></span><span id="practice2Stars"></span></div>
+    <div class="quiz-track"><div class="quiz-fill" id="practice2Fill"></div></div>
+    <div id="practice2Question" class="quiz-question" dir="ltr" lang="en"></div>
+    <div id="practice2Options" class="quiz-options" dir="ltr"></div>
+    <div id="practice2Feedback" class="quiz-feedback" aria-live="polite"></div>
+    <button class="bigbutton secondary hidden" id="practice2Hint" onclick="showHint('practice2')">💡 אפשר רמז?</button>
+    <button class="bigbutton hidden" id="practice2Next" onclick="nextQuestion('practice2')">➡️ ממשיכים</button>
+  </div>
+</section>
+<section id="question" class="panel hidden">
+  <h2>❓ שאלות בעבר</h2>
+  <p>בשאלת כן או לא פותחים ב־<b lang="en">Did</b>. אחר כך באים מי שעשה את הפעולה והפועל בצורת הבסיס.</p>
+  <div class="formula" lang="en">Did + Subject + Base Verb + ... ?</div>
+  <div class="sentence" lang="en"><b>Did</b> Shira <b>play</b> football yesterday?</div>
+  <p>אפשר לענות בקצרה <bdi lang="en">Yes, she did.</bdi> או <bdi lang="en">No, she didn't.</bdi></p>
+  <div class="bottom"><button class="bigbutton" onclick="showStage('questionGame')">🎯 לתרגול השאלות</button></div>
+</section>
+<section id="questionGame" class="hidden">
+  <div class="panel practice">
+    <h2>❓ בונים שאלה</h2>
+    <p>השלימו את השאלה על מה שקרה בעבר.</p>
+    <div class="quiz-meta"><span id="questionGameCount"></span><span id="questionGameStars"></span></div>
+    <div class="quiz-track"><div class="quiz-fill" id="questionGameFill"></div></div>
+    <div id="questionGameQuestion" class="quiz-question" dir="ltr" lang="en"></div>
+    <div id="questionGameOptions" class="quiz-options" dir="ltr"></div>
+    <div id="questionGameFeedback" class="quiz-feedback" aria-live="polite"></div>
+    <button class="bigbutton secondary hidden" id="questionGameHint" onclick="showHint('questionGame')">💡 אפשר רמז?</button>
+    <button class="bigbutton hidden" id="questionGameNext" onclick="nextQuestion('questionGame')">➡️ ממשיכים</button>
+  </div>
+</section>
+<section id="be" class="panel hidden">
+  <h2>🧠 הפועל BE בעבר</h2>
+  <p>לפועל <b lang="en">BE</b> יש שתי צורות בעבר.</p>
+  <div class="comparison lesson-examples">
+    <div><h3 lang="en">WAS</h3><p><bdi lang="en">I / he / she / it</bdi></p><div class="sentence" lang="en">She <b>was</b> happy.</div></div>
+    <div><h3 lang="en">WERE</h3><p><bdi lang="en">you / we / they</bdi></p><div class="sentence" lang="en">They <b>were</b> at home.</div></div>
+  </div>
+  <p>בשאלה מעבירים את <bdi lang="en">was / were</bdi> להתחלה. בשלילה משתמשים ב־<bdi lang="en">wasn't / weren't</bdi>.</p>
+  <div class="sentence" lang="en"><b>Was</b> she happy?<br>They <b>weren't</b> at home.</div>
+  <div class="bottom"><button class="bigbutton" onclick="showStage('beGame')">🎯 לתרגול WAS / WERE</button></div>
+</section>
+<section id="beGame" class="hidden">
+  <div class="panel practice">
+    <h2>🧠 בוחרים WAS או WERE</h2>
+    <p>בחרו את הצורה שמתאימה למשפט, לשאלה או לשלילה.</p>
+    <div class="quiz-meta"><span id="beGameCount"></span><span id="beGameStars"></span></div>
+    <div class="quiz-track"><div class="quiz-fill" id="beGameFill"></div></div>
+    <div id="beGameQuestion" class="quiz-question" dir="ltr" lang="en"></div>
+    <div id="beGameOptions" class="quiz-options" dir="ltr"></div>
+    <div id="beGameFeedback" class="quiz-feedback" aria-live="polite"></div>
+    <button class="bigbutton secondary hidden" id="beGameHint" onclick="showHint('beGame')">💡 אפשר רמז?</button>
+    <button class="bigbutton hidden" id="beGameNext" onclick="nextQuestion('beGame')">➡️ ממשיכים</button>
+  </div>
+</section>
+<section id="finish" class="hidden"><div class="panel bottom"><h2>🏆 שער העבר נפתח!</h2><div style="font-size:60px">👽🌀⏳</div><p style="font-size:20px">כל הכבוד! סיימתם את המסלול בשער העבר.</p><div class="note">💜 זיגי מזכיר: בעבר רגיל משתמשים בפועל בעבר; בשאלה ובשלילה משתמשים ב־<b>Did / didn't + verb</b> בצורת הבסיס.</div><button class="bigbutton secondary" onclick="showStage('sentence')">📚 לחזור להסבר</button><a class="bigbutton secondary" style="display:inline-block;text-decoration:none" href="level5.html">🪐 מפת הגלקסיה</a><p style="margin-top:16px"><a class="bigbutton" href="grammar-planet-11-gates.html" style="display:inline-block;text-decoration:none">🚪 לשחק שוב בשערי הזמן</a></p></div></section>
 </main><script>
-const stages=['intro','positive','timeGame','regular','regularGame','irregular','irregularGame','sentence','practice1','negative','practice2','finish'];
+const stages=['intro','positive','timeGame','regular','regularGame','irregular','irregularGame','sentence','practice1','negative','practice2','question','questionGame','be','beGame','finish'];
 const quizNavigation={
  timeGame:{lesson:'positive',next:'regular',label:'🛠️ לפעלים רגילים'},
  regularGame:{lesson:'regular',next:'irregular',label:'✨ לפעלים מיוחדים'},
  irregularGame:{lesson:'irregular',next:'sentence',label:'📚 למשפט החיובי'},
- practice1:{next:'negative',label:'📖 לשלילה ושאלה'},
- practice2:{next:'finish',label:'🏆 לסיום'}
+ practice1:{next:'negative',label:'🚫 לשלילה'},
+ practice2:{lesson:'negative',next:'question',label:'❓ לשאלות בעבר'},
+ questionGame:{lesson:'question',next:'be',label:'🧠 ל־WAS / WERE'},
+ beGame:{lesson:'be',next:'finish',label:'🏆 לסיום'}
 };
 const quizzes={
 timeGame:[
@@ -153,10 +214,22 @@ practice1:[
 {q:'He ___ to school yesterday.',choices:['went','goed','go'],answer:'went',hint:'GO הוא פועל יוצא דופן. צורת העבר שלו שונה מאוד.',why:'בדיוק! go → went.'}
 ],
 practice2:[
-{q:'Shira ___ play football yesterday.',choices:["doesn't","didn't","isn't"],answer:"didn't",hint:"בשלילה בעבר משתמשים ב־DIDN'T ואז בפועל בסיסי.",why:"נכון! didn't play — הפועל נשאר בצורת הבסיס."},
-{q:'___ they go to school yesterday?',choices:['Do','Are','Did'],answer:'Did',hint:'שאלה על העבר מתחילה ב־DID, ולא ב־DO.',why:'נכון! Did they go ... ?'},
-{q:'Did he ___ an apple?',choices:['ate','eat','eating'],answer:'eat',hint:'אחרי DID משתמשים בצורת הבסיס: EAT, לא ATE.',why:'בדיוק! Did he eat?'},
-{q:'She ___ happy yesterday.',choices:['was','were','did'],answer:'was',hint:'BE בעבר: I/he/she/it = WAS; you/we/they = WERE.',why:'מעולה! She was happy.'}
+  {"q": "Shira ___ play football yesterday.", "choices": ["doesn't", "didn't", "isn't"], "answer": "didn't", "hint": "בחרו את מילת השלילה שמתאימה לעבר.", "why": "Shira didn't play football yesterday."},
+  {"q": "They didn't ___ to school yesterday.", "choices": ["went", "go", "goes"], "answer": "go", "hint": "אחרי didn't הפועל מופיע בצורת הבסיס.", "why": "They didn't go to school yesterday."},
+  {"q": "We ___ watch a movie last night.", "choices": ["aren't", "don't", "didn't"], "answer": "didn't", "hint": "Last night מציין עבר. חפשו את מילת השלילה בעבר.", "why": "We didn't watch a movie last night."},
+  {"q": "He didn't ___ an apple yesterday.", "choices": ["eat", "ate", "eats"], "answer": "eat", "hint": "מה צורת הבסיס של ate?", "why": "He didn't eat an apple yesterday."}
+],
+questionGame:[
+  {"q": "___ they go to school yesterday?", "choices": ["Do", "Are", "Did"], "answer": "Did", "hint": "שאלת כן או לא על פעולה בעבר מתחילה ב־Did.", "why": "Did they go to school yesterday?"},
+  {"q": "Did he ___ an apple yesterday?", "choices": ["ate", "eat", "eating"], "answer": "eat", "hint": "אחרי Did משתמשים בצורת הבסיס.", "why": "Did he eat an apple yesterday?"},
+  {"q": "___ she watch a movie last night?", "choices": ["Did", "Does", "Is"], "answer": "Did", "hint": "Last night מציין עבר. איך מתחילים שאלה על פעולה בעבר?", "why": "Did she watch a movie last night?"},
+  {"q": "Did they ___ football last week?", "choices": ["played", "plays", "play"], "answer": "play", "hint": "Did כבר מסמן עבר. בחרו את צורת הבסיס.", "why": "Did they play football last week?"}
+],
+beGame:[
+  {"q": "She ___ happy yesterday.", "choices": ["was", "were", "are"], "answer": "was", "hint": "עם she משתמשים ב־was.", "why": "She was happy yesterday."},
+  {"q": "We ___ at home last night.", "choices": ["is", "was", "were"], "answer": "were", "hint": "עם we משתמשים ב־were.", "why": "We were at home last night."},
+  {"q": "___ they tired yesterday?", "choices": ["Was", "Were", "Did"], "answer": "Were", "hint": "מעבירים את צורת העבר של BE להתחלת השאלה. איזו צורה מתאימה ל־they?", "why": "Were they tired yesterday?"},
+  {"q": "He ___ at school yesterday. (−)", "choices": ["weren't", "isn't", "wasn't"], "answer": "wasn't", "hint": "עם he משתמשים ב־was. איזו אפשרות היא השלילה שלו?", "why": "He wasn't at school yesterday."}
 ]};
 const state=Object.fromEntries(Object.keys(quizzes).map(type=>[type,{i:0,correct:0,wrong:false,answered:false}]));
 function showStage(stage){
