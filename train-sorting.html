@@ -6,7 +6,7 @@
 </style></head><body><main>
 <a href="abc-sounds-level.html">↩ שלב 1 · רכבת הצלילים</a><h1>🚂 תחנת המיון הגדולה</h1><p id="intro"></p>
 <nav id="taskNavigation" class="task-navigation" aria-label="כל משימות רכבת הצלילים" hidden></nav>
-<div class="hud"><span>האות הבאה: <strong id="next">A</strong></span><span>נאספו: <strong id="count">0</strong></span><span>חיים: <strong id="hearts">❤️❤️❤️</strong></span></div>
+<div class="hud"><span>סדרו את האותיות לפי ה־ABC <strong id="next">· מתחילים ב־A</strong></span><span>נאספו: <strong id="count">0</strong></span><span>חיים: <strong id="hearts">❤️❤️❤️</strong></span></div>
 <div class="progress" id="progress" aria-label="האותיות שנאספו לפי הסדר"></div>
 <div class="scene">
 <svg id="game" viewBox="0 0 900 610" role="application" aria-label="רכבות עם אותיות נוסעות במסילה מתפתלת מימין לשמאל. גררו את הקרון עם האות הבאה לתחנת האיסוף.">
@@ -21,7 +21,7 @@
 <g id="cars"></g>
 <g id="dock" class="drop-zone" filter="url(#shadow)">
 <rect x="310" y="505" width="390" height="92" rx="20" fill="#fff0b8" stroke="#398b8e" stroke-width="6" stroke-dasharray="13 7"/>
-<text x="505" y="535" font-family="Arial" font-weight="bold" font-size="22" text-anchor="middle" fill="#24516a">גררו לכאן את האות הבאה</text>
+<text x="505" y="535" font-family="Arial" font-weight="bold" font-size="22" text-anchor="middle" fill="#24516a">גררו לכאן את האות הבאה לפי הסדר</text>
 <text id="dockLetter" x="505" y="580" font-family="Arial" font-weight="bold" font-size="48" text-anchor="middle" fill="#164c68">A</text>
 </g>
 <g id="dragLayer"></g>
@@ -63,7 +63,7 @@ svg.addEventListener('pointermove',e=>{if(!drag)return;const p=svgPoint(e);if(Ma
 svg.addEventListener('pointerup',e=>{if(!drag)return;const d=drag;drag=null;const p=svgPoint(e);if(!d.moved||(p.x>=310&&p.x<=700&&p.y>=505&&p.y<=597))choose(d.car);else{d.car.group.remove();cars=cars.filter(c=>c!==d.car)}});
 svg.addEventListener('pointercancel',()=>{if(drag){drag.car.group.remove();cars=cars.filter(c=>c!==drag.car);drag=null}});
 function hud(){
- $('next').textContent=letters[index]||'🏆';$('dockLetter').textContent=letters[index]||'★';$('count').textContent=index+' / '+letters.length;
+ $('next').textContent=index===0?'· מתחילים ב־A':index>=letters.length?'· כל הכבוד!':'';$('dockLetter').textContent=index===0?'A':'?';$('count').textContent=index+' / '+letters.length;
  $('hearts').textContent='❤️'.repeat(lives)+'🤍'.repeat(3-lives);
  const visible=letters.slice(Math.max(0,index-13),index);
  $('progress').replaceChildren(...visible.map(letter=>{const x=document.createElement('span');x.textContent=letter;return x}));
@@ -73,12 +73,12 @@ function choose(car){
  if(!running||!cars.includes(car))return;
  cars=cars.filter(c=>c!==car);car.group.remove();
  if(car.letter===letters[index]){
-  index++;$('message').textContent='⭐ נהדר! אספתם את '+car.letter;
+  index++;$('message').textContent='⭐ נהדר! האות '+car.letter+' נאספה. מה בא אחריה?';
   if(index%5===0&&lives<3){lives++;$('message').textContent+=' · קיבלתם לב נוסף ❤️'}
   hud();
   if(index===letters.length)finish('🏆 סידרתם את כל האלפבית!','כל הקרונות נאספו לפי הסדר מ־A ועד '+letters.at(-1)+'! כל הכבוד!');
  }else{
-  lives--;$('message').textContent='זו האות '+car.letter+' — צריך למצוא את '+letters[index];hud();
+  lives--;$('message').textContent='זו האות '+car.letter+' — נסו לחשוב איזו אות באה אחרי הקודמת';hud();
   if(lives<=0)finish('נגמרו החיים ❤️','הצלחתם להגיע עד '+(letters[index]||'A')+'. נסו שוב!');
  }
 }
