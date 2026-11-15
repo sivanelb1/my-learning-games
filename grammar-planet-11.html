@@ -26,7 +26,32 @@
 .time-game .quiz-choice:last-child:not(.correct):not(.wrong){background:#e6f7f3;color:#195a50;border-color:#83c7b8}
 .quiz-choice:focus-visible,.bigbutton:focus-visible,.steps a:focus-visible{outline:3px solid #9d66ff;outline-offset:3px}
 .lesson-link{display:inline-block;text-decoration:none}
-</style></head><body><main class="wrap"><a class="back" href="level5.html">↩️ חזרה למפת הגלקסיה</a><nav class="steps" aria-label="שלבי כוכב 11"><a href="?stage=intro" data-step="intro">🌀 פתיחה</a><a href="grammar-planet-11-gates.html">🚪 שערי זמן</a><a href="?stage=positive" data-step="positive">🕰️ מילות זמן</a><a href="?stage=regular" data-step="regular">🛠️ פעלים רגילים</a><a href="?stage=irregular" data-step="irregular">✨ פעלים מיוחדים</a><a href="?stage=sentence" data-step="sentence">📚 משפט חיובי</a><a href="?stage=practice1" data-step="practice1">🎯 תרגול 1</a><a href="?stage=negative" data-step="negative">🚫 שלילה</a><a href="?stage=question" data-step="question">❓ שאלות</a><a href="?stage=be" data-step="be">🧠 WAS / WERE</a><a href="?stage=finish" data-step="finish">🏆 סיום</a></nav><header><div class="orb">🌀⏳</div><h1>PAST PORTAL</h1><p>שער העבר · כוכב 11 בגלקסיית הדקדוק<br>🌟 המסע אל מה שקרה אתמול!</p></header>
+
+.run-gates{grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(5px,2vw,18px);margin-bottom:0}
+.run-gates .quiz-choice{min-height:clamp(76px,13vw,128px);border:3px solid #9c7be0;border-radius:65px 65px 10px 10px;background:linear-gradient(#e8dcff,#fff);text-transform:uppercase;font-size:clamp(14px,3vw,24px)}
+.run-gates .quiz-choice.correct{background:#c6fff0;border-color:#21976d;box-shadow:0 0 18px #56ddb3}
+.run-gates .quiz-choice.wrong{background:#ffe1e6;border-color:#e95577}
+.run-track{position:relative;max-width:750px;height:54px;margin:0 auto 12px;border-bottom:4px solid #baa0e9;background:linear-gradient(#f3eeff,#ded0fa);border-radius:0 0 14px 14px}
+.run-track[data-world="1"]{background:linear-gradient(#dff9ff,#a4e2ed);border-color:#65b7ce}
+.run-track[data-world="2"]{background:linear-gradient(#fff2d9,#f5c98b);border-color:#cb9b65}
+.run-track[data-world="3"]{background:linear-gradient(#e5fff1,#a0dfbf);border-color:#78b79a}
+.run-track span{position:absolute;bottom:3px;left:var(--gate-x,50%);transform:translateX(-50%);font-size:34px;line-height:1;transition:left .2s ease}
+.run-track .enter{animation:enter-gate .38s .18s both}
+.run-track .bounce{animation:bounce-gate .34s .18s both}
+@keyframes enter-gate{60%{transform:translate(-50%,-32px) scale(1.12)}100%{transform:translate(-50%,-62px) scale(.38);opacity:0}}
+@keyframes bounce-gate{45%{transform:translate(-50%,-25px)}100%{transform:translate(-50%,0)}}
+.builder-gate{position:relative;max-width:750px;margin:20px auto;padding:34px 10px 16px;border:4px solid #aa86e9;border-radius:54px 54px 18px 18px;background:linear-gradient(#e7d7ff,#f5efff)}
+.builder-gate.open{border-color:#248f72;background:#d0faec;box-shadow:0 0 20px #65d8b0}
+.builder-ziggy{position:absolute;top:-19px;left:50%;transform:translateX(-50%);font-size:32px;line-height:1}
+.builder-gate.open .builder-ziggy{animation:enter-gate .52s both}
+.builder-slots,.builder-bank{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.builder-slots button,.builder-bank button{min-height:50px;padding:7px 3px;font-size:clamp(12px,2.6vw,19px);overflow-wrap:anywhere}
+.builder-slots button{border:2px dashed #9874d1;background:#fff;color:#5b3899;border-radius:10px;cursor:pointer}
+.builder-slots button[aria-disabled="true"]{cursor:default}
+.builder-slots button[data-filled="true"]{border-style:solid;background:#ece2ff}
+.builder-bank button:disabled{visibility:hidden}
+@media(prefers-reduced-motion:reduce){.run-track span,.builder-ziggy{animation:none!important;transition:none}}
+</style></head><body><main class="wrap"><a class="back" href="level5.html">↩️ חזרה למפת הגלקסיה</a><nav class="steps" aria-label="שלבי כוכב 11"><a href="?stage=intro" data-step="intro">🌀 פתיחה</a><a href="grammar-planet-11-gates.html">🚪 שערי זמן</a><a href="?stage=positive" data-step="positive">🕰️ מילות זמן</a><a href="?stage=regular" data-step="regular">🛠️ פעלים רגילים</a><a href="?stage=irregular" data-step="irregular">✨ פעלים מיוחדים</a><a href="?stage=sentence" data-step="sentence">📚 משפט חיובי</a><a href="?stage=practice1" data-step="practice1">✨ בונים משפט</a><a href="?stage=negative" data-step="negative">🚫 שלילה</a><a href="?stage=question" data-step="question">❓ שאלות</a><a href="?stage=be" data-step="be">🧠 WAS / WERE</a><a href="?stage=finish" data-step="finish">🏆 סיום</a></nav><header><div class="orb">🌀⏳</div><h1>PAST PORTAL</h1><p>שער העבר · כוכב 11 בגלקסיית הדקדוק<br>🌟 המסע אל מה שקרה אתמול!</p></header>
 <section id="intro" class="panel"><h2>👽 זיגי מצא שער לזמן אחר!</h2><div class="ziggy">זיגי: עד עכשיו סיפרנו מה קורה <b>בדרך כלל</b> ומה קורה <b>ממש עכשיו</b>. אבל איך נספר על משהו <b>שכבר קרה ונגמר</b>? למשל, מה עשינו אתמול או בשבוע שעבר? בשביל זה יש לנו זמן חדש: <b>PAST SIMPLE!</b> 🕰️</div><div class="example-grid" style="margin-top:19px"><article class="example-card"><strong>☀️ PRESENT SIMPLE</strong><div class="sentence">Shira plays football every day. <button class="sound" onclick="speak('Shira plays football every day.')">🔊</button></div></article><article class="example-card"><strong>⏳ PAST SIMPLE</strong><div class="sentence">Shira played football yesterday. <button class="sound" onclick="speak('Shira played football yesterday.')">🔊</button></div></article></div><div class="bottom"><a class="bigbutton lesson-link" href="grammar-planet-11-gates.html">🚪 למשחק הדלתות</a></div></section>
 
 <section id="positive" class="panel hidden">
@@ -84,16 +109,17 @@
   <div><bdi lang="en">see → saw</bdi><small>לראות</small></div>
   <div><bdi lang="en">have → had</bdi><small>יש / היה לו</small></div>
 </div>
-  <div class="bottom"><button class="bigbutton" onclick="showStage('irregularGame')">🚀 בואו נמצא זוגות</button></div>
+  <div class="bottom"><button class="bigbutton" onclick="showStage('irregularGame')">🚪 ל־Portal Run</button></div>
 </section>
 <section id="irregularGame" class="hidden">
   <div class="panel practice ">
-    <h2>✨ מי בן הזוג שלי?</h2>
-    <p>התאימו לכל פועל את צורת העבר המיוחדת שלו.</p>
+    <h2>🚪 PORTAL RUN — המסע בין שערי הזמן</h2>
+    <p>בחרו שער כדי להוביל את זיגי לצורת העבר. במקלדת מגיעים לשערים עם Tab, עוברים ביניהם עם החצים ובוחרים עם Enter.</p>
     <div class="quiz-meta"><span id="irregularGameCount"></span><span id="irregularGameStars"></span></div>
     <div class="quiz-track"><div class="quiz-fill" id="irregularGameFill"></div></div>
     <div id="irregularGameQuestion" class="quiz-question" dir="ltr" lang="en"></div>
-    <div id="irregularGameOptions" class="quiz-options" dir="ltr"></div>
+    <div id="irregularGameOptions" class="quiz-options run-gates" dir="ltr"></div>
+    <div id="runTrack" class="run-track" aria-hidden="true"><span>👽</span></div>
     <div id="irregularGameFeedback" class="quiz-feedback" aria-live="polite"></div>
     <button class="bigbutton secondary hidden" id="irregularGameHint" onclick="showHint('irregularGame')">💡 אפשר רמז?</button>
     <button class="bigbutton hidden" id="irregularGameNext" onclick="nextQuestion('irregularGame')">➡️ ממשיכים</button>
@@ -106,9 +132,13 @@
   <div class="sentence" dir="ltr" lang="en">Shira <b>played</b> football yesterday.</div>
   <div class="sentence" dir="ltr" lang="en">They <b>went</b> to school yesterday.</div>
   <p>צורת הפועל בעבר נשארת זהה גם כשמשנים את מי שעשה את הפעולה.<br><bdi lang="en">I played · She played · They played</bdi></p>
-  <div class="bottom"><button class="bigbutton" onclick="showStage('practice1')">🎯 לתרגול המשפט החיובי</button></div>
+  <div class="bottom"><button class="bigbutton" onclick="showStage('practice1')">✨ ל־Portal Builder</button></div>
 </section>
-<section id="practice1" class="hidden"><div class="panel practice"><h2>🎯 תרגול 1 — מה קרה אתמול?</h2><p>בחרו את הפועל הנכון כדי להשלים משפט חיובי בעבר. טעיתם? אפשר לבקש רמז ולנסות שוב.</p><div class="quiz-meta"><span id="practice1Count"></span><span id="practice1Stars"></span></div><div class="quiz-track"><div class="quiz-fill" id="practice1Fill"></div></div><div id="practice1Question" class="quiz-question" dir="ltr"></div><div id="practice1Options" class="quiz-options" dir="ltr"></div><div id="practice1Feedback" class="quiz-feedback" aria-live="polite"></div><button class="bigbutton secondary hidden" id="practice1Hint" onclick="showHint('practice1')">💡 אפשר רמז?</button><button class="bigbutton hidden" id="practice1Next" onclick="nextQuestion('practice1')">➡️ ממשיכים</button></div></section>
+<section id="practice1" class="hidden"><div class="panel practice"><h2>✨ PORTAL BUILDER — בונים שער קסום</h2><p>גררו או לחצו על כרטיסים כדי לבנות משפט. לחצו על חלק בשער כדי להחזיר אותו לכרטיסים.</p><div class="quiz-meta"><span id="practice1Count"></span><span id="practice1Stars"></span></div><div class="quiz-track"><div class="quiz-fill" id="practice1Fill"></div></div><div class="builder-gate" id="builderGate">
+  <span class="builder-ziggy" aria-hidden="true">👽</span>
+  <div id="builderSlots" class="builder-slots" dir="ltr" role="group" aria-label="שלושת חלקי המשפט"></div>
+</div>
+<div id="practice1Options" class="quiz-options builder-bank" dir="ltr" role="group" aria-label="כרטיסי משפט"></div><div id="practice1Feedback" class="quiz-feedback" aria-live="polite"></div><button class="bigbutton secondary hidden" id="practice1Hint" onclick="showHint('practice1')">💡 אפשר רמז?</button><button class="bigbutton hidden" id="practice1Next" onclick="nextQuestion('practice1')">➡️ ממשיכים</button></div></section>
 <section id="negative" class="panel hidden">
   <h2>🚫 שלילה בעבר</h2>
   <p>כדי לומר שמשהו לא קרה, שמים <bdi lang="en">didn't</bdi> לפני הפועל בצורת הבסיס.</p>
@@ -183,7 +213,7 @@ const quizNavigation={
  timeGame:{lesson:'positive',next:'regular',label:'🛠️ לפעלים רגילים'},
  regularGame:{lesson:'regular',next:'irregular',label:'✨ לפעלים מיוחדים'},
  irregularGame:{lesson:'irregular',next:'sentence',label:'📚 למשפט החיובי'},
- practice1:{next:'negative',label:'🚫 לשלילה'},
+ practice1:{lesson:'practice1',next:'negative',label:'🚫 לשלילה'},
  practice2:{lesson:'negative',next:'question',label:'❓ לשאלות בעבר'},
  questionGame:{lesson:'question',next:'be',label:'🧠 ל־WAS / WERE'},
  beGame:{lesson:'be',next:'finish',label:'🏆 לסיום'}
@@ -202,16 +232,16 @@ regularGame:[
   {"q": "plan", "choices": ["planed", "planned", "plan"], "answer": "planned", "hint": "כמו ב־stop, מכפילים את האות האחרונה לפני ‎-ed.", "why": "⁦plan → planned⁩. מכפילים את n ומוסיפים ‎-ed."}
 ],
 irregularGame:[
-  {"q": "go", "choices": ["went", "saw", "ate"], "answer": "went", "hint": "חשבו על הזוג של הפועל ״ללכת״. הוא מתחיל ב־w.", "why": "⁦go → went⁩"},
-  {"q": "eat", "choices": ["had", "went", "ate"], "answer": "ate", "hint": "חשבו על הזוג של ״לאכול״. הוא מתחיל ב־a.", "why": "⁦eat → ate⁩"},
-  {"q": "see", "choices": ["ate", "saw", "had"], "answer": "saw", "hint": "צורת העבר של ״לראות״ מתחילה גם היא ב־s.", "why": "⁦see → saw⁩"},
-  {"q": "have", "choices": ["had", "ate", "went"], "answer": "had", "hint": "צורת העבר של ״יש״ מתחילה ב־h.", "why": "⁦have → had⁩"}
+  {"q": "go", "choices": ["went", "goed", "goes"], "answer": "went", "hint": "חשבו על הזוג של הפועל ״ללכת״. הוא מתחיל ב־w.", "why": "⁦go → went⁩"},
+  {"q": "eat", "choices": ["eated", "eats", "ate"], "answer": "ate", "hint": "חשבו על הזוג של ״לאכול״. הוא מתחיל ב־a.", "why": "⁦eat → ate⁩"},
+  {"q": "see", "choices": ["see", "saw", "sees"], "answer": "saw", "hint": "צורת העבר של ״לראות״ מתחילה גם היא ב־s.", "why": "⁦see → saw⁩"},
+  {"q": "have", "choices": ["had", "haved", "has"], "answer": "had", "hint": "צורת העבר של ״יש״ מתחילה ב־h.", "why": "⁦have → had⁩"}
 ],
 practice1:[
-{q:'Shira ___ football yesterday.',choices:['play','played','plays'],answer:'played',hint:'אתמול = בעבר. PLAY הוא פועל רגיל, ולכן מוסיפים לו ED.',why:'נכון! play → played.'},
-{q:'I ___ Grandma last week.',choices:['visit','visited','visiting'],answer:'visited',hint:'Last week מציין עבר. VISIT הוא פועל רגיל.',why:'מצוין! visit → visited.'},
-{q:'They ___ pizza yesterday.',choices:['eated','eat','ate'],answer:'ate',hint:'EAT הוא פועל יוצא דופן. לא מוסיפים לו ED.',why:'מעולה! eat → ate, פועל יוצא דופן.'},
-{q:'He ___ to school yesterday.',choices:['went','goed','go'],answer:'went',hint:'GO הוא פועל יוצא דופן. צורת העבר שלו שונה מאוד.',why:'בדיוק! go → went.'}
+  {"parts": ["She", "played", "yesterday"], "choices": ["played", "yesterday", "She"], "answer": "She played yesterday", "hint": "התחילו ב־She, ואז הוסיפו את הפעולה ואת הזמן.", "why": "⁦She played yesterday.⁩"},
+  {"parts": ["We", "visited Grandma", "last week"], "choices": ["last week", "We", "visited Grandma"], "answer": "We visited Grandma last week", "hint": "קודם מי, אחר כך מה עשינו, ולבסוף מתי.", "why": "⁦We visited Grandma last week.⁩"},
+  {"parts": ["They", "ate pizza", "last night"], "choices": ["ate pizza", "They", "last night"], "answer": "They ate pizza last night", "hint": "מי אכלו? חפשו את הכרטיס שמספר מי עשה את הפעולה.", "why": "⁦They ate pizza last night.⁩"},
+  {"parts": ["He", "went to school", "yesterday"], "choices": ["yesterday", "went to school", "He"], "answer": "He went to school yesterday", "hint": "אחרי He בא החלק עם הפועל went.", "why": "⁦He went to school yesterday.⁩"}
 ],
 practice2:[
   {"q": "Shira ___ play football yesterday.", "choices": ["doesn't", "didn't", "isn't"], "answer": "didn't", "hint": "בחרו את מילת השלילה שמתאימה לעבר.", "why": "Shira didn't play football yesterday."},
@@ -242,12 +272,23 @@ function showStage(stage){
 }
 function renderQuiz(type){
  const st=state[type],q=quizzes[type][st.i];if(!q)return;
+ if(type==='irregularGame'){
+   resetRunner();
+   document.getElementById('runTrack').dataset.world=st.i;
+ }
+ if(type==='practice1')renderBuilder(st,q);
  document.getElementById(type+'Count').textContent='שאלה '+(st.i+1)+' מתוך '+quizzes[type].length;
  document.getElementById(type+'Stars').textContent='⭐ '+st.correct+' / '+quizzes[type].length;
  document.getElementById(type+'Fill').style.width=((st.i+Number(st.answered))/quizzes[type].length*100)+'%';
- document.getElementById(type+'Question').textContent=q.q;
- const options=document.getElementById(type+'Options');options.replaceChildren();
+ if(type!=='practice1')document.getElementById(type+'Question').textContent=q.q;
+ const options=document.getElementById(type+'Options');
+ if(type!=='practice1'){
+ options.replaceChildren();
  for(const choice of q.choices){const b=document.createElement('button');b.className='quiz-choice';b.textContent=choice;b.lang=type==='timeGame'?'he':'en';b.type='button';b.disabled=st.answered;b.onclick=()=>choose(type,choice,b);options.appendChild(b)}
+ if(type==='irregularGame')options.querySelectorAll('button').forEach(b=>{
+   b.classList.toggle('correct',st.answered&&b.textContent===q.answer);
+ });
+ }
  document.getElementById(type+'Feedback').textContent=st.answered?'🟢 מצוין! '+q.why:'';
  document.getElementById(type+'Hint').classList.toggle('hidden',!st.wrong||st.answered);
  document.getElementById(type+'Next').classList.toggle('hidden',!st.answered);
@@ -255,9 +296,10 @@ function renderQuiz(type){
 }
 function choose(type,choice,button){
  const st=state[type],q=quizzes[type][st.i];if(st.answered)return;
+ if(type==='irregularGame')animateRunner(button,choice===q.answer);
  if(choice!==q.answer){st.wrong=true;button.classList.add('wrong');document.getElementById(type+'Feedback').textContent='🔴 כמעט! נסו שוב — אפשר לפתוח רמז 💜';document.getElementById(type+'Hint').classList.remove('hidden');button.disabled=true;return}
  st.answered=true;st.correct++;
- button.classList.add('correct');
+ button?.classList.add('correct');
  document.querySelectorAll('#'+type+'Options button').forEach(b=>b.disabled=true);
  document.getElementById(type+'Stars').textContent='⭐ '+st.correct+' / '+quizzes[type].length;
  document.getElementById(type+'Fill').style.width=((st.i+1)/quizzes[type].length*100)+'%';
@@ -266,11 +308,105 @@ function choose(type,choice,button){
  document.getElementById(type+'Next').classList.remove('hidden');
  document.getElementById(type+'Next').textContent=st.i===quizzes[type].length-1?quizNavigation[type].label:'🚀 לשאלה הבאה';
 }
+let runnerTimer;
+function resetRunner(){
+ const track=document.getElementById('runTrack');
+ clearTimeout(runnerTimer);
+ track.style.removeProperty('--gate-x');
+ track.firstElementChild.className='';
+}
+function animateRunner(button,correct){
+ const track=document.getElementById('runTrack');
+ const sprite=track.firstElementChild;
+ const index=[...button.parentElement.children].indexOf(button);
+ clearTimeout(runnerTimer);
+ track.style.setProperty('--gate-x', [17,50,83][index]+'%');
+ sprite.className='';
+ void sprite.offsetWidth;
+ sprite.className=correct?'enter':'bounce';
+ if(!correct)runnerTimer=setTimeout(resetRunner,520);
+}
+document.getElementById('irregularGameOptions').addEventListener('keydown',event=>{
+ const steps={ArrowLeft:-1,ArrowRight:1};
+ const step=steps[event.key];
+ if(!step)return;
+ const gates=[...event.currentTarget.querySelectorAll('button:not(:disabled)')];
+ const index=gates.indexOf(event.target);
+ if(index<0)return;
+ event.preventDefault();
+ gates[(index+step+gates.length)%gates.length].focus();
+});
+
+function renderBuilder(st,q){
+ const gate=document.getElementById('builderGate');
+ const slots=document.getElementById('builderSlots');
+ const bank=document.getElementById('practice1Options');
+ const placement=st.placement ??= [];
+ gate.classList.toggle('open',st.answered);
+ slots.replaceChildren();
+ bank.replaceChildren();
+ for(const [index,label] of ['מי?','מה עשה?','מתי?'].entries()){
+   const slot=document.createElement('button');
+   const piece=placement[index];
+   slot.type='button';
+   slot.textContent=piece || label;
+   slot.lang=piece?'en':'he';
+   slot.dataset.filled=String(Boolean(piece));
+   slot.setAttribute('aria-disabled',String(st.answered||!piece));
+   slot.onclick=()=>{
+     if(st.answered||!piece)return;
+     delete placement[index];
+     renderBuilder(st,q);
+     bank.querySelector('button:not(:disabled)')?.focus();
+   };
+   slot.ondragover=event=>{if(!st.answered)event.preventDefault();};
+   slot.ondrop=event=>{
+     event.preventDefault();
+     placeBuilderPiece(event.dataTransfer.getData('text/plain'),index);
+   };
+   slots.appendChild(slot);
+ }
+ for(const piece of q.choices){
+   const card=document.createElement('button');
+   card.className='quiz-choice';
+   card.type='button';
+   card.lang='en';
+   card.textContent=piece;
+   card.disabled=placement.includes(piece)||st.answered;
+   card.draggable=!card.disabled;
+   card.onclick=()=>placeBuilderPiece(piece,[0,1,2].find(index=>!placement[index]));
+   card.ondragstart=event=>event.dataTransfer.setData('text/plain',piece);
+   bank.appendChild(card);
+ }
+}
+
+function placeBuilderPiece(piece,index){
+ const st=state.practice1;
+ const q=quizzes.practice1[st.i];
+ const placement=st.placement;
+ if(st.answered||index===undefined||!q.choices.includes(piece)||placement.includes(piece))return;
+ placement[index]=piece;
+ if([0,1,2].every(position=>placement[position])){
+   if(placement.join(' ')===q.answer){
+     choose('practice1',q.answer);
+     renderBuilder(st,q);
+     document.getElementById('practice1Next').focus();
+     return;
+   }
+   st.wrong=true;
+   delete placement[index];
+   document.getElementById('practice1Feedback').textContent='🔴 כמעט! אפשר לשנות את הסדר או לבקש רמז.';
+   document.getElementById('practice1Hint').classList.remove('hidden');
+ }
+ renderBuilder(st,q);
+ document.querySelector('#practice1Options button:not(:disabled)')?.focus();
+}
+
 function showHint(type){const st=state[type];if(!st.wrong||st.answered)return;document.getElementById(type+'Feedback').textContent='💡 '+quizzes[type][st.i].hint}
 function nextQuestion(type){
  const st=state[type];if(!st.answered)return;
  if(st.i===quizzes[type].length-1){showStage(quizNavigation[type].next);return}
- st.i++;st.answered=false;st.wrong=false;renderQuiz(type);
+ st.i++;if(type==='practice1')st.placement=[];st.answered=false;st.wrong=false;renderQuiz(type);
 }
 document.querySelectorAll('[data-step]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();showStage(a.dataset.step)}));
 function speak(s){if(!('speechSynthesis'in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(s);u.lang='en-US';u.rate=.82;speechSynthesis.speak(u)}
