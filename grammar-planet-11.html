@@ -40,17 +40,59 @@
 .run-track .bounce{animation:bounce-gate .34s .18s both}
 @keyframes enter-gate{60%{transform:translate(-50%,-32px) scale(1.12)}100%{transform:translate(-50%,-62px) scale(.38);opacity:0}}
 @keyframes bounce-gate{45%{transform:translate(-50%,-25px)}100%{transform:translate(-50%,0)}}
-.builder-gate{position:relative;max-width:750px;margin:20px auto;padding:34px 10px 16px;border:4px solid #aa86e9;border-radius:54px 54px 18px 18px;background:linear-gradient(#e7d7ff,#f5efff)}
-.builder-gate.open{border-color:#248f72;background:#d0faec;box-shadow:0 0 20px #65d8b0}
-.builder-ziggy{position:absolute;top:-19px;left:50%;transform:translateX(-50%);font-size:32px;line-height:1}
-.builder-gate.open .builder-ziggy{animation:enter-gate .52s both}
-.builder-slots,.builder-bank{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
-.builder-slots button,.builder-bank button{min-height:50px;padding:7px 3px;font-size:clamp(12px,2.6vw,19px);overflow-wrap:anywhere}
-.builder-slots button{border:2px dashed #9874d1;background:#fff;color:#5b3899;border-radius:10px;cursor:pointer}
+.builder-panel{background:#171332;color:#f7eeff;border:1px solid #674c9e}
+.builder-panel h2{color:#f8dcff}
+.builder-panel .quiz-meta{color:#e6caff}
+.builder-panel .quiz-track{background:#392857}
+.builder-panel .quiz-fill{background:linear-gradient(90deg,#c58dff,#6af7c7)}
+.builder-gate{
+ --portal:#c29aff;
+ --space:#34205d;
+ position:relative;isolation:isolate;overflow:hidden;margin:18px auto 12px;
+ padding:12px clamp(8px,3vw,24px) 16px;border:1px solid #916fc1;border-radius:22px;
+ background:radial-gradient(ellipse at 50% 62%,var(--space),transparent 65%),
+ radial-gradient(circle at 17px 21px,#efe1ff 1px,transparent 1.7px) 0 0/83px 67px,
+ radial-gradient(circle at 32px 10px,#97deef 1px,transparent 1.4px) 12px 6px/109px 71px,#100c29;
+}
+.builder-gate[data-room="1"]{--portal:#7ddfff;--space:#16475a}
+.builder-gate[data-room="2"]{--portal:#ffbc80;--space:#592c55}
+.builder-gate[data-room="3"]{--portal:#a3ffc1;--space:#214d56}
+.builder-gate.open{border-color:#88f7d1;box-shadow:0 0 22px #70efc755}
+.builder-gate.rejected{animation:builder-reject .35s ease}
+@keyframes builder-reject{25%,75%{transform:translateX(-3px);border-color:#ff9fae}50%{transform:translateX(3px);border-color:#ff9fae}}
+.builder-charge{font-size:14px;font-weight:bold;color:#f7ddff}
+.builder-crystals{display:flex;gap:12px;justify-content:center;direction:ltr;margin:6px 0 2px}
+.builder-crystals i{width:11px;height:11px;transform:rotate(45deg);background:#47305f;border:1px solid #c49ddd;border-radius:2px}
+.builder-crystals .lit{background:#aaffdf;border-color:#dcffef;box-shadow:0 0 12px #73ffc4}
+.builder-scene{height:clamp(145px,27vw,212px);position:relative}
+.builder-orbit{
+ position:absolute;inset:9px 0 12px;margin:auto;width:clamp(111px,23vw,178px);
+ border:6px solid var(--portal);border-radius:50% 50% 15% 15%;overflow:hidden;
+ background:#1d133c;box-shadow:0 0 15px var(--portal),inset 0 0 20px var(--portal)
+}
+.builder-vortex{position:absolute;inset:-42%;opacity:.27;background:repeating-conic-gradient(from 20deg,#ffffff88 0deg,transparent 40deg,var(--portal) 75deg,#2b235a 90deg)}
+.builder-gate.open .builder-vortex{opacity:.9;animation:builder-spin 4s linear infinite}
+@keyframes builder-spin{to{transform:rotate(360deg)}}
+.builder-platform{position:absolute;bottom:6px;left:50%;width:min(77%,380px);height:19px;transform:translateX(-50%);border-radius:50%;background:#4c356e;border:2px solid #b393d5;box-shadow:0 6px 18px #080921}
+.builder-ziggy{position:absolute;bottom:12px;left:calc(50% - clamp(46px,11vw,105px));width:42px;height:50px;transform:translateX(-50%);filter:drop-shadow(0 3px 5px #090a1f)}
+.builder-ziggy i{position:absolute;bottom:0;left:10px;width:22px;height:24px;border:2px solid #e1c9ff;border-radius:9px;background:radial-gradient(circle at 50% 66%,#fff1a6 0 3px,transparent 4px),linear-gradient(#bc96ff,#6942a9)}
+.builder-ziggy b{position:absolute;top:6px;left:0;width:42px;height:31px;border-radius:48%;background:radial-gradient(ellipse at 36% 46%,#fff 0 1px,transparent 2px),radial-gradient(ellipse at 63% 46%,#fff 0 1px,transparent 2px),radial-gradient(ellipse at 37% 50%,#252148 0 3px,transparent 4px),radial-gradient(ellipse at 62% 50%,#252148 0 3px,transparent 4px),linear-gradient(#bbffce,#5ed8ad)}
+.builder-ziggy b::before{content:"";position:absolute;left:17px;top:-8px;width:8px;height:9px;border-radius:50%;background:#8ff7c1;box-shadow:0 0 9px #8cf9be}
+.builder-ziggy b::after{content:"";position:absolute;left:17px;bottom:5px;width:8px;height:4px;border-bottom:2px solid #275d55;border-radius:50%}
+.builder-gate.open .builder-ziggy{animation:builder-cross .65s ease-in-out both}
+@keyframes builder-cross{60%{left:50%;transform:translate(-50%,-30px) scale(.9)}100%{left:50%;opacity:0;transform:translate(-50%,-50px) scale(.25)}}
+.builder-slots,.builder-bank{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(4px,1vw,10px);max-width:660px;margin-inline:auto}
+.builder-bank[hidden]{display:none}
+.builder-slots button,.builder-bank button{min-height:52px;padding:6px 4px;font-size:clamp(13px,2.6vw,19px);overflow-wrap:anywhere}
+.builder-slots button{border:2px dashed #ab92d1;background:#211538;color:#e4cffd;border-radius:10px;cursor:pointer}
 .builder-slots button[aria-disabled="true"]{cursor:default}
-.builder-slots button[data-filled="true"]{border-style:solid;background:#ece2ff}
+.builder-slots button[data-filled="true"]{border-style:solid;border-color:#80dabd;background:#204f4a;color:#effff6}
+.builder-slots button.drag-over{outline:3px solid #ffc16b;outline-offset:2px}
+.builder-bank{margin-block:13px;grid-template-columns:repeat(auto-fit,minmax(min(100%,105px),1fr))}
+.builder-bank button{background:#f3e9ff;color:#532f84;border-color:#b18de3;box-shadow:0 3px 0 #7658a1;cursor:grab}
 .builder-bank button:disabled{visibility:hidden}
-@media(prefers-reduced-motion:reduce){.run-track span,.builder-ziggy{animation:none!important;transition:none}}
+.builder-panel .quiz-feedback{color:#f7eeff;min-height:34px}
+@media(prefers-reduced-motion:reduce){.run-track span,#practice1 *{animation:none!important;transition:none!important}}
 
 .time-list{list-style:none;margin:6px 0 0;padding:0}
 .time-list li{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap;padding:3px 0;border-bottom:1px solid #6f529521}
@@ -190,11 +232,28 @@
   <p>צורת הפועל בעבר נשארת זהה גם כשמשנים את מי שעשה את הפעולה.<br><bdi lang="en">I played · She played · They played</bdi></p>
   <div class="bottom"><button class="bigbutton" onclick="showStage('practice1')">✨ ל־Portal Builder</button></div>
 </section>
-<section id="practice1" class="hidden"><div class="panel practice"><h2>✨ PORTAL BUILDER — בונים שער קסום</h2><p>גררו או לחצו על כרטיסים כדי לבנות משפט. לחצו על חלק בשער כדי להחזיר אותו לכרטיסים.</p><div class="quiz-meta"><span id="practice1Count"></span><span id="practice1Stars"></span></div><div class="quiz-track"><div class="quiz-fill" id="practice1Fill"></div></div><div class="builder-gate" id="builderGate">
-  <span class="builder-ziggy" aria-hidden="true">👽</span>
-  <div id="builderSlots" class="builder-slots" dir="ltr" role="group" aria-label="שלושת חלקי המשפט"></div>
-</div>
-<div id="practice1Options" class="quiz-options builder-bank" dir="ltr" role="group" aria-label="כרטיסי משפט"></div><div id="practice1Feedback" class="quiz-feedback" aria-live="polite"></div><button class="bigbutton secondary hidden" id="practice1Hint" onclick="showHint('practice1')">💡 אפשר רמז?</button><button class="bigbutton hidden" id="practice1Next" onclick="nextQuestion('practice1')">➡️ ממשיכים</button></div></section>
+<section id="practice1" class="hidden">
+  <div class="panel practice builder-panel">
+    <h2>✨ PORTAL BUILDER — בונים שער קסום</h2>
+    <p>גררו או לחצו על הכרטיסים כדי לבנות משפט. לחיצה על כרטיס בשער תחזיר אותו למגש.</p>
+    <div class="quiz-meta"><span id="practice1Count"></span><span id="practice1Stars"></span></div>
+    <div class="quiz-track"><div class="quiz-fill" id="practice1Fill"></div></div>
+    <div class="builder-gate" id="builderGate">
+      <div class="builder-charge" id="builderCharge"></div>
+      <div class="builder-crystals" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="builder-scene" aria-hidden="true">
+        <div class="builder-orbit"><div class="builder-vortex"></div></div>
+        <div class="builder-platform"></div>
+        <div class="builder-ziggy"><i></i><b></b></div>
+      </div>
+      <div id="builderSlots" class="builder-slots" dir="ltr" role="group" aria-label="שלושת חלקי המשפט"></div>
+    </div>
+    <div id="practice1Options" class="quiz-options builder-bank" dir="ltr" role="group" aria-label="כרטיסי משפט"></div>
+    <div id="practice1Feedback" class="quiz-feedback" aria-live="polite"></div>
+    <button class="bigbutton secondary hidden" id="practice1Hint" onclick="showHint('practice1')">💡 אפשר רמז?</button>
+    <button class="bigbutton hidden" id="practice1Next" onclick="nextQuestion('practice1')">➡️ ממשיכים</button>
+  </div>
+</section>
 <section id="negative" class="panel hidden">
   <h2>🚫 שלילה בעבר</h2>
   <p>כדי לומר שמשהו לא קרה, שמים <bdi lang="en">didn't</bdi> לפני הפועל בצורת הבסיס.</p>
@@ -361,9 +420,9 @@ regularGame:[
 irregularGame:[],
 practice1:[
   {"parts": ["She", "played", "yesterday"], "choices": ["played", "yesterday", "She"], "answer": "She played yesterday", "hint": "התחילו ב־She, ואז הוסיפו את הפעולה ואת הזמן.", "why": "⁦She played yesterday.⁩"},
-  {"parts": ["We", "visited Grandma", "last week"], "choices": ["last week", "We", "visited Grandma"], "answer": "We visited Grandma last week", "hint": "קודם מי, אחר כך מה עשינו, ולבסוף מתי.", "why": "⁦We visited Grandma last week.⁩"},
-  {"parts": ["They", "ate pizza", "last night"], "choices": ["ate pizza", "They", "last night"], "answer": "They ate pizza last night", "hint": "מי אכלו? חפשו את הכרטיס שמספר מי עשה את הפעולה.", "why": "⁦They ate pizza last night.⁩"},
-  {"parts": ["He", "went to school", "yesterday"], "choices": ["yesterday", "went to school", "He"], "answer": "He went to school yesterday", "hint": "אחרי He בא החלק עם הפועל went.", "why": "⁦He went to school yesterday.⁩"}
+  {"parts": ["We", "visited Grandma", "last week"], "choices": ["last week", "visit Grandma", "We", "visited Grandma"], "answer": "We visited Grandma last week", "hint": "קודם מי, אחר כך מה עשינו, ולבסוף מתי.", "why": "⁦We visited Grandma last week.⁩"},
+  {"parts": ["They", "ate pizza", "last night"], "choices": ["ate pizza", "They", "eat pizza", "last night"], "answer": "They ate pizza last night", "hint": "מי אכלו? חפשו את הכרטיס שמספר מי עשה את הפעולה.", "why": "⁦They ate pizza last night.⁩"},
+  {"parts": ["He", "went to school", "yesterday"], "choices": ["goes to school", "yesterday", "went to school", "He"], "answer": "He went to school yesterday", "hint": "אחרי He בא החלק עם הפועל went.", "why": "⁦He went to school yesterday.⁩"}
 ],
 practice2:[
   {"q": "Shira ___ play football yesterday.", "choices": ["doesn't", "didn't", "isn't"], "answer": "didn't", "hint": "בחרו את מילת השלילה שמתאימה לעבר.", "why": "Shira didn't play football yesterday."},
@@ -432,7 +491,10 @@ function renderQuiz(type){
    resetRunner();
    document.getElementById('runTrack').dataset.world=st.i%4;
  }
- if(type==='practice1')renderBuilder(st,q);
+ if(type==='practice1'){
+   document.getElementById('builderGate').classList.remove('rejected');
+   renderBuilder(st,q);
+ }
  document.getElementById(type+'Count').textContent='שאלה '+(st.i+1)+' מתוך '+quizzes[type].length;
  document.getElementById(type+'Stars').textContent='⭐ '+st.correct+' / '+quizzes[type].length;
  document.getElementById(type+'Fill').style.width=((st.i+Number(st.answered))/quizzes[type].length*100)+'%';
@@ -501,6 +563,13 @@ function renderBuilder(st,q){
  const bank=document.getElementById('practice1Options');
  const placement=st.placement ??= [];
  gate.classList.toggle('open',st.answered);
+ gate.dataset.room=st.i;
+ const energy=placement.filter(Boolean).length;
+ document.getElementById('builderCharge').textContent='אנרגיה '+energy+' / 3';
+ gate.querySelectorAll('.builder-crystals i').forEach((crystal,index)=>{
+   crystal.classList.toggle('lit',Boolean(placement[index]));
+ });
+ bank.hidden=st.answered;
  slots.replaceChildren();
  bank.replaceChildren();
  for(const [index,label] of ['מי?','מה עשה?','מתי?'].entries()){
@@ -514,12 +583,19 @@ function renderBuilder(st,q){
    slot.onclick=()=>{
      if(st.answered||!piece)return;
      delete placement[index];
+     document.getElementById('practice1Feedback').textContent='';
      renderBuilder(st,q);
      bank.querySelector('button:not(:disabled)')?.focus();
    };
-   slot.ondragover=event=>{if(!st.answered)event.preventDefault();};
+   slot.ondragover=event=>{
+     if(st.answered)return;
+     event.preventDefault();
+     slot.classList.add('drag-over');
+   };
+   slot.ondragleave=()=>slot.classList.remove('drag-over');
    slot.ondrop=event=>{
      event.preventDefault();
+     slot.classList.remove('drag-over');
      placeBuilderPiece(event.dataTransfer.getData('text/plain'),index);
    };
    slots.appendChild(slot);
@@ -543,17 +619,23 @@ function placeBuilderPiece(piece,index){
  const q=quizzes.practice1[st.i];
  const placement=st.placement;
  if(st.answered||index===undefined||!q.choices.includes(piece)||placement.includes(piece))return;
+ const gate=document.getElementById('builderGate');
+ gate.classList.remove('rejected');
  placement[index]=piece;
  if([0,1,2].every(position=>placement[position])){
    if(placement.join(' ')===q.answer){
      choose('practice1',q.answer);
      renderBuilder(st,q);
+     document.getElementById('practice1Feedback').textContent='✨ השער נפתח! '+q.why;
      document.getElementById('practice1Next').focus();
      return;
    }
    st.wrong=true;
-   delete placement[index];
-   document.getElementById('practice1Feedback').textContent='🔴 כמעט! אפשר לשנות את הסדר או לבקש רמז.';
+   const incorrect=q.parts.findIndex((part,position)=>part!==placement[position]);
+   delete placement[incorrect];
+   void gate.offsetWidth;
+   gate.classList.add('rejected');
+   document.getElementById('practice1Feedback').textContent='⚡ כמעט! כרטיס אחד חזר למגש. אפשר לשנות את הסדר או לבקש רמז.';
    document.getElementById('practice1Hint').classList.remove('hidden');
  }
  renderBuilder(st,q);
