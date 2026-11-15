@@ -30,6 +30,7 @@ button{font:inherit;font-weight:bold;cursor:pointer;border-radius:12px;padding:1
 .example{grid-template-columns:auto minmax(0,1fr);align-items:start}.sound-examples{display:grid;gap:8px}.sound-example{background:#fff;padding:10px;border-radius:10px}.sound-example p{margin:4px 0}.sound-example .controls{margin-top:8px}.sound-example button{padding:7px 10px}.sound-example .word{display:inline-block}.sound-example .ipa{display:inline-block;margin-inline-start:8px}
 @media(max-width:460px){.example{grid-template-columns:minmax(0,1fr);gap:8px}.pair{font-size:52px}}
 .notebook-tip{padding:10px 12px;background:#e8f3ee;border-inline-start:4px solid #368578;border-radius:8px;color:#244840}
+.train-theme .robot{display:none}.train-scene{font-size:64px;text-align:center;margin:12px auto}.train-theme .panel{box-shadow:0 7px 0 #091b25}
 </style>
 </head>
 <body><main>
@@ -426,5 +427,25 @@ $('replay').onclick=()=>{
  show('learn');
  renderLetter();
 };
+if(new URLSearchParams(location.search).get('theme')==='train'){
+ document.body.classList.add('train-theme');
+ document.title='רכבת הצלילים · תחנת A–F | PLAYWISE';
+ document.querySelector('h1').textContent='🚆 רכבת הצלילים';
+ $('mission').textContent='אספתם את האותיות A–F! בתחנה הראשונה נכיר אותן, נמצא זוגות ונכתוב את האותיות לשלט התחנה.';
+ const done=$('done');
+ done.querySelector('h2').textContent='השלט הראשון מוכן!';
+ const train=document.createElement('div');
+ train.className='train-scene';
+ train.textContent='🚆';
+ train.setAttribute('aria-hidden','true');
+ done.querySelector('.result-robot').replaceWith(train);
+ done.querySelector('.robot-lights').remove();
+ const [status,message]=done.querySelectorAll('p');
+ status.textContent='השלמתם את השלט של תחנת A–F.';
+ message.querySelector('strong').textContent='הרכבת מוכנה להמשיך כשהתחנה הבאה תיפתח.';
+ const back=done.querySelector('a');
+ back.href='letter-run.html';
+ back.textContent='לחזור למסילות';
+}
 renderLetter();
 </script></body></html>
