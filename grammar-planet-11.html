@@ -116,26 +116,28 @@
 .memory-card small{font-size:12px;margin-bottom:4px}
 .memory-card.matched{background:#b8f2dc;border-color:#59cb9f;color:#154d40}
 @media(max-width:480px){.memory-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.memory-card{min-height:69px}}
-.album-panel{background:#211936;color:#fff3f0;border:1px solid #765e9c}
-.album-panel h2{color:#ffddac}
-.album-panel .quiz-meta{color:#f5dcfa}
-.album-panel .quiz-track{background:#4a3560}
-.album-progress{display:flex;justify-content:center;gap:clamp(4px,1.4vw,10px);margin:14px auto;direction:ltr}
-.album-progress span{display:grid;place-items:center;flex:0 1 44px;min-height:36px;border-radius:7px;background:#49385f;filter:grayscale(1);opacity:.72}
-.album-progress .restored{filter:none;opacity:1;background:#64467b}
-.album-progress span[aria-current="true"]{outline:2px solid #ffcf88;outline-offset:2px}
-.album-photo{margin:16px auto;max-width:550px;padding:10px;background:#fff5e3;border-radius:14px;box-shadow:0 8px 28px #08061088}
-.album-scene{position:relative;isolation:isolate;overflow:hidden;min-height:clamp(140px,31vw,220px);border-radius:8px;display:grid;grid-template-columns:1fr 1fr;align-items:end;padding:18px 10px;filter:grayscale(1);transition:filter .65s ease;
- background:radial-gradient(circle at 78% 20%,#fff1a2 0 12px,transparent 13px),linear-gradient(#82d7f5 65%,#80cfa4 65%)}
-.album-scene[data-scene="beach"]{background:linear-gradient(#a9effa 43%,#56bedb 43% 62%,#f7cf8d 62%)}
-.album-scene[data-scene="school"]{background:linear-gradient(#f7c0a7,#f9e9ba 65%,#a2cd92 65%)}
-.album-scene[data-scene="library"]{background:repeating-linear-gradient(90deg,#ddb98c 0 30px,#e9cea4 30px 32px)}
-.album-place{font-size:clamp(62px,14vw,120px);line-height:1}
-.album-people{font-size:clamp(30px,7vw,60px);line-height:1.2}
-.album-photo.restored .album-scene{filter:none}
-.album-photo .quiz-question{margin:0;background:transparent;padding:10px 4px 5px;line-height:1.35}
-.album-panel .quiz-options{grid-template-columns:repeat(2,minmax(0,1fr));max-width:440px}
-@media(prefers-reduced-motion:reduce){.album-scene{transition:none}}
+.rescue-panel{background:#121631;color:#f3eeff;border:1px solid #7464b6}
+.rescue-panel h2{color:#ffe5a3}
+.rescue-panel .quiz-meta{color:#ddd1ff;max-width:720px;margin:14px auto}
+.rescue-prompt{font-weight:bold;color:#201a45;background:#efe9ff;border-radius:12px;padding:11px;margin:0 auto 12px;max-width:720px;font-size:clamp(17px,3vw,25px)}
+.rescue-field{position:relative;isolation:isolate;overflow:hidden;max-width:720px;height:clamp(250px,45vh,400px);margin:auto;border-radius:15px;border:2px solid #9d91d5;touch-action:none;direction:ltr;background:radial-gradient(circle at 15px 23px,#e4ddff 1px,transparent 2px) 0 0/75px 69px,radial-gradient(circle at 32px 17px,#91eaff 1px,transparent 1.6px) 10px 0/97px 89px,radial-gradient(ellipse at 75% 15%,#503979,#141a3d 58%,#0c1023)}
+.rescue-field:focus-visible{outline:3px solid #fbe49a;outline-offset:3px}
+.rescue-planet{position:absolute;z-index:-1;top:12%;left:9%;width:clamp(65px,18vw,128px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 32% 25%,#e8bdff,#784fa9 50%,#34204a 75%);opacity:.65;box-shadow:0 0 35px #c08ff066}
+.rescue-line{position:absolute;top:80%;width:100%;border-top:2px dashed #c1b5fa66}
+.rescue-signal,.rescue-ship{position:absolute;transform:translate(-50%,-50%)}
+.rescue-signal{top:12%;padding:7px clamp(9px,3vw,20px);border:2px solid #9deaff;border-radius:20px;background:#112a4d;color:#f8feff;font:bold clamp(16px,3vw,22px) Arial,sans-serif;box-shadow:0 0 14px #62d4fb77}
+.rescue-signal:nth-of-type(3){left:25%}
+.rescue-signal:nth-of-type(4){left:75%}
+.rescue-ship{top:80%;left:50%;font-size:40px;line-height:1;filter:drop-shadow(0 3px 10px #83dcff)}
+.rescue-passenger{position:absolute;top:25%;left:50%;transform:translate(-50%,-50%);font-size:34px;opacity:0;pointer-events:none}
+.rescue-field[data-hit="correct"] .rescue-passenger{animation:rescue-beam .9s ease-out both}
+@keyframes rescue-beam{0%{opacity:0}20%{opacity:1}75%{opacity:1}100%{top:80%;opacity:0}}
+@media(prefers-reduced-motion:reduce){.rescue-field[data-hit="correct"] .rescue-passenger{animation:none;opacity:1;top:67%}}
+.rescue-field[data-hit="correct"]{border-color:#7cf7cc;box-shadow:0 0 20px #7cf7cc88}
+.rescue-field[data-hit="wrong"]{border-color:#ff829c}
+.rescue-controls{display:flex;align-items:center;justify-content:center;gap:12px;margin:12px auto}
+.rescue-controls button[data-steer]{min-width:49px;min-height:44px;border:1px solid #b1a1ed;border-radius:11px;background:#392e65;color:white;font-size:21px;cursor:pointer;touch-action:none}
+.rescue-panel .quiz-feedback{min-height:2.5em}
 
 </style></head><body><main class="wrap"><a class="back" href="level5.html">↩️ חזרה למפת הגלקסיה</a><nav class="steps" aria-label="שלבי כוכב 11"><a href="?stage=intro" data-step="intro">🌀 פתיחה</a><a href="grammar-planet-11-gates.html">🚪 שערי זמן</a><a href="?stage=positive" data-step="positive">🕰️ מילות זמן</a><a href="?stage=regular" data-step="regular">🛠️ פעלים רגילים</a><a href="?stage=irregular" data-step="irregular">✨ פעלים מיוחדים</a><a href="?stage=sentence" data-step="sentence">📚 משפט חיובי</a><a href="?stage=practice1" data-step="practice1">✨ בונים משפט</a><a href="?stage=negative" data-step="negative">🚫 שלילה</a><a href="?stage=question" data-step="question">❓ שאלות</a><a href="?stage=be" data-step="be">🧠 WAS / WERE</a><a href="?stage=finish" data-step="finish">🏆 סיום</a></nav><header><div class="orb">🌀⏳</div><h1>PAST PORTAL</h1><p>שער העבר · כוכב 11 בגלקסיית הדקדוק<br>🌟 המסע אל מה שקרה אתמול!</p></header>
 <section id="intro" class="panel"><h2>👽 זיגי מצא שער לזמן אחר!</h2><div class="ziggy">זיגי: עד עכשיו סיפרנו מה קורה <b>בדרך כלל</b> ומה קורה <b>ממש עכשיו</b>. אבל איך נספר על משהו <b>שכבר קרה ונגמר</b>? למשל, מה עשינו אתמול או בשבוע שעבר? בשביל זה יש לנו זמן חדש: <b>PAST SIMPLE!</b> 🕰️</div><div class="example-grid" style="margin-top:19px"><article class="example-card"><strong>☀️ PRESENT SIMPLE</strong><div class="sentence">Shira plays football every day. <button class="sound" onclick="speak('Shira plays football every day.')">🔊</button></div></article><article class="example-card"><strong>⏳ PAST SIMPLE</strong><div class="sentence">Shira played football yesterday. <button class="sound" onclick="speak('Shira played football yesterday.')">🔊</button></div></article></div><div class="bottom"><a class="bigbutton lesson-link" href="grammar-planet-11-gates.html">🚪 למשחק הדלתות</a></div></section>
@@ -343,27 +345,31 @@
   </div>
   <p>בשאלה מעבירים את <bdi lang="en">was / were</bdi> להתחלה. בשלילה משתמשים ב־<bdi lang="en">wasn't / weren't</bdi>.</p>
   <div class="sentence" lang="en"><b>Was</b> she happy?<br>They <b>weren't</b> at home.</div>
-  <div class="bottom"><button class="bigbutton" onclick="showStage('beGame')">📸 לאלבום של זיגי</button></div>
+  <div class="bottom"><button class="bigbutton" onclick="showStage('beGame')">🚀 למשימת החילוץ</button></div>
 </section>
 <section id="beGame" class="hidden">
-  <div class="panel practice album-panel">
-    <h2>📸 אלבום הזיכרונות של זיגי</h2>
-    <p>השלימו את הכיתוב כדי להחזיר את הצבע לתמונה. שחזרו את כל שש התמונות באלבום.</p>
-    <div class="quiz-meta"><span id="beGameCount"></span><span id="beGameStars"></span></div>
-    <div class="quiz-track"><div class="quiz-fill" id="beGameFill"></div></div>
-    <div id="albumProgress" class="album-progress" aria-label="תמונות באלבום"></div>
-    <figure class="album-photo" id="albumPhoto">
-      <div class="album-scene" role="img" id="albumScene">
-        <span class="album-place" aria-hidden="true"></span>
-        <span class="album-people" aria-hidden="true"></span>
-      </div>
-      <figcaption id="beGameQuestion" class="quiz-question" dir="ltr" lang="en"></figcaption>
-    </figure>
-    <div id="beGameOptions" class="quiz-options" dir="ltr"></div>
-    <div id="beGameFeedback" class="quiz-feedback" aria-live="polite"></div>
-    <button class="bigbutton secondary hidden" id="beGameHint" onclick="showHint('beGame')">💡 אפשר רמז?</button>
-    <button class="bigbutton hidden" id="beGameNext" onclick="nextQuestion('beGame')">➡️ ממשיכים</button>
+ <div class="panel practice rescue-panel">
+  <h2>🚀 חילוץ בחלל</h2>
+  <p>השלימו את המשפט. הזיזו את החללית עם החצים או בגרירה, ותפסו את התשובה הנכונה כשהיא מגיעה אל זיגי.</p>
+  <div class="quiz-meta"><span id="rescueCount"></span><span id="rescueScore"></span></div>
+  <div id="rescuePrompt" class="rescue-prompt" lang="en" dir="ltr"></div>
+  <div id="rescueField" class="rescue-field" tabindex="0" aria-label="מסלול הטיסה. חץ שמאלי וימני מזיזים את החללית.">
+   <div class="rescue-planet" aria-hidden="true"></div>
+   <div class="rescue-line" aria-hidden="true"></div>
+   <div class="rescue-signal" lang="en"></div>
+   <div class="rescue-signal" lang="en"></div>
+   <div id="rescueShip" class="rescue-ship" aria-hidden="true">🚀</div>
+   <span class="rescue-passenger" id="rescuePassenger" aria-hidden="true">🧑‍🚀</span>
   </div>
+  <div class="rescue-controls" dir="ltr">
+   <button type="button" data-steer="-1" aria-label="שמאלה">◀</button>
+   <button class="bigbutton" id="rescueStart" type="button">🚀 מתחילים</button>
+   <button type="button" data-steer="1" aria-label="ימינה">▶</button>
+  </div>
+  <div id="rescueFeedback" class="quiz-feedback" aria-live="polite"></div>
+  <button class="bigbutton secondary hidden" id="rescueReplay" type="button">🔁 משימת חילוץ חדשה</button>
+  <button class="bigbutton hidden" id="rescueFinish" type="button" onclick="showStage('finish')">🏆 לסיום</button>
+ </div>
 </section>
 <section id="finish" class="hidden"><div class="panel bottom"><h2>🏆 שער העבר נפתח!</h2><div style="font-size:60px">👽🌀⏳</div><p style="font-size:20px">כל הכבוד! סיימתם את המסלול בשער העבר.</p><div class="note">💜 זיגי מזכיר: בעבר רגיל משתמשים בפועל בעבר; בשאלה ובשלילה משתמשים ב־<b>Did / didn't + verb</b> בצורת הבסיס.</div><button class="bigbutton secondary" onclick="showStage('sentence')">📚 לחזור להסבר</button><a class="bigbutton secondary" style="display:inline-block;text-decoration:none" href="level5.html">🪐 מפת הגלקסיה</a><p style="margin-top:16px"><a class="bigbutton" href="grammar-planet-11-gates.html" style="display:inline-block;text-decoration:none">🚪 לשחק שוב בשערי הזמן</a></p></div></section>
 </main><script>
@@ -375,7 +381,7 @@ const quizNavigation={
  practice1:{lesson:'practice1',next:'negative',label:'🚫 לשלילה'},
  practice2:{lesson:'negative',next:'question',label:'❓ לשאלות בעבר'},
  questionGame:{lesson:'question',next:'be',label:'🧠 ל־WAS / WERE'},
- beGame:{lesson:'be',next:'finish',label:'🏆 לסיום'}
+ beGame:{lesson:'be'}
 };
 const timeCueBank=[
   ["yesterday", "אתמול", "past"],
@@ -480,12 +486,12 @@ questionGame:[
   {"q": "Did they ___ football last week?", "choices": ["played", "plays", "play"], "answer": "play", "hint": "Did כבר מסמן עבר. בחרו את צורת הבסיס.", "why": "Did they play football last week?"}
 ],
 beGame:[
-  {"q": "She ___ at the park yesterday.", "choices": ["were", "was"], "answer": "was", "hint": "עם she משתמשים ב־was.", "why": "She was at the park yesterday.", "place": "🌳", "people": "👧", "description": "ילדה בפארק", "scene": "park"},
-  {"q": "They ___ at the beach yesterday.", "choices": ["were", "was"], "answer": "were", "hint": "עם they משתמשים ב־were.", "why": "They were at the beach yesterday.", "place": "🏖️", "people": "🧒 👧", "description": "שני ילדים בחוף הים", "scene": "beach"},
-  {"q": "___ he at school yesterday?", "choices": ["Was", "Were"], "answer": "Was", "hint": "בשאלה שמים was בתחילת המשפט כשמדברים על he.", "why": "Was he at school yesterday?", "place": "🏫", "people": "👦", "description": "ילד ליד בית ספר", "scene": "school"},
-  {"q": "___ you at the zoo yesterday?", "choices": ["Was", "Were"], "answer": "Were", "hint": "עם you משתמשים ב־were, גם כשמדברים אל אדם אחד.", "why": "Were you at the zoo yesterday?", "place": "🦒", "people": "🧒", "description": "ילד ליד ג׳ירפה בגן החיות", "scene": "park"},
-  {"q": "She ___ at home yesterday. She was at the library.", "choices": ["weren't", "wasn't"], "answer": "wasn't", "hint": "עם she משתמשים ב־was. צורת השלילה היא wasn't.", "why": "She wasn't at home yesterday. She was at the library.", "place": "📚", "people": "👧", "description": "ילדה בספרייה", "scene": "library"},
-  {"q": "We ___ indoors yesterday. We were at the park.", "choices": ["weren't", "wasn't"], "answer": "weren't", "hint": "עם we משתמשים ב־were. צורת השלילה היא weren't.", "why": "We weren't indoors yesterday. We were at the park.", "place": "🌳", "people": "👽 🧒", "description": "זיגי וילד בפארק", "scene": "park"}
+  {"q": "She ___ at the park yesterday.", "choices": ["were", "was"], "answer": "was", "hint": "עם she משתמשים ב־was.", "why": "She was at the park yesterday."},
+  {"q": "They ___ at the beach yesterday.", "choices": ["were", "was"], "answer": "were", "hint": "עם they משתמשים ב־were.", "why": "They were at the beach yesterday."},
+  {"q": "___ he at school yesterday?", "choices": ["Was", "Were"], "answer": "Was", "hint": "בשאלה שמים was בתחילת המשפט כשמדברים על he.", "why": "Was he at school yesterday?"},
+  {"q": "___ you at the zoo yesterday?", "choices": ["Was", "Were"], "answer": "Were", "hint": "עם you משתמשים ב־were, גם כשמדברים אל אדם אחד.", "why": "Were you at the zoo yesterday?"},
+  {"q": "She ___ at home yesterday. She was at the library.", "choices": ["weren't", "wasn't"], "answer": "wasn't", "hint": "עם she משתמשים ב־was. צורת השלילה היא wasn't.", "why": "She wasn't at home yesterday. She was at the library."},
+  {"q": "We ___ indoors yesterday. We were at the park.", "choices": ["weren't", "wasn't"], "answer": "weren't", "hint": "עם we משתמשים ב־were. צורת השלילה היא weren't.", "why": "We weren't indoors yesterday. We were at the park."}
 ]};
 const state=Object.fromEntries(Object.keys(quizzes).map(type=>[type,{i:0,correct:0,wrong:false,answered:false}]));
 const cueFeedback={past:'הביטוי מציין זמן שכבר עבר.', habit:'הביטוי מציין הרגל או תדירות בהווה.', now:'הביטוי מציין משהו שקורה עכשיו.'};
@@ -521,13 +527,14 @@ function showStage(stage){
  document.querySelectorAll('[data-step]').forEach(a=>{const active=a.dataset.step===(quizNavigation[t]?.lesson ?? t);a.classList.toggle('current',active);if(active)a.setAttribute('aria-current','step');else a.removeAttribute('aria-current')});
  if(t==='timeGame'&&(!quizzes.timeGame.length||state.timeGame.finished))startRound();
  if(t==='irregularGame'&&!memory.cards.length)startMemory();
- if(quizzes[t])renderQuiz(t);
+ stopRescue();
+ if(t==='beGame')renderRescue();
+ else if(quizzes[t])renderQuiz(t);
  history.replaceState(null,'','?stage='+t);
  window.scrollTo({top:0,behavior:'smooth'});
 }
 function renderQuiz(type){
  const st=state[type],q=quizzes[type][st.i];if(!q)return;
- if(type==='beGame')renderAlbum(st,q);
  if(type==='timeGame'){
    resetRunner();
    document.getElementById('runTrack').dataset.world=st.i%4;
@@ -539,7 +546,7 @@ function renderQuiz(type){
  document.getElementById(type+'Count').textContent='שאלה '+(st.i+1)+' מתוך '+quizzes[type].length;
  document.getElementById(type+'Stars').textContent='⭐ '+st.correct+' / '+quizzes[type].length;
  document.getElementById(type+'Fill').style.width=((st.i+Number(st.answered))/quizzes[type].length*100)+'%';
- if(type!=='practice1'&&type!=='beGame')document.getElementById(type+'Question').textContent=q.q;
+ if(type!=='practice1')document.getElementById(type+'Question').textContent=q.q;
  const options=document.getElementById(type+'Options');
  if(type!=='practice1'){
  options.replaceChildren();
@@ -554,34 +561,11 @@ function renderQuiz(type){
  document.getElementById(type+'Next').textContent=st.i===quizzes[type].length-1?quizNavigation[type].label:'🚀 לשאלה הבאה';
  document.getElementById(type+'Replay')?.classList.toggle('hidden',!st.answered||st.i!==quizzes[type].length-1);
 }
-function renderAlbum(st,q){
- const scene=document.getElementById('albumScene');
- scene.dataset.scene=q.scene;
- scene.setAttribute('aria-label',q.description);
- scene.querySelector('.album-place').textContent=q.place;
- scene.querySelector('.album-people').textContent=q.people;
- document.getElementById('albumPhoto').classList.toggle('restored',st.answered);
- const caption=document.getElementById('beGameQuestion');
- caption.textContent=st.answered?q.why:q.q;
- const progress=document.getElementById('albumProgress');
- progress.replaceChildren();
- quizzes.beGame.forEach((photo,index)=>{
-   const item=document.createElement('span');
-   const restored=index<st.i||(index===st.i&&st.answered);
-   item.classList.toggle('restored',restored);
-   item.textContent=photo.place;
-   item.setAttribute('role','img');
-   item.setAttribute('aria-label','תמונה '+(index+1)+(restored?' שוחזרה':' ממתינה לשחזור'));
-   if(index===st.i)item.setAttribute('aria-current','true');
-   progress.appendChild(item);
- });
-}
 function choose(type,choice,button){
  const st=state[type],q=quizzes[type][st.i];if(st.answered)return;
  if(type==='timeGame')animateRunner(button,choice===q.answer);
  if(choice!==q.answer){st.wrong=true;button.classList.add('wrong');document.getElementById(type+'Feedback').textContent='🔴 כמעט! נסו שוב — אפשר לפתוח רמז 💜';document.getElementById(type+'Hint').classList.remove('hidden');button.disabled=true;return}
  st.answered=true;st.correct++;
- if(type==='beGame')renderAlbum(st,q);
  button?.classList.add('correct');
  document.querySelectorAll('#'+type+'Options button').forEach(b=>b.disabled=true);
  document.getElementById(type+'Stars').textContent='⭐ '+st.correct+' / '+quizzes[type].length;
@@ -815,5 +799,132 @@ function nextQuestion(type){
 }
 document.querySelectorAll('[data-step]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();showStage(a.dataset.step)}));
 function speak(s){if(!('speechSynthesis'in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(s);u.lang='en-US';u.rate=.82;speechSynthesis.speak(u)}
+const rescueField=document.getElementById('rescueField');
+const rescueShip=document.getElementById('rescueShip');
+const rescuePassenger=document.getElementById('rescuePassenger');
+const rescueCrew=['🧑‍🚀','🤖','👩‍🚀','👨‍🚀','🤖','🧑‍🚀'];
+const rescueSignals=[...rescueField.querySelectorAll('.rescue-signal')];
+const rescueFeedback=document.getElementById('rescueFeedback');
+const rescueStart=document.getElementById('rescueStart');
+const rescueReplay=document.getElementById('rescueReplay');
+const rescueFinish=document.getElementById('rescueFinish');
+const rescue={round:0,x:0.5,y:0.12,frame:0,delay:0,active:false,previousTime:0, pointer:null};
+const rescueLanes=[0.25,0.75];
+
+function stopRescue(){
+ cancelAnimationFrame(rescue.frame);
+ clearTimeout(rescue.delay);
+ rescue.active=false;
+ rescue.pointer=null;
+}
+
+function renderRescue(){
+ const done=rescue.round===quizzes.beGame.length;
+ const q=quizzes.beGame[Math.min(rescue.round,quizzes.beGame.length-1)];
+ document.getElementById('rescueCount').textContent='קריאת מצוקה '+Math.min(rescue.round+1,quizzes.beGame.length)+' / '+quizzes.beGame.length;
+ document.getElementById('rescueScore').textContent='👩‍🚀 חולצו '+rescue.round+' / '+quizzes.beGame.length;
+ document.getElementById('rescuePrompt').textContent=done?q.why:q.q;
+ rescue.x=0.5;
+ rescue.y=0.12;
+ rescue.previousTime=0;
+ rescueShip.style.left='50%';
+ delete rescueField.dataset.hit;
+ rescueSignals.forEach((signal,index)=>{
+   signal.textContent=q.choices[index];
+   signal.style.top='12%';
+   signal.classList.toggle('hidden',done);
+ });
+ rescueStart.classList.toggle('hidden',done);
+ rescueStart.textContent=rescue.round?'🚀 להמשיך בחילוץ':'🚀 מתחילים';
+ rescueReplay.classList.toggle('hidden',!done);
+ rescueFinish.classList.toggle('hidden',!done);
+ if(done&&document.activeElement===rescueField)rescueReplay.focus({preventScroll:true});
+ rescueFeedback.textContent=done?'🏆 כולם חולצו! כל הכבוד, צוות החילוץ!':'';
+}
+
+function steerRescue(x){
+ rescue.x=Math.max(0.08,Math.min(0.92,x));
+ rescueShip.style.left=(rescue.x*100)+'%';
+}
+
+function beginRescue(){
+ if(rescue.active||rescue.round>=quizzes.beGame.length)return;
+ rescueStart.classList.add('hidden');
+ rescue.active=true;
+ rescue.previousTime=0;
+ rescue.frame=requestAnimationFrame(flyRescue);
+}
+
+function flyRescue(time){
+ if(!rescue.active)return;
+ const elapsed=rescue.previousTime?Math.min(time-rescue.previousTime,50):0;
+ rescue.previousTime=time;
+ rescue.y+=elapsed*(0.000155+rescue.round*0.000012);
+ rescueSignals.forEach(signal=>{signal.style.top=(rescue.y*100)+'%';});
+
+ if(rescue.y>=0.75&&rescue.y<=0.91){
+   const lane=rescueLanes.findIndex(center=>Math.abs(rescue.x-center)<0.11);
+   if(lane>=0){catchRescueSignal(lane);return;}
+ }
+
+ if(rescue.y>0.99){
+   rescue.y=0.12;
+   rescueFeedback.textContent='האותות חוזרים. הזיזו את זיגי למסלול של התשובה הנכונה.';
+ }
+ rescue.frame=requestAnimationFrame(flyRescue);
+}
+
+function catchRescueSignal(lane){
+ rescue.active=false;
+ const q=quizzes.beGame[rescue.round];
+ const correct=q.choices[lane]===q.answer;
+ rescueField.dataset.hit=correct?'correct':'wrong';
+ if(correct){
+   rescuePassenger.textContent=rescueCrew[rescue.round];
+   rescuePassenger.style.left=rescueShip.style.left;
+   rescue.round++;
+   document.getElementById('rescueScore').textContent='👩‍🚀 חולצו '+rescue.round+' / '+quizzes.beGame.length;
+   document.getElementById('rescuePrompt').textContent=q.why;
+ }
+ rescueFeedback.textContent=correct?'✨ חילוץ הצליח!':'💡 '+q.hint;
+ rescue.delay=setTimeout(()=>{
+   renderRescue();
+   if(!correct)rescueFeedback.textContent='💡 '+q.hint;
+   beginRescue();
+ },correct?1400:1650);
+}
+
+rescueField.addEventListener('keydown',event=>{
+ if(event.key!=='ArrowLeft'&&event.key!=='ArrowRight')return;
+ event.preventDefault();
+ if(!rescue.active&&!rescueStart.classList.contains('hidden'))beginRescue();
+ if(rescue.active)steerRescue(rescueLanes[event.key==='ArrowLeft'?0:1]);
+});
+rescueField.addEventListener('pointerdown',event=>{
+ if(!rescue.active&&!rescueStart.classList.contains('hidden'))beginRescue();
+ if(!rescue.active||rescue.pointer!==null)return;
+ rescue.pointer=event.pointerId;
+ rescueField.setPointerCapture(event.pointerId);
+ const bounds=rescueField.getBoundingClientRect();
+ steerRescue((event.clientX-bounds.left)/bounds.width);
+});
+rescueField.addEventListener('pointermove',event=>{
+ if(!rescue.active||rescue.pointer!==event.pointerId)return;
+ const bounds=rescueField.getBoundingClientRect();
+ steerRescue((event.clientX-bounds.left)/bounds.width);
+});
+rescueField.addEventListener('lostpointercapture',event=>{
+ if(rescue.pointer===event.pointerId)rescue.pointer=null;
+});
+document.querySelectorAll('[data-steer]').forEach(button=>{
+ button.addEventListener('click',()=>{
+   if(!rescue.active&&!rescueStart.classList.contains('hidden'))beginRescue();
+   if(rescue.active)steerRescue(rescueLanes[button.dataset.steer==='-1'?0:1]);
+   rescueField.focus({preventScroll:true});
+ });
+});
+rescueStart.onclick=()=>{beginRescue();rescueField.focus({preventScroll:true});};
+rescueReplay.onclick=()=>{rescue.round=0;renderRescue();beginRescue();rescueField.focus({preventScroll:true});};
+
 showStage(new URLSearchParams(location.search).get('stage')||'intro');
 </script></body></html>
