@@ -16,6 +16,7 @@ button{font:inherit;font-weight:bold;cursor:pointer;border-radius:12px;padding:1
 .trace svg{display:block;width:100%;height:auto;touch-action:none;cursor:crosshair}.guide{fill:none;stroke:#596b7d;stroke-width:1.7;stroke-dasharray:3 4;stroke-linecap:round;stroke-linejoin:round}.guide.model{stroke-dasharray:none;stroke:#162a43}.ink{fill:none;stroke:#263c78;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round}.pencil{position:absolute;pointer-events:none;transform:translate(-8%,-91%);font-size:30px;line-height:1}.rule{stroke:#a5b6c8;stroke-width:1}.rule.middle{stroke-dasharray:3 4}.rule.base{stroke:#5d809d}.status{color:#285752}
 .example{grid-template-columns:auto minmax(0,1fr);align-items:start}.sound-examples{display:grid;gap:8px}.sound-example{background:#fff;padding:10px;border-radius:10px}.sound-example p{margin:4px 0}.sound-example .controls{margin-top:8px}.sound-example button{padding:7px 10px}.sound-example .word{display:inline-block}.sound-example .ipa{display:inline-block;margin-inline-start:8px}
 @media(max-width:460px){.example{grid-template-columns:minmax(0,1fr);gap:8px}.pair{font-size:52px}}
+.notebook-tip{padding:10px 12px;background:#e8f3ee;border-inline-start:4px solid #368578;border-radius:8px;color:#244840}
 </style>
 </head>
 <body><main>
@@ -33,6 +34,7 @@ button{font:inherit;font-weight:bold;cursor:pointer;border-radius:12px;padding:1
 <output id="gameFeedback"></output>
 <div class="controls"><button id="hearClue">🔊 לשמוע את המילה</button><button class="primary" id="nextClue" hidden></button><button id="review">חזרה לאותיות</button></div></section>
 <section class="panel" id="write" hidden><h2 id="writeTitle" tabindex="-1"></h2><p>האות הראשונה היא דוגמה. התחילו בנקודה הירוקה של אחת הדוגמאות המקווקוות ועברו עליה בעיפרון. השתמשו באצבע או בעכבר.</p>
+<p class="notebook-tip">📓 כדי לזכור את האות אפילו טוב יותר, קחו מחברת וכתבו בה עוד שורה של <strong><bdi id="notebookLetter" lang="en"></bdi></strong>.</p>
 <div class="trace" id="surface">
 <svg id="sheet" viewBox="0 0 320 126" aria-label="משטח כתיבה עם אותיות מקווקוות">
 <path class="rule" d="M6 26H314M6 112H314"/><path class="rule middle" d="M6 49H314"/><path class="rule base" d="M6 91H314"/>
@@ -227,6 +229,7 @@ function renderTrace(){
  const mode=trace%3;
  const forms=[data.letter,data.letter.toLowerCase(),letterLabel(data)];
  $('writeTitle').textContent='כותבים '+forms[mode]+' · '+(trace+1)+' / '+letters.length*3;
+ $('notebookLetter').textContent=forms[mode];
  $('nextTrace').textContent=trace===letters.length*3-1?'להדליק את הלוח':'לדוגמה הבאה';
  const group=$('template');
  group.replaceChildren();
