@@ -42,7 +42,7 @@ button{font:inherit;font-weight:bold;cursor:pointer;border-radius:12px;padding:1
 </style>
 </head>
 <body><main>
-<a href="level1.html">↩ לשלב האותיות והצלילים</a>
+<a href="abc-sounds-level.html">↩ לשלב האותיות והצלילים</a>
 <header class="hero"><div><h1>סדנת הרובוטים</h1><p id="mission">בּיפּ מושבת. הכירו את האותיות A–F, מצאו זוגות במשחק הזיכרון והפעילו את הלוח הראשון שלו.</p></div><div id="robot" class="robot" role="img" aria-label="הרובוט כבוי"><div class="robot-face"><i class="eye"></i><i class="eye"></i></div></div></header>
 <ol class="progress"><li id="learnStep" aria-current="step">מכירים</li><li id="gameStep">משחקים</li><li id="writeStep">כותבים</li></ol>
 <section class="panel" id="learn"><h2 tabindex="-1">שם האות והצליל שלה</h2>
@@ -78,7 +78,7 @@ button{font:inherit;font-weight:bold;cursor:pointer;border-radius:12px;padding:1
  <div class="robot-lights" role="img" aria-label="לוח ראשון פעיל מתוך חמישה"><i></i><i></i><i></i><i></i><i></i></div>
  <p>הלוח הראשון נדלק!</p>
  <p><strong>אנחנו בדרך הנכונה להפעיל את בּיפּ. בואו נמשיך!</strong></p>
- <div class="controls"><a href="level1.html" class="result-link">לשלב האותיות והצלילים</a><button id="replay">לתרגל שוב</button></div>
+ <div class="controls"><a href="abc-sounds-level.html" class="result-link">לשלב האותיות והצלילים</a><button id="replay">לתרגל שוב</button></div>
 </section>
 <output id="audioFeedback" aria-live="polite"></output>
 </main>
@@ -570,7 +570,7 @@ if(trainTheme){
  status.textContent='השלמתם את השלט של תחנת '+range+'.';
  message.querySelector('strong').textContent=finalStation?'כל חמש התחנות פתוחות לתרגול חוזר.':'עולים לרכבת ואוספים את האותיות של התחנה הבאה!';
  const back=done.querySelector('a');
- back.href=finalStation?'level1.html#alphabet-stations':runnerUrl(station+1);
+ back.href=finalStation?'abc-sounds-level.html#alphabet-stations':runnerUrl(station+1);
  back.textContent=finalStation?'לכל התחנות':'לנסיעה הבאה · '+stationRange(alphabetGroups[station+1]);
  $('replay').textContent='לתרגל שוב בתחנה';
 }
