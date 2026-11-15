@@ -171,6 +171,12 @@ header p {
   .world { width: 100%; min-width: 0; }
   .level { width: 5%; }
 }
+.stations{margin:24px auto;max-width:760px;padding:16px;color:#fff8e8;text-align:center}
+.stations h2{margin:0 0 10px}
+.stations div{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.stations a{display:grid;min-width:108px;padding:9px 12px;border-radius:12px;background:#273c63;color:#fff0c9;border:1px solid #869bc5;text-decoration:none;font-weight:bold}
+.stations a:hover,.stations a:focus-visible{background:#3d5588}
+.stations small{color:white;font-weight:normal}
 </style>
 </head>
 
@@ -189,10 +195,10 @@ header p {
 
   
 <button class="level current" style="top:76%;left:44%"
-  onclick="window.location.href='letter-run.html'" aria-label="רכבת הצלילים, איסוף אותיות A עד F">1</button>
+  onclick="window.location.href='letter-run.html'" aria-label="רכבת הצלילים, מתחילים באותיות A עד F">1</button>
 
 <div class="level-name" style="top:76%;left:49%">
-  רכבת הצלילים <small>ABC · A–F</small>
+  רכבת הצלילים <small>ABC · A–Z</small>
 </div>
 
 
@@ -217,6 +223,7 @@ header p {
     </main>
 </div>
 
+<section id="alphabet-stations" class="stations"><h2>🚆 תחנות רכבת הצלילים</h2><div><a href="letter-run.html"><bdi dir="ltr">A–F</bdi><small>זיכרון</small></a><a href="letter-run.html?station=G"><bdi dir="ltr">G–K</bdi><small>מתיחת קווים</small></a><a href="letter-run.html?station=L"><bdi dir="ltr">L–P</bdi><small>זיכרון</small></a><a href="letter-run.html?station=Q"><bdi dir="ltr">Q–U</bdi><small>מתיחת קווים</small></a><a href="letter-run.html?station=V"><bdi dir="ltr">V–Z</bdi><small>זיכרון</small></a></div></section>
 <div class="message">
   ⭐ אוספים כוכבים ומתקדמים! | Collect stars and progress!
 </div>
