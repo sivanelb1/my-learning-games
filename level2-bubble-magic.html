@@ -80,6 +80,7 @@ main{padding-top:49px}.eyebrow{padding:5px 11px;font-size:13px}h1{font-size:clam
 @media(max-width:600px){.phonics-hero{gap:6px}.phonics-hint,.phonics-listen{padding:8px 10px;font-size:14px}.phonics-slots{gap:4px}.phonics-slot{width:39px;min-width:39px;min-height:43px;font-size:18px}.phonics-chunks{gap:5px}.phonics-chunks button{min-width:42px;min-height:45px;font-size:19px;padding:6px 8px}}
 .phonics-slot.sound-group{background:#55306b;border-color:#ffe6a1;box-shadow:inset 0 0 9px #e8b1fa55}.phonics-slot.sound-group.filled{background:#2e826d;border-color:#a4fbd3}.phonics-chunks button{max-width:130px}
 .phonics-hint:disabled{opacity:.4;cursor:not-allowed;filter:grayscale(1);box-shadow:none}.arcade-score{border-color:#f9d37d!important;background:linear-gradient(140deg,#46305c,#674575)!important}.arcade-score strong{color:#fff0a2!important;font-size:clamp(24px,3.8vw,38px)!important}
+.phonics-slot.hinted-letter{background:linear-gradient(135deg,#fff1b7,#f8c7f2);color:#522b65;border-color:#ffdd78;box-shadow:0 0 13px #ffe99d99;font-weight:900}
 </style></head><body>
 <a class="back" href="adventure-map.html">🗺️ חזרה לעולם</a>
 <main>
@@ -88,7 +89,7 @@ main{padding-top:49px}.eyebrow{padding:5px 11px;font-size:13px}h1{font-size:clam
 <div class="challenge" aria-live="polite"><strong id="challenge">✨ אספו את מילות הקסם</strong><small id="hint">פוצצו בועות מילים, אספו אותיות וכוכבי רמז, ואז בנו מילים והתאימו פירוש</small><div class="examples" id="answers"></div></div>
 <div class="stage-track" id="stageTrack" aria-label="התקדמות בעשר תחנות"></div>
 <div class="board"><canvas id="game" width="960" height="540" aria-label="משחק פעולה עם בועות קופצות ופיית קסם" role="img"></canvas>
-<div class="overlay" id="overlay"><div class="modal"><div class="emojis" id="modalEmoji">🧚‍♀️🫧🏰</div><h2 id="modalTitle">ברוכים הבאים לבועות הקסם!</h2><p id="modalText">פוצצו בועה גדולה עם מילת קסם: היא מתפצלת <b>לשתי בועות קטנות יותר</b>, וכל בועה יכולה להתפצל שוב לשתיים. כל בועה עם אות שמשמידים משחררת <b>אות אחת לרצפה</b> — אספו אותה ובנו את המילה. ⭐ כוכב שנופל הוא <b>רמז</b>: אספו אותו תוך 10 שניות, שמרו רמזים לכל המסע, והשתמשו בהם כדי לחשוף מילה שלמה בסוף התחנה.<br>💜 מתחילים עם <b>7 חיים לכל עשר התחנות יחד</b> ועם שעון לכל תחנה. בדרך אפשר לאסוף ⭐ נקודות, 💜 חיים נוספים, ⏳ זמן נוסף ו־🛡️ מגן זמני. בועות גדולות מתפצלות לקטנות!</p><button class="primary" id="play">✨ מתחילים בהרפתקה!</button></div></div>
+<div class="overlay" id="overlay"><div class="modal"><div class="emojis" id="modalEmoji">🧚‍♀️🫧🏰</div><h2 id="modalTitle">ברוכים הבאים לבועות הקסם!</h2><p id="modalText">פוצצו בועה גדולה עם מילת קסם: היא מתפצלת <b>לשתי בועות קטנות יותר</b>, וכל בועה יכולה להתפצל שוב לשתיים. כל בועה עם אות שמשמידים משחררת <b>אות אחת לרצפה</b> — אספו אותה ובנו את המילה. ⭐ כוכב שנופל הוא <b>רמז</b>: אספו אותו תוך 10 שניות, שמרו רמזים לכל המסע, והשתמשו בכל רמז כדי לחשוף אות אחת בסוף התחנה.<br>💜 מתחילים עם <b>7 חיים לכל עשר התחנות יחד</b> ועם שעון לכל תחנה. בדרך אפשר לאסוף ⭐ נקודות, 💜 חיים נוספים, ⏳ זמן נוסף ו־🛡️ מגן זמני. בועות גדולות מתפצלות לקטנות!</p><button class="primary" id="play">✨ מתחילים בהרפתקה!</button></div></div>
 </div>
 <section class="arcade-panel" aria-label="לוח המשחק: זמן, חיים ורמזים">
  <div class="arcade-clock"><span>⏳ TIME</span><div class="arcade-meter" id="timeMeter" role="progressbar" aria-label="זמן שנותר" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><div class="arcade-meter-fill" id="timeFill"></div></div><strong id="timeHud" aria-live="off">01:40</strong></div>
@@ -489,8 +490,8 @@ const tasks=[
     "O",
     "R",
     "A",
-    "NG",
-    "E"
+    "N",
+    "GE"
    ],
    [
     "C",
@@ -660,7 +661,7 @@ function getDrop(d){
  }else if(d.type==='clock'){
   seconds+=15;toast('⏳ קיבלתם עוד 15 שניות!');beep(790,.12);
  }else if(d.type==='shield'){
-  shield=Math.max(shield,6);toast('🛡️ מגן קסום! אתם מוגנים ל־6 שניות.');beep(620,.15);
+  const duration=5+rand()*2;shield=duration;toast('🛡️ מגן קסום! אתם מוגנים ל־'+Math.round(duration*10)/10+' שניות.');beep(620,.15);
  }else if(d.type==='star'){
   hints=Math.min(99,hints+1);toast('⭐ אספתם רמז! יש לכם '+hints+' רמזים לכל המסע.');beep(1000,.1);saveRun();
  }else{
@@ -677,18 +678,40 @@ function quizStage(){
  quizOpen=true;paused=true;controls.left=controls.right=controls.fire=false;
  $('overlay').hidden=false;$('modalEmoji').textContent='🔤⭐🪄';$('modalTitle').textContent='סדנת מילות הקסם!';
  $('play').hidden=true;
- $('modalText').innerHTML='<p>כל האותיות נאספו! <b>בנו את המילה מהאותיות ששחררתם</b>. צירופי צלילים כמו SH ו־CH נשארים יחד. אחר כך התאימו את הפירוש. <b>💡 רמז שנאסף במשחק יכול לחשוף מילה שלמה!</b></p><div class="quiz-progress" id="quizProgress"></div><div class="phonics-hero"><span class="phonics-picture" id="phonicsPicture"></span><button class="phonics-listen" type="button" id="listenWord">🔊 שמעו את המילה</button><button class="phonics-hint" type="button" id="hintWord">💡 גלו את המילה (0)</button></div><p class="quiz-prompt" id="quizPrompt"></p><div class="phonics-slots" id="phonicsSlots"></div><div class="phonics-chunks" id="phonicsChunks"></div><div class="quiz-choices" id="quizChoices"></div><div class="quiz-feedback" id="quizFeedback" role="status" aria-live="polite"></div>';
+ $('modalText').innerHTML='<p>כל האותיות נאספו! <b>בנו את המילה מהאותיות ששחררתם</b>. צירופי צלילים כמו SH ו־CH נשארים יחד. אחר כך התאימו את הפירוש. <b>💡 כל רמז שאספתם חושף אות אחת בלבד (גם בתוך צליל מיוחד)!</b></p><div class="quiz-progress" id="quizProgress"></div><div class="phonics-hero"><span class="phonics-picture" id="phonicsPicture"></span><button class="phonics-listen" type="button" id="listenWord">🔊 שמעו את המילה</button><button class="phonics-hint" type="button" id="hintWord">💡 גלו אות (0)</button></div><p class="quiz-prompt" id="quizPrompt"></p><div class="phonics-slots" id="phonicsSlots"></div><div class="phonics-chunks" id="phonicsChunks"></div><div class="quiz-choices" id="quizChoices"></div><div class="quiz-feedback" id="quizFeedback" role="status" aria-live="polite"></div>';
  const t=tasks[level],words=[...wordTargets()].sort(()=>rand()-.5);
- let round=0,phase='build',selected=[];
+ let round=0,phase='build',selected=[],revealedLetters=new Set();
+ function nextHiddenLetter(parts){
+  let offset=0;
+  for(let j=0;j<parts.length;j++){
+   for(let k=0;k<parts[j].length;k++)if(j>=selected.length&&!revealedLetters.has(offset+k))return offset+k;
+   offset+=parts[j].length;
+  }
+  return -1;
+ }
+ function refreshHints(parts){
+  $('hintWord').textContent='💡 גלו אות ('+hints+' רמזים)';
+  $('hintWord').disabled=hints<=0||nextHiddenLetter(parts)<0;
+  let offset=0;
+  for(let j=0;j<parts.length;j++){
+   const slot=$('phonicsSlots').children[j];
+   if(j>=selected.length){
+    const chars=[...parts[j]],some=chars.some((ch,k)=>revealedLetters.has(offset+k));
+    slot.textContent=some?chars.map((ch,k)=>revealedLetters.has(offset+k)?ch:'·').join(''):'?';
+    slot.classList.toggle('hinted-letter',some);
+   }
+   offset+=parts[j].length;
+  }
+ }
  function render(){
   const word=words[round],index=t.words.indexOf(word),parts=t.chunks[index];
   $('quizProgress').textContent='✨ מילה '+(round+1)+' מתוך '+words.length+' · '+(phase==='build'?'שלב 1: בניית המילה':'שלב 2: התאמת פירוש');
   $('phonicsPicture').textContent=t.pictures[index];
   $('listenWord').onclick=()=>sayWord(word);
   $('hintWord').hidden=phase!=='build';
-  $('hintWord').textContent='💡 גלו מילה ('+hints+' רמזים)';
+  $('hintWord').textContent='💡 גלו אות ('+hints+' רמזים)';
   $('hintWord').disabled=hints===0;
-  $('quizFeedback').textContent=phase==='build'?'בחרו אותיות בסדר הנכון. רמז אחד חושף את כל המילה.':'בחרו את הפירוש של המילה שבניתם';
+  $('quizFeedback').textContent=phase==='build'?'בחרו אותיות בסדר הנכון. כל רמז חושף אות אחת בלבד.':'בחרו את הפירוש של המילה שבניתם';
   $('phonicsSlots').innerHTML='';$('phonicsChunks').innerHTML='';$('quizChoices').innerHTML='';
   if(phase==='build'){
    $('quizPrompt').textContent='🧩 איזו מילה מסתתרת בצלילים שאספתם?';
@@ -706,16 +729,20 @@ function quizStage(){
      if(chunk.part!==parts[selected.length]){$('quizFeedback').textContent='💜 נסו אות או צליל אחר. אפשר להאזין שוב!';beep(270,.08);return}
      selected.push(chunk.i);btn.disabled=true;
      const slot=$('phonicsSlots').children[selected.length-1];slot.textContent=chunk.part;slot.className='phonics-slot filled'+(chunk.part.length>1?' sound-group':'');
+     refreshHints(parts);
      beep(560+selected.length*80,.09);
      if(selected.length===parts.length){earnedPoints+=50;phase='meaning';sayWord(word);render();$('quizFeedback').textContent='🌟 בניתם את '+word+'! עכשיו מצאו את הפירוש.'}
      else $('quizFeedback').textContent='✨ יפה! המשיכו לאות הבאה.';
     };
     $('phonicsChunks').append(btn);
    }
+   refreshHints(parts);
    $('hintWord').onclick=()=>{
-    if(hints<=0)return;
-    hints--;saveRun();hud();selected=parts.map((_,i)=>i);phase='meaning';beep(900,.18);
-    render();$('quizFeedback').textContent='💡 רמז נוצל! המילה שנחשפה היא '+word+'. עכשיו התאימו את הפירוש.';
+    const letterIndex=nextHiddenLetter(parts);
+    if(hints<=0||letterIndex<0)return;
+    hints--;revealedLetters.add(letterIndex);saveRun();hud();beep(900,.18);
+    refreshHints(parts);
+    $('quizFeedback').textContent='💡 נחשפה האות '+word[letterIndex]+'! המשיכו לבנות את המילה בעצמכם.';
    };
   }else{
    $('quizPrompt').textContent='📖 '+word+' = ?';
@@ -724,7 +751,7 @@ function quizStage(){
     const btn=document.createElement('button');btn.type='button';btn.textContent=item.meaning;btn.dir='rtl';
     btn.onclick=()=>{
      if(item.i!==index){btn.disabled=true;$('quizFeedback').textContent='💜 נסו פירוש אחר!';beep(280,.1);return}
-     earnedPoints+=50;beep(960,.15);round++;phase='build';selected=[];
+     earnedPoints+=50;beep(960,.15);round++;phase='build';selected=[];revealedLetters=new Set();
      if(round===words.length){$('quizFeedback').textContent='🎉 בניתם ופירשתם את כל המילים!';finishStage()}
      else{render();sayWord(words[round])}
     };
