@@ -9,7 +9,7 @@ const stations=[
  {title:'מגיני האבירים',emoji:'🛡️',parts:[['🛡️','מגיני האבירים','level2-knight-shields.html']]},
  {title:'יער החרוזים',emoji:'🦄',parts:[['🍄','להעיר את הפיות','level2-rhyming-forest.html']]},
  {title:'מראת התנועות',emoji:'🪞',parts:[['🔮','אבני הקסם','level2-vowel-gems.html'],['💎','הצלת הקריסטלים','level2-vowel-gems-b.html'],['🪞','מראת התנועות','level2-vowel-mirror.html']]},
- {title:'מערת הדרקון',emoji:'🐉',parts:[]},
+ {title:'מערת הדרקון',emoji:'🐉',parts:[['📖','ספר הצלילים','level2-dragon-sounds.html'],['🐉','אתגר הצלילים','level2-quest.html?stage=5'],['⭐','מבוך הכוכבים','level2-dragon-maze.html']]},
  {title:'חיצי האביר',emoji:'🏹',parts:[]},
  {title:'שיקויי הפיה',emoji:'🧙‍♀️',parts:[]},
  {title:'גשר הטירה',emoji:'🏰',parts:[]},
@@ -24,11 +24,13 @@ const files={
  'level2-vowel-gems.html':[3,0],
  'level2-magic-vowels.html':[3,0],
  'level2-vowel-gems-b.html':[3,1],
- 'level2-vowel-mirror.html':[3,2]
+ 'level2-vowel-mirror.html':[3,2],
+ 'level2-dragon-sounds.html':[4,0],
+ 'level2-dragon-maze.html':[4,2]
 };
 let station=-1,part=0;
 const quest=filename==='level2-quest.html';
-if(quest){station=Math.max(0,Math.min(9,(Number(qs.get('stage'))||5)-1));}
+if(quest){station=Math.max(0,Math.min(9,(Number(qs.get('stage'))||5)-1));if(station===4)part=1;}
 else if(files[filename]){station=files[filename][0];part=files[filename][1];}
 if(station<0)return;
 const style=document.createElement('style');
@@ -54,6 +56,7 @@ function isDone(st,p){
  if(st===1)return localStorage.getItem('playwise-level2-knight-shields-v1')==='complete'||royal.includes(1);
  if(st===2)return localStorage.getItem('playwise-level2-rhyming-forest-v1')==='complete'||royal.includes(2);
  if(st===3)return p===0?localStorage.getItem('playwise-level2-vowels-intro-v1')==='complete':p===1?localStorage.getItem('playwise-level2-vowels-rescue-v1')==='complete':localStorage.getItem('playwise-level2-vowel-mirror-v1')==='complete'||royal.includes(3);
+ if(st===4)return p===0?localStorage.getItem('playwise-level2-dragon-lesson-v1')==='complete':p===1?royal.includes(4):localStorage.getItem('playwise-level2-dragon-maze-v1')==='complete';
  return royal.includes(st);
  }catch(e){return false}
 }
