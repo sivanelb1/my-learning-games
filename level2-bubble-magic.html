@@ -21,40 +21,51 @@ canvas{display:block;width:100%;height:auto;aspect-ratio:960/540;touch-action:no
 button{font-family:inherit;cursor:pointer}.primary{border:2px solid #fff0b2;border-radius:16px;background:linear-gradient(120deg,#ffe6a1,#ffc37b);color:#48245e;font-size:clamp(16px,2.3vw,21px);font-weight:900;padding:13px 22px;box-shadow:0 4px 0 #b97b45}.primary:hover,.primary:focus-visible{filter:brightness(1.1);outline:3px solid #fff}.secondary{border:1px solid #c3a5f1;border-radius:13px;background:#4c2b78;color:#fff;padding:9px 13px;font-weight:900}
 .controls{display:flex;justify-content:center;align-items:center;gap:12px;margin:11px auto;direction:ltr}.controls button{min-width:90px;min-height:59px;border:2px solid #e5cba3;border-radius:17px;background:linear-gradient(#7552b6,#482576);color:white;font-size:26px;font-weight:900;touch-action:none;user-select:none;box-shadow:0 4px 0 #2b164d}.controls button:active,.controls button.pressed{background:#b175e0;transform:translateY(2px);box-shadow:0 2px 0 #2b164d}.controls .fire{min-width:150px;background:linear-gradient(#ffdf9a,#f0a45f);color:#4b2758;font-size:20px}
 .controls .mute{min-width:52px;font-size:20px;background:#3c2c6c}.help{font-size:clamp(12px,1.8vw,15px);color:#e3d5f4;margin:7px auto}.toast{min-height:27px;color:#ffe9a5;font-weight:900;font-size:clamp(13px,2vw,18px);margin:7px auto}.meta{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:15px auto}.meta button{background:#40276b;border:1px solid #aa8ad5;border-radius:12px;color:#fff;padding:9px 13px;font-weight:900}
+.hud span.urgent{color:#ffb1b1;border-color:#ff8e9a;animation:timerPulse .7s ease-in-out infinite alternate}
+@keyframes timerPulse{to{box-shadow:0 0 15px #ff7796a0}}
+.quiz-choices{display:flex;justify-content:center;flex-wrap:wrap;gap:9px;margin:16px auto}
+.quiz-choices button{min-width:112px;border:2px solid #ffdfab;border-radius:15px;background:#fff2c8;color:#41205e;font:bold clamp(17px,2.5vw,23px) Arial;padding:12px 16px;cursor:pointer;direction:ltr}
+.quiz-choices button:hover,.quiz-choices button:focus-visible{background:#fff;outline:3px solid #d6afff}
+.quiz-choices button:disabled{opacity:.65;cursor:default}
+.quiz-feedback{min-height:27px;color:#ffed9e;font-weight:bold}
+.quiz-prompt{font-size:clamp(16px,2.5vw,22px);color:#fff5d9;font-weight:900}
+.word-found{background:#a9f2c4!important;color:#1c5544!important;border-color:#54ae82!important}
+.word-missing{opacity:.6}
+#shieldHud.shield-on{background:#286e79;border-color:#7ef7f5;box-shadow:0 0 14px #7ce7f77c}
+
 @media(max-width:600px){main{padding:55px 5px 25px}.back{padding:7px 10px;font-size:11px}.board{border-width:3px;border-radius:14px}.controls{gap:8px}.controls button{min-width:72px;min-height:54px}.controls .fire{min-width:125px}.challenge{margin:7px 4px;padding:7px}.hud span{padding:5px 8px}.stage-track{gap:3px;margin:7px}.stage-track span{border-radius:7px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style></head><body>
 <a class="back" href="adventure-map.html">🗺️ חזרה לעולם</a>
 <main>
 <header><span class="eyebrow">🏰 משחק ההרפתקה הראשי של עולם 2</span><h1>🫧 Bubble Magic ✨</h1><p>בועות הקסם של הממלכה · זזים, מכוונים, מפוצצים, אוספים מטבעות ולומדים אנגלית!</p></header>
-<div class="hud" aria-live="polite"><span id="stageHud">🏰 תחנה 1/10</span><span id="coinHud">🪙 0 מטבעות</span><span id="heartHud">💜💜💜</span><span id="runeHud">🔮 רונה: ❔</span><span id="letterHud">🔤 __________</span></div>
-<div class="challenge" aria-live="polite"><strong id="challenge">✨ מצאו את מילת הקסם</strong><small id="hint">פוצצו את הבועה הנכונה ואספו את הרונה שנופלת ממנה</small><div class="examples" id="answers"></div></div>
+<div class="hud" aria-live="polite"><span id="stageHud">🏰 תחנה 1/10</span><span id="coinHud">🪙 0 מטבעות</span><span id="heartHud">💜💜💜💜💜💜💜</span><span id="timeHud">⏳ 01:40</span><span id="scoreHud">⭐ 0 נקודות</span><span id="runeHud">📚 מילים: 0/3</span><span id="shieldHud">🛡️ מגן כבוי</span></div>
+<div class="challenge" aria-live="polite"><strong id="challenge">✨ אספו את מילות הקסם</strong><small id="hint">פוצצו את כל הבועות, אספו את המילים ופתרו את המשימה בסוף התחנה</small><div class="examples" id="answers"></div></div>
 <div class="stage-track" id="stageTrack" aria-label="התקדמות בעשר תחנות"></div>
 <div class="board"><canvas id="game" width="960" height="540" aria-label="משחק פעולה עם בועות קופצות ופיית קסם" role="img"></canvas>
-<div class="overlay" id="overlay"><div class="modal"><div class="emojis" id="modalEmoji">🧚‍♀️🫧🏰</div><h2 id="modalTitle">ברוכים הבאים לבועות הקסם!</h2><p id="modalText">עזרו לפיה לשחרר את עשר הרונות של הממלכה! זוזו לצדדים, שגרו קרן קסם כלפי מעלה, פוצצו בועות, אספו מטבעות ומצאו את הרונה עם התשובה הנכונה באנגלית. כל רונה משחררת אות נוספת עד שתרכיבו את MAGIC POWER!<br>בועות גדולות מתפצלות לקטנות. אם בועה פוגעת בכם, תאבדו לב — אבל תוכלו לנסות שוב.</p><button class="primary" id="play">✨ מתחילים בהרפתקה!</button></div></div>
+<div class="overlay" id="overlay"><div class="modal"><div class="emojis" id="modalEmoji">🧚‍♀️🫧🏰</div><h2 id="modalTitle">ברוכים הבאים לבועות הקסם!</h2><p id="modalText">עזרו לפיה לאסוף מילים באנגלית! בכל תחנה פוצצו את הבועות, אספו את כל המילים, ואז ענו על משימה בעזרתן. המילים נהיות מאתגרות יותר בכל תחנה.<br>💜 מתחילים עם <b>7 חיים לכל עשר התחנות יחד</b> ועם שעון לכל תחנה. בדרך אפשר לאסוף ⭐ נקודות, 💜 חיים נוספים, ⏳ זמן נוסף ו־🛡️ מגן זמני. בועות גדולות מתפצלות לקטנות!</p><button class="primary" id="play">✨ מתחילים בהרפתקה!</button></div></div>
 </div>
 <div class="controls" aria-label="שליטה במשחק"><button id="left" aria-label="זוזו שמאלה">◀</button><button id="fire" class="fire" aria-label="יריית קסם">🪄 קסם!</button><button id="right" aria-label="זוזו ימינה">▶</button><button id="mute" class="mute" aria-label="השתקת צלילים">🔊</button></div>
-<div class="toast" id="toast" role="status" aria-live="polite">✨ פוצצו בועות והצילו את הממלכה!</div>
+<div class="toast" id="toast" role="status" aria-live="polite">✨ פוצצו בועות, אספו מילים והצילו את הממלכה!</div>
 <p class="help">⌨️ במחשב: חצים או A/D לתנועה, רווח לירי · 📱 בנייד: כפתורי השליטה · אפשר להחזיק לחיצה רצופה</p>
-<div class="meta"><button id="hear">🔊 הקראת משימת האנגלית</button><button id="restart">🔄 מתחילים מהתחנה הראשונה</button></div>
+<div class="meta"><button id="hear">🔊 הקראת מילות השלב</button><button id="restart">🔄 מתחילים מהתחנה הראשונה</button></div>
 </main>
 <script>
 'use strict';
 const $=id=>document.getElementById(id);
 const W=960,H=540,FLOOR=492,GRAVITY=490;
 const KEY='playwise-level2-bubble-magic-v1';
-const MAGIC_WORD='MAGICPOWER';
 const tasks=[
- {emoji:'🍄',name:'שער האותיות',ask:'Which lowercase letter matches G?',he:'מצאו את האות הקטנה של G',choices:['g','q','y'],correct:'g',speech:'Find the lowercase letter g.'},
- {emoji:'🛡️',name:'מגיני האבירים',ask:'Which word starts with W?',he:'איזו מילה מתחילה ב־W?',choices:['WINDOW','BANANA','ZEBRA'],correct:'WINDOW',speech:'Which word starts with W? Window, banana, or zebra?'},
- {emoji:'🦄',name:'יער החרוזים',ask:'Which word rhymes with KING?',he:'איזו מילה מתחרזת עם KING?',choices:['RING','SUN','DOG'],correct:'RING',speech:'Which word rhymes with king? Ring, sun, or dog?'},
- {emoji:'🪞',name:'מראת התנועות',ask:'Complete the word: P_N',he:'איזו תנועה חסרה במילה PEN?',choices:['A','E','I'],correct:'E',speech:'Complete the word pen. Which vowel is missing?'},
- {emoji:'🐉',name:'מערת הדרקון',ask:'Which word starts with SH?',he:'מצאו מילה שמתחילה בצליל SH',choices:['SHIP','CHIP','TRIP'],correct:'SHIP',speech:'Which word starts with the sh sound? Ship, chip, or trip?'},
- {emoji:'🏹',name:'חיצי האביר',ask:'Which word means חתול?',he:'איזו מילה באנגלית פירושה חתול?',choices:['CAT','DOG','BIRD'],correct:'CAT',speech:'Which word means cat? Cat, dog, or bird?'},
- {emoji:'🧙‍♀️',name:'שיקויי הפיה',ask:'Which word means מים?',he:'איזו מילה באנגלית פירושה מים?',choices:['WATER','FIRE','STAR'],correct:'WATER',speech:'Which word means water? Water, fire, or star?'},
- {emoji:'🏰',name:'גשר הטירה',ask:'Choose the correct spelling',he:'איך כותבים טירה באנגלית?',choices:['CASTLE','CATSLE','CASTEL'],correct:'CASTLE',speech:'Choose the correct spelling of castle.'},
- {emoji:'🗝️',name:'מפתחות האוצר',ask:'What does KEY mean?',he:'מה הפירוש של KEY?',choices:['מפתח','כתר','פרח'],correct:'מפתח',speech:'What does key mean in Hebrew?'},
- {emoji:'👑',name:'הכתר האבוד',ask:'The dragon ___ happy.',he:'השלימו את המשפט באנגלית',choices:['IS','ARE','AM'],correct:'IS',speech:'The dragon is happy. Choose is, are, or am.'}
+ {emoji:'🍄',name:'שער האותיות',words:['CAT','DOG','SUN'],question:'איזו מילה פירושה שמש?',correct:'SUN',speech:'Cat. Dog. Sun.'},
+ {emoji:'🛡️',name:'מגיני האבירים',words:['FISH','BOOK','TREE'],question:'איזו מילה פירושה עץ?',correct:'TREE',speech:'Fish. Book. Tree.'},
+ {emoji:'🦄',name:'יער החרוזים',words:['CHAIR','APPLE','HOUSE'],question:'איזו מילה פירושה כיסא?',correct:'CHAIR',speech:'Chair. Apple. House.'},
+ {emoji:'🪞',name:'מראת התנועות',words:['WINDOW','RABBIT','GARDEN'],question:'איזו מילה פירושה ארנב?',correct:'RABBIT',speech:'Window. Rabbit. Garden.'},
+ {emoji:'🐉',name:'מערת הדרקון',words:['ELEPHANT','BUTTERFLY','DINOSAUR'],question:'איזו מילה פירושה פיל?',correct:'ELEPHANT',speech:'Elephant. Butterfly. Dinosaur.'},
+ {emoji:'🏹',name:'חיצי האביר',words:['RAINBOW','MOUNTAIN','TREASURE'],question:'איזו מילה פירושה קשת בענן?',correct:'RAINBOW',speech:'Rainbow. Mountain. Treasure.'},
+ {emoji:'🧙‍♀️',name:'שיקויי הפיה',words:['ADVENTURE','DRAGON','CASTLE'],question:'איזו מילה פירושה הרפתקה?',correct:'ADVENTURE',speech:'Adventure. Dragon. Castle.'},
+ {emoji:'🏰',name:'גשר הטירה',words:['BEAUTIFUL','MAGICAL','FRIENDLY'],question:'איזו מילה פירושה ידידותי?',correct:'FRIENDLY',speech:'Beautiful. Magical. Friendly.'},
+ {emoji:'🗝️',name:'מפתחות האוצר',words:['EXPLORE','DISCOVER','IMAGINE'],question:'איזו מילה פירושה לדמיין?',correct:'IMAGINE',speech:'Explore. Discover. Imagine.'},
+ {emoji:'👑',name:'הכתר האבוד',words:['CELEBRATION','KINDNESS','WONDERFUL'],question:'איזו מילה פירושה טוב לב?',correct:'KINDNESS',speech:'Celebration. Kindness. Wonderful.'}
 ];
 let saved={coins:0,best:0,completed:false};
 try{const x=JSON.parse(localStorage.getItem(KEY)||'{}');if(x&&typeof x==='object'){saved.coins=Math.max(0,Number(x.coins)||0);saved.best=Math.max(0,Math.min(10,Number(x.best)||0));saved.completed=!!x.completed}}catch(e){}
