@@ -67,9 +67,22 @@ const tasks=[
  {emoji:'🗝️',name:'מפתחות האוצר',words:['EXPLORE','DISCOVER','IMAGINE'],question:'איזו מילה פירושה לדמיין?',correct:'IMAGINE',speech:'Explore. Discover. Imagine.'},
  {emoji:'👑',name:'הכתר האבוד',words:['CELEBRATION','KINDNESS','WONDERFUL'],question:'איזו מילה פירושה טוב לב?',correct:'KINDNESS',speech:'Celebration. Kindness. Wonderful.'}
 ];
-let saved={coins:0,best:0,completed:false};
-try{const x=JSON.parse(localStorage.getItem(KEY)||'{}');if(x&&typeof x==='object'){saved.coins=Math.max(0,Number(x.coins)||0);saved.best=Math.max(0,Math.min(10,Number(x.best)||0));saved.completed=!!x.completed}}catch(e){}
-let level=saved.best>=10?0:saved.best,coins=saved.coins,earned=0,hearts=3,rune=false,started=false,paused=true,gameOver=false,invuln=0,fireDelay=0,frameTime=0,transition=0,flash=0;
+
+let saved={coins:0,best:0,completed:false,run:null};
+try{
+ const x=JSON.parse(localStorage.getItem(KEY)||'{}');
+ if(x&&typeof x==='object'){
+  saved.coins=Math.max(0,Number(x.coins)||0);
+  saved.best=Math.max(0,Math.min(10,Number(x.best)||0));
+  saved.completed=!!x.completed;
+  if(x.run&&Number.isInteger(x.run.level)&&x.run.level>=0&&x.run.level<10&&x.run.hearts>0)
+   saved.run={level:x.run.level,hearts:Math.min(10,x.run.hearts),points:Math.max(0,x.run.points||0)};
+ }
+}catch(e){}
+const STAGE_SECONDS=100,MAX_HEARTS=10;
+let level=saved.run?.level??0,coins=saved.coins,points=saved.run?.points??0,earned=0,earnedPoints=0;
+let hearts=saved.run?.hearts??7,seconds=STAGE_SECONDS,shield=0,collected=new Set();
+let started=false,paused=true,gameOver=false,invuln=0,fireDelay=0,frameTime=0,transition=0,flash=0,quizOpen=false;
 let player={x:480,y:FLOOR-30,w:45,h:59},bubbles=[],beams=[],drops=[],particles=[],stars=[];
 let controls={left:false,right:false,fire:false};
 let audioOn=true,audioCtx=null,rand=Math.random;
@@ -81,64 +94,138 @@ function speak(){if(!audioOn||!('speechSynthesis'in window))return;try{speechSyn
 function toast(t){$('toast').textContent=t}
 function rnd(a,b){return a+rand()*(b-a)}
 function makeBubble(label,size,x,y,vx){return{label,size,x,y,vx,vy:rnd(-200,-100),r:[24,37,52][size],phase:rand()*6}}
-function makeStage(){
- const t=tasks[level];bubbles=[];beams=[];drops=[];particles=[];rune=false;hearts=3;earned=0;invuln=0;fireDelay=0;transition=0;flash=0;gameOver=false;player.x=W/2;
- const shuffled=[...t.choices].sort(()=>rand()-.5);
- shuffled.forEach((word,i)=>bubbles.push(makeBubble(word,level<2?1:(i===0?2:1),180+i*300,125+(i%2)*35,(i%2?1:-1)*(90+level*6+i*12))));
- $('challenge').textContent=t.emoji+' '+t.ask;
- $('hint').textContent=t.he+' · פוצצו את הבועה הנכונה ואספו את הרונה!';
- $('answers').innerHTML=t.choices.map(c=>'<span dir="auto">'+c+'</span>').join('');
- $('stageTrack').innerHTML=tasks.map((t,i)=>'<span class="'+(i<level?'done':i===level?'active':'')+'" title="'+t.name+'">'+(i<level?'✓':t.emoji)+'</span>').join('');
- hud();toast('✨ חפשו את התשובה הנכונה בבועות, ואל תשכחו לאסוף את הרונה!');
+function updateWords(){
+ $('answers').innerHTML=tasks[level].words.map(w=>'<span class="'+(collected.has(w)?'word-found':'word-missing')+'" dir="ltr">'+(collected.has(w)?'✓ ':'🔒 ')+w+'</span>').join('');
 }
-function hud(){$('stageHud').textContent='🏰 '+(level+1)+'/10 · '+tasks[level].name;$('coinHud').textContent='🪙 '+(coins+earned)+' מטבעות';$('heartHud').textContent='💜'.repeat(hearts)+'♡'.repeat(3-hearts);$('runeHud').textContent='🔮 רונה: '+(rune?'✓':'❔');$('letterHud').textContent='🔤 '+MAGIC_WORD.split('').map((ch,i)=>i<saved.best||i===level&&rune?ch:'_').join(' ')}
-function showModal(emoji,title,text,button,action){paused=true;$('modalEmoji').textContent=emoji;$('modalTitle').textContent=title;$('modalText').innerHTML=text;$('play').textContent=button;$('play').onclick=action;$('overlay').hidden=false}
-function start(){if(!started){started=true;makeStage()}paused=false;$('overlay').hidden=true;frameTime=performance.now();speak()}
-function reset(){coins=saved.coins;level=0;saved.best=0;saved.completed=false;save();started=true;makeStage();paused=false;$('overlay').hidden=true;frameTime=performance.now();speak()}
+function makeStage(){
+ const t=tasks[level];bubbles=[];beams=[];drops=[];particles=[];collected=new Set();earned=0;earnedPoints=0;
+ seconds=STAGE_SECONDS;shield=0;invuln=0;fireDelay=0;transition=0;flash=0;quizOpen=false;gameOver=false;player.x=W/2;
+ const shuffled=[...t.words].sort(()=>rand()-.5);
+ shuffled.forEach((word,i)=>bubbles.push(makeBubble(word,level<2?1:(i===0?2:1),180+i*300,125+(i%2)*35,(i%2?1:-1)*(90+level*6+i*12))));
+ $('challenge').textContent=t.emoji+' '+t.name+' · אספו 3 מילות קסם!';
+ $('hint').textContent='פוצצו את כל הבועות, אספו את שלוש המילים ואז פתרו את חידת המילים';
+ $('stageTrack').innerHTML=tasks.map((task,i)=>'<span class="'+(i<level?'done':i===level?'active':'')+'" title="'+task.name+'">'+(i<level?'✓':task.emoji)+'</span>').join('');
+ updateWords();hud();toast('📚 אספו את כל 3 המילים! בועות קטנות משחררות מילים ומתנות.');
+}
+function hud(){
+ $('stageHud').textContent='🏰 '+(level+1)+'/10 · '+tasks[level].name;
+ $('coinHud').textContent='🪙 '+(coins+earned)+' מטבעות';
+ $('scoreHud').textContent='⭐ '+(points+earnedPoints)+' נקודות';
+ $('heartHud').textContent='💜'.repeat(hearts)+'♡'.repeat(Math.max(0,7-hearts))+' · '+hearts+' חיים';
+ $('timeHud').textContent='⏳ '+String(Math.floor(Math.max(0,seconds)/60)).padStart(2,'0')+':'+String(Math.floor(Math.max(0,seconds)%60)).padStart(2,'0');
+ $('timeHud').classList.toggle('urgent',seconds<=15);
+ $('runeHud').textContent='📚 מילים: '+collected.size+'/'+tasks[level].words.length;
+ $('shieldHud').textContent=shield>0?'🛡️ מגן '+Math.ceil(shield)+' שניות':'🛡️ מגן כבוי';
+ $('shieldHud').classList.toggle('shield-on',shield>0);
+}
+function showModal(emoji,title,text,button,action){
+ paused=true;$('modalEmoji').textContent=emoji;$('modalTitle').textContent=title;
+ $('modalText').innerHTML=text;$('play').hidden=false;$('play').textContent=button;$('play').onclick=action;$('overlay').hidden=false;
+}
+function resume(){paused=false;$('overlay').hidden=true;frameTime=performance.now();speak()}
+function start(){if(!started){started=true;makeStage()}resume()}
+function reset(){
+ coins=saved.coins;points=0;hearts=7;level=0;saved.run=null;save();started=true;makeStage();resume();
+}
 function burst(x,y,color,count=13){for(let i=0;i<count;i++)particles.push({x,y,vx:rnd(-210,210),vy:rnd(-230,30),life:rnd(.35,.8),color,r:rnd(2,6)})}
 function fire(){if(paused||fireDelay>0||transition>0)return;beams.push({x:player.x,y:FLOOR-56,top:FLOOR-56,life:.95});fireDelay=.37;beep(590,.08,'triangle');burst(player.x,FLOOR-57,'#ffe7a2',4)}
+function spawnDrop(x,y,type,label='',life=17){
+ drops.push({x,y,vx:rnd(-40,40),vy:-135,type,label,life});
+}
 function hitBubble(b){
  const i=bubbles.indexOf(b);if(i<0)return;bubbles.splice(i,1);
  burst(b.x,b.y,['#a8edff','#ffdba3','#e9a9ff'][b.size],15);
- beep(500+b.size*110,.09,'sine');
- earned+=2;
+ beep(500+b.size*110,.09,'sine');earnedPoints+=10;
  if(b.size>0){
   const s=b.size-1;
   bubbles.push(makeBubble(b.label,s,b.x-12,b.y,-Math.max(100,Math.abs(b.vx)+24)));
   bubbles.push(makeBubble(b.label,s,b.x+12,b.y,Math.max(100,Math.abs(b.vx)+24)));
   bubbles[bubbles.length-2].vy=-240;bubbles[bubbles.length-1].vy=-240;
  }else{
-  drops.push({x:b.x,y:b.y,vx:rnd(-40,40),vy:-140,type:b.label===tasks[level].correct?'rune':'coin',label:b.label,life:30});
-  earned+=3;
+  if(!collected.has(b.label)&&!drops.some(d=>d.type==='word'&&d.label===b.label))
+   spawnDrop(b.x,b.y,'word',b.label,9999);
+  else{
+   const chance=rand();
+   spawnDrop(b.x,b.y,chance<.07?'heart':chance<.19?'clock':chance<.31?'shield':chance<.60?'star':'coin');
+  }
+  earnedPoints+=10;
  }
  hud();
 }
 function getDrop(d){
- if(d.type==='rune'){
-  if(!rune){rune=true;earned+=25;toast('🔮 הרונה '+d.label+' שחררה את האות '+MAGIC_WORD[level]+'!');beep(880,.2);setTimeout(()=>beep(1170,.17),110);burst(d.x,d.y,'#ffdf7a',28)}
- }else{earned+=5;beep(750,.05)}
+ if(d.type==='word'){
+  if(!collected.has(d.label)){
+   collected.add(d.label);earnedPoints+=75;toast('📚 אספתם את המילה '+d.label+'! ('+collected.size+'/3)');
+   beep(880,.16);burst(d.x,d.y,'#ffdf7a',24);updateWords();
+  }
+ }else if(d.type==='heart'){
+  if(hearts<MAX_HEARTS){hearts++;toast('💜 חיים נוספים! עכשיו יש לכם '+hearts+' חיים.')}
+  else{earnedPoints+=100;toast('⭐ החיים מלאים! קיבלתם 100 נקודות.')}
+  beep(950,.14);
+ }else if(d.type==='clock'){
+  seconds+=15;toast('⏳ קיבלתם עוד 15 שניות!');beep(790,.12);
+ }else if(d.type==='shield'){
+  shield=Math.max(shield,6);toast('🛡️ מגן קסום! אתם מוגנים ל־6 שניות.');beep(620,.15);
+ }else if(d.type==='star'){
+  earnedPoints+=100;toast('⭐ בונוס 100 נקודות!');beep(1000,.1);
+ }else{
+  earned+=10;earnedPoints+=20;toast('🪙 אספתם 10 מטבעות ועוד 20 נקודות!');beep(750,.05);
+ }
  hud();
 }
+function quizStage(){
+ if(quizOpen)return;
+ quizOpen=true;paused=true;controls.left=controls.right=controls.fire=false;
+ $('overlay').hidden=false;$('modalEmoji').textContent='📚🔮✨';$('modalTitle').textContent='חידת מילות הקסם!';
+ $('play').hidden=true;
+ $('modalText').innerHTML='<p>אספתם את כל המילים! עכשיו השתמשו בהן כדי לפתור את החידה:</p><p class="quiz-prompt">'+tasks[level].question+'</p><div class="quiz-choices" id="quizChoices"></div><div class="quiz-feedback" id="quizFeedback" role="status" aria-live="polite">בחרו מילה אחת מתוך השלוש</div>';
+ const words=[...tasks[level].words].sort(()=>rand()-.5);
+ for(const word of words){
+  const btn=document.createElement('button');btn.type='button';btn.textContent=word;
+  btn.onclick=()=>{
+   if(word!==tasks[level].correct){$('quizFeedback').textContent='💜 כמעט! נסו שוב, הסתכלו על המילים שאספתם.';btn.disabled=true;beep(280,.1);return}
+   $('quizFeedback').textContent='🎉 נכון מאוד! '+word;
+   for(const el of $('quizChoices').querySelectorAll('button'))el.disabled=true;
+   beep(990,.2);finishStage();
+  };
+  $('quizChoices').append(btn);
+ }
+}
 function finishStage(){
- if(transition)return;transition=1.75;coins+=earned;earned=0;saved.coins=coins;saved.best=Math.max(saved.best,level+1);saved.completed=saved.best===10;save();
- toast('🎉 תחנה '+(level+1)+' הושלמה! אספתם רונה ואוצרות!');beep(970,.2);setTimeout(()=>beep(1260,.2),160);
+ if(transition)return;
+ coins+=earned;points+=earnedPoints+150;earned=0;earnedPoints=0;
+ saved.coins=coins;saved.best=Math.max(saved.best,level+1);saved.completed=saved.best===10;
+ saved.run=level===9?null:{level:level+1,hearts,points};
+ save();hud();
+ $('modalEmoji').textContent='🎉🧚‍♀️📚';$('modalTitle').textContent='כל הכבוד! השלמתם את התחנה!';
+ $('modalText').innerHTML='<p>אספתם את <b>'+tasks[level].words.join(' · ')+'</b> ופתרתם את חידת המילים!</p><p>⭐ ניקוד: <b>'+points+'</b> · 💜 חיים שנותרו: <b>'+hearts+'</b></p><p>✨ ממשיכים אוטומטית לתחנה הבאה...</p>';
+ $('play').hidden=true;transition=2.3;toast('🎉 תחנה '+(level+1)+' הושלמה! עוד מילים נכנסו לאוצר שלכם.');
 }
 function nextStage(){
  transition=0;
  if(level===9){
-  showModal('👑🫧🏰','הצלתם את כל רונות הממלכה!','אספתם <b>10 רונות קסומות</b> והשלמתם את מילת הקסם <b dir="ltr">MAGIC POWER</b>!<br>🪙 בקופת הממלכה שלכם: <b>'+coins+'</b> מטבעות.<br>אפשר לשחק שוב ולצבור עוד אוצרות.','🔄 משחקים שוב!',reset);
+  showModal('👑🫧🏰','אלופי בועות הקסם!','השלמתם <b>10 חידות מילים</b> והצלתם את הממלכה!<br>⭐ ניקוד סופי: <b>'+points+'</b> נקודות<br>🪙 סך המטבעות בקופה: <b>'+coins+'</b><br>💜 חיים שנותרו: <b>'+hearts+'</b>','🔄 משחקים שוב!',reset);
   return;
  }
- level++;makeStage();speak();
+ level++;makeStage();paused=false;$('overlay').hidden=true;frameTime=performance.now();speak();
 }
-function takeHit(){if(invuln>0||paused||transition)return;hearts--;invuln=2.3;flash=.3;beep(200,.24,'sawtooth');hud();
- if(hearts<=0){gameOver=true;showModal('💜🧚‍♀️','הפיה צריכה עוד קצת קסם!','לא נורא! המטבעות והתחנות שכבר השלמתם שמורים. אפשר לנסות שוב את התחנה הזאת בלי לאבד את ההתקדמות.','✨ מנסים שוב',()=>{makeStage();paused=false;$('overlay').hidden=true;frameTime=performance.now();speak()})}
- else toast('💜 אופס! בועה פגעה בפיה. יש לכם עוד '+hearts+' לבבות!');
+function loseLife(reason){
+ if(paused||transition)return;
+ hearts--;shield=0;invuln=2.2;flash=.3;beep(200,.24,'sawtooth');hud();
+ if(hearts<=0){
+  gameOver=true;saved.run=null;save();
+  showModal('💔🧚‍♀️','נגמרו שבעת החיים!','המסע הזה הסתיים. כל התחנות שהשלמתם והשיא נשמרו, וגם המטבעות בקופה.<br>אפשר להתחיל מסע חדש עם <b>7 חיים חדשים</b>.','✨ מתחילים מסע חדש',reset);
+ }else if(reason==='time'){
+  showModal('⏳💜','נגמר הזמן בתחנה!','איבדתם חיים אחד. נשארו <b>'+hearts+'</b> חיים לכל המסע.<br>ננסה שוב את התחנה עם שעון חדש.','✨ מנסים שוב את התחנה',()=>{makeStage();resume()});
+ }else toast('💜 בועה פגעה בפיה! נשארו '+hearts+' חיים לכל המסע.');
 }
+function takeHit(){if(invuln>0||shield>0||paused||transition)return;loseLife('bubble')}
 function update(dt){
- if(paused)return;
  if(transition>0){transition-=dt;if(transition<=0)nextStage();return}
- invuln=Math.max(0,invuln-dt);fireDelay=Math.max(0,fireDelay-dt);flash=Math.max(0,flash-dt);
+ if(paused)return;
+ seconds=Math.max(0,seconds-dt);
+ if(seconds<=0){loseLife('time');return}
+ shield=Math.max(0,shield-dt);invuln=Math.max(0,invuln-dt);fireDelay=Math.max(0,fireDelay-dt);flash=Math.max(0,flash-dt);
  const speed=345;
  if(controls.left)player.x-=speed*dt;
  if(controls.right)player.x+=speed*dt;
@@ -151,7 +238,7 @@ function update(dt){
   if(b.x+b.r>W-7){b.x=W-b.r-7;b.vx=-Math.abs(b.vx)}
   if(b.y+b.r>FLOOR){b.y=FLOOR-b.r;b.vy=-Math.sqrt(2*GRAVITY*(110+b.size*46))}
   if(b.y-b.r<45){b.y=b.r+45;b.vy=Math.abs(b.vy)}
-  if(invuln<=0&&Math.abs(b.x-player.x)<b.r+17&&Math.abs(b.y-(FLOOR-30))<b.r+27){takeHit();if(paused)return}
+  if(invuln<=0&&shield<=0&&Math.abs(b.x-player.x)<b.r+17&&Math.abs(b.y-(FLOOR-30))<b.r+27){takeHit();if(paused)return}
   for(const beam of [...beams]){if(Math.abs(b.x-beam.x)<b.r+7&&b.y+b.r>beam.top&&b.y-b.r<FLOOR-51){
     beams.splice(beams.indexOf(beam),1);hitBubble(b);break;
   }}
@@ -159,14 +246,14 @@ function update(dt){
  for(let i=drops.length-1;i>=0;i--){const d=drops[i];d.x+=d.vx*dt;d.y+=d.vy*dt;d.vy+=460*dt;d.life-=dt;
   if(d.y>FLOOR-15){d.y=FLOOR-15;d.vy=0;d.vx*=.9}
   if(Math.abs(d.x-player.x)<37&&Math.abs(d.y-(FLOOR-30))<48){drops.splice(i,1);getDrop(d);continue}
-  if(d.life<=0&&d.type!=='rune')drops.splice(i,1);
+  if(d.life<=0&&d.type!=='word')drops.splice(i,1);
  }
  for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=200*dt;p.life-=dt;if(p.life<=0)particles.splice(i,1)}
- if(bubbles.length===0&&rune)finishStage();
- else if(bubbles.length===0&&!rune&&drops.every(d=>d.type!=='rune')){
-  // Safeguard: the answer rune is never lost.
-  drops.push({x:W/2,y:250,vx:0,vy:0,type:'rune',label:tasks[level].correct,life:999});
- }
+ if(bubbles.length===0&&collected.size===tasks[level].words.length)quizStage();
+ // A word pickup is never allowed to disappear before being collected.
+ if(bubbles.length===0)for(const w of tasks[level].words)
+  if(!collected.has(w)&&!drops.some(d=>d.type==='word'&&d.label===w))spawnDrop(W/2,250,'word',w,9999);
+ hud();
 }
 function circle(x,y,r,color){ctx.fillStyle=color;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill()}
 function rounded(x,y,w,h,r,color){ctx.fillStyle=color;ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fill()}
