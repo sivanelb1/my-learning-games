@@ -56,18 +56,17 @@ const $=id=>document.getElementById(id);
 const W=960,H=540,FLOOR=492,GRAVITY=490;
 const KEY='playwise-level2-bubble-magic-v1';
 const tasks=[
- {emoji:'🍄',name:'שער האותיות',words:['CAT','DOG','SUN'],meanings:['חתול','כלב','שמש'],question:'איזו מילה פירושה שמש?',correct:'SUN',speech:'Cat. Dog. Sun.'},
- {emoji:'🛡️',name:'מגיני האבירים',words:['FISH','BOOK','TREE'],meanings:['דג','ספר','עץ'],question:'איזו מילה פירושה עץ?',correct:'TREE',speech:'Fish. Book. Tree.'},
- {emoji:'🦄',name:'יער החרוזים',words:['CHAIR','APPLE','HOUSE'],meanings:['כיסא','תפוח','בית'],question:'איזו מילה פירושה כיסא?',correct:'CHAIR',speech:'Chair. Apple. House.'},
- {emoji:'🪞',name:'מראת התנועות',words:['WINDOW','RABBIT','GARDEN'],meanings:['חלון','ארנב','גינה'],question:'איזו מילה פירושה ארנב?',correct:'RABBIT',speech:'Window. Rabbit. Garden.'},
- {emoji:'🐉',name:'מערת הדרקון',words:['ELEPHANT','BUTTERFLY','DINOSAUR'],meanings:['פיל','פרפר','דינוזאור'],question:'איזו מילה פירושה פיל?',correct:'ELEPHANT',speech:'Elephant. Butterfly. Dinosaur.'},
- {emoji:'🏹',name:'חיצי האביר',words:['RAINBOW','MOUNTAIN','TREASURE'],meanings:['קשת בענן','הר','אוצר'],question:'איזו מילה פירושה קשת בענן?',correct:'RAINBOW',speech:'Rainbow. Mountain. Treasure.'},
- {emoji:'🧙‍♀️',name:'שיקויי הפיה',words:['ADVENTURE','DRAGON','CASTLE'],meanings:['הרפתקה','דרקון','טירה'],question:'איזו מילה פירושה הרפתקה?',correct:'ADVENTURE',speech:'Adventure. Dragon. Castle.'},
- {emoji:'🏰',name:'גשר הטירה',words:['BEAUTIFUL','MAGICAL','FRIENDLY'],meanings:['יפה','קסום','ידידותי'],question:'איזו מילה פירושה ידידותי?',correct:'FRIENDLY',speech:'Beautiful. Magical. Friendly.'},
- {emoji:'🗝️',name:'מפתחות האוצר',words:['EXPLORE','DISCOVER','IMAGINE'],meanings:['לחקור','לגלות','לדמיין'],question:'איזו מילה פירושה לדמיין?',correct:'IMAGINE',speech:'Explore. Discover. Imagine.'},
- {emoji:'👑',name:'הכתר האבוד',words:['CELEBRATION','KINDNESS','WONDERFUL'],meanings:['חגיגה','טוב לב','נפלא'],question:'איזו מילה פירושה טוב לב?',correct:'KINDNESS',speech:'Celebration. Kindness. Wonderful.'}
+ {emoji:"🍄",name:"שער האותיות",words:["SHIP","FROG","CLOUD"],meanings:["ספינה","צפרדע","ענן"],pictures:["🚢","🐸","☁️"],chunks:[["SH","I","P"],["FR","O","G"],["CL","OU","D"]],speech:"ship. frog. cloud." },
+ {emoji:"🛡️",name:"מגיני האבירים",words:["TRAIN","SNAKE","BRUSH"],meanings:["רכבת","נחש","מברשת"],pictures:["🚂","🐍","🖌️"],chunks:[["TR","AI","N"],["SN","AKE"],["BR","U","SH"]],speech:"train. snake. brush." },
+ {emoji:"🦄",name:"יער החרוזים",words:["FOREST","RABBIT","MARKET"],meanings:["יער","ארנב","שוק"],pictures:["🌲","🐇","🛒"],chunks:[["FOR","EST"],["RAB","BIT"],["MAR","KET"]],speech:"forest. rabbit. market." },
+ {emoji:"🪞",name:"מראת התנועות",words:["SUNSHINE","RAINBOW","PICNIC"],meanings:["אור שמש","קשת בענן","פיקניק"],pictures:["☀️","🌈","🧺"],chunks:[["SUN","SHINE"],["RAIN","BOW"],["PIC","NIC"]],speech:"sunshine. rainbow. picnic." },
+ {emoji:"🐉",name:"מערת הדרקון",words:["ELEPHANT","DINOSAUR","BUTTERFLY"],meanings:["פיל","דינוזאור","פרפר"],pictures:["🐘","🦕","🦋"],chunks:[["EL","E","PHANT"],["DI","NO","SAUR"],["BUT","TER","FLY"]],speech:"elephant. dinosaur. butterfly." },
+ {emoji:"🏹",name:"חיצי האביר",words:["TREASURE","MOUNTAIN","THUNDER"],meanings:["אוצר","הר","רעם"],pictures:["💎","⛰️","⚡"],chunks:[["TREA","SURE"],["MOUN","TAIN"],["THUN","DER"]],speech:"treasure. mountain. thunder." },
+ {emoji:"🧙‍♀️",name:"שיקויי הפיה",words:["ADVENTURE","MAGICIAN","DRAGONFLY"],meanings:["הרפתקה","קוסם","שפירית"],pictures:["🗺️","🧙","🪰"],chunks:[["AD","VEN","TURE"],["MA","GI","CIAN"],["DRA","GON","FLY"]],speech:"adventure. magician. dragonfly." },
+ {emoji:"🏰",name:"גשר הטירה",words:["BEAUTIFUL","DANGEROUS","WONDERFUL"],meanings:["יפה","מסוכן","נפלא"],pictures:["🌺","⚠️","✨"],chunks:[["BEAU","TI","FUL"],["DAN","GER","OUS"],["WON","DER","FUL"]],speech:"beautiful. dangerous. wonderful." },
+ {emoji:"🗝️",name:"מפתחות האוצר",words:["DISCOVERY","TELESCOPE","WATERFALL"],meanings:["תגלית","טלסקופ","מפל מים"],pictures:["🔎","🔭","🏞️"],chunks:[["DIS","COV","ER","Y"],["TEL","E","SCOPE"],["WA","TER","FALL"]],speech:"discovery. telescope. waterfall." },
+ {emoji:"👑",name:"הכתר האבוד",words:["CELEBRATION","IMAGINATION","CONSTELLATION"],meanings:["חגיגה","דמיון","קבוצת כוכבים"],pictures:["🎉","🌟","🌌"],chunks:[["CEL","E","BRA","TION"],["IM","AG","I","NA","TION"],["CON","STEL","LA","TION"]],speech:"celebration. imagination. constellation." }
 ];
-
 let saved={coins:0,best:0,completed:false,run:null};
 try{
  const x=JSON.parse(localStorage.getItem(KEY)||'{}');
