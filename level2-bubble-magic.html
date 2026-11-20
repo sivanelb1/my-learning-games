@@ -61,6 +61,13 @@ button{font-family:inherit;cursor:pointer}.primary{border:2px solid #fff0b2;bord
 .phonics-chunks button:not(:disabled):active{transform:translateY(2px)}
 .quiz-progress{color:#fff1a6;font-weight:900}
 @media(max-width:600px){.arcade-panel{border-width:3px;padding:5px 5px 7px;margin:-2px 0 8px}.arcade-clock{gap:6px}.arcade-meter{height:17px}.arcade-clock>strong{min-width:52px;font-size:20px}.arcade-bottom{gap:3px;grid-template-columns:minmax(0,2fr) minmax(70px,1fr) minmax(67px,1fr)}.arcade-bottom>div{min-height:50px;padding:4px 2px}.arcade-caption{font-size:10px}.life-icons{font-size:17px;min-height:22px}.arcade-score strong,.arcade-stage strong{font-size:19px}.phonics-chunks{gap:5px}.phonics-chunks button{min-width:57px;min-height:47px;padding:7px}.phonics-slot{min-height:45px;min-width:43px;padding:4px}}
+
+/* Keep the arcade meter visible without scrolling past a large game header */
+main{padding-top:49px}.eyebrow{padding:5px 11px;font-size:13px}h1{font-size:clamp(29px,4.1vw,44px);margin:5px 0 2px}header p{margin:1px auto 7px}
+.hud{margin:5px auto 6px}.hud span{padding:5px 10px}.challenge{margin:6px auto;padding:7px 10px}.stage-track{margin:5px auto 7px}
+.stage-track span{width:clamp(25px,3vw,32px);height:clamp(25px,3vw,32px)}
+.board,.arcade-panel{max-width:900px}
+@media(max-width:600px){main{padding-top:53px}.eyebrow{font-size:11px}.challenge{padding:6px 7px}.stage-track{margin:5px auto}.board,.arcade-panel{max-width:100%}}
 </style></head><body>
 <a class="back" href="adventure-map.html">🗺️ חזרה לעולם</a>
 <main>
@@ -136,7 +143,7 @@ function makeStage(){
  const shuffled=[...t.words].sort(()=>rand()-.5);
  shuffled.forEach((word,i)=>bubbles.push(makeBubble(word,level<2?1:(i===0?2:1),180+i*300,125+(i%2)*35,(i%2?1:-1)*(90+level*6+i*12))));
  $('challenge').textContent=t.emoji+' '+t.name+' · אספו 3 מילות קסם!';
- $('hint').textContent='פוצצו את כל הבועות, אספו את שלוש המילים ואז פתרו את חידת המילים';
+ $('hint').textContent='פוצצו את הבועות, אספו 3 מילים, הקשיבו לצלילים, בנו כל מילה ואז בחרו את פירושה';
  $('stageTrack').innerHTML=tasks.map((task,i)=>'<span class="'+(i<level?'done':i===level?'active':'')+'" title="'+task.name+'">'+(i<level?'✓':task.emoji)+'</span>').join('');
  updateWords();hud();toast('📚 אספו את כל 3 המילים! בועות קטנות משחררות מילים ומתנות.');
 }
