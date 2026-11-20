@@ -88,7 +88,7 @@ main{padding-top:49px}.eyebrow{padding:5px 11px;font-size:13px}h1{font-size:clam
 <div class="challenge" aria-live="polite"><strong id="challenge">✨ אספו את מילות הקסם</strong><small id="hint">פוצצו בועות מילים, אספו אותיות וכוכבי רמז, ואז בנו מילים והתאימו פירוש</small><div class="examples" id="answers"></div></div>
 <div class="stage-track" id="stageTrack" aria-label="התקדמות בעשר תחנות"></div>
 <div class="board"><canvas id="game" width="960" height="540" aria-label="משחק פעולה עם בועות קופצות ופיית קסם" role="img"></canvas>
-<div class="overlay" id="overlay"><div class="modal"><div class="emojis" id="modalEmoji">🧚‍♀️🫧🏰</div><h2 id="modalTitle">ברוכים הבאים לבועות הקסם!</h2><p id="modalText">פוצצו בועה גדולה עם מילת קסם כדי לשחרר בועות קטנות — <b>אות אחת בכל בועה!</b> אספו את האותיות ובנו את המילה. ⭐ כוכב שנופל הוא <b>רמז</b>: אספו אותו תוך 10 שניות, שמרו רמזים לכל המסע, והשתמשו בהם כדי לחשוף מילה שלמה בסוף התחנה.<br>💜 מתחילים עם <b>7 חיים לכל עשר התחנות יחד</b> ועם שעון לכל תחנה. בדרך אפשר לאסוף ⭐ נקודות, 💜 חיים נוספים, ⏳ זמן נוסף ו־🛡️ מגן זמני. בועות גדולות מתפצלות לקטנות!</p><button class="primary" id="play">✨ מתחילים בהרפתקה!</button></div></div>
+<div class="overlay" id="overlay"><div class="modal"><div class="emojis" id="modalEmoji">🧚‍♀️🫧🏰</div><h2 id="modalTitle">ברוכים הבאים לבועות הקסם!</h2><p id="modalText">פוצצו בועה גדולה עם מילת קסם: היא מתפצלת <b>לשתי בועות קטנות יותר</b>, וכל בועה יכולה להתפצל שוב לשתיים. כל בועה עם אות שמשמידים משחררת <b>אות אחת לרצפה</b> — אספו אותה ובנו את המילה. ⭐ כוכב שנופל הוא <b>רמז</b>: אספו אותו תוך 10 שניות, שמרו רמזים לכל המסע, והשתמשו בהם כדי לחשוף מילה שלמה בסוף התחנה.<br>💜 מתחילים עם <b>7 חיים לכל עשר התחנות יחד</b> ועם שעון לכל תחנה. בדרך אפשר לאסוף ⭐ נקודות, 💜 חיים נוספים, ⏳ זמן נוסף ו־🛡️ מגן זמני. בועות גדולות מתפצלות לקטנות!</p><button class="primary" id="play">✨ מתחילים בהרפתקה!</button></div></div>
 </div>
 <section class="arcade-panel" aria-label="לוח המשחק: זמן, חיים ורמזים">
  <div class="arcade-clock"><span>⏳ TIME</span><div class="arcade-meter" id="timeMeter" role="progressbar" aria-label="זמן שנותר" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><div class="arcade-meter-fill" id="timeFill"></div></div><strong id="timeHud" aria-live="off">01:40</strong></div>
@@ -618,7 +618,41 @@ function beep(freq=640,duration=.09,type='sine'){if(!audioOn)return;try{audioCtx
 function speak(){if(!audioOn||!('speechSynthesis'in window))return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(tasks[level].speech);u.lang='en-US';u.rate=.79;speechSynthesis.speak(u)}catch(e){}}
 function toast(t){$('toast').textContent=t}
 function rnd(a,b){return a+rand()*(b-a)}
-function makeBubble(label,size,x,y,vx,extra={}){return{label,size,x,y,vx,vy:rnd(-200,-100),r:size===0?19:52,phase:rand()*6,...extra}}
+function makeBubble(label,size,x,y,vx,extra={}){return{label,size,x,y,vx,vy:rnd(-200,-100),r:[20,29,39,51,65][size],phase:rand()*6,...extra}}
+function letterBubbleTree(word){
+ // Every letter bubble drops one letter. Internal letter bubbles split into two.
+ // An odd number of letters needs one bonus-star bubble to keep splits in pairs.
+ const nodes=letterTargets().filter(t=>t.word===word).map(t=>({label:t.letter,letterId:t.id,word,children:[]}));
+ if(nodes.length%2)nodes.push({label:'⭐',word,bonus:true,children:[]});
+ const roots=nodes.slice(0,2),queue=[...roots];
+ for(let next=2;next<nodes.length;){
+  const parent=queue.shift();
+  if(!parent)throw Error('Invalid letter bubble tree');
+  parent.children=[nodes[next++],nodes[next++]];
+  queue.push(...parent.children);
+ }
+ const largest=nodes.length>14?4:3;
+ function assign(node,depth){
+  node.size=largest-1-depth;
+  if(node.size<0)throw Error('Bubble chain too deep');
+  for(const child of node.children)assign(child,depth+1);
+ }
+ for(const root of roots)assign(root,0);
+ return{size:largest,children:roots};
+}
+function splitIntoChildren(b){
+ if(!b.children?.length)return;
+ b.children.forEach((node,i)=>{
+  const direction=i===0?-1:1;
+  const margin=[30,40,50,62,75][node.size];
+  const x=Math.max(margin,Math.min(W-margin,b.x+direction*36));
+  const child=makeBubble(node.label,node.size,x,Math.max(100,b.y-8),direction*Math.max(100,Math.abs(b.vx)+24),{
+   word:node.word,letterId:node.letterId,bonus:node.bonus,children:node.children
+  });
+  child.vy=-215-i*28;
+  bubbles.push(child);
+ });
+}
 function updateWords(){
  const letters=letterTargets(),got=letters.filter(t=>collected.has(t.id));
  $('answers').innerHTML=wordTargets().map(w=>'<span dir="ltr">'+w+'</span>').join('')+'<span>🔤 '+got.length+'/'+letters.length+' אותיות</span>';
@@ -632,9 +666,9 @@ function makeStage(){
  poppedLetters=0;starDropped=false;
  seconds=stageTime();shield=0;invuln=0;fireDelay=0;transition=0;flash=0;quizOpen=false;gameOver=false;player.x=W/2;
  const words=wordTargets();
- words.forEach((word,i)=>bubbles.push(makeBubble(word,2,words.length===1?W/2:260+i*440,120+i*35,(i%2?1:-1)*(95+level*6),{word})));
+ words.forEach((word,i)=>{const tree=letterBubbleTree(word);bubbles.push(makeBubble(word,tree.size,words.length===1?W/2:260+i*440,125+i*35,(i%2?1:-1)*(95+level*6),{word,children:tree.children,root:true}))});
  $('challenge').textContent=t.emoji+' '+t.name+' · '+words.length+' מיל'+(words.length===1?'ה':'ים')+' בבועות הגדולות!';
- $('hint').textContent='פוצצו בועה גדולה כדי לשחרר אותיות, פוצצו ואספו אותן. ⭐ כוכבים נותנים רמזים שנעלמים אחרי 10 שניות!';
+ $('hint').textContent='כל בועה גדולה מתפצלת לשתיים, ואז שוב לשתיים! כל בועת אות משחררת אות לרצפה. ⭐ רמזים נעלמים אחרי 10 שניות.';
  $('stageTrack').innerHTML=tasks.map((task,i)=>'<span class="'+(i<level?'done':i===level?'active':'')+'" title="'+task.name+'">'+(i<level?'✓':task.emoji)+'</span>').join('');
  updateWords();hud();toast('🔤 '+letterTargets().length+' אותיות מחכות לכם! 💡 רמזים שנאספו נשמרים לכל המסע.');
 }
@@ -670,30 +704,30 @@ function spawnDrop(x,y,type,label='',life=17,id=''){
 }
 function hitBubble(b){
  const i=bubbles.indexOf(b);if(i<0)return;bubbles.splice(i,1);
- burst(b.x,b.y,b.size===2?'#d5b4ff':'#a8edff',b.size===2?25:10);
+ burst(b.x,b.y,b.root?'#d5b4ff':'#a8edff',b.root?25:12);
  beep(500+b.size*110,.09,'sine');earnedPoints+=10;
- if(b.size===2){
-  // Exactly one small bubble for every physical letter of the word. No exponential splitting.
-  const targets=letterTargets().filter(t=>t.word===b.word);
-  const offset=targets.length/2;
-  targets.forEach((target,j)=>{
-   const x=Math.max(30,Math.min(W-30,b.x+(j-offset)*26));
-   const tiny=makeBubble(target.letter,0,x,Math.max(90,b.y-25-(j%3)*9),((j%2)?1:-1)*(65+j*8),{letterId:target.id,word:target.word});
-   tiny.vy=-120-(j%4)*28;
-   bubbles.push(tiny);
-  });
-  toast('💥 '+b.word+' התפוצצה! עכשיו אספו '+targets.length+' אותיות.');
+ if(b.root){
+  // Only the original largest bubble displays the whole word.
+  splitIntoChildren(b);
+  toast('💥 '+b.word+' התפצלה לשתי בועות! פוצצו כל אות ואספו אותה מהרצפה.');
  }else{
-  poppedLetters++;
-  if(!collected.has(b.letterId)&&!drops.some(d=>d.type==='letter'&&d.id===b.letterId))
-   spawnDrop(b.x,b.y,'letter',b.label,9999,b.letterId);
-  // A guaranteed early hint star, then a chance of more stars. Every star lasts 10 seconds.
-  if(!starDropped&&poppedLetters>=2){spawnDrop(Math.max(45,Math.min(W-45,b.x+42)),b.y,'star','',10);starDropped=true}
-  else if(rand()<.19)spawnDrop(b.x+22,b.y,'star','',10);
-  if(rand()<.11){
-   const chance=rand();
-   spawnDrop(b.x-25,b.y,chance<.18?'heart':chance<.46?'clock':chance<.72?'shield':'coin');
+  // Every letter bubble, even a medium one, drops its letter when popped.
+  if(b.bonus){
+   spawnDrop(b.x,b.y,'star','',10);
+  }else{
+   poppedLetters++;
+   if(!collected.has(b.letterId)&&!drops.some(d=>d.type==='letter'&&d.id===b.letterId))
+    spawnDrop(b.x,b.y,'letter',b.label,9999,b.letterId);
+   if(!starDropped&&poppedLetters>=2){
+    spawnDrop(Math.max(45,Math.min(W-45,b.x+42)),b.y,'star','',10);
+    starDropped=true;
+   }else if(rand()<.19)spawnDrop(b.x+22,b.y,'star','',10);
+   if(rand()<.11){
+    const chance=rand();
+    spawnDrop(b.x-25,b.y,chance<.18?'heart':chance<.46?'clock':chance<.72?'shield':'coin');
+   }
   }
+  splitIntoChildren(b);
  }
  hud();
 }
@@ -863,10 +897,10 @@ function draw(time){
  ctx.fillStyle='#ffd99d';ctx.font='bold 17px Arial';ctx.textAlign='center';ctx.fillText('✨ '+tasks[level].name+' ✨',W/2,30);
  for(const beam of beams){ctx.save();ctx.shadowColor='#fff2ad';ctx.shadowBlur=22;ctx.strokeStyle='#ffeeb0';ctx.lineWidth=8;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(beam.x,FLOOR-55);ctx.lineTo(beam.x,beam.top);ctx.stroke();ctx.strokeStyle='#fff';ctx.lineWidth=3;ctx.stroke();circle(beam.x,beam.top,8,'#fff1ad');ctx.restore()}
  for(const b of bubbles){
-  ctx.save();ctx.shadowColor=['#9feeff','#ffcae8','#d4a2ff'][b.size];ctx.shadowBlur=20;
-  const g=ctx.createRadialGradient(b.x-b.r*.35,b.y-b.r*.42,2,b.x,b.y,b.r);g.addColorStop(0,'#ffffffed');g.addColorStop(.2,['#aff7f4','#fbc5e8','#d4adff'][b.size]);g.addColorStop(.72,['#50d6d9','#ca70c5','#8d5bda'][b.size]);g.addColorStop(1,['#287c9e','#8b438d','#4e2d98'][b.size]);circle(b.x,b.y,b.r,g);
+  ctx.save();ctx.shadowColor=['#9feeff','#ffcae8','#d4a2ff','#e6baff','#ffe3a0'][b.size];ctx.shadowBlur=20;
+  const g=ctx.createRadialGradient(b.x-b.r*.35,b.y-b.r*.42,2,b.x,b.y,b.r);g.addColorStop(0,'#ffffffed');g.addColorStop(.2,['#aff7f4','#fbc5e8','#d4adff','#edb9ff','#fff0c4'][b.size]);g.addColorStop(.72,['#50d6d9','#ca70c5','#8d5bda','#9a60df','#c789d7'][b.size]);g.addColorStop(1,['#287c9e','#8b438d','#4e2d98','#54268b','#7134a1'][b.size]);circle(b.x,b.y,b.r,g);
   ctx.shadowBlur=0;ctx.strokeStyle='#ffffffa9';ctx.lineWidth=2;ctx.beginPath();ctx.arc(b.x,b.y,b.r-2,0,Math.PI*2);ctx.stroke();circle(b.x-b.r*.32,b.y-b.r*.44,b.r*.13,'#ffffffb8');
-  ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#271743';ctx.font='900 '+(b.size===0?23:Math.max(12,Math.min(18,b.r*1.8/Math.max(3,b.label.length*.62))))+'px Arial';
+  ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#271743';ctx.font='900 '+(b.root?Math.max(15,Math.min(25,b.r*1.8/Math.max(3,b.label.length*.62))):b.bonus?25:Math.min(30,19+b.size*2))+'px Arial';
   ctx.fillText(b.label,b.x,b.y+3,b.r*1.82);ctx.restore();
  }
  for(const d of drops){
