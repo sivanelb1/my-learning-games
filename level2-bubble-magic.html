@@ -83,7 +83,7 @@ function makeStage(){
 function hud(){$('stageHud').textContent='🏰 '+(level+1)+'/10 · '+tasks[level].name;$('coinHud').textContent='🪙 '+(coins+earned)+' מטבעות';$('heartHud').textContent='💜'.repeat(hearts)+'♡'.repeat(3-hearts);$('runeHud').textContent='🔮 רונה: '+(rune?'✓':'❔');$('letterHud').textContent='🔤 '+MAGIC_WORD.split('').map((ch,i)=>i<saved.best||i===level&&rune?ch:'_').join(' ')}
 function showModal(emoji,title,text,button,action){paused=true;$('modalEmoji').textContent=emoji;$('modalTitle').textContent=title;$('modalText').innerHTML=text;$('play').textContent=button;$('play').onclick=action;$('overlay').hidden=false}
 function start(){if(!started){started=true;makeStage()}paused=false;$('overlay').hidden=true;frameTime=performance.now();speak()}
-function reset(){coins=saved.coins;level=0;started=true;makeStage();paused=false;$('overlay').hidden=true;frameTime=performance.now();speak()}
+function reset(){coins=saved.coins;level=0;saved.best=0;saved.completed=false;save();started=true;makeStage();paused=false;$('overlay').hidden=true;frameTime=performance.now();speak()}
 function burst(x,y,color,count=13){for(let i=0;i<count;i++)particles.push({x,y,vx:rnd(-210,210),vy:rnd(-230,30),life:rnd(.35,.8),color,r:rnd(2,6)})}
 function fire(){if(paused||fireDelay>0||transition>0)return;beams.push({x:player.x,y:FLOOR-56,top:FLOOR-56,life:.95});fireDelay=.37;beep(590,.08,'triangle');burst(player.x,FLOOR-57,'#ffe7a2',4)}
 function hitBubble(b){
