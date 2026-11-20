@@ -27,11 +27,11 @@ button{font-family:inherit;cursor:pointer}.primary{border:2px solid #fff0b2;bord
 <a class="back" href="adventure-map.html">🗺️ חזרה לעולם</a>
 <main>
 <header><span class="eyebrow">🏰 משחק ההרפתקה הראשי של עולם 2</span><h1>🫧 Bubble Magic ✨</h1><p>בועות הקסם של הממלכה · זזים, מכוונים, מפוצצים, אוספים מטבעות ולומדים אנגלית!</p></header>
-<div class="hud" aria-live="polite"><span id="stageHud">🏰 תחנה 1/10</span><span id="coinHud">🪙 0 מטבעות</span><span id="heartHud">💜💜💜</span><span id="runeHud">🔮 רונה: ❔</span></div>
+<div class="hud" aria-live="polite"><span id="stageHud">🏰 תחנה 1/10</span><span id="coinHud">🪙 0 מטבעות</span><span id="heartHud">💜💜💜</span><span id="runeHud">🔮 רונה: ❔</span><span id="letterHud">🔤 __________</span></div>
 <div class="challenge" aria-live="polite"><strong id="challenge">✨ מצאו את מילת הקסם</strong><small id="hint">פוצצו את הבועה הנכונה ואספו את הרונה שנופלת ממנה</small><div class="examples" id="answers"></div></div>
 <div class="stage-track" id="stageTrack" aria-label="התקדמות בעשר תחנות"></div>
 <div class="board"><canvas id="game" width="960" height="540" aria-label="משחק פעולה עם בועות קופצות ופיית קסם" role="img"></canvas>
-<div class="overlay" id="overlay"><div class="modal"><div class="emojis" id="modalEmoji">🧚‍♀️🫧🏰</div><h2 id="modalTitle">ברוכים הבאים לבועות הקסם!</h2><p id="modalText">עזרו לפיה לשחרר את עשר הרונות של הממלכה! זוזו לצדדים, שגרו קרן קסם כלפי מעלה, פוצצו בועות, אספו מטבעות ומצאו את הרונה עם התשובה הנכונה באנגלית.<br>בועות גדולות מתפצלות לקטנות. אם בועה פוגעת בכם, תאבדו לב — אבל תוכלו לנסות שוב.</p><button class="primary" id="play">✨ מתחילים בהרפתקה!</button></div></div>
+<div class="overlay" id="overlay"><div class="modal"><div class="emojis" id="modalEmoji">🧚‍♀️🫧🏰</div><h2 id="modalTitle">ברוכים הבאים לבועות הקסם!</h2><p id="modalText">עזרו לפיה לשחרר את עשר הרונות של הממלכה! זוזו לצדדים, שגרו קרן קסם כלפי מעלה, פוצצו בועות, אספו מטבעות ומצאו את הרונה עם התשובה הנכונה באנגלית. כל רונה משחררת אות נוספת עד שתרכיבו את MAGIC POWER!<br>בועות גדולות מתפצלות לקטנות. אם בועה פוגעת בכם, תאבדו לב — אבל תוכלו לנסות שוב.</p><button class="primary" id="play">✨ מתחילים בהרפתקה!</button></div></div>
 </div>
 <div class="controls" aria-label="שליטה במשחק"><button id="left" aria-label="זוזו שמאלה">◀</button><button id="fire" class="fire" aria-label="יריית קסם">🪄 קסם!</button><button id="right" aria-label="זוזו ימינה">▶</button><button id="mute" class="mute" aria-label="השתקת צלילים">🔊</button></div>
 <div class="toast" id="toast" role="status" aria-live="polite">✨ פוצצו בועות והצילו את הממלכה!</div>
@@ -43,6 +43,7 @@ button{font-family:inherit;cursor:pointer}.primary{border:2px solid #fff0b2;bord
 const $=id=>document.getElementById(id);
 const W=960,H=540,FLOOR=492,GRAVITY=490;
 const KEY='playwise-level2-bubble-magic-v1';
+const MAGIC_WORD='MAGICPOWER';
 const tasks=[
  {emoji:'🍄',name:'שער האותיות',ask:'Which lowercase letter matches G?',he:'מצאו את האות הקטנה של G',choices:['g','q','y'],correct:'g',speech:'Find the lowercase letter g.'},
  {emoji:'🛡️',name:'מגיני האבירים',ask:'Which word starts with W?',he:'איזו מילה מתחילה ב־W?',choices:['WINDOW','BANANA','ZEBRA'],correct:'WINDOW',speech:'Which word starts with W? Window, banana, or zebra?'},
@@ -79,7 +80,7 @@ function makeStage(){
  $('stageTrack').innerHTML=tasks.map((t,i)=>'<span class="'+(i<level?'done':i===level?'active':'')+'" title="'+t.name+'">'+(i<level?'✓':t.emoji)+'</span>').join('');
  hud();toast('✨ חפשו את התשובה הנכונה בבועות, ואל תשכחו לאסוף את הרונה!');
 }
-function hud(){$('stageHud').textContent='🏰 '+(level+1)+'/10 · '+tasks[level].name;$('coinHud').textContent='🪙 '+(coins+earned)+' מטבעות';$('heartHud').textContent='💜'.repeat(hearts)+'♡'.repeat(3-hearts);$('runeHud').textContent='🔮 רונה: '+(rune?'✓':'❔')}
+function hud(){$('stageHud').textContent='🏰 '+(level+1)+'/10 · '+tasks[level].name;$('coinHud').textContent='🪙 '+(coins+earned)+' מטבעות';$('heartHud').textContent='💜'.repeat(hearts)+'♡'.repeat(3-hearts);$('runeHud').textContent='🔮 רונה: '+(rune?'✓':'❔');$('letterHud').textContent='🔤 '+MAGIC_WORD.split('').map((ch,i)=>i<saved.best||i===level&&rune?ch:'_').join(' ')}
 function showModal(emoji,title,text,button,action){paused=true;$('modalEmoji').textContent=emoji;$('modalTitle').textContent=title;$('modalText').innerHTML=text;$('play').textContent=button;$('play').onclick=action;$('overlay').hidden=false}
 function start(){if(!started){started=true;makeStage()}paused=false;$('overlay').hidden=true;frameTime=performance.now();speak()}
 function reset(){coins=saved.coins;level=0;started=true;makeStage();paused=false;$('overlay').hidden=true;frameTime=performance.now();speak()}
@@ -103,7 +104,7 @@ function hitBubble(b){
 }
 function getDrop(d){
  if(d.type==='rune'){
-  if(!rune){rune=true;earned+=25;toast('🔮 כל הכבוד! מצאתם את הרונה: '+d.label+'!');beep(880,.2);setTimeout(()=>beep(1170,.17),110);burst(d.x,d.y,'#ffdf7a',28)}
+  if(!rune){rune=true;earned+=25;toast('🔮 הרונה '+d.label+' שחררה את האות '+MAGIC_WORD[level]+'!');beep(880,.2);setTimeout(()=>beep(1170,.17),110);burst(d.x,d.y,'#ffdf7a',28)}
  }else{earned+=5;beep(750,.05)}
  hud();
 }
@@ -114,7 +115,7 @@ function finishStage(){
 function nextStage(){
  transition=0;
  if(level===9){
-  showModal('👑🫧🏰','הצלתם את כל רונות הממלכה!','אספתם <b>10 רונות קסומות</b> והשלמתם את כל עשר התחנות!<br>🪙 בקופת הממלכה שלכם: <b>'+coins+'</b> מטבעות.<br>אפשר לשחק שוב ולצבור עוד אוצרות.','🔄 משחקים שוב!',reset);
+  showModal('👑🫧🏰','הצלתם את כל רונות הממלכה!','אספתם <b>10 רונות קסומות</b> והשלמתם את מילת הקסם <b dir="ltr">MAGIC POWER</b>!<br>🪙 בקופת הממלכה שלכם: <b>'+coins+'</b> מטבעות.<br>אפשר לשחק שוב ולצבור עוד אוצרות.','🔄 משחקים שוב!',reset);
   return;
  }
  level++;makeStage();speak();
