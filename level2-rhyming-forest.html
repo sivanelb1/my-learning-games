@@ -92,7 +92,7 @@ main{width:min(1120px,96vw);margin:0 auto;padding-bottom:35px}
 </head>
 <body>
 <header class="top">
-<a class="maplink" href="adventure-map.html">🗺️ מפת הממלכה</a>
+<a class="maplink pw-legacy-worldback" href="adventure-map.html">🗺️ מפת הממלכה</a>
 <div class="title-pill"><h1>🦄 יער החרוזים 🍄</h1><small>Rhyming Forest · PLAYWISE</small></div>
 <div class="scorepill" id="score">⭐ 0 / 6</div>
 </header>
@@ -208,5 +208,5 @@ $('fairyStage').addEventListener('drop',e=>{e.preventDefault();$('fairyStage').c
 $('start').addEventListener('click',()=>{$('intro').classList.add('hidden');render();speak(rounds[0].word)});
 render();
 </script>
-</body>
+<script src="level2-world-navigation.js?v=8e480cac" defer></script></body>
 </html>
