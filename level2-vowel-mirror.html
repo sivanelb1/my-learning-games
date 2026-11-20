@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#2a1553">
+<title>🪞 מראת התנועות הקסומה | PLAYWISE</title>
+<style>
+:root{--gold:#ffe6a4;--lavender:#d8adff;--mint:#baffdc}
+*{box-sizing:border-box}
+html{min-height:100%;background:#180a3b}
+body{margin:0;min-height:100vh;color:white;font-family:Arial,"Noto Sans Hebrew",sans-serif;overflow-x:hidden;background:linear-gradient(180deg,#1b0b3ac9,#35165bc9 52%,#160b3bd9),url("ממלכת הפנטזיה הזוהרת והטירה הקסומה.png") center center/cover fixed}
+button,a{font:inherit}button{cursor:pointer}a{color:inherit}
+.top{max-width:1160px;margin:0 auto;padding:12px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.pill{background:#33185cdd;border:2px solid var(--gold);border-radius:14px;color:#ffeabb;text-decoration:none;padding:9px 13px;font-weight:900;white-space:nowrap;box-shadow:0 5px 15px #13062988}
+.titlepill{text-align:center;background:linear-gradient(120deg,#7237a5,#39156b);border:2px solid var(--gold);border-radius:19px;padding:7px 18px;box-shadow:0 6px 20px #16072f99}
+.titlepill h1{margin:0;color:#ffedb4;font-size:clamp(20px,3.6vw,37px);font-family:Georgia,serif}
+.titlepill small{font-size:12px;font-weight:900}
+main{width:min(1080px,96vw);margin:0 auto 30px}
+.route{background:linear-gradient(115deg,#291354eb,#663592eb,#291354eb);border:2px solid #f5d999;border-radius:18px;padding:10px 13px;box-shadow:0 5px 22px #12062e8f}
+.routehead{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#ffebbb;font-weight:900;font-size:clamp(12px,1.7vw,16px);margin-bottom:8px}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.step{min-width:0;display:flex;justify-content:center;align-items:center;gap:7px;background:#2c1955;border:2px solid #a784d2;border-radius:12px;padding:9px 5px;text-decoration:none;text-align:center;font-weight:900;font-size:clamp(11px,1.6vw,15px);color:#f7e7ff}
+.step.current{background:#8949bc;border-color:#ffe9aa;color:#fff3c9;box-shadow:0 0 15px #ffceff85}
+.step.complete:not(.current){background:#2d675c;border-color:#c0f7d4}
+.check{display:none;color:#c4ffd9}.step.complete .check{display:inline}
+.questprogress{display:flex;justify-content:space-between;align-items:center;margin:12px 5px 6px;font-weight:900;color:#ffebba;font-size:clamp(13px,2vw,17px)}
+.track{height:12px;background:#1c0b38;border:2px solid #ffe3a2;border-radius:20px;overflow:hidden}
+.fill{height:100%;width:0;background:linear-gradient(90deg,#a3e4ff,#cfa2ff,#ffe1a2);transition:width .5s}
+.arena{position:relative;overflow:hidden;border:3px solid #ffe1a0;border-radius:30px;background:linear-gradient(180deg,#30135dba,#3a1c67a8 56%,#175347b8);min-height:620px;margin-top:12px;padding:15px 16px 24px;box-shadow:0 11px 40px #0d0428c0}
+.arena:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 40%,#b888ff45,transparent 52%),radial-gradient(ellipse at 50% 100%,#6bffad30,transparent 45%)}
+.arena>*{position:relative;z-index:1}
+.instruction{text-align:center;font-size:clamp(17px,2.8vw,26px);color:#fff0b4;margin:0 0 4px;font-weight:900}
+.sub{text-align:center;font-size:clamp(13px,1.7vw,17px);margin:0 0 10px;color:#f7e7ff}
+.mirror{position:relative;max-width:690px;margin:0 auto 14px;border:8px ridge #e8b46b;border-radius:47% 47% 22% 22% / 24% 24% 17% 17%;padding:16px 16px 21px;min-height:306px;background:linear-gradient(125deg,#9bd9ed99,#d6b8f7aa 32%,#b6c9f3a3 64%,#a4e1ef99);box-shadow:0 0 0 5px #7346a4,0 0 33px #f4c4ff95,inset 0 0 34px #fff9e99a;isolation:isolate}
+.mirror:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;border-radius:inherit;background:linear-gradient(125deg,#ffffff80 0%,#ffffff0b 27%,#ffffff65 35%,transparent 49%,#ffffff40 68%,transparent 80%);animation:mirrorGlow 5s ease-in-out infinite}
+.mirror:after{content:"✦ ✧ ✦";position:absolute;top:18px;right:15%;color:#fff9dc;font-size:22px;text-shadow:0 0 10px white;letter-spacing:10px;pointer-events:none}
+.mirror-picture{text-align:center;font-size:clamp(54px,8vw,85px);margin:4px 0 0;filter:drop-shadow(0 5px 6px #3a2a6d55);animation:float 3s ease-in-out infinite}
+.mirror-label{text-align:center;color:#3c205f;font-weight:900;font-size:clamp(12px,1.7vw,17px);margin:2px 0 12px}
+.word{display:flex;direction:ltr;justify-content:center;align-items:center;flex-wrap:nowrap;gap:clamp(3px,1.1vw,9px);max-width:100%;margin:0 auto}
+.letter{font-family:Georgia,serif;font-size:clamp(30px,6.5vw,64px);font-weight:900;color:#39205b;text-shadow:0 2px 0 #fff6da;min-width:clamp(26px,5.5vw,56px);height:clamp(56px,8.5vw,83px);display:flex;align-items:center;justify-content:center}
+.slot{border:3px dashed #7145ad;border-radius:13px;min-width:clamp(38px,6vw,65px);height:clamp(56px,8.5vw,83px);background:#fff5e6dc;color:#62318f;font-family:Georgia,serif;font-size:clamp(30px,6.5vw,63px);font-weight:900;box-shadow:inset 0 3px 12px #a87dcd66,0 3px 8px #44215a40;transition:background .2s,transform .2s}
+.slot.empty:after{content:"?";opacity:.45}
+.slot.filled{border:3px solid #b26be4;background:#ffe7ff}
+.slot:hover,.slot:focus-visible{outline:3px solid #ffe7a0;outline-offset:2px}
+.slot.ready{outline:4px dashed #ffdb78;outline-offset:3px}
+.mirror.solved{box-shadow:0 0 0 5px #f7d892,0 0 55px 16px #fff3a7,inset 0 0 40px #f7f7d9}
+.mirror.solved .slot{border-color:#2a9b76;background:#baffd5;color:#285b51}
+.magic-hint{text-align:center;margin:0 auto 9px;color:#ffe6b1;font-weight:900;font-size:clamp(14px,2vw,19px)}
+.gems{display:flex;direction:ltr;justify-content:center;align-items:center;gap:clamp(16px,5vw,60px);margin:0 auto 12px;min-height:125px}
+.gem{position:relative;width:clamp(94px,17vw,142px);height:clamp(94px,17vw,142px);border:3px solid #fff3c0;clip-path:polygon(50% 0%,91% 19%,100% 61%,50% 100%,0 61%,9% 19%);background:linear-gradient(145deg,#fff9e2 0%,#c890f7 20%,#8e4cc5 55%,#532c97 100%);color:#fff6d3;font:900 clamp(46px,8vw,72px) Georgia,serif;text-shadow:0 3px 7px #35104f;filter:drop-shadow(0 6px 12px #110527);transition:transform .2s,filter .2s;cursor:grab;touch-action:manipulation}
+.gem:nth-child(2){background:linear-gradient(145deg,#fff9e2 0%,#8ddff0 20%,#3b9bc7 55%,#3056a5 100%)}
+.gem:hover:not(:disabled){transform:translateY(-8px) rotate(-4deg);filter:brightness(1.15) drop-shadow(0 7px 15px #ffe7a2)}
+.gem:focus-visible{outline:4px solid #fff0aa;outline-offset:3px}
+.gem:disabled{opacity:.23;filter:grayscale(.65);cursor:default}
+.feedback{text-align:center;min-height:36px;font-size:clamp(14px,2vw,19px);font-weight:900;color:#ffebb7;margin:7px auto 0}
+.feedback.error{color:#ffd0e3}
+.controls{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin:7px auto 0}
+.smallbtn{background:#4d287bcf;border:2px solid #e3c5ff;color:#fff4dd;border-radius:13px;padding:9px 14px;font-weight:900}
+.smallbtn:hover{background:#7950ab}
+.tips{text-align:center;color:#e4d1f3;font-size:12px;margin:11px 0 0}
+.overlay{position:fixed;inset:0;z-index:40;background:#190a39d6;backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:18px}
+.overlay.hidden{display:none}
+.card{width:min(610px,96vw);text-align:center;padding:25px 20px;border:3px solid #ffe3a4;border-radius:28px;background:linear-gradient(140deg,#713ba3,#2c145f);box-shadow:0 0 48px #dba5ff7a;animation:pop .45s both}
+.card .big{font-size:69px}.card h2{font-size:clamp(27px,5vw,40px);color:#ffebb0;margin:6px 0}.card p{font-size:clamp(16px,2.2vw,19px);line-height:1.7}
+.primary{border:2px solid #fff0b7;background:linear-gradient(115deg,#ffe2a0,#ffc2f0);color:#4c256e;padding:13px 22px;border-radius:15px;font-size:18px;font-weight:900;box-shadow:0 5px 17px #17072f88}
+.primary:hover{transform:translateY(-2px)}
+.card a{display:inline-block;margin:12px 8px 0;color:#fff1b9;font-weight:900}
+.sparkle{position:absolute;pointer-events:none;z-index:0;color:#ffefb6;animation:twinkle 2.5s infinite}
+@keyframes float{0%,100%{translate:0 0}50%{translate:0 -10px}}
+@keyframes mirrorGlow{0%,100%{opacity:.5}50%{opacity:1}}
+@keyframes twinkle{0%,100%{opacity:.2;scale:.65}50%{opacity:1;scale:1.2}}
+@keyframes pop{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+@keyframes wiggle{0%,100%{transform:translateX(0)}25%,75%{transform:translateX(-7px)}50%{transform:translateX(7px)}}
+@media(max-width:620px){.top{padding:8px 5px;gap:5px}.pill{font-size:11px;padding:7px}.titlepill{padding:6px 8px}.titlepill h1{font-size:19px}.titlepill small{font-size:9px}.route{padding:8px 5px}.routehead{font-size:11px}.steps{gap:4px}.step{flex-direction:column;gap:2px;font-size:10px;padding:6px 2px}.arena{padding:12px 6px;min-height:560px}.mirror{padding:14px 4px 18px;border-width:6px;min-height:280px}.mirror:after{top:12px;right:10%;font-size:13px}.word{gap:2px}.letter{min-width:27px;font-size:clamp(27px,8vw,43px)}.slot{min-width:36px;font-size:clamp(29px,8vw,43px)}.mirror-picture{font-size:64px}.gems{min-height:108px}.gem{width:100px;height:100px}}
+@media(max-width:375px){.letter{min-width:23px;font-size:26px}.slot{min-width:32px;font-size:27px}.mirror{padding-left:2px;padding-right:2px}.mirror-picture{font-size:55px}.gem{width:90px;height:90px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top"><a class="pill" href="adventure-map.html">🗺️ מפת הממלכה</a><div class="titlepill"><h1>🪞 מראת התנועות</h1><small>The Magic Vowel Mirror</small></div><div class="pill" id="score">⭐ 0 / 10</div></header>
+<main>
+<nav class="route" aria-label="מסלול שלושת משחקי מראת התנועות">
+<div class="routehead"><span>🗺️ תחנה 4 · מיני־משחק 3 מתוך 3</span><span id="routeCount">0 / 3 הושלמו</span></div>
+<div class="steps"><a class="step" href="level2-vowel-gems.html" data-stage="0">🔮 אבני הקסם <span class="check">✓</span></a><a class="step" href="level2-vowel-gems-b.html" data-stage="1">💎 הצלת הקריסטלים <span class="check">✓</span></a><a class="step current" href="level2-vowel-mirror.html" data-stage="2" aria-current="step">🪞 מראת התנועות <span class="check">✓</span></a></div>
+</nav>
+<div class="questprogress"><span>✨ מחזירים את האור למראה</span><span id="progressText">0 מתוך 10 מילים</span></div>
+<div class="track" id="progressBar" role="progressbar" aria-label="מילים שהושלמו" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0"><div class="fill" id="progressFill"></div></div>
+<section class="arena" id="arena">
+<h2 class="instruction">🔮 שתי אותיות חסרות! מי יחזיר אותן למראה?</h2>
+<p class="sub">הקשיבו למילה, סדרו שתי אבני תנועה במקומות הנכונים וגלו את המילה!</p>
+<div class="mirror" id="mirror">
+<div class="mirror-picture" id="picture">🐯</div>
+<div class="mirror-label">✨ המילה הקסומה</div>
+<div class="word" id="word" aria-label="מילה עם שתי אותיות חסרות"></div>
+</div>
+<p class="magic-hint">💎 שתי אבנים מחכות למקום שלהן</p>
+<div class="gems" id="gems" aria-label="אבני תנועה לגרירה או לחיצה"></div>
+<div class="feedback" id="feedback" aria-live="polite">✨ בחרו אבן ואז מקום ריק במראה</div>
+<div class="controls"><button class="smallbtn" id="hear" type="button">🔊 שמעו את המילה</button><button class="smallbtn" id="reset" type="button">🔄 נסו לסדר מחדש</button></div>
+<p class="tips">💜 אפשר ללחוץ על אבן ואז על מקום ריק, או לגרור אותה אליו. אין איבוד לבבות!</p>
+</section>
+</main>
+<div class="overlay" id="intro"><div class="card"><div class="big">🪞🔮💎</div><h2>מראת התנועות הקסומה</h2><p>המראה איבדה <b>שתי אותיות</b> מכל מילה!<br>הקשיבו למילה, הביטו בתמונה וסדרו את שתי אבני התנועה במקומות הנכונים.<br>אם תתבלבלו, הקסם ייתן לכם לנסות שוב. 💜</p><button class="primary" id="start" type="button">✨ מתחילים לתקן את המראה!</button></div></div>
+<div class="overlay hidden" id="result"><div class="card" id="resultCard"></div></div>
+<script>
+'use strict';
+const words=[
+{word:'TIGER',emoji:'🐯',vowels:['I','E']},
+{word:'LEMON',emoji:'🍋',vowels:['E','O']},
+{word:'ZEBRA',emoji:'🦓',vowels:['E','A']},
+{word:'PIZZA',emoji:'🍕',vowels:['I','A']},
+{word:'HOTEL',emoji:'🏨',vowels:['O','E']},
+{word:'MUSIC',emoji:'🎵',vowels:['U','I']},
+{word:'CAMEL',emoji:'🐪',vowels:['A','E']},
+{word:'TABLE',emoji:'🪑',vowels:['A','E']},
+{word:'RIVER',emoji:'🏞️',vowels:['I','E']},
+{word:'PAPER',emoji:'📄',vowels:['A','E']}
+];
+const $=id=>document.getElementById(id);
+let index=0,solved=0,locked=false,selected=null,slots=[],used=[false,false],gemLetters=[];
+function speak(word){
+if(!('speechSynthesis' in window)){message('🔊 הדפדפן אינו תומך בהקראה. אפשר לומר את המילה בקול.');return}
+speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(word.toLowerCase());u.lang='en-US';u.rate=.75;u.pitch=1.08;
+const voices=speechSynthesis.getVoices();const v=voices.find(x=>x.lang.toLowerCase()==='en-us')||voices.find(x=>x.lang.startsWith('en'));if(v)u.voice=v;speechSynthesis.speak(u)
+}
+function chime(){try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;const a=new C();[523,659,784,1046].forEach((f,i)=>{const o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.0001,a.currentTime+i*.11);g.gain.exponentialRampToValueAtTime(.07,a.currentTime+i*.11+.03);g.gain.exponentialRampToValueAtTime(.0001,a.currentTime+i*.11+.35);o.connect(g).connect(a.destination);o.start(a.currentTime+i*.11);o.stop(a.currentTime+i*.11+.37)});setTimeout(()=>a.close().catch(()=>{}),1300)}catch(e){}}
+function message(t,err=false){$('feedback').textContent=t;$('feedback').classList.toggle('error',err)}
+function updateProgress(){
+$('score').textContent='⭐ '+solved+' / '+words.length;
+$('progressText').textContent=solved+' מתוך '+words.length+' מילים';
+$('progressFill').style.width=(solved/words.length*100)+'%';
+$('progressBar').setAttribute('aria-valuenow',String(solved))
+}
+function updateRoute(){
+try{const done=[localStorage.getItem('playwise-level2-vowels-intro-v1')==='complete',localStorage.getItem('playwise-level2-vowels-rescue-v1')==='complete',(()=>{const a=JSON.parse(localStorage.getItem('playwise-level2-royal-quest-v1')||'[]');return Array.isArray(a)&&a.includes(3)})()];document.querySelectorAll('[data-stage]').forEach(e=>e.classList.toggle('complete',done[Number(e.dataset.stage)]));$('routeCount').textContent=done.filter(Boolean).length+' / 3 הושלמו'}catch(e){}
+}
+function decorate(){const a=$('arena');a.querySelectorAll('.sparkle').forEach(e=>e.remove());for(let i=0;i<24;i++){const e=document.createElement('span');e.className='sparkle';e.textContent=i%3?'✦':'✧';e.style.left=(Math.random()*95+2)+'%';e.style.top=(Math.random()*94+3)+'%';e.style.animationDelay=(Math.random()*3)+'s';e.style.fontSize=(11+Math.random()*15)+'px';a.append(e)}}
+function getVowelPositions(word){
+const p=[];for(let i=0;i<word.length;i++)if('AEIOU'.includes(word[i]))p.push(i);
+if(p.length!==2)throw Error('Every mirror word must have exactly two vowels: '+word);
+return p
+}
+function render(){
+locked=false;selected=null;slots=[null,null];used=[false,false];const item=words[index];const positions=getVowelPositions(item.word);
+gemLetters=Math.random()<.5?[...item.vowels]:[...item.vowels].reverse();
+$('picture').textContent=item.emoji;$('mirror').classList.remove('solved');$('word').innerHTML='';
+for(let i=0;i<item.word.length;i++){
+const j=positions.indexOf(i);
+if(j===-1){const e=document.createElement('span');e.className='letter';e.textContent=item.word[i];$('word').append(e)}
+else{const b=document.createElement('button');b.className='slot empty';b.type='button';b.dataset.slot=String(j);b.setAttribute('aria-label','מקום ריק מספר '+(j+1));b.onclick=()=>clickSlot(j);b.addEventListener('dragover',e=>{if(locked)return;e.preventDefault();b.classList.add('ready')});b.addEventListener('dragleave',()=>b.classList.remove('ready'));b.addEventListener('drop',e=>{e.preventDefault();b.classList.remove('ready');const k=Number(e.dataTransfer.getData('text/plain'));if(Number.isInteger(k)&&k>=0&&k<2)place(k,j)});$('word').append(b)}
+}
+$('gems').innerHTML='';
+gemLetters.forEach((letter,k)=>{const b=document.createElement('button');b.className='gem';b.type='button';b.draggable=true;b.textContent=letter;b.dataset.gem=String(k);b.setAttribute('aria-label','אבן האות '+letter);b.onclick=()=>clickGem(k);b.addEventListener('dragstart',e=>{if(used[k]||locked){e.preventDefault();return}e.dataTransfer.setData('text/plain',String(k));e.dataTransfer.effectAllowed='move'});$('gems').append(b)});
+$('hear').onclick=()=>speak(item.word);message('✨ בחרו אבן ואז מקום ריק במראה');updateProgress();decorate()
+}
+function redraw(){
+document.querySelectorAll('.slot').forEach(b=>{const j=Number(b.dataset.slot),k=slots[j];b.textContent=k===null?'':gemLetters[k];b.classList.toggle('empty',k===null);b.classList.toggle('filled',k!==null);b.setAttribute('aria-label',k===null?'מקום ריק מספר '+(j+1):'האות '+gemLetters[k]+' — לחצו כדי להחזיר אותה')});
+document.querySelectorAll('.gem').forEach(b=>{const k=Number(b.dataset.gem);b.disabled=used[k];b.setAttribute('aria-pressed',String(selected===k))});
+}
+function clickGem(k){if(locked||used[k])return;selected=k;redraw();message('✨ עכשיו לחצו על המקום המתאים במראה');}
+function clickSlot(j){if(locked)return;if(slots[j]!==null){used[slots[j]]=false;slots[j]=null;selected=null;redraw();message('💜 האבן חזרה! אפשר לבחור מחדש');return}
+if(selected!==null)place(selected,j);
+else message('💎 קודם בחרו אחת משתי אבני התנועה')}
+function place(k,j){if(locked||used[k])return;if(slots[j]!==null)used[slots[j]]=false;slots[j]=k;used[k]=true;selected=null;redraw();
+if(slots.every(v=>v!==null)){locked=true;setTimeout(checkAnswer,250)}else message('✨ יפה! עכשיו סדרו גם את האבן השנייה')}
+function checkAnswer(){
+const item=words[index],attempt=slots.map(k=>gemLetters[k]);
+if(attempt[0]!==item.vowels[0]||attempt[1]!==item.vowels[1]){
+message('💜 כמעט! שתי האבנים צריכות להחליף מקומות. נסו שוב!',true);
+$('mirror').style.animation='wiggle .5s ease-in-out';setTimeout(()=>{$('mirror').style.animation='';slots=[null,null];used=[false,false];locked=false;selected=null;redraw()},850);return
+}
+$('mirror').classList.add('solved');chime();solved++;updateProgress();message('🌟 קסם! '+item.word+' — החזרתם למראה את שתי האותיות!');
+setTimeout(()=>{const last=solved===words.length;const card=last?'<div class="big">🪞👑🌈</div><h2>המראה זוהרת שוב!</h2><p>סידרתם שתי אותיות בכל אחת מעשר המילים והחזרתם את האור לממלכה!<br>💎 קיבלתם את אבן הקסם של תחנה 4!</p><button class="primary" id="next">🐉 למערת הדרקון</button><p><a href="adventure-map.html">🗺️ חזרה למפת הממלכה</a></p>':'<div class="big">🪞✨💎</div><h2>המראה התמלאה בקסם!</h2><p>השלמתם את המילה <b dir="ltr">'+item.word+'</b> עם שתי אותיות התנועה הנכונות!</p><button class="primary" id="next">🔮 למילה הקסומה הבאה</button>';
+$('resultCard').innerHTML=card;$('result').classList.remove('hidden');
+$('next').onclick=()=>{if(last){location.href='level2-quest.html?stage=5'}else{$('result').classList.add('hidden');index++;render();speak(words[index].word)}};
+if(last)saveCompletion();
+},1050)
+}
+function saveCompletion(){try{const key='playwise-level2-royal-quest-v1';let d=JSON.parse(localStorage.getItem(key)||'[]');if(!Array.isArray(d))d=[];if(!d.includes(3))d.push(3);localStorage.setItem(key,JSON.stringify(d));localStorage.setItem('playwise-level2-vowel-mirror-v1','complete')}catch(e){}updateRoute()}
+$('reset').onclick=()=>{if(locked)return;slots=[null,null];used=[false,false];selected=null;redraw();message('✨ מתחילים מחדש! סדרו את שתי האבנים')};
+$('start').onclick=()=>{$('intro').classList.add('hidden');render();speak(words[0].word)};
+updateRoute();render();
+</script>
+</body></html>
