@@ -89,7 +89,7 @@ main{padding-top:49px}.eyebrow{padding:5px 11px;font-size:13px}h1{font-size:clam
 <div class="challenge" aria-live="polite"><strong id="challenge">✨ אספו את מילות הקסם</strong><small id="hint">פוצצו בועות מילים, אספו אותיות וכוכבי רמז, ואז בנו מילים והתאימו פירוש</small><div class="examples" id="answers"></div></div>
 <div class="stage-track" id="stageTrack" aria-label="התקדמות בעשר תחנות"></div>
 <div class="board"><canvas id="game" width="960" height="540" aria-label="משחק פעולה עם בועות קופצות ופיית קסם" role="img"></canvas>
-<div class="overlay" id="overlay"><div class="modal"><div class="emojis" id="modalEmoji">🧚‍♀️🫧🏰</div><h2 id="modalTitle">ברוכים הבאים לבועות הקסם!</h2><p id="modalText">פוצצו בועה גדולה עם מילת קסם: היא מתפצלת <b>לשתי בועות קטנות יותר</b>, וכל בועה יכולה להתפצל שוב לשתיים. כל בועה עם אות שמשמידים משחררת <b>אות אחת לרצפה</b> — אספו אותה ובנו את המילה. ⭐ כוכב שנופל הוא <b>רמז</b>: אספו אותו תוך 10 שניות, שמרו רמזים לכל המסע, והשתמשו בכל רמז כדי לחשוף אות אחת בסוף התחנה.<br>💜 מתחילים עם <b>7 חיים לכל עשר התחנות יחד</b> ועם שעון לכל תחנה. בדרך אפשר לאסוף ⭐ נקודות, 💜 חיים נוספים, ⏳ זמן נוסף ו־🛡️ מגן זמני. בועות גדולות מתפצלות לקטנות!</p><button class="primary" id="play">✨ מתחילים בהרפתקה!</button></div></div>
+<div class="overlay" id="overlay"><div class="modal"><div class="emojis" id="modalEmoji">🧚‍♀️🫧🏰</div><h2 id="modalTitle">ברוכים הבאים לבועות הקסם!</h2><p id="modalText">פוצצו בועה גדולה עם מילת קסם: היא מתפצלת <b>לשתי בועות קטנות יותר</b>, וכל בועה יכולה להתפצל שוב לשתיים. כל בועה עם אות שמשמידים משחררת <b>אות אחת לרצפה</b> — אספו אותה ובנו את המילה. גם בועות שאין בהן אות ממשיכות להתפצל בזוגות עד לגודל הקטן ביותר. 🎁 בדרך תמצאו מטבעות, יהלומים, כתרים, קשתות, מגנט קסום וירי מהיר! ⭐ רמזים ו־💜 חיים נוספים הם הפתעות נדירות.<br>💜 מתחילים עם <b>7 חיים לכל עשר התחנות יחד</b> ועם שעון לכל תחנה. בדרך אפשר לאסוף גם ⏳ זמן נוסף ו־🛡️ מגן זמני. בועות גדולות מתפצלות לקטנות!</p><button class="primary" id="play">✨ מתחילים בהרפתקה!</button></div></div>
 </div>
 <section class="arcade-panel" aria-label="לוח המשחק: זמן, חיים ורמזים">
  <div class="arcade-clock"><span>⏳ TIME</span><div class="arcade-meter" id="timeMeter" role="progressbar" aria-label="זמן שנותר" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><div class="arcade-meter-fill" id="timeFill"></div></div><strong id="timeHud" aria-live="off">01:40</strong></div>
@@ -376,7 +376,7 @@ const letterTargets=()=>wordTargets().flatMap((word,wi)=>[...word].map((letter,l
 const stageTime=()=>STAGE_SECONDS+Math.max(0,letterTargets().length-9)*4;
 let level=saved.run?.level??0,coins=saved.coins,points=saved.run?.points??0,earned=0,earnedPoints=0;
 let hearts=saved.run?.hearts??7,hints=saved.run?.hints??0,seconds=STAGE_SECONDS,shield=0,collected=new Set();
-let poppedLetters=0,starDropped=false;
+let rapidFire=0,magnetTime=0;
 let started=false,paused=true,gameOver=false,invuln=0,fireDelay=0,frameTime=0,transition=0,flash=0,quizOpen=false;
 let player={x:480,y:FLOOR-30,w:45,h:59},bubbles=[],beams=[],drops=[],particles=[],stars=[];
 let controls={left:false,right:false,fire:false};
@@ -390,24 +390,20 @@ function toast(t){$('toast').textContent=t}
 function rnd(a,b){return a+rand()*(b-a)}
 function makeBubble(label,size,x,y,vx,extra={}){return{label,size,x,y,vx,vy:rnd(-200,-100),r:[20,29,39,51,65][size],phase:rand()*6,...extra}}
 function letterBubbleTree(word){
- // Every letter bubble drops one letter. Internal letter bubbles split into two.
- // An odd number of letters needs one bonus-star bubble to keep splits in pairs.
- const nodes=letterTargets().filter(t=>t.word===word).map(t=>({label:t.letter,letterId:t.id,word,children:[]}));
- if(nodes.length%2)nodes.push({label:'⭐',word,bonus:true,children:[]});
- const roots=nodes.slice(0,2),queue=[...roots];
- for(let next=2;next<nodes.length;){
-  const parent=queue.shift();
-  if(!parent)throw Error('Invalid letter bubble tree');
-  parent.children=[nodes[next++],nodes[next++]];
-  queue.push(...parent.children);
+ // Every bubble above the smallest size has exactly two equally sized children.
+ // Empty descendants keep the split symmetrical even when no letters remain.
+ const letters=letterTargets().filter(t=>t.word===word);
+ const largest=letters.length>14?4:3;
+ function node(size){
+  const result={label:'',word,size,children:[]};
+  if(size>0)result.children=[node(size-1),node(size-1)];
+  return result;
  }
- const largest=nodes.length>14?4:3;
- function assign(node,depth){
-  node.size=largest-1-depth;
-  if(node.size<0)throw Error('Bubble chain too deep');
-  for(const child of node.children)assign(child,depth+1);
- }
- for(const root of roots)assign(root,0);
+ const roots=[node(largest-1),node(largest-1)];
+ const queue=[...roots];
+ for(let i=0;i<queue.length;i++)queue.push(...queue[i].children);
+ if(letters.length>queue.length)throw Error('Not enough letter bubble slots');
+ letters.forEach((letter,i)=>{queue[i].label=letter.letter;queue[i].letterId=letter.id});
  return{size:largest,children:roots};
 }
 function splitIntoChildren(b){
@@ -433,14 +429,14 @@ function saveRun(){
 }
 function makeStage(){
  const t=tasks[level];bubbles=[];beams=[];drops=[];particles=[];collected=new Set();earned=0;earnedPoints=0;
- poppedLetters=0;starDropped=false;
+ rapidFire=0;magnetTime=0;
  seconds=stageTime();shield=0;invuln=0;fireDelay=0;transition=0;flash=0;quizOpen=false;gameOver=false;player.x=W/2;
  const words=wordTargets();
  words.forEach((word,i)=>{const tree=letterBubbleTree(word);bubbles.push(makeBubble(word,tree.size,words.length===1?W/2:260+i*440,125+i*35,(i%2?1:-1)*(95+level*6),{word,children:tree.children,root:true}))});
  $('challenge').textContent=t.emoji+' '+t.name+' · '+words.length+' מיל'+(words.length===1?'ה':'ים')+' בבועות הגדולות!';
- $('hint').textContent='כל בועה גדולה מתפצלת לשתיים, ואז שוב לשתיים! כל בועת אות משחררת אות לרצפה. ⭐ רמזים נעלמים אחרי 10 שניות.';
+ $('hint').textContent='כל בועה שאינה הכי קטנה מתפצלת לשתי בועות שוות — גם בלי אות! 🎁 חפשו יהלומים, כתרים, קשתות, מגנטים וקסם מהיר. רמזים וחיים נדירים.';
  $('stageTrack').innerHTML=tasks.map((task,i)=>'<span class="'+(i<level?'done':i===level?'active':'')+'" title="'+task.name+'">'+(i<level?'✓':task.emoji)+'</span>').join('');
- updateWords();hud();toast('🔤 '+letterTargets().length+' אותיות מחכות לכם! 💡 רמזים שנאספו נשמרים לכל המסע.');
+ updateWords();hud();toast('🔤 '+letterTargets().length+' אותיות מחכות לכם! 🎁 המון הפתעות קסומות בדרך.');
 }
 function hud(){
  $('stageHud').textContent='🏰 '+(level+1)+'/10 · '+tasks[level].name;
@@ -468,37 +464,35 @@ function reset(){
  coins=saved.coins;points=0;hearts=7;hints=0;level=0;saved.run=null;save();started=true;makeStage();resume();
 }
 function burst(x,y,color,count=13){for(let i=0;i<count;i++)particles.push({x,y,vx:rnd(-210,210),vy:rnd(-230,30),life:rnd(.35,.8),color,r:rnd(2,6)})}
-function fire(){if(paused||fireDelay>0||transition>0)return;beams.push({x:player.x,y:FLOOR-56,top:FLOOR-56,life:.95});fireDelay=.37;beep(590,.08,'triangle');burst(player.x,FLOOR-57,'#ffe7a2',4)}
+function fire(){if(paused||fireDelay>0||transition>0)return;beams.push({x:player.x,y:FLOOR-56,top:FLOOR-56,life:.95});fireDelay=rapidFire>0?.15:.37;beep(590,.08,'triangle');burst(player.x,FLOOR-57,'#ffe7a2',4)}
 function spawnDrop(x,y,type,label='',life=17,id=''){
  drops.push({x,y,vx:rnd(-40,40),vy:-135,type,label,life,id});
 }
+function surpriseAt(x,y,chance=.84){
+ if(rand()>chance)return;
+ // Frequent, varied surprises; hints and extra lives are deliberately rare.
+ const roll=rand();
+ const type=roll<.25?'coin':roll<.46?'gem':roll<.58?'crown':
+  roll<.70?'rainbow':roll<.80?'lightning':roll<.89?'magnet':
+  roll<.95?'clock':roll<.975?'shield':roll<.992?'star':'heart';
+ spawnDrop(Math.max(24,Math.min(W-24,x+rnd(-18,18))),y,type,'',type==='star'?10:17);
+}
 function hitBubble(b){
- const i=bubbles.indexOf(b);if(i<0)return;bubbles.splice(i,1);
+ const i=bubbles.indexOf(b);if(i<0)return;
+ bubbles.splice(i,1);
  burst(b.x,b.y,b.root?'#d5b4ff':'#a8edff',b.root?25:12);
  beep(500+b.size*110,.09,'sine');earnedPoints+=10;
  if(b.root){
-  // Only the original largest bubble displays the whole word.
   splitIntoChildren(b);
-  toast('💥 '+b.word+' התפצלה לשתי בועות! פוצצו כל אות ואספו אותה מהרצפה.');
+  toast('💥 '+b.word+' התפצלה לשתי בועות! גם בועות בלי אות מתפצלות עד לגודל הקטן ביותר.');
  }else{
-  // Every letter bubble, even a medium one, drops its letter when popped.
-  if(b.bonus){
-   spawnDrop(b.x,b.y,'star','',10);
-  }else{
-   poppedLetters++;
-   if(!collected.has(b.letterId)&&!drops.some(d=>d.type==='letter'&&d.id===b.letterId))
-    spawnDrop(b.x,b.y,'letter',b.label,9999,b.letterId);
-   if(!starDropped&&poppedLetters>=2){
-    spawnDrop(Math.max(45,Math.min(W-45,b.x+42)),b.y,'star','',10);
-    starDropped=true;
-   }else if(rand()<.19)spawnDrop(b.x+22,b.y,'star','',10);
-   if(rand()<.11){
-    const chance=rand();
-    spawnDrop(b.x-25,b.y,chance<.18?'heart':chance<.46?'clock':chance<.72?'shield':'coin');
-   }
-  }
+  if(b.letterId&&!collected.has(b.letterId)&&!drops.some(d=>d.type==='letter'&&d.id===b.letterId))
+   spawnDrop(b.x,b.y,'letter',b.label,9999,b.letterId);
+  // No letter is required for a bubble to split or release a surprise.
   splitIntoChildren(b);
  }
+ surpriseAt(b.x,b.y,b.root?1:.84);
+ if(!b.root&&rand()<.16)surpriseAt(b.x+32,b.y,.85);
  hud();
 }
 function getDrop(d){
@@ -513,11 +507,22 @@ function getDrop(d){
   else{earnedPoints+=100;toast('💜 החיים מלאים!')}
   beep(950,.14);
  }else if(d.type==='clock'){
-  seconds+=15;toast('⏳ קיבלתם עוד 15 שניות!');beep(790,.12);
+  seconds+=12;toast('⏳ הפתעת זמן! קיבלתם עוד 12 שניות.');beep(790,.12);
  }else if(d.type==='shield'){
-  const duration=5+rand()*2;shield=duration;toast('🛡️ מגן קסום! אתם מוגנים ל־'+Math.round(duration*10)/10+' שניות.');beep(620,.15);
+  shield=6;toast('🛡️ מגן קסום! הגנה לשש שניות.');beep(620,.15);
  }else if(d.type==='star'){
-  hints=Math.min(99,hints+1);toast('⭐ אספתם רמז! יש לכם '+hints+' רמזים לכל המסע.');beep(1000,.1);saveRun();
+  hints=Math.min(99,hints+1);toast('⭐ הפתעה נדירה: רמז נוסף!');beep(1000,.1);saveRun();
+ }else if(d.type==='gem'){
+  earnedPoints+=85;toast('💎 יהלום קסום! 85 נקודות בונוס.');beep(1080,.14);
+ }else if(d.type==='crown'){
+  earned+=30;toast('👑 כתר אוצר! 30 מטבעות נוספים.');beep(990,.15);
+ }else if(d.type==='rainbow'){
+  earned+=5;earnedPoints+=130;burst(d.x,d.y,'#ffb6f6',32);
+  toast('🌈 קשת הפתעות! 130 נקודות ו־5 מטבעות.');beep(1150,.18);
+ }else if(d.type==='lightning'){
+  rapidFire=Math.max(rapidFire,7);toast('⚡ קסם מהיר! ירי מהיר לשבע שניות.');beep(1250,.12);
+ }else if(d.type==='magnet'){
+  magnetTime=Math.max(magnetTime,8);toast('🧲 מגנט קסום! אוסף הפתעות מרחוק לשמונה שניות.');beep(730,.17);
  }else{
   earned+=10;earnedPoints+=20;toast('🪙 אספתם 10 מטבעות!');beep(750,.05);
  }
@@ -651,7 +656,7 @@ function update(dt){
  if(paused)return;
  seconds=Math.max(0,seconds-dt);
  if(seconds<=0){loseLife('time');return}
- shield=Math.max(0,shield-dt);invuln=Math.max(0,invuln-dt);fireDelay=Math.max(0,fireDelay-dt);flash=Math.max(0,flash-dt);
+ shield=Math.max(0,shield-dt);invuln=Math.max(0,invuln-dt);fireDelay=Math.max(0,fireDelay-dt);flash=Math.max(0,flash-dt);rapidFire=Math.max(0,rapidFire-dt);magnetTime=Math.max(0,magnetTime-dt);
  const speed=345;
  if(controls.left)player.x-=speed*dt;
  if(controls.right)player.x+=speed*dt;
@@ -671,7 +676,7 @@ function update(dt){
  }
  for(let i=drops.length-1;i>=0;i--){const d=drops[i];d.x+=d.vx*dt;d.y+=d.vy*dt;d.vy+=460*dt;d.life-=dt;
   if(d.y>FLOOR-15){d.y=FLOOR-15;d.vy=0;d.vx*=.9}
-  if(Math.abs(d.x-player.x)<37&&Math.abs(d.y-(FLOOR-30))<48){drops.splice(i,1);getDrop(d);continue}
+  if((Math.abs(d.x-player.x)<37&&Math.abs(d.y-(FLOOR-30))<48)||(magnetTime>0&&Math.hypot(d.x-player.x,d.y-(FLOOR-30))<165)){drops.splice(i,1);getDrop(d);continue}
   if(d.life<=0&&d.type!=='letter')drops.splice(i,1);
  }
  for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=200*dt;p.life-=dt;if(p.life<=0)particles.splice(i,1)}
@@ -706,7 +711,7 @@ function draw(time){
   const isLetter=d.type==='letter',size=isLetter?21:18;
   circle(d.x,d.y,size,isLetter?'#fff2bc':d.type==='shield'?'#9beefa':'#f8d477');
   ctx.fillStyle='#432052';ctx.font='bold '+(isLetter?'22':'20')+'px Arial';ctx.textAlign='center';ctx.textBaseline='middle';
-  const icon={heart:'💜',clock:'⏳',shield:'🛡️',star:'⭐',coin:'🪙'}[d.type];
+  const icon={heart:'💜',clock:'⏳',shield:'🛡️',star:'⭐',coin:'🪙',gem:'💎',crown:'👑',rainbow:'🌈',lightning:'⚡',magnet:'🧲'}[d.type];
   ctx.fillText(isLetter?d.label:icon||'✨',d.x,d.y+1);
   if(d.type==='star'){ctx.fillStyle='#fff';ctx.font='bold 15px Arial';ctx.fillText(''+Math.ceil(d.life),d.x+19,d.y-16)}
   ctx.restore();
@@ -715,6 +720,8 @@ function draw(time){
  if(!(invuln>0&&Math.floor(time*10)%2===0)){
   ctx.save();ctx.shadowColor='#f4a8ff';ctx.shadowBlur=23;circle(player.x,FLOOR-31,29,'#ba80ef99');ctx.shadowBlur=0;ctx.font='55px "Segoe UI Emoji",Arial';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('🧚‍♀️',player.x,FLOOR-33);ctx.font='28px "Segoe UI Emoji",Arial';ctx.fillText('🪄',player.x+28,FLOOR-60);ctx.restore();
  }
+ if(magnetTime>0){ctx.save();ctx.strokeStyle='#f7aaff99';ctx.lineWidth=3;ctx.setLineDash([9,9]);ctx.beginPath();ctx.arc(player.x,FLOOR-31,80+5*Math.sin(time*6),0,Math.PI*2);ctx.stroke();ctx.restore()}
+ if(rapidFire>0){ctx.save();ctx.shadowColor='#ffdb68';ctx.shadowBlur=20;circle(player.x+28,FLOOR-77,10,'#ffe47a');ctx.restore()}
  if(shield>0){
   ctx.save();ctx.strokeStyle='#94f8ff';ctx.lineWidth=5;ctx.shadowColor='#72e9ff';ctx.shadowBlur=26;
   ctx.beginPath();ctx.ellipse(player.x,FLOOR-35,47,62,0,0,Math.PI*2);ctx.stroke();
