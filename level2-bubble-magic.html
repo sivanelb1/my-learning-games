@@ -68,6 +68,16 @@ main{padding-top:49px}.eyebrow{padding:5px 11px;font-size:13px}h1{font-size:clam
 .stage-track span{width:clamp(25px,3vw,32px);height:clamp(25px,3vw,32px)}
 .board,.arcade-panel{max-width:900px}
 @media(max-width:600px){main{padding-top:53px}.eyebrow{font-size:11px}.challenge{padding:6px 7px}.stage-track{margin:5px auto}.board,.arcade-panel{max-width:100%}}
+
+.phonics-hint{background:linear-gradient(120deg,#ffdc73,#ffb6d9);color:#432054;border:2px solid #fff1b5;border-radius:13px;padding:11px 16px;font-size:clamp(15px,2.5vw,19px);font-weight:900;box-shadow:0 3px 0 #a66a6e}
+.phonics-hint:hover,.phonics-hint:focus-visible{outline:3px solid #fff6b1;filter:brightness(1.07)}
+.phonics-hint[hidden]{display:none!important}
+.phonics-chunks button.hinted{outline:4px solid #89fff1;outline-offset:2px;box-shadow:0 0 20px #8affec,0 4px 0 #9a5d52;animation:hintGlow .7s ease-in-out infinite alternate}
+@keyframes hintGlow{to{filter:brightness(1.25);box-shadow:0 0 28px #d1ff9c,0 4px 0 #9a5d52}}
+.phonics-slot{width:clamp(41px,7vw,61px);min-width:clamp(41px,7vw,61px);min-height:clamp(44px,7vw,61px);padding:5px 3px}
+.phonics-slot:has(.digraph){width:auto}
+.phonics-chunks button{min-width:clamp(45px,7vw,66px);min-height:48px;padding:7px 10px}
+@media(max-width:600px){.phonics-hero{gap:6px}.phonics-hint,.phonics-listen{padding:8px 10px;font-size:14px}.phonics-slots{gap:4px}.phonics-slot{width:39px;min-width:39px;min-height:43px;font-size:18px}.phonics-chunks{gap:5px}.phonics-chunks button{min-width:42px;min-height:45px;font-size:19px;padding:6px 8px}}
 </style></head><body>
 <a class="back" href="adventure-map.html">🗺️ חזרה לעולם</a>
 <main>
@@ -694,7 +704,7 @@ function quizStage(){
  quizOpen=true;paused=true;controls.left=controls.right=controls.fire=false;
  $('overlay').hidden=false;$('modalEmoji').textContent='🪄📚🔊';$('modalTitle').textContent='בית המלאכה של המילים!';
  $('play').hidden=true;
- $('modalText').innerHTML='<p>הקשיבו למילה, <b>הרכיבו אותה מחלקי הצליל</b>, ואז התאימו לה את הפירוש בעברית.</p><div class="quiz-progress" id="quizProgress"></div><div class="phonics-hero"><span class="phonics-picture" id="phonicsPicture"></span><button class="phonics-listen" type="button" id="listenWord">🔊 שמעו את המילה</button></div><p class="quiz-prompt" id="quizPrompt"></p><div class="phonics-slots" id="phonicsSlots"></div><div class="phonics-chunks" id="phonicsChunks"></div><div class="quiz-choices" id="quizChoices"></div><div class="quiz-feedback" id="quizFeedback" role="status" aria-live="polite"></div>';
+ $('modalText').innerHTML='<p>הקשיבו למילה, <b>בחרו משבצת לכל אות</b> (צלילים מיוחדים כמו SH ו־CH נשארים יחד), ואז התאימו את המילה לפירוש בעברית. צריכים עזרה? לחצו על 💡 רמז!</p><div class="quiz-progress" id="quizProgress"></div><div class="phonics-hero"><span class="phonics-picture" id="phonicsPicture"></span><button class="phonics-listen" type="button" id="listenWord">🔊 שמעו את המילה</button><button class="phonics-hint" type="button" id="hintWord">💡 רמז</button></div><p class="quiz-prompt" id="quizPrompt"></p><div class="phonics-slots" id="phonicsSlots"></div><div class="phonics-chunks" id="phonicsChunks"></div><div class="quiz-choices" id="quizChoices"></div><div class="quiz-feedback" id="quizFeedback" role="status" aria-live="polite"></div>';
  const t=tasks[level],order=[0,1,2].sort(()=>rand()-.5);
  let round=0,phase='build',selected=[];
  function render(){
@@ -702,29 +712,37 @@ function quizStage(){
   $('quizProgress').textContent='✨ מילה '+(round+1)+' מתוך 3 · '+(phase==='build'?'שלב 1: בניית מילה':'שלב 2: התאמת פירוש');
   $('phonicsPicture').textContent=t.pictures[index];
   $('listenWord').onclick=()=>sayWord(word);
-  $('quizFeedback').textContent=phase==='build'?'לחצו על חלקי הצליל בסדר ששמעתם':'בחרו את הפירוש המתאים למילה שבניתם';
+  $('hintWord').hidden=phase!=='build';
+  $('quizFeedback').textContent=phase==='build'?'לחצו על אות אחת בכל פעם, לפי הסדר. צלילים מיוחדים נשארים יחד.':'בחרו את הפירוש המתאים למילה שבניתם';
   $('phonicsSlots').innerHTML='';$('phonicsChunks').innerHTML='';$('quizChoices').innerHTML='';
   if(phase==='build'){
-   $('quizPrompt').textContent='🧩 איך כותבים את המילה ששמעתם?';
+   $('quizPrompt').textContent='🧩 בנו את המילה: משבצת לכל אות או צליל מיוחד';
    for(let j=0;j<parts.length;j++){
-    const slot=document.createElement('span');slot.className='phonics-slot'+(j<selected.length?' filled':'');slot.textContent=j<selected.length?parts[j]:'?';
+    const slot=document.createElement('span');slot.className='phonics-slot'+(j<selected.length?' filled':'');slot.textContent=j<selected.length?parts[j]:'?';slot.setAttribute('aria-label','משבצת '+(j+1)+' מתוך '+parts.length);
     $('phonicsSlots').append(slot);
    }
    const chunks=parts.map((part,i)=>({part,i})).sort(()=>rand()-.5);
    for(const chunk of chunks){
     const btn=document.createElement('button');btn.type='button';btn.textContent=chunk.part;btn.disabled=selected.includes(chunk.i);
     btn.onclick=()=>{
-     if(chunk.i!==selected.length){$('quizFeedback').textContent='💜 נסו חלק צליל אחר. אפשר להאזין שוב!';beep(270,.08);return}
+     if(chunk.part!==parts[selected.length]){$('quizFeedback').textContent='💜 נסו אות או צליל אחר. אפשר להשתמש ברמז!';beep(270,.08);return}
      selected.push(chunk.i);btn.disabled=true;
+     for(const tile of $('phonicsChunks').children)tile.classList.remove('hinted');
      const slot=$('phonicsSlots').children[selected.length-1];slot.textContent=chunk.part;slot.className='phonics-slot filled';
      beep(560+selected.length*110,.09);
      if(selected.length===parts.length){
       earnedPoints+=50;phase='meaning';sayWord(word);render();
       $('quizFeedback').textContent='🌟 בניתם את '+word+'! עכשיו מצאו את הפירוש.';
-     }else $('quizFeedback').textContent='✨ יופי! ממשיכים לחלק הצליל הבא.';
+     }else $('quizFeedback').textContent='✨ יופי! ממשיכים למשבצת הבאה.';
     };
     $('phonicsChunks').append(btn);
    }
+   $('hintWord').onclick=()=>{
+    const next=parts[selected.length];if(!next)return;
+    for(const tile of $('phonicsChunks').children){tile.classList.remove('hinted');if(!tile.disabled&&tile.textContent===next)tile.classList.add('hinted')}
+    $('quizFeedback').textContent='💡 רמז: חפשו את המשבצת הזוהרת עם '+next+(next.length>1?' — זהו צליל מיוחד!':'');
+    beep(810,.13);
+   };
   }else{
    $('quizPrompt').textContent='📖 '+word+' = ?';
    const meanings=t.meanings.map((meaning,i)=>({meaning,i})).sort(()=>rand()-.5);
