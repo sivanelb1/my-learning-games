@@ -13,7 +13,7 @@ header{display:flex;align-items:center;justify-content:space-between;gap:8px;max
 main{max-width:1080px;width:96vw;margin:0 auto 30px}
 .progress{border:2px solid #ffe2a4;border-radius:17px;background:linear-gradient(120deg,#32145ce8,#56308ae8);padding:10px 14px;margin:0 0 13px}
 .progress-head{display:flex;align-items:center;justify-content:space-between;gap:10px;font-weight:900;color:#ffedb8;font-size:clamp(12px,1.8vw,16px)}
-.shield-track{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:9px;direction:ltr;margin-top:8px}
+.shield-track{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:6px;direction:ltr;margin-top:8px}
 .track-item{border:2px solid #a27cc7;border-radius:12px;background:#251348;min-height:55px;text-align:center;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:1px;transition:background .3s,transform .3s}
 .track-item .icon{font-size:clamp(20px,3vw,29px);filter:grayscale(1);opacity:.55}
 .track-item.done{background:#296453;border-color:#c5ffdc}.track-item.done .icon{filter:none;opacity:1}
@@ -69,7 +69,7 @@ main{max-width:1080px;width:96vw;margin:0 auto 30px}
 @keyframes wiggle{0%,100%{transform:translateX(0)}25%,75%{transform:translateX(-8px)}50%{transform:translateX(8px)}}
 @keyframes pop{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
 @keyframes twinkle{0%,100%{opacity:.15;scale:.7}50%{opacity:1;scale:1.2}}
-@media(max-width:620px){header{padding:8px 5px}.title{padding:6px 8px}.title h1{font-size:19px}.title small{font-size:9px}.pill{padding:7px;font-size:11px}.progress{padding:8px}.shield-track{gap:4px}.track-item{min-height:43px}.arena{padding:12px 7px;min-height:500px}.battle{grid-template-columns:.7fr 1.3fr .7fr;gap:4px}.dragon,.knight{font-size:clamp(45px,10vw,66px)}.castle{min-height:110px}.castle .castle-emoji{font-size:60px}.prompt{gap:7px;padding:7px}.prompt-text{font-size:16px}.picture{font-size:43px}.listen{font-size:12px;padding:8px}.choices{gap:7px}.shield{min-height:123px;border-width:3px}.shield .letter{font-size:58px}.shield .small{font-size:10px}}
+@media(max-width:620px){.shield-track{grid-template-columns:repeat(5,minmax(0,1fr));row-gap:6px}.track-item{min-height:38px}.track-item .icon{font-size:18px}header{padding:8px 5px}.title{padding:6px 8px}.title h1{font-size:19px}.title small{font-size:9px}.pill{padding:7px;font-size:11px}.progress{padding:8px}.shield-track{gap:4px}.track-item{min-height:43px}.arena{padding:12px 7px;min-height:500px}.battle{grid-template-columns:.7fr 1.3fr .7fr;gap:4px}.dragon,.knight{font-size:clamp(45px,10vw,66px)}.castle{min-height:110px}.castle .castle-emoji{font-size:60px}.prompt{gap:7px;padding:7px}.prompt-text{font-size:16px}.picture{font-size:43px}.listen{font-size:12px;padding:8px}.choices{gap:7px}.shield{min-height:123px;border-width:3px}.shield .letter{font-size:58px}.shield .small{font-size:10px}}
 @media(max-width:380px){.shield{min-height:107px}.shield .letter{font-size:47px}.prompt-text{font-size:14px}.dragon,.knight{font-size:42px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
 </style>
@@ -78,17 +78,17 @@ main{max-width:1080px;width:96vw;margin:0 auto 30px}
 <header>
 <a href="adventure-map.html" class="pill">🗺️ מפת הממלכה</a>
 <div class="title"><h1>🛡️ מגיני האבירים</h1><small>Knight Sounds · PLAYWISE</small></div>
-<div class="pill" id="score">⭐ 0 / 6</div>
+<div class="pill" id="score">⭐ 0 / 10</div>
 </header>
 <main>
-<nav class="progress" aria-label="סרגל ששת מגיני ההגנה">
-<div class="progress-head"><span>🏰 הגנו על הטירה · תחנה 2 בממלכה</span><span id="progressText">0 מתוך 6 מגינים</span></div>
+<nav class="progress" aria-label="סרגל עשרת מגיני ההגנה">
+<div class="progress-head"><span>🏰 הגנו על הטירה · תחנה 2 בממלכה</span><span id="progressText">0 מתוך 10 מגינים</span></div>
 <div class="shield-track" id="shieldTrack"></div>
-<div class="track-bar" id="progressBar" role="progressbar" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0" aria-label="מגינים שהופעלו"><div class="track-fill" id="trackFill"></div></div>
+<div class="track-bar" id="progressBar" role="progressbar" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" aria-label="מגינים שהופעלו"><div class="track-fill" id="trackFill"></div></div>
 </nav>
 <section class="arena" id="arena">
 <h2 class="instruction">🐉 הדרקון בדרך! בחרו את המגן עם הצליל הראשון</h2>
-<p class="sub">הביטו בתמונה, האזינו למילה והצילו את הטירה!</p>
+<p class="sub">הביטו בתמונה, האזינו למילה והצילו את הטירה! מילים חדשות בכל משימה</p>
 <div class="battle">
 <div class="dragon" id="dragon" aria-label="דרקון">🐉</div>
 <div class="castle" id="castle" aria-label="גררו לכאן את המגן הנכון"><span class="castle-emoji">🏰</span><span class="castle-name">הטירה הקסומה</span></div>
@@ -101,18 +101,22 @@ main{max-width:1080px;width:96vw;margin:0 auto 30px}
 </section>
 </main>
 <div class="overlay" id="intro">
-<div class="card"><div class="big">🛡️🏰🐉</div><h2>האבירים זקוקים לכם!</h2><p>דרקון שובב שלח קסם לעבר הטירה! בכל סיבוב תופיע תמונה ותישמע מילה באנגלית.<br><b>בחרו את המגן עם האות שמתחילה את המילה</b> — והטירה תינצל!</p><button class="primary" id="start">⚔️ מתחילים להגן על הטירה!</button></div>
+<div class="card"><div class="big">🛡️🏰🐉</div><h2>האבירים זקוקים לכם!</h2><p>דרקון שובב שלח קסם לעבר הטירה! בכל סיבוב תופיע תמונה ותישמע מילה באנגלית — הפעם עם מילים חדשות וארוכות יותר!<br><b>בחרו את המגן עם האות שמתחילה את המילה</b> — והטירה תינצל!</p><button class="primary" id="start">⚔️ מתחילים להגן על הטירה!</button></div>
 </div>
 <div class="overlay hidden" id="result"><div class="card" id="resultCard"></div></div>
 <script>
 'use strict';
 const rounds=[
-{word:'cat',emoji:'🐱',correct:'C',letters:['C','B','T']},
-{word:'dog',emoji:'🐶',correct:'D',letters:['D','G','P']},
-{word:'sun',emoji:'☀️',correct:'S',letters:['S','F','N']},
-{word:'fish',emoji:'🐟',correct:'F',letters:['F','H','M']},
-{word:'ball',emoji:'⚽',correct:'B',letters:['B','D','V']},
-{word:'hat',emoji:'🎩',correct:'H',letters:['H','A','T']}
+{word:'apple',emoji:'🍎',correct:'A',letters:['A','E','O']} ,
+{word:'monkey',emoji:'🐒',correct:'M',letters:['M','N','W']} ,
+{word:'tiger',emoji:'🐯',correct:'T',letters:['T','D','P']} ,
+{word:'rabbit',emoji:'🐰',correct:'R',letters:['R','L','B']} ,
+{word:'pencil',emoji:'✏️',correct:'P',letters:['P','B','F']} ,
+{word:'window',emoji:'🪟',correct:'W',letters:['W','V','M']} ,
+{word:'zebra',emoji:'🦓',correct:'Z',letters:['Z','S','C']} ,
+{word:'jacket',emoji:'🧥',correct:'J',letters:['J','Y','K']} ,
+{word:'lemon',emoji:'🍋',correct:'L',letters:['L','R','N']} ,
+{word:'banana',emoji:'🍌',correct:'B',letters:['B','D','P']}
 ];
 const $=id=>document.getElementById(id);
 const shuffle=a=>a.map(v=>({v,k:Math.random()})).sort((a,b)=>a.k-b.k).map(x=>x.v);
@@ -125,9 +129,9 @@ function chime(){try{const C=window.AudioContext||window.webkitAudioContext;if(!
 function setFeedback(t,err=false){$('feedback').textContent=t;$('feedback').classList.toggle('error',err)}
 function updateProgress(){
 $('shieldTrack').innerHTML=rounds.map((r,i)=>'<div class="track-item '+(i<solved?'done':i===index?'active':'')+'" aria-label="מגן '+(i+1)+(i<solved?' הופעל':'')+'"><span class="icon">'+(i<solved?'🛡️':i===index?'⚔️':'🔒')+'</span><span class="num">'+(i+1)+'</span></div>').join('');
-$('progressText').textContent=solved+' מתוך 6 מגינים';
-$('score').textContent='⭐ '+solved+' / 6';
-$('trackFill').style.width=(solved/6*100)+'%';
+$('progressText').textContent=solved+' מתוך '+rounds.length+' מגינים';
+$('score').textContent='⭐ '+solved+' / '+rounds.length;
+$('trackFill').style.width=(solved/rounds.length*100)+'%';
 $('progressBar').setAttribute('aria-valuenow',String(solved))
 }
 function sparkles(){const a=$('arena');a.querySelectorAll('.spark').forEach(x=>x.remove());for(let i=0;i<23;i++){const s=document.createElement('span');s.className='spark';s.textContent=i%3?'✦':'✧';s.style.left=(Math.random()*95+2)+'%';s.style.top=(Math.random()*89+4)+'%';s.style.animationDelay=(Math.random()*3)+'s';s.style.fontSize=(12+Math.random()*14)+'px';a.append(s)}}
@@ -149,7 +153,7 @@ if(letter!==r.correct){button.classList.remove('wrong');void button.offsetWidth;
 locked=true;button.classList.add('right');$('dragon').classList.add('defeated');$('promptText').textContent=r.word.toUpperCase()+' מתחילה באות '+r.correct;
 solved++;updateProgress();chime();setFeedback('✨ כל הכבוד! המגן '+r.correct+' הציל את הטירה!');
 const flying=document.createElement('div');flying.className='flying-shield';flying.textContent='🛡️';$('arena').append(flying);setTimeout(()=>flying.remove(),850);
-setTimeout(()=>{const last=solved===rounds.length;const html=last?'<div class="big">🏰👑🛡️</div><h2>הטירה ניצלה!</h2><p>הפעלתם את כל ששת מגיני הקסם!<br>האבירים מודים לכם על אומץ הלב והצלילים הנכונים. 💜</p><button class="primary" id="next">🦄 ליער החרוזים</button><p><a href="adventure-map.html">🗺️ חזרה למפת הממלכה</a></p>':'<div class="big">🛡️✨🏰</div><h2>הטירה מוגנת!</h2><p><b dir="ltr">'+r.word.toUpperCase()+' — '+r.correct+'</b><br>הפעלתם מגן קסום נוסף!</p><button class="primary" id="next">⚔️ למגן הבא</button>';
+setTimeout(()=>{const last=solved===rounds.length;const html=last?'<div class="big">🏰👑🛡️</div><h2>הטירה ניצלה!</h2><p>הפעלתם את כל עשרת מגיני הקסם!<br>האבירים מודים לכם על אומץ הלב והצלילים הנכונים. 💜</p><button class="primary" id="next">🦄 ליער החרוזים</button><p><a href="adventure-map.html">🗺️ חזרה למפת הממלכה</a></p>':'<div class="big">🛡️✨🏰</div><h2>הטירה מוגנת!</h2><p><b dir="ltr">'+r.word.toUpperCase()+' — '+r.correct+'</b><br>הפעלתם מגן קסום נוסף!</p><button class="primary" id="next">⚔️ למגן הבא</button>';
 $('resultCard').innerHTML=html;$('result').classList.remove('hidden');$('next').onclick=()=>{if(last){location.href='level2-rhyming-forest.html'}else{$('result').classList.add('hidden');index++;render();speak(rounds[index].word)}};if(last)saveCompletion()
 },900)
 }
