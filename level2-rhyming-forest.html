@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#2b1553">
+<title>🦄 יער החרוזים | PLAYWISE</title>
+<style>
+:root{--gold:#ffe4a0;--violet:#48227b;--pink:#ffc4f1;--mint:#c9ffe3}
+*{box-sizing:border-box}
+html{min-height:100%;background:#1d0b42}
+body{margin:0;min-height:100vh;color:#fff;font-family:Arial,"Noto Sans Hebrew",sans-serif;overflow-x:hidden;background:linear-gradient(180deg,#120a35b8,#1e0a43a3 38%,#170b3bc0),url("ממלכת הפנטזיה הזוהרת והטירה הקסומה.png") center center/cover fixed}
+body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 20% 45%,#874ec13d,transparent 42%),radial-gradient(ellipse at 80% 60%,#33b9a129,transparent 38%)}
+button,a{font:inherit}
+button{cursor:pointer}
+a{color:inherit}
+.top{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 18px}
+.maplink{background:#39205cdb;color:#ffe6b2;text-decoration:none;padding:10px 16px;border:2px solid #ffe0a0;border-radius:13px;font-weight:900;box-shadow:0 5px 12px #13052e6b}
+.title-pill{background:linear-gradient(120deg,#632a95,#361564);border:2px solid #ffdc99;border-radius:18px;padding:10px 24px;text-align:center;box-shadow:0 6px 20px #180a36a8}
+.title-pill h1{font-family:Georgia,serif;font-size:clamp(24px,3.6vw,40px);margin:0;color:#fff0ad}
+.title-pill small{font-weight:900;font-size:12px}
+.scorepill{background:#39205cdb;border:2px solid #ffe0a0;border-radius:13px;padding:10px 15px;color:#ffe8b0;font-weight:900;white-space:nowrap}
+main{width:min(1120px,96vw);margin:0 auto;padding-bottom:35px}
+.questnav{border:2px solid #ffe3a5;border-radius:18px;padding:9px 12px;background:linear-gradient(110deg,#2c1559e8,#5b2a88eb,#2c1559e8);box-shadow:0 6px 20px #0c0427a0}
+.questnav .navhead{display:flex;justify-content:space-between;gap:8px;color:#ffebad;font-weight:900;font-size:clamp(12px,1.8vw,16px);margin-bottom:7px}
+.fairy-track{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;direction:ltr}
+.fairy-dot{border:2px solid #ac83d0;background:#2a174f;border-radius:12px;text-align:center;padding:6px 2px;color:#e6d4ee;font-weight:900;font-size:12px;transition:background .3s,transform .3s}
+.fairy-dot .symbol{display:block;font-size:clamp(21px,3vw,30px);filter:grayscale(1);opacity:.55}
+.fairy-dot.awake{background:#2e695d;border-color:#c1ffe0;color:#eaffec}
+.fairy-dot.awake .symbol{filter:none;opacity:1}
+.fairy-dot.current{background:#8646b8;border-color:#ffe19a;box-shadow:0 0 14px #ffdca888;transform:translateY(-2px)}
+.fairy-dot.current .symbol{filter:none;opacity:1}
+.trackbar{height:9px;background:#1c0b37;border:1px solid #f6d39c;border-radius:20px;overflow:hidden;margin-top:8px}
+.trackfill{height:100%;width:0;background:linear-gradient(90deg,#81edc1,#eeb3ff,#ffe39b);transition:width .5s}
+.scene{position:relative;margin-top:14px;min-height:540px;border:2px solid #f2d5a1;border-radius:28px;background:linear-gradient(180deg,#291256ab,#2a0b438a 55%,#194d3dbb);box-shadow:0 10px 35px #0a0328bb;overflow:hidden;padding:18px 22px 25px}
+.scene:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 35%,#ad73d83b,transparent 40%),radial-gradient(ellipse at 50% 100%,#54bb7852,transparent 55%)}
+.scene>*{position:relative;z-index:1}
+.scene-title{text-align:center;margin:0 0 7px;font-size:clamp(17px,2.5vw,26px);color:#ffedb2;text-shadow:0 2px 8px #16072f}
+.scene-sub{text-align:center;margin:0 0 10px;color:#fff0fb;font-size:clamp(13px,1.7vw,17px);font-weight:700}
+.fairy-stage{display:flex;align-items:center;justify-content:center;gap:20px;min-height:142px;max-width:700px;margin:5px auto 10px;padding:10px 16px;background:#240f4cc7;border:2px solid #c9a2ee;border-radius:22px;box-shadow:0 0 28px #df9dff55}
+.fairy{font-size:clamp(62px,9vw,96px);filter:grayscale(.4);animation:float 3s ease-in-out infinite;transition:filter .5s,transform .5s}
+.fairy.awake{filter:none;transform:scale(1.13);animation:fairyDance 1.4s ease-in-out infinite}
+.fairy-info{min-width:0;text-align:center}
+.fairy-status{color:#ffe3a2;font-size:clamp(12px,1.6vw,16px);font-weight:900}
+.magicword{font-family:Georgia,serif;font-weight:900;font-size:clamp(38px,7vw,70px);letter-spacing:3px;color:#fff0af;text-shadow:0 0 17px #fbcf78;direction:ltr;display:flex;justify-content:center;align-items:center;gap:12px}
+.listen{border:0;border-radius:50%;width:46px;height:46px;background:#8e48c5;color:white;font-size:24px;box-shadow:0 3px 13px #e8a4ff88}
+.listen:hover,.listen:focus-visible{background:#ba72e4}
+.fairy-stage.drop-ready{outline:4px dashed #ffed9b;outline-offset:3px}
+.choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(10px,2vw,24px);max-width:960px;margin:12px auto 0;direction:ltr}
+.mushroom{border:0;background:none;color:inherit;min-width:0;min-height:185px;padding:0;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;cursor:grab;touch-action:manipulation;transition:transform .22s;outline-offset:5px}
+.mushroom:hover{transform:translateY(-8px)}
+.mushroom:focus-visible{outline:3px solid #fff4b3;border-radius:22px}
+.cap{width:100%;max-width:230px;height:122px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:4px solid #ffe2a2;border-radius:54% 54% 27% 27% / 75% 75% 28% 28%;box-shadow:inset 0 -15px 14px #34114c44,0 8px 19px #1305247e;position:relative;z-index:2;background:linear-gradient(130deg,#ff98d0,#c64ca1)}
+.mushroom:nth-child(2) .cap{background:linear-gradient(130deg,#9be8ff,#448cc9)}
+.mushroom:nth-child(3) .cap{background:linear-gradient(130deg,#ffd59a,#e58036)}
+.cap:before,.cap:after{content:"";position:absolute;background:#fff9e2d6;border-radius:60% 45%;width:22px;height:16px;top:21px;left:18%}
+.cap:after{left:auto;right:16%;top:30px;width:29px;height:20px}
+.mushroom-word{font-family:Georgia,serif;font-size:clamp(27px,4.5vw,49px);font-weight:900;color:#31134f;text-shadow:0 1px 0 #fff7dd;direction:ltr;z-index:1}
+.mushroom-emoji{font-size:clamp(24px,3.4vw,35px);z-index:1}
+.stem{width:38%;max-width:86px;height:48px;background:linear-gradient(90deg,#e3b96f,#ffe3ad,#c9975d);border:3px solid #f9d69b;border-radius:0 0 22px 22px;margin-top:-5px;z-index:1}
+.mushroom-audio{position:absolute;top:6px;right:calc(50% - min(115px,50%) + 6px);z-index:5;border:2px solid #fff2cb;background:#4a247bcf;color:white;border-radius:50%;width:35px;height:35px;font-size:17px;cursor:pointer}
+.mushroom.wrong{animation:wiggle .55s ease-in-out}
+.mushroom.correct .cap{box-shadow:0 0 30px 10px #fff5a2,inset 0 -10px 18px #fff8a6aa}
+.hint{margin:8px auto 0;min-height:32px;text-align:center;color:#ffe7ac;font-size:clamp(14px,2vw,18px);font-weight:900}
+.hint.error{color:#ffcbdf}
+.tips{text-align:center;color:#e3cff5;font-size:12px;margin:12px 0 0}
+.feedback-layer{position:absolute;inset:0;z-index:10;display:none;align-items:center;justify-content:center;padding:15px;background:#1a0c40c9;backdrop-filter:blur(4px)}
+.feedback-layer.show{display:flex}
+.feedback-card{width:min(530px,96%);text-align:center;padding:24px 20px;border:3px solid #ffe6a1;border-radius:26px;background:linear-gradient(140deg,#6b3da4,#351b69);box-shadow:0 0 45px #f2b4ff85;animation:pop .45s both}
+.feedback-card .big{font-size:65px;display:block;animation:fairyDance 1.6s infinite}
+.feedback-card h2{font-size:clamp(25px,4vw,35px);margin:7px 0;color:#fff0b4}
+.feedback-card p{font-size:17px;line-height:1.6;margin:9px 0 19px}
+.primary{border:2px solid #fff0b8;background:linear-gradient(110deg,#ffe4a0,#ffc4ed);color:#482060;padding:13px 25px;border-radius:15px;font-weight:900;font-size:17px;box-shadow:0 6px 17px #17032f77}
+.primary:hover{transform:translateY(-2px)}
+.intro-overlay{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:18px;background:#16092ecf;backdrop-filter:blur(6px)}
+.intro-overlay.hidden{display:none}
+.intro-card{width:min(620px,96vw);background:linear-gradient(145deg,#64339b,#2b165c);border:3px solid #ffdfa0;border-radius:27px;padding:25px;text-align:center;box-shadow:0 0 50px #e2a3ff6e}
+.intro-card h2{font-size:clamp(27px,5vw,39px);color:#fff0b2;margin:6px 0}
+.intro-card p{font-size:18px;line-height:1.65}
+.intro-emoji{font-size:65px}
+.sparkle{position:absolute;z-index:0;pointer-events:none;color:#ffe8a6;animation:twinkle 2.5s infinite}
+.bloom{position:absolute;bottom:8px;z-index:0;font-size:clamp(20px,3vw,35px);animation:pop .8s both}
+@keyframes float{0%,100%{translate:0 0}50%{translate:0 -8px}}
+@keyframes fairyDance{0%,100%{rotate:-8deg}50%{rotate:10deg;translate:0 -12px}}
+@keyframes twinkle{0%,100%{opacity:.15;scale:.65}50%{opacity:1;scale:1.25}}
+@keyframes pop{from{opacity:0;transform:scale(.65)}to{opacity:1;transform:scale(1)}}
+@keyframes wiggle{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-9px)}40%,80%{transform:translateX(9px)}}
+@media(max-width:650px){.top{padding:9px 8px;gap:4px}.title-pill{padding:8px 9px}.title-pill h1{font-size:19px}.title-pill small{font-size:9px}.maplink,.scorepill{font-size:11px;padding:7px}.scene{padding:12px 7px;min-height:510px}.fairy-stage{gap:8px;padding:9px;min-height:133px}.fairy{font-size:60px}.magicword{font-size:40px;gap:6px}.listen{width:38px;height:38px;font-size:20px}.choices{gap:5px}.mushroom{min-height:148px}.cap{height:105px;border-width:3px}.mushroom-word{font-size:clamp(23px,7vw,34px)}.mushroom-emoji{font-size:25px}.stem{height:36px}.mushroom-audio{right:6px;top:0;width:31px;height:31px}.fairy-dot{padding:5px 0;font-size:10px}.fairy-track{gap:4px}.questnav{padding:8px 6px}}
+@media(max-width:380px){.mushroom-word{font-size:23px}.scene-title{font-size:16px}.title-pill h1{font-size:16px}.fairy{font-size:51px}.magicword{font-size:34px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+<a class="maplink" href="adventure-map.html">🗺️ מפת הממלכה</a>
+<div class="title-pill"><h1>🦄 יער החרוזים 🍄</h1><small>Rhyming Forest · PLAYWISE</small></div>
+<div class="scorepill" id="score">⭐ 0 / 6</div>
+</header>
+<main>
+<nav class="questnav" aria-label="התקדמות בהצלת שש פיות">
+<div class="navhead"><span>🧚 המסע להצלת פיות היער · תחנה 3 בממלכה</span><span id="progressLabel">0 מתוך 6 פיות</span></div>
+<div class="fairy-track" id="fairyTrack"></div>
+<div class="trackbar" role="progressbar" aria-label="פיות שהתעוררו" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0" id="progressBar"><div class="trackfill" id="trackFill"></div></div>
+</nav>
+<section class="scene" id="scene" aria-live="polite">
+<h2 class="scene-title">🌙 הפיה מחכה לחרוז שיציל אותה!</h2>
+<p class="scene-sub">הקשיבו למילת הקסם ובחרו את הפטרייה שמתחרזת איתה.</p>
+<div class="fairy-stage" id="fairyStage" aria-label="גררו לכאן פטרייה שמתחרזת">
+<div class="fairy" id="fairy">🧚‍♀️</div>
+<div class="fairy-info"><div class="fairy-status" id="fairyStatus">😴 הפיה ישנה...</div>
+<div class="magicword"><span id="target">CAT</span><button class="listen" id="targetAudio" type="button" aria-label="השמיעו את מילת הקסם">🔊</button></div></div>
+</div>
+<div class="choices" id="choices" aria-label="פטריות החרוזים"></div>
+<div class="hint" id="hint">✨ לחצו על הפטרייה המתאימה או גררו אותה אל הפיה</div>
+<div class="tips">🔊 אפשר לשמוע כל מילה בנפרד · אין פסילות ואין איבוד לבבות 💜</div>
+<div class="feedback-layer" id="feedbackLayer"><div class="feedback-card" id="feedbackCard"></div></div>
+</section>
+</main>
+<div class="intro-overlay" id="intro">
+<div class="intro-card">
+<div class="intro-emoji">🧚‍♀️🍄🦋</div>
+<h2>ברוכים הבאים ליער החרוזים!</h2>
+<p>שש פיות נרדמו בין הפטריות הקסומות. כדי להעיר אותן, מצאו בכל פעם <b>שתי מילים שנשמעות דומה בסופן</b>.<br>הקשיבו למילה, לחצו על הפטרייה המתחרזת — ותראו איך היער פורח!</p>
+<button class="primary" id="start" type="button">✨ בואו נעיר את הפיות!</button>
+</div>
+</div>
+<script>
+'use strict';
+const rounds=[
+{word:'CAT',emoji:'🐱',answer:'HAT',options:[['HAT','🎩'],['SUN','☀️'],['DOG','🐶']]},
+{word:'SUN',emoji:'☀️',answer:'FUN',options:[['FUN','🎉'],['PIG','🐷'],['MAP','🗺️']]},
+{word:'DOG',emoji:'🐶',answer:'LOG',options:[['LOG','🪵'],['BED','🛏️'],['FISH','🐟']]},
+{word:'PEN',emoji:'🖊️',answer:'HEN',options:[['HEN','🐔'],['CUP','🥤'],['BOX','📦']]},
+{word:'CAKE',emoji:'🎂',answer:'LAKE',options:[['LAKE','🏞️'],['BUS','🚌'],['HAT','🎩']]},
+{word:'KING',emoji:'👑',answer:'RING',options:[['RING','💍'],['CAT','🐱'],['BED','🛏️']]}
+];
+const $=id=>document.getElementById(id);
+let index=0,solved=0,locked=false,selectedWrong=new Set();
+const shuffle=a=>a.map(v=>({v,k:Math.random()})).sort((a,b)=>a.k-b.k).map(x=>x.v);
+function speak(word){
+if(!('speechSynthesis' in window)){setHint('🔊 הדפדפן הזה אינו תומך בהקראה. אפשר לקרוא את המילים בקול.');return}
+speechSynthesis.cancel();
+const u=new SpeechSynthesisUtterance(word.toLowerCase());u.lang='en-US';u.rate=.78;u.pitch=1.12;
+const voices=speechSynthesis.getVoices();const voice=voices.find(v=>v.lang.toLowerCase()==='en-us')||voices.find(v=>v.lang.startsWith('en'));if(voice)u.voice=voice;
+speechSynthesis.speak(u)
+}
+function chime(){
+try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;const ac=new C();[523,659,784].forEach((freq,i)=>{const o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.value=freq;g.gain.setValueAtTime(.0001,ac.currentTime+i*.12);g.gain.exponentialRampToValueAtTime(.06,ac.currentTime+i*.12+.03);g.gain.exponentialRampToValueAtTime(.0001,ac.currentTime+i*.12+.35);o.connect(g).connect(ac.destination);o.start(ac.currentTime+i*.12);o.stop(ac.currentTime+i*.12+.37)});setTimeout(()=>ac.close().catch(()=>{}),1000)}catch(e){}
+}
+function setHint(msg,error=false){$('hint').textContent=msg;$('hint').classList.toggle('error',error)}
+function updateTrack(){
+$('fairyTrack').innerHTML=rounds.map((r,i)=>'<div class="fairy-dot '+(i<solved?'awake':i===index?'current':'')+'" aria-label="פיה '+(i+1)+(i<solved?' התעוררה':'')+'"><span class="symbol">'+(i<solved?'🧚‍♀️':i===index?'🧚':'🌙')+'</span>'+(i+1)+'</div>').join('');
+$('progressLabel').textContent=solved+' מתוך 6 פיות';
+$('score').textContent='⭐ '+solved+' / 6';
+$('trackFill').style.width=(solved/6*100)+'%';
+$('progressBar').setAttribute('aria-valuenow',String(solved));
+}
+function decorate(){
+const scene=$('scene');scene.querySelectorAll('.sparkle,.bloom').forEach(n=>n.remove());
+for(let i=0;i<23;i++){const s=document.createElement('span');s.className='sparkle';s.textContent=i%3?'✦':'✧';s.style.left=(Math.random()*96+2)+'%';s.style.top=(Math.random()*88+4)+'%';s.style.animationDelay=(Math.random()*3)+'s';s.style.fontSize=(11+Math.random()*17)+'px';scene.append(s)}
+const flowers=['🌸','🌷','🌼','🪻','🦋','🍄'];
+for(let i=0;i<solved;i++){const b=document.createElement('span');b.className='bloom';b.textContent=flowers[i];b.style.left=(8+i*16)+'%';b.style.animationDelay=(i*.1)+'s';scene.append(b)}
+}
+function render(){
+locked=false;selectedWrong.clear();const r=rounds[index];
+$('fairy').classList.remove('awake');$('fairy').textContent='🧚‍♀️';
+$('fairyStatus').textContent='😴 הפיה ישנה...';
+$('target').textContent=r.word;
+$('targetAudio').onclick=()=>speak(r.word);
+$('fairyStage').classList.remove('drop-ready');
+$('feedbackLayer').classList.remove('show');
+setHint('✨ לחצו על הפטרייה המתאימה או גררו אותה אל הפיה');
+$('choices').innerHTML='';
+shuffle(r.options).forEach(([word,emoji])=>{
+const b=document.createElement('button');b.className='mushroom';b.type='button';b.draggable=true;b.dataset.word=word;b.setAttribute('aria-label','בחרו '+word);
+b.innerHTML='<span class="cap"><span class="mushroom-emoji">'+emoji+'</span><span class="mushroom-word">'+word+'</span></span><span class="stem"></span><span class="mushroom-audio" role="button" tabindex="0" aria-label="האזינו למילה '+word+'">🔊</span>';
+b.addEventListener('click',e=>{if(e.target.closest('.mushroom-audio')){speak(word);return}choose(word,b)});
+const listen=b.querySelector('.mushroom-audio');listen.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();speak(word)}});
+b.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain',word);e.dataTransfer.effectAllowed='move'});
+$('choices').append(b);
+});
+updateTrack();decorate();
+}
+function choose(word,button){
+if(locked)return;
+const r=rounds[index];
+if(word!==r.answer){
+button.classList.remove('wrong');void button.offsetWidth;button.classList.add('wrong');
+setHint('💜 כמעט! הקשיבו לסוף של '+r.word+' ונסו שוב.',true);
+speak(word);return
+}
+locked=true;button.classList.add('correct');$('fairy').classList.add('awake');$('fairy').textContent='🧚‍♀️';$('fairyStatus').textContent='🌟 הפיה התעוררה!';
+solved++;updateTrack();decorate();chime();
+setHint('✨ '+r.word+' ו־'+r.answer+' מתחרזות! הפיה התעוררה!');
+setTimeout(()=>{const final=solved===rounds.length;
+$('feedbackCard').innerHTML=final?'<span class="big">🧚‍♀️🦋👑</span><h2>כל הפיות התעוררו!</h2><p>מצאתם שישה חרוזים קסומים והחזרתם את האור ליער!<br>🏆 זכיתם בכתר החרוזים!</p><button class="primary" id="nextBtn">🗺️ בחזרה למפת הממלכה</button><p><a href="level2-quest.html?stage=4">✨ להמשך המסע: מראת התנועות</a></p>':'<span class="big">🧚‍♀️🌸✨</span><h2>קסם החרוזים הצליח!</h2><p><b dir="ltr">'+r.word+' — '+r.answer+'</b><br>הפיה התעוררה, והיער פרח עוד קצת!</p><button class="primary" id="nextBtn">🦋 להציל את הפיה הבאה</button>';
+$('feedbackLayer').classList.add('show');
+$('nextBtn').onclick=()=>{if(final){location.href='adventure-map.html'}else{index++;render()}};
+if(final)saveCompletion();
+},650);
+}
+function saveCompletion(){
+try{const key='playwise-level2-royal-quest-v1';let done=JSON.parse(localStorage.getItem(key)||'[]');if(!Array.isArray(done))done=[];if(!done.includes(2))done.push(2);localStorage.setItem(key,JSON.stringify(done));localStorage.setItem('playwise-level2-rhyming-forest-v1','complete')}catch(e){}
+}
+$('fairyStage').addEventListener('dragover',e=>{if(locked)return;e.preventDefault();$('fairyStage').classList.add('drop-ready')});
+$('fairyStage').addEventListener('dragleave',()=>$('fairyStage').classList.remove('drop-ready'));
+$('fairyStage').addEventListener('drop',e=>{e.preventDefault();$('fairyStage').classList.remove('drop-ready');const word=e.dataTransfer.getData('text/plain');const b=[...$('choices').children].find(x=>x.dataset.word===word);if(b)choose(word,b)});
+$('start').addEventListener('click',()=>{$('intro').classList.add('hidden');render();speak(rounds[0].word)});
+render();
+</script>
+</body>
+</html>
