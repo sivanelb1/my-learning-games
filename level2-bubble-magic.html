@@ -90,7 +90,7 @@ main{padding-top:49px}.eyebrow{padding:5px 11px;font-size:13px}h1{font-size:clam
 <div class="board"><canvas id="game" width="960" height="540" aria-label="משחק פעולה עם בועות קופצות ופיית קסם" role="img"></canvas>
 <div class="overlay" id="overlay"><div class="modal"><div class="emojis" id="modalEmoji">🧚‍♀️🫧🏰</div><h2 id="modalTitle">ברוכים הבאים לבועות הקסם!</h2><p id="modalText">פוצצו בועה גדולה עם מילת קסם כדי לשחרר בועות קטנות — <b>אות אחת בכל בועה!</b> אספו את האותיות ובנו את המילה. ⭐ כוכב שנופל הוא <b>רמז</b>: אספו אותו תוך 10 שניות, שמרו רמזים לכל המסע, והשתמשו בהם כדי לחשוף מילה שלמה בסוף התחנה.<br>💜 מתחילים עם <b>7 חיים לכל עשר התחנות יחד</b> ועם שעון לכל תחנה. בדרך אפשר לאסוף ⭐ נקודות, 💜 חיים נוספים, ⏳ זמן נוסף ו־🛡️ מגן זמני. בועות גדולות מתפצלות לקטנות!</p><button class="primary" id="play">✨ מתחילים בהרפתקה!</button></div></div>
 </div>
-<section class="arcade-panel" aria-label="לוח המשחק: זמן, חיים וניקוד">
+<section class="arcade-panel" aria-label="לוח המשחק: זמן, חיים ורמזים">
  <div class="arcade-clock"><span>⏳ TIME</span><div class="arcade-meter" id="timeMeter" role="progressbar" aria-label="זמן שנותר" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><div class="arcade-meter-fill" id="timeFill"></div></div><strong id="timeHud" aria-live="off">01:40</strong></div>
  <div class="arcade-bottom">
   <div class="arcade-lives"><span class="arcade-caption">💜 LIVES · לכל המסע</span><div id="heartHud" class="life-icons" aria-label="7 חיים">🔥🔥🔥🔥🔥🔥🔥</div></div>
@@ -603,6 +603,7 @@ const STAGE_SECONDS=100,MAX_HEARTS=10;
 const stageWords=tasks.map((t,i)=>i===3?[t.words[1]]:i===5?[t.words[1]]:i>=8?t.words.slice(0,2):t.words.slice(0,1));
 const wordTargets=()=>stageWords[level];
 const letterTargets=()=>wordTargets().flatMap((word,wi)=>[...word].map((letter,li)=>({id:wi+'-'+li,letter,word})));
+const stageTime=()=>STAGE_SECONDS+Math.max(0,letterTargets().length-9)*4;
 let level=saved.run?.level??0,coins=saved.coins,points=saved.run?.points??0,earned=0,earnedPoints=0;
 let hearts=saved.run?.hearts??7,hints=saved.run?.hints??0,seconds=STAGE_SECONDS,shield=0,collected=new Set();
 let poppedLetters=0,starDropped=false;
@@ -629,7 +630,7 @@ function saveRun(){
 function makeStage(){
  const t=tasks[level];bubbles=[];beams=[];drops=[];particles=[];collected=new Set();earned=0;earnedPoints=0;
  poppedLetters=0;starDropped=false;
- seconds=STAGE_SECONDS;shield=0;invuln=0;fireDelay=0;transition=0;flash=0;quizOpen=false;gameOver=false;player.x=W/2;
+ seconds=stageTime();shield=0;invuln=0;fireDelay=0;transition=0;flash=0;quizOpen=false;gameOver=false;player.x=W/2;
  const words=wordTargets();
  words.forEach((word,i)=>bubbles.push(makeBubble(word,2,words.length===1?W/2:260+i*440,120+i*35,(i%2?1:-1)*(95+level*6),{word})));
  $('challenge').textContent=t.emoji+' '+t.name+' · '+words.length+' מיל'+(words.length===1?'ה':'ים')+' בבועות הגדולות!';
@@ -645,7 +646,7 @@ function hud(){
  const lifeEl=$('heartHud');lifeEl.innerHTML=Array.from({length:Math.max(7,hearts)},(_,i)=>'<span class="'+(i<hearts?'':'lost')+'" aria-hidden="true">🔥</span>').join('');
  lifeEl.setAttribute('aria-label',hearts+' חיים שנותרו מתוך '+Math.max(7,hearts));
  $('timeHud').textContent=String(Math.floor(Math.max(0,seconds)/60)).padStart(2,'0')+':'+String(Math.floor(Math.max(0,seconds)%60)).padStart(2,'0');
- const timePct=Math.max(0,Math.min(100,seconds/STAGE_SECONDS*100));
+ const timePct=Math.max(0,Math.min(100,seconds/stageTime()*100));
  $('timeFill').style.width=timePct+'%';
  $('timeMeter').setAttribute('aria-valuenow',String(Math.round(timePct)));
  $('timeMeter').classList.toggle('urgent',seconds<=15);
@@ -865,7 +866,7 @@ function draw(time){
   ctx.save();ctx.shadowColor=['#9feeff','#ffcae8','#d4a2ff'][b.size];ctx.shadowBlur=20;
   const g=ctx.createRadialGradient(b.x-b.r*.35,b.y-b.r*.42,2,b.x,b.y,b.r);g.addColorStop(0,'#ffffffed');g.addColorStop(.2,['#aff7f4','#fbc5e8','#d4adff'][b.size]);g.addColorStop(.72,['#50d6d9','#ca70c5','#8d5bda'][b.size]);g.addColorStop(1,['#287c9e','#8b438d','#4e2d98'][b.size]);circle(b.x,b.y,b.r,g);
   ctx.shadowBlur=0;ctx.strokeStyle='#ffffffa9';ctx.lineWidth=2;ctx.beginPath();ctx.arc(b.x,b.y,b.r-2,0,Math.PI*2);ctx.stroke();circle(b.x-b.r*.32,b.y-b.r*.44,b.r*.13,'#ffffffb8');
-  ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#271743';ctx.font='900 '+Math.max(10,Math.min(18,b.r*1.8/Math.max(3,b.label.length*.62)))+'px Arial';
+  ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#271743';ctx.font='900 '+(b.size===0?23:Math.max(12,Math.min(18,b.r*1.8/Math.max(3,b.label.length*.62))))+'px Arial';
   ctx.fillText(b.label,b.x,b.y+3,b.r*1.82);ctx.restore();
  }
  for(const d of drops){
