@@ -84,16 +84,16 @@ main{padding-top:49px}.eyebrow{padding:5px 11px;font-size:13px}h1{font-size:clam
 <main>
 <header><span class="eyebrow">🏰 משחק ההרפתקה הראשי של עולם 2</span><h1>🫧 Bubble Magic ✨</h1><p>בועות הקסם של הממלכה · זזים, מכוונים, מפוצצים, אוספים מטבעות ולומדים אנגלית!</p></header>
 <div class="hud" aria-live="polite"><span id="stageHud">🏰 תחנה 1/10</span><span id="coinHud">🪙 0 מטבעות</span><span id="runeHud">📚 מילים: 0/3</span><span id="shieldHud">🛡️ מגן כבוי</span></div>
-<div class="challenge" aria-live="polite"><strong id="challenge">✨ אספו את מילות הקסם</strong><small id="hint">פוצצו את כל הבועות, אספו מילים, בנו אותן מצלילים והתאימו לפירוש</small><div class="examples" id="answers"></div></div>
+<div class="challenge" aria-live="polite"><strong id="challenge">✨ אספו את מילות הקסם</strong><small id="hint">פוצצו בועות מילים, אספו אותיות וכוכבי רמז, ואז בנו מילים והתאימו פירוש</small><div class="examples" id="answers"></div></div>
 <div class="stage-track" id="stageTrack" aria-label="התקדמות בעשר תחנות"></div>
 <div class="board"><canvas id="game" width="960" height="540" aria-label="משחק פעולה עם בועות קופצות ופיית קסם" role="img"></canvas>
-<div class="overlay" id="overlay"><div class="modal"><div class="emojis" id="modalEmoji">🧚‍♀️🫧🏰</div><h2 id="modalTitle">ברוכים הבאים לבועות הקסם!</h2><p id="modalText">עזרו לפיה לאסוף מילים באנגלית! בכל תחנה פוצצו את הבועות ואספו שלוש מילים. אחר כך <b>הקשיבו למילים, בנו אותן מחלקי צליל לפי הסדר, והתאימו כל מילה לפירוש בעברית</b>. המילים נעשות מאתגרות יותר בכל תחנה.<br>💜 מתחילים עם <b>7 חיים לכל עשר התחנות יחד</b> ועם שעון לכל תחנה. בדרך אפשר לאסוף ⭐ נקודות, 💜 חיים נוספים, ⏳ זמן נוסף ו־🛡️ מגן זמני. בועות גדולות מתפצלות לקטנות!</p><button class="primary" id="play">✨ מתחילים בהרפתקה!</button></div></div>
+<div class="overlay" id="overlay"><div class="modal"><div class="emojis" id="modalEmoji">🧚‍♀️🫧🏰</div><h2 id="modalTitle">ברוכים הבאים לבועות הקסם!</h2><p id="modalText">פוצצו בועה גדולה עם מילת קסם כדי לשחרר בועות קטנות — <b>אות אחת בכל בועה!</b> אספו את האותיות ובנו את המילה. ⭐ כוכב שנופל הוא <b>רמז</b>: אספו אותו תוך 10 שניות, שמרו רמזים לכל המסע, והשתמשו בהם כדי לחשוף מילה שלמה בסוף התחנה.<br>💜 מתחילים עם <b>7 חיים לכל עשר התחנות יחד</b> ועם שעון לכל תחנה. בדרך אפשר לאסוף ⭐ נקודות, 💜 חיים נוספים, ⏳ זמן נוסף ו־🛡️ מגן זמני. בועות גדולות מתפצלות לקטנות!</p><button class="primary" id="play">✨ מתחילים בהרפתקה!</button></div></div>
 </div>
 <section class="arcade-panel" aria-label="לוח המשחק: זמן, חיים וניקוד">
  <div class="arcade-clock"><span>⏳ TIME</span><div class="arcade-meter" id="timeMeter" role="progressbar" aria-label="זמן שנותר" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><div class="arcade-meter-fill" id="timeFill"></div></div><strong id="timeHud" aria-live="off">01:40</strong></div>
  <div class="arcade-bottom">
   <div class="arcade-lives"><span class="arcade-caption">💜 LIVES · לכל המסע</span><div id="heartHud" class="life-icons" aria-label="7 חיים">🔥🔥🔥🔥🔥🔥🔥</div></div>
-  <div class="arcade-score"><span class="arcade-caption">⭐ SCORE</span><strong id="scoreHud">0</strong></div>
+  <div class="arcade-score"><span class="arcade-caption">💡 HINTS</span><strong id="scoreHud" aria-live="polite">0</strong></div>
   <div class="arcade-stage"><span class="arcade-caption">🏰 LEVEL</span><strong id="levelBottom">1 / 10</strong></div>
  </div>
 </section>
@@ -639,7 +639,7 @@ function makeStage(){
 function hud(){
  $('stageHud').textContent='🏰 '+(level+1)+'/10 · '+tasks[level].name;
  $('coinHud').textContent='🪙 '+(coins+earned)+' מטבעות';
- $('scoreHud').textContent=String(points+earnedPoints);
+ $('scoreHud').textContent=String(hints);
  $('levelBottom').textContent=(level+1)+' / 10';
  const lifeEl=$('heartHud');lifeEl.innerHTML=Array.from({length:Math.max(7,hearts)},(_,i)=>'<span class="'+(i<hearts?'':'lost')+'" aria-hidden="true">🔥</span>').join('');
  lifeEl.setAttribute('aria-label',hearts+' חיים שנותרו מתוך '+Math.max(7,hearts));
@@ -648,7 +648,7 @@ function hud(){
  $('timeFill').style.width=timePct+'%';
  $('timeMeter').setAttribute('aria-valuenow',String(Math.round(timePct)));
  $('timeMeter').classList.toggle('urgent',seconds<=15);
- $('runeHud').textContent='📚 מילים: '+collected.size+'/'+tasks[level].words.length;
+ $('runeHud').textContent='🔤 אותיות: '+collected.size+'/'+letterTargets().length;
  $('shieldHud').textContent=shield>0?'🛡️ מגן '+Math.ceil(shield)+' שניות':'🛡️ מגן כבוי';
  $('shieldHud').classList.toggle('shield-on',shield>0);
 }
@@ -659,7 +659,7 @@ function showModal(emoji,title,text,button,action){
 function resume(){paused=false;$('overlay').hidden=true;frameTime=performance.now();speak()}
 function start(){if(!started){started=true;makeStage()}resume()}
 function reset(){
- coins=saved.coins;points=0;hearts=7;level=0;saved.run=null;save();started=true;makeStage();resume();
+ coins=saved.coins;points=0;hearts=7;hints=0;level=0;saved.run=null;save();started=true;makeStage();resume();
 }
 function burst(x,y,color,count=13){for(let i=0;i<count;i++)particles.push({x,y,vx:rnd(-210,210),vy:rnd(-230,30),life:rnd(.35,.8),color,r:rnd(2,6)})}
 function fire(){if(paused||fireDelay>0||transition>0)return;beams.push({x:player.x,y:FLOOR-56,top:FLOOR-56,life:.95});fireDelay=.37;beep(590,.08,'triangle');burst(player.x,FLOOR-57,'#ffe7a2',4)}
@@ -786,16 +786,16 @@ function finishStage(){
  if(transition)return;
  coins+=earned;points+=earnedPoints+150;earned=0;earnedPoints=0;
  saved.coins=coins;saved.best=Math.max(saved.best,level+1);saved.completed=saved.best===10;
- saved.run=level===9?null:{level:level+1,hearts,points};
+ saved.run=level===9?null:{level:level+1,hearts,points,hints};
  save();hud();
  $('modalEmoji').textContent='🎉🧚‍♀️📚';$('modalTitle').textContent='כל הכבוד! השלמתם את התחנה!';
- $('modalText').innerHTML='<p>אספתם את <b>'+tasks[level].words.join(' · ')+'</b> ובניתם אותן מצלילים והתאמתם לכל אחת פירוש!</p><p>⭐ ניקוד: <b>'+points+'</b> · 💜 חיים שנותרו: <b>'+hearts+'</b></p><p>✨ ממשיכים אוטומטית לתחנה הבאה...</p>';
+ $('modalText').innerHTML='<p>אספתם את כל האותיות של <b>'+wordTargets().join(' · ')+'</b>, בניתם את המילים והתאמתם את פירושיהן!</p><p>⭐ ניקוד: <b>'+points+'</b> · 💜 חיים שנותרו: <b>'+hearts+'</b></p><p>✨ ממשיכים אוטומטית לתחנה הבאה...</p>';
  $('play').hidden=true;transition=2.3;toast('🎉 תחנה '+(level+1)+' הושלמה! עוד מילים נכנסו לאוצר שלכם.');
 }
 function nextStage(){
  transition=0;
  if(level===9){
-  showModal('👑🫧🏰','אלופי בועות הקסם!','בניתם <b>30 מילים מצלילים</b> והתאמתם את פירושיהן והצלתם את הממלכה!<br>⭐ ניקוד סופי: <b>'+points+'</b> נקודות<br>🪙 סך המטבעות בקופה: <b>'+coins+'</b><br>💜 חיים שנותרו: <b>'+hearts+'</b>','🔄 משחקים שוב!',reset);
+  showModal('👑🫧🏰','אלופי בועות הקסם!','בניתם את מילות הקסם מאותיות שאספתם והתאמתם את פירושיהן והצלתם את הממלכה!<br>⭐ ניקוד סופי: <b>'+points+'</b> נקודות<br>🪙 סך המטבעות בקופה: <b>'+coins+'</b><br>💜 חיים שנותרו: <b>'+hearts+'</b>','🔄 משחקים שוב!',reset);
   return;
  }
  level++;makeStage();paused=false;$('overlay').hidden=true;frameTime=performance.now();speak();
@@ -837,13 +837,13 @@ function update(dt){
  for(let i=drops.length-1;i>=0;i--){const d=drops[i];d.x+=d.vx*dt;d.y+=d.vy*dt;d.vy+=460*dt;d.life-=dt;
   if(d.y>FLOOR-15){d.y=FLOOR-15;d.vy=0;d.vx*=.9}
   if(Math.abs(d.x-player.x)<37&&Math.abs(d.y-(FLOOR-30))<48){drops.splice(i,1);getDrop(d);continue}
-  if(d.life<=0&&d.type!=='word')drops.splice(i,1);
+  if(d.life<=0&&d.type!=='letter')drops.splice(i,1);
  }
  for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=200*dt;p.life-=dt;if(p.life<=0)particles.splice(i,1)}
- if(bubbles.length===0&&collected.size===tasks[level].words.length)quizStage();
- // A word pickup is never allowed to disappear before being collected.
- if(bubbles.length===0)for(const w of tasks[level].words)
-  if(!collected.has(w)&&!drops.some(d=>d.type==='word'&&d.label===w))spawnDrop(W/2,250,'word',w,9999);
+ if(bubbles.length===0&&collected.size===letterTargets().length)quizStage();
+ // Letter pickups stay on the ground until collected, even if the player misses them.
+ if(bubbles.length===0)for(const t of letterTargets())
+  if(!collected.has(t.id)&&!drops.some(d=>d.type==='letter'&&d.id===t.id))spawnDrop(W/2,250,'letter',t.letter,9999,t.id);
  hud();
 }
 function circle(x,y,r,color){ctx.fillStyle=color;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill()}
@@ -868,12 +868,12 @@ function draw(time){
  }
  for(const d of drops){
   ctx.save();ctx.shadowColor=d.type==='shield'?'#8efcff':'#ffe788';ctx.shadowBlur=20;
-  const isWord=d.type==='word',size=isWord?26:18;
-  circle(d.x,d.y,size,isWord?'#fff2bc':d.type==='shield'?'#9beefa':'#f8d477');
-  ctx.fillStyle='#432052';ctx.font='bold '+(isWord?'13':'20')+'px Arial';ctx.textAlign='center';ctx.textBaseline='middle';
+  const isLetter=d.type==='letter',size=isLetter?21:18;
+  circle(d.x,d.y,size,isLetter?'#fff2bc':d.type==='shield'?'#9beefa':'#f8d477');
+  ctx.fillStyle='#432052';ctx.font='bold '+(isLetter?'22':'20')+'px Arial';ctx.textAlign='center';ctx.textBaseline='middle';
   const icon={heart:'💜',clock:'⏳',shield:'🛡️',star:'⭐',coin:'🪙'}[d.type];
-  ctx.fillText(isWord?'📖':icon||'✨',d.x,d.y+1);
-  if(isWord){rounded(d.x-54,d.y-50,108,22,8,'#fff5d5');ctx.fillStyle='#48285d';ctx.font='bold 15px Arial';ctx.fillText(d.label,d.x,d.y-38,100)}
+  ctx.fillText(isLetter?d.label:icon||'✨',d.x,d.y+1);
+  if(d.type==='star'){ctx.fillStyle='#fff';ctx.font='bold 15px Arial';ctx.fillText(''+Math.ceil(d.life),d.x+19,d.y-16)}
   ctx.restore();
  }
  for(const p of particles){ctx.globalAlpha=Math.min(1,p.life*2);circle(p.x,p.y,p.r,p.color)}ctx.globalAlpha=1;
@@ -903,8 +903,8 @@ $('hear').onclick=speak;
 $('restart').onclick=()=>showModal('🔄🫧','מתחילים מסע חדש?','מתחילים שוב מתחנה 1 עם 7 חיים חדשים. המטבעות שכבר נשמרו יישארו בקופה שלכם.','✨ כן, מתחילים!',reset);
 $('play').onclick=start;
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&started&&!paused){paused=true;showModal('⏸️🫧','הקסם מחכה לכם','המשחק הושהה כדי שתוכלו לחזור בלי לאבד לבבות.','▶️ ממשיכים לשחק',()=>{paused=false;$('overlay').hidden=true;frameTime=performance.now()})}});
-if(saved.run){$('modalText').innerHTML='ברוכים השבים! שמרנו לכם תחילת תחנה <b>'+(saved.run.level+1)+'</b> עם <b>'+saved.run.hearts+'</b> חיים. בסוף כל תחנה תפתרו חידת מילים. אספו ⭐ נקודות, 💜 חיים, ⏳ זמן ו־🛡️ מגן!';$('play').textContent='✨ ממשיכים מתחנה '+(saved.run.level+1)}
+if(saved.run){$('modalText').innerHTML='ברוכים השבים! שמרנו לכם את תחנה <b>'+(saved.run.level+1)+'</b>, <b>'+saved.run.hearts+'</b> חיים ו־<b>'+saved.run.hints+'</b> רמזים. פוצצו בועות מילים, אספו אותיות וכוכבי רמז! ⭐ נעלם אחרי 10 שניות.';$('play').textContent='✨ ממשיכים מתחנה '+(saved.run.level+1)}
 else if(saved.completed){$('modalText').innerHTML='כל הכבוד! כבר השלמתם את כל עשר התחנות. אספתם <b>'+saved.coins+'</b> מטבעות! אפשר לצאת למסע חדש עם 7 חיים.';$('play').textContent='🫧 יוצאים למסע נוסף'}
-else if(saved.best>0){$('modalText').innerHTML='השיא שלכם הוא תחנה <b>'+saved.best+'</b>! כל מסע חדש מתחיל בתחנה 1 עם 7 חיים לכל התחנות. אספו מילים ופתרו חידה בסוף כל תחנה.';}
+else if(saved.best>0){$('modalText').innerHTML='השיא שלכם הוא תחנה <b>'+saved.best+'</b>! כל מסע חדש מתחיל בתחנה 1 עם 7 חיים לכל התחנות. פוצצו בועות מילים, אספו אותיות וכוכבי רמזים.';}
 makeStage();started=false;paused=true;requestAnimationFrame(loop);
 </script></body></html>
