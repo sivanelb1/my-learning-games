@@ -275,13 +275,27 @@ function draw(time){
   ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#271743';ctx.font='900 '+Math.max(10,Math.min(18,b.r*1.8/Math.max(3,b.label.length*.62)))+'px Arial';
   ctx.fillText(b.label,b.x,b.y+3,b.r*1.82);ctx.restore();
  }
- for(const d of drops){ctx.save();ctx.shadowColor=d.type==='rune'?'#ffe788':'#ffeeb8';ctx.shadowBlur=18;circle(d.x,d.y,d.type==='rune'?22:12,d.type==='rune'?'#f8d477':'#ffde91');ctx.fillStyle='#432052';ctx.font=d.type==='rune'?'bold 13px Arial':'bold 16px Arial';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(d.type==='rune'?'🔮':'★',d.x,d.y+1);if(d.type==='rune'){ctx.fillStyle='#fff';ctx.font='bold 12px Arial';ctx.fillText(d.label,d.x,d.y-30)}ctx.restore()}
+ for(const d of drops){
+  ctx.save();ctx.shadowColor=d.type==='shield'?'#8efcff':'#ffe788';ctx.shadowBlur=20;
+  const isWord=d.type==='word',size=isWord?26:18;
+  circle(d.x,d.y,size,isWord?'#fff2bc':d.type==='shield'?'#9beefa':'#f8d477');
+  ctx.fillStyle='#432052';ctx.font='bold '+(isWord?'13':'20')+'px Arial';ctx.textAlign='center';ctx.textBaseline='middle';
+  const icon={heart:'💜',clock:'⏳',shield:'🛡️',star:'⭐',coin:'🪙'}[d.type];
+  ctx.fillText(isWord?'📖':icon||'✨',d.x,d.y+1);
+  if(isWord){rounded(d.x-54,d.y-50,108,22,8,'#fff5d5');ctx.fillStyle='#48285d';ctx.font='bold 15px Arial';ctx.fillText(d.label,d.x,d.y-38,100)}
+  ctx.restore();
+ }
  for(const p of particles){ctx.globalAlpha=Math.min(1,p.life*2);circle(p.x,p.y,p.r,p.color)}ctx.globalAlpha=1;
  if(!(invuln>0&&Math.floor(time*10)%2===0)){
   ctx.save();ctx.shadowColor='#f4a8ff';ctx.shadowBlur=23;circle(player.x,FLOOR-31,29,'#ba80ef99');ctx.shadowBlur=0;ctx.font='55px "Segoe UI Emoji",Arial';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('🧚‍♀️',player.x,FLOOR-33);ctx.font='28px "Segoe UI Emoji",Arial';ctx.fillText('🪄',player.x+28,FLOOR-60);ctx.restore();
  }
+ if(shield>0){
+  ctx.save();ctx.strokeStyle='#94f8ff';ctx.lineWidth=5;ctx.shadowColor='#72e9ff';ctx.shadowBlur=26;
+  ctx.beginPath();ctx.ellipse(player.x,FLOOR-35,47,62,0,0,Math.PI*2);ctx.stroke();
+  ctx.globalAlpha=.17;ctx.fillStyle='#7be9ff';ctx.fill();ctx.restore();
+ }
  if(flash>0){ctx.fillStyle='#ffb4c24d';ctx.fillRect(0,0,W,H)}
- if(transition>0){rounded(245,178,470,100,23,'#3b2168e8');ctx.fillStyle='#ffe6a5';ctx.textAlign='center';ctx.font='bold 36px Arial';ctx.fillText('🎉 תחנה הושלמה! 🔮',W/2,235)}
+ if(transition>0){rounded(245,178,470,100,23,'#3b2168e8');ctx.fillStyle='#ffe6a5';ctx.textAlign='center';ctx.font='bold 36px Arial';ctx.fillText('🎉 חידת המילים הושלמה! 📚',W/2,235)}
 }
 function loop(t){const dt=Math.min(.035,(t-frameTime)/1000||0);frameTime=t;update(dt);draw(t/1000);requestAnimationFrame(loop)}
 function key(e,down){const k=e.key.toLowerCase();if(['arrowleft','arrowright',' ','a','d'].includes(k))e.preventDefault();if(k==='arrowleft'||k==='a')controls.left=down;if(k==='arrowright'||k==='d')controls.right=down;if(k===' '){controls.fire=down;if(down&&!e.repeat)fire()}}
@@ -295,10 +309,11 @@ for(const [id,k] of [['left','left'],['right','right'],['fire','fire']]){
 canvas.addEventListener('pointerdown',e=>{if(paused)return;const rect=canvas.getBoundingClientRect();const x=(e.clientX-rect.left)/rect.width*W;player.x=Math.max(26,Math.min(W-26,x));fire()});
 $('mute').onclick=()=>{audioOn=!audioOn;$('mute').textContent=audioOn?'🔊':'🔇';if(!audioOn&&'speechSynthesis'in window)speechSynthesis.cancel()};
 $('hear').onclick=speak;
-$('restart').onclick=()=>showModal('🔄🫧','מתחילים מסע חדש?','אפשר להתחיל שוב מתחנה 1. המטבעות שכבר נשמרו יישארו בקופה שלכם.','✨ כן, מתחילים!',reset);
+$('restart').onclick=()=>showModal('🔄🫧','מתחילים מסע חדש?','מתחילים שוב מתחנה 1 עם 7 חיים חדשים. המטבעות שכבר נשמרו יישארו בקופה שלכם.','✨ כן, מתחילים!',reset);
 $('play').onclick=start;
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&started&&!paused){paused=true;showModal('⏸️🫧','הקסם מחכה לכם','המשחק הושהה כדי שתוכלו לחזור בלי לאבד לבבות.','▶️ ממשיכים לשחק',()=>{paused=false;$('overlay').hidden=true;frameTime=performance.now()})}});
-if(saved.best>0&&saved.best<10){$('modalText').innerHTML='ברוכים השבים! הגעתם כבר לתחנה <b>'+(saved.best+1)+'</b>, ואספתם <b>'+saved.coins+'</b> מטבעות. אפשר להמשיך מהתחנה שבה עצרתם.';$('play').textContent='✨ ממשיכים מהתחנה '+(saved.best+1)}
-if(saved.completed){$('modalText').innerHTML='כל הכבוד! כבר השלמתם את כל עשר התחנות. אספתם <b>'+saved.coins+'</b> מטבעות! אפשר לשחק שוב ולצבור עוד אוצרות.';$('play').textContent='🫧 יוצאים למסע נוסף'}
+if(saved.run){$('modalText').innerHTML='ברוכים השבים! שמרנו לכם תחילת תחנה <b>'+(saved.run.level+1)+'</b> עם <b>'+saved.run.hearts+'</b> חיים. בסוף כל תחנה תפתרו חידת מילים. אספו ⭐ נקודות, 💜 חיים, ⏳ זמן ו־🛡️ מגן!';$('play').textContent='✨ ממשיכים מתחנה '+(saved.run.level+1)}
+else if(saved.completed){$('modalText').innerHTML='כל הכבוד! כבר השלמתם את כל עשר התחנות. אספתם <b>'+saved.coins+'</b> מטבעות! אפשר לצאת למסע חדש עם 7 חיים.';$('play').textContent='🫧 יוצאים למסע נוסף'}
+else if(saved.best>0){$('modalText').innerHTML='השיא שלכם הוא תחנה <b>'+saved.best+'</b>! כל מסע חדש מתחיל בתחנה 1 עם 7 חיים לכל התחנות. אספו מילים ופתרו חידה בסוף כל תחנה.';}
 makeStage();started=false;paused=true;requestAnimationFrame(loop);
 </script></body></html>
