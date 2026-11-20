@@ -78,6 +78,7 @@ main{padding-top:49px}.eyebrow{padding:5px 11px;font-size:13px}h1{font-size:clam
 .phonics-slot:has(.digraph){width:auto}
 .phonics-chunks button{min-width:clamp(45px,7vw,66px);min-height:48px;padding:7px 10px}
 @media(max-width:600px){.phonics-hero{gap:6px}.phonics-hint,.phonics-listen{padding:8px 10px;font-size:14px}.phonics-slots{gap:4px}.phonics-slot{width:39px;min-width:39px;min-height:43px;font-size:18px}.phonics-chunks{gap:5px}.phonics-chunks button{min-width:42px;min-height:45px;font-size:19px;padding:6px 8px}}
+.phonics-slot.sound-group{background:#55306b;border-color:#ffe6a1;box-shadow:inset 0 0 9px #e8b1fa55}.phonics-slot.sound-group.filled{background:#2e826d;border-color:#a4fbd3}.phonics-chunks button{max-width:130px}
 </style></head><body>
 <a class="back" href="adventure-map.html">🗺️ חזרה לעולם</a>
 <main>
@@ -718,7 +719,7 @@ function quizStage(){
   if(phase==='build'){
    $('quizPrompt').textContent='🧩 בנו את המילה: משבצת לכל אות או צליל מיוחד';
    for(let j=0;j<parts.length;j++){
-    const slot=document.createElement('span');slot.className='phonics-slot'+(j<selected.length?' filled':'');slot.textContent=j<selected.length?parts[j]:'?';slot.setAttribute('aria-label','משבצת '+(j+1)+' מתוך '+parts.length);
+    const slot=document.createElement('span');slot.className='phonics-slot'+(parts[j].length>1?' sound-group':'')+(j<selected.length?' filled':'');slot.textContent=j<selected.length?parts[j]:'?';slot.style.minWidth=(parts[j].length>2?parts[j].length*17+16:parts[j].length===2?51:39)+'px';slot.style.width='auto';slot.setAttribute('aria-label','משבצת '+(j+1)+' מתוך '+parts.length+(parts[j].length>1?' לצליל מיוחד':''));
     $('phonicsSlots').append(slot);
    }
    const chunks=parts.map((part,i)=>({part,i})).sort(()=>rand()-.5);
