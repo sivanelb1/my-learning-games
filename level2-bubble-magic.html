@@ -97,16 +97,483 @@ const $=id=>document.getElementById(id);
 const W=960,H=540,FLOOR=492,GRAVITY=490;
 const KEY='playwise-level2-bubble-magic-v1';
 const tasks=[
- {emoji:"🍄",name:"שער האותיות",words:["SHIP","FROG","CLOUD"],meanings:["ספינה","צפרדע","ענן"],pictures:["🚢","🐸","☁️"],chunks:[["SH","I","P"],["FR","O","G"],["CL","OU","D"]],speech:"ship. frog. cloud." },
- {emoji:"🛡️",name:"מגיני האבירים",words:["TRAIN","SNAKE","BRUSH"],meanings:["רכבת","נחש","מברשת"],pictures:["🚂","🐍","🖌️"],chunks:[["TR","AI","N"],["SN","AKE"],["BR","U","SH"]],speech:"train. snake. brush." },
- {emoji:"🦄",name:"יער החרוזים",words:["FOREST","RABBIT","MARKET"],meanings:["יער","ארנב","שוק"],pictures:["🌲","🐇","🛒"],chunks:[["FOR","EST"],["RAB","BIT"],["MAR","KET"]],speech:"forest. rabbit. market." },
- {emoji:"🪞",name:"מראת התנועות",words:["SUNSHINE","RAINBOW","PICNIC"],meanings:["אור שמש","קשת בענן","פיקניק"],pictures:["☀️","🌈","🧺"],chunks:[["SUN","SHINE"],["RAIN","BOW"],["PIC","NIC"]],speech:"sunshine. rainbow. picnic." },
- {emoji:"🐉",name:"מערת הדרקון",words:["ELEPHANT","DINOSAUR","BUTTERFLY"],meanings:["פיל","דינוזאור","פרפר"],pictures:["🐘","🦕","🦋"],chunks:[["EL","E","PHANT"],["DI","NO","SAUR"],["BUT","TER","FLY"]],speech:"elephant. dinosaur. butterfly." },
- {emoji:"🏹",name:"חיצי האביר",words:["TREASURE","MOUNTAIN","THUNDER"],meanings:["אוצר","הר","רעם"],pictures:["💎","⛰️","⚡"],chunks:[["TREA","SURE"],["MOUN","TAIN"],["THUN","DER"]],speech:"treasure. mountain. thunder." },
- {emoji:"🧙‍♀️",name:"שיקויי הפיה",words:["ADVENTURE","MAGICIAN","DRAGONFLY"],meanings:["הרפתקה","קוסם","שפירית"],pictures:["🗺️","🧙","🪰"],chunks:[["AD","VEN","TURE"],["MA","GI","CIAN"],["DRA","GON","FLY"]],speech:"adventure. magician. dragonfly." },
- {emoji:"🏰",name:"גשר הטירה",words:["BEAUTIFUL","DANGEROUS","WONDERFUL"],meanings:["יפה","מסוכן","נפלא"],pictures:["🌺","⚠️","✨"],chunks:[["BEAU","TI","FUL"],["DAN","GER","OUS"],["WON","DER","FUL"]],speech:"beautiful. dangerous. wonderful." },
- {emoji:"🗝️",name:"מפתחות האוצר",words:["DISCOVERY","TELESCOPE","WATERFALL"],meanings:["תגלית","טלסקופ","מפל מים"],pictures:["🔎","🔭","🏞️"],chunks:[["DIS","COV","ER","Y"],["TEL","E","SCOPE"],["WA","TER","FALL"]],speech:"discovery. telescope. waterfall." },
- {emoji:"👑",name:"הכתר האבוד",words:["CELEBRATION","IMAGINATION","CONSTELLATION"],meanings:["חגיגה","דמיון","קבוצת כוכבים"],pictures:["🎉","🌟","🌌"],chunks:[["CEL","E","BRA","TION"],["IM","AG","I","NA","TION"],["CON","STEL","LA","TION"]],speech:"celebration. imagination. constellation." }
+ {
+  "emoji": "🍄",
+  "name": "שער האותיות",
+  "words": [
+   "SHIP",
+   "FROG",
+   "CLOUD"
+  ],
+  "meanings": [
+   "ספינה",
+   "צפרדע",
+   "ענן"
+  ],
+  "pictures": [
+   "🚢",
+   "🐸",
+   "☁️"
+  ],
+  "chunks": [
+   [
+    "SH",
+    "I",
+    "P"
+   ],
+   [
+    "F",
+    "R",
+    "O",
+    "G"
+   ],
+   [
+    "C",
+    "L",
+    "OU",
+    "D"
+   ]
+  ],
+  "speech": "ship. frog. cloud."
+ },
+ {
+  "emoji": "🛡️",
+  "name": "מגיני האבירים",
+  "words": [
+   "TRAIN",
+   "SNAKE",
+   "CHAIR"
+  ],
+  "meanings": [
+   "רכבת",
+   "נחש",
+   "כיסא"
+  ],
+  "pictures": [
+   "🚂",
+   "🐍",
+   "🪑"
+  ],
+  "chunks": [
+   [
+    "T",
+    "R",
+    "AI",
+    "N"
+   ],
+   [
+    "S",
+    "N",
+    "A",
+    "K",
+    "E"
+   ],
+   [
+    "CH",
+    "AI",
+    "R"
+   ]
+  ],
+  "speech": "train. snake. chair."
+ },
+ {
+  "emoji": "🦄",
+  "name": "יער החרוזים",
+  "words": [
+   "FOREST",
+   "RABBIT",
+   "MARKET"
+  ],
+  "meanings": [
+   "יער",
+   "ארנב",
+   "שוק"
+  ],
+  "pictures": [
+   "🌲",
+   "🐇",
+   "🛒"
+  ],
+  "chunks": [
+   [
+    "F",
+    "O",
+    "R",
+    "E",
+    "S",
+    "T"
+   ],
+   [
+    "R",
+    "A",
+    "B",
+    "B",
+    "I",
+    "T"
+   ],
+   [
+    "M",
+    "A",
+    "R",
+    "K",
+    "E",
+    "T"
+   ]
+  ],
+  "speech": "forest. rabbit. market."
+ },
+ {
+  "emoji": "🪞",
+  "name": "מראת התנועות",
+  "words": [
+   "SUNSHINE",
+   "RAINBOW",
+   "PICNIC"
+  ],
+  "meanings": [
+   "אור שמש",
+   "קשת בענן",
+   "פיקניק"
+  ],
+  "pictures": [
+   "☀️",
+   "🌈",
+   "🧺"
+  ],
+  "chunks": [
+   [
+    "S",
+    "U",
+    "N",
+    "SH",
+    "I",
+    "N",
+    "E"
+   ],
+   [
+    "R",
+    "AI",
+    "N",
+    "B",
+    "OW"
+   ],
+   [
+    "P",
+    "I",
+    "C",
+    "N",
+    "I",
+    "C"
+   ]
+  ],
+  "speech": "sunshine. rainbow. picnic."
+ },
+ {
+  "emoji": "🐉",
+  "name": "מערת הדרקון",
+  "words": [
+   "ELEPHANT",
+   "DINOSAUR",
+   "BUTTERFLY"
+  ],
+  "meanings": [
+   "פיל",
+   "דינוזאור",
+   "פרפר"
+  ],
+  "pictures": [
+   "🐘",
+   "🦕",
+   "🦋"
+  ],
+  "chunks": [
+   [
+    "E",
+    "L",
+    "E",
+    "PH",
+    "A",
+    "N",
+    "T"
+   ],
+   [
+    "D",
+    "I",
+    "N",
+    "O",
+    "S",
+    "AU",
+    "R"
+   ],
+   [
+    "B",
+    "U",
+    "T",
+    "T",
+    "E",
+    "R",
+    "F",
+    "L",
+    "Y"
+   ]
+  ],
+  "speech": "elephant. dinosaur. butterfly."
+ },
+ {
+  "emoji": "🏹",
+  "name": "חיצי האביר",
+  "words": [
+   "TREASURE",
+   "MOUNTAIN",
+   "THUNDER"
+  ],
+  "meanings": [
+   "אוצר",
+   "הר",
+   "רעם"
+  ],
+  "pictures": [
+   "💎",
+   "⛰️",
+   "⚡"
+  ],
+  "chunks": [
+   [
+    "T",
+    "R",
+    "EA",
+    "S",
+    "U",
+    "R",
+    "E"
+   ],
+   [
+    "M",
+    "OU",
+    "N",
+    "T",
+    "AI",
+    "N"
+   ],
+   [
+    "TH",
+    "U",
+    "N",
+    "D",
+    "E",
+    "R"
+   ]
+  ],
+  "speech": "treasure. mountain. thunder."
+ },
+ {
+  "emoji": "🧙‍♀️",
+  "name": "שיקויי הפיה",
+  "words": [
+   "ADVENTURE",
+   "MAGICIAN",
+   "DRAGONFLY"
+  ],
+  "meanings": [
+   "הרפתקה",
+   "קוסם",
+   "שפירית"
+  ],
+  "pictures": [
+   "🗺️",
+   "🧙",
+   "🪰"
+  ],
+  "chunks": [
+   [
+    "A",
+    "D",
+    "V",
+    "E",
+    "N",
+    "TURE"
+   ],
+   [
+    "M",
+    "A",
+    "G",
+    "I",
+    "CIAN"
+   ],
+   [
+    "D",
+    "R",
+    "A",
+    "G",
+    "O",
+    "N",
+    "F",
+    "L",
+    "Y"
+   ]
+  ],
+  "speech": "adventure. magician. dragonfly."
+ },
+ {
+  "emoji": "🏰",
+  "name": "גשר הטירה",
+  "words": [
+   "BEAUTIFUL",
+   "DANGEROUS",
+   "WONDERFUL"
+  ],
+  "meanings": [
+   "יפה",
+   "מסוכן",
+   "נפלא"
+  ],
+  "pictures": [
+   "🌺",
+   "⚠️",
+   "✨"
+  ],
+  "chunks": [
+   [
+    "B",
+    "EAU",
+    "T",
+    "I",
+    "F",
+    "U",
+    "L"
+   ],
+   [
+    "D",
+    "A",
+    "NG",
+    "E",
+    "R",
+    "OU",
+    "S"
+   ],
+   [
+    "W",
+    "O",
+    "N",
+    "D",
+    "E",
+    "R",
+    "F",
+    "U",
+    "L"
+   ]
+  ],
+  "speech": "beautiful. dangerous. wonderful."
+ },
+ {
+  "emoji": "🗝️",
+  "name": "מפתחות האוצר",
+  "words": [
+   "DISCOVERY",
+   "TELESCOPE",
+   "WATERFALL"
+  ],
+  "meanings": [
+   "תגלית",
+   "טלסקופ",
+   "מפל מים"
+  ],
+  "pictures": [
+   "🔎",
+   "🔭",
+   "🏞️"
+  ],
+  "chunks": [
+   [
+    "D",
+    "I",
+    "S",
+    "C",
+    "O",
+    "V",
+    "E",
+    "R",
+    "Y"
+   ],
+   [
+    "T",
+    "E",
+    "L",
+    "E",
+    "S",
+    "C",
+    "O",
+    "P",
+    "E"
+   ],
+   [
+    "W",
+    "A",
+    "T",
+    "E",
+    "R",
+    "F",
+    "A",
+    "L",
+    "L"
+   ]
+  ],
+  "speech": "discovery. telescope. waterfall."
+ },
+ {
+  "emoji": "👑",
+  "name": "הכתר האבוד",
+  "words": [
+   "CELEBRATION",
+   "IMAGINATION",
+   "CONSTELLATION"
+  ],
+  "meanings": [
+   "חגיגה",
+   "דמיון",
+   "קבוצת כוכבים"
+  ],
+  "pictures": [
+   "🎉",
+   "🌟",
+   "🌌"
+  ],
+  "chunks": [
+   [
+    "C",
+    "E",
+    "L",
+    "E",
+    "B",
+    "R",
+    "A",
+    "TION"
+   ],
+   [
+    "I",
+    "M",
+    "A",
+    "G",
+    "I",
+    "N",
+    "A",
+    "TION"
+   ],
+   [
+    "C",
+    "O",
+    "N",
+    "S",
+    "T",
+    "E",
+    "L",
+    "L",
+    "A",
+    "TION"
+   ]
+  ],
+  "speech": "celebration. imagination. constellation."
+ }
 ];
 let saved={coins:0,best:0,completed:false,run:null};
 try{
