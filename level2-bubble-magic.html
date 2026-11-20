@@ -89,7 +89,7 @@ main{padding-top:49px}.eyebrow{padding:5px 11px;font-size:13px}h1{font-size:clam
 <div class="challenge" aria-live="polite"><strong id="challenge">✨ אספו את מילות הקסם</strong><small id="hint">פוצצו בועות מילים, אספו אותיות וכוכבי רמז, ואז בנו מילים והתאימו פירוש</small><div class="examples" id="answers"></div></div>
 <div class="stage-track" id="stageTrack" aria-label="התקדמות בעשר תחנות"></div>
 <div class="board"><canvas id="game" width="960" height="540" aria-label="משחק פעולה עם בועות קופצות ופיית קסם" role="img"></canvas>
-<div class="overlay" id="overlay"><div class="modal"><div class="emojis" id="modalEmoji">🧚‍♀️🫧🏰</div><h2 id="modalTitle">ברוכים הבאים לבועות הקסם!</h2><p id="modalText">פוצצו בועה גדולה עם מילת קסם: היא מתפצלת <b>לשתי בועות קטנות יותר</b>, וכל בועה יכולה להתפצל שוב לשתיים. כל בועה עם אות שמשמידים משחררת <b>אות אחת לרצפה</b> — אספו אותה ובנו את המילה. גם בועות שאין בהן אות ממשיכות להתפצל בזוגות עד לגודל הקטן ביותר. 🎁 בדרך תמצאו מטבעות, יהלומים, כתרים, קשתות, מגנט קסום וירי מהיר! ⭐ רמזים ו־💜 חיים נוספים הם הפתעות נדירות.<br>💜 מתחילים עם <b>7 חיים לכל עשר התחנות יחד</b> ועם שעון לכל תחנה. בדרך אפשר לאסוף גם ⏳ זמן נוסף ו־🛡️ מגן זמני. בועות גדולות מתפצלות לקטנות!</p><button class="primary" id="play">✨ מתחילים בהרפתקה!</button></div></div>
+<div class="overlay" id="overlay"><div class="modal"><div class="emojis" id="modalEmoji">🧚‍♀️🫧🏰</div><h2 id="modalTitle">ברוכים הבאים לבועות הקסם!</h2><p id="modalText">פוצצו בועה גדולה עם מילת קסם: היא מתפצלת <b>לשתי בועות קטנות יותר</b>, וכל בועה יכולה להתפצל שוב לשתיים. כל בועה עם אות שמשמידים משחררת <b>אות אחת לרצפה</b> — אספו אותה ובנו את המילה. בכל תחנה הבועות מופיעות בסידור אחר — מתחילים בבועה אחת, אחר כך שתיים בינוניות, ובהמשך נחילים של קטנות. גם בועות שאין בהן אות ממשיכות להתפצל בזוגות עד לגודל הקטן ביותר. 🎁 בדרך תמצאו מטבעות, יהלומים, כתרים, קשתות, מגנט קסום וירי מהיר! ⭐ רמזים ו־💜 חיים נוספים הם הפתעות נדירות.<br>💜 מתחילים עם <b>7 חיים ורמז אחד לכל המסע</b> ועם שעון לכל תחנה. בדרך אפשר לאסוף גם ⏳ זמן נוסף ו־🛡️ מגן זמני. בועות גדולות מתפצלות לקטנות!</p><button class="primary" id="play">✨ מתחילים בהרפתקה!</button></div></div>
 </div>
 <section class="arcade-panel" aria-label="לוח המשחק: זמן, חיים ורמזים">
  <div class="arcade-clock"><span>⏳ TIME</span><div class="arcade-meter" id="timeMeter" role="progressbar" aria-label="זמן שנותר" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><div class="arcade-meter-fill" id="timeFill"></div></div><strong id="timeHud" aria-live="off">01:40</strong></div>
@@ -365,7 +365,7 @@ try{
   saved.best=Math.max(0,Math.min(10,Number(x.best)||0));
   saved.completed=!!x.completed;
   if(x.run&&Number.isInteger(x.run.level)&&x.run.level>=0&&x.run.level<10&&x.run.hearts>0)
-   saved.run={level:x.run.level,hearts:Math.min(10,x.run.hearts),points:Math.max(0,x.run.points||0),hints:Math.max(0,Math.min(99,Number(x.run.hints)||0))};
+   saved.run={level:x.run.level,hearts:Math.min(10,x.run.hearts),points:Math.max(0,x.run.points||0),hints:Math.max(0,Math.min(1+3*x.run.level,Number(x.run.hints)||1)),stageHintsCollected:Math.max(0,Math.min(x.run.level<5?2:3,Number(x.run.stageHintsCollected)||0))};
  }
 }catch(e){}
 const STAGE_SECONDS=100,MAX_HEARTS=10;
@@ -374,8 +374,22 @@ const stageWords=tasks.map(t=>t.words);
 const wordTargets=()=>stageWords[level];
 const letterTargets=()=>wordTargets().flatMap((word,wi)=>[...word].map((letter,li)=>({id:wi+'-'+li,letter,word})));
 const stageTime=()=>STAGE_SECONDS+Math.max(0,letterTargets().length-9)*4;
+// Varied formations grow more complex over ten levels. Size zero never splits.
+const formations=[
+ [[3]],               // 1: one large bubble
+ [[2,2]],             // 2: two medium bubbles
+ [[0,0,0,0,0,0,0,0]], // 3: a swarm of tiny bubbles
+ [[3,1]],             // 4: one large and one small
+ [[2,2,1]],           // 5: two medium and a small
+ [[1,1,1,1,1,1]],     // 6: six small bubbles that split once
+ [[3,2,1]],           // 7: mixed large, medium and small
+ [[2,0,0,0,0,0]],     // 8: medium surrounded by tiny bubbles
+ [[3,2],[3,2]],       // 9: two words, large and medium each
+ [[3,2,1],[3,2,1]]    // 10: two words, mixed formations
+];
+const hintCapForStage=()=>level<5?2:3;
 let level=saved.run?.level??0,coins=saved.coins,points=saved.run?.points??0,earned=0,earnedPoints=0;
-let hearts=saved.run?.hearts??7,hints=saved.run?.hints??0,seconds=STAGE_SECONDS,shield=0,collected=new Set();
+let hearts=saved.run?.hearts??7,hints=saved.run?.hints??1,stageHintsCollected=saved.run?.stageHintsCollected??0,seconds=STAGE_SECONDS,shield=0,collected=new Set();
 let rapidFire=0,magnetTime=0;
 let started=false,paused=true,gameOver=false,invuln=0,fireDelay=0,frameTime=0,transition=0,flash=0,quizOpen=false;
 let player={x:480,y:FLOOR-30,w:45,h:59},bubbles=[],beams=[],drops=[],particles=[],stars=[];
@@ -389,22 +403,21 @@ function speak(){if(!audioOn||!('speechSynthesis'in window))return;try{speechSyn
 function toast(t){$('toast').textContent=t}
 function rnd(a,b){return a+rand()*(b-a)}
 function makeBubble(label,size,x,y,vx,extra={}){return{label,size,x,y,vx,vy:rnd(-200,-100),r:[20,29,39,51,65][size],phase:rand()*6,...extra}}
-function letterBubbleTree(word){
- // Every bubble above the smallest size has exactly two equally sized children.
- // Empty descendants keep the split symmetrical even when no letters remain.
+function letterBubbleForest(word,sizes){
  const letters=letterTargets().filter(t=>t.word===word);
- const largest=letters.length>14?4:3;
  function node(size){
-  const result={label:'',word,size,children:[]};
+  const result={label:'✨',word,size,children:[]};
   if(size>0)result.children=[node(size-1),node(size-1)];
   return result;
  }
- const roots=[node(largest-1),node(largest-1)];
- const queue=[...roots];
- for(let i=0;i<queue.length;i++)queue.push(...queue[i].children);
- if(letters.length>queue.length)throw Error('Not enough letter bubble slots');
- letters.forEach((letter,i)=>{queue[i].label=letter.letter;queue[i].letterId=letter.id});
- return{size:largest,children:roots};
+ const roots=sizes.map(node),leaves=[];
+ function visit(n){if(!n.children.length)leaves.push(n);else n.children.forEach(visit)}
+ roots.forEach(visit);
+ if(leaves.length<letters.length)throw Error('Formation lacks room for all letters: '+word);
+ // Letters live in the smallest bubbles, including standalone tiny bubbles.
+ const shuffled=[...leaves].sort(()=>rand()-.5);
+ letters.forEach((letter,i)=>{shuffled[i].label=letter.letter;shuffled[i].letterId=letter.id});
+ return roots;
 }
 function splitIntoChildren(b){
  if(!b.children?.length)return;
@@ -425,16 +438,24 @@ function updateWords(){
 }
 function saveRun(){
  if(!started||gameOver)return;
- saved.run={level,hearts,points,hints};save();
+ saved.run={level,hearts,points,hints,stageHintsCollected};save();
 }
 function makeStage(){
  const t=tasks[level];bubbles=[];beams=[];drops=[];particles=[];collected=new Set();earned=0;earnedPoints=0;
  rapidFire=0;magnetTime=0;
  seconds=stageTime();shield=0;invuln=0;fireDelay=0;transition=0;flash=0;quizOpen=false;gameOver=false;player.x=W/2;
  const words=wordTargets();
- words.forEach((word,i)=>{const tree=letterBubbleTree(word);bubbles.push(makeBubble(word,tree.size,words.length===1?W/2:260+i*440,125+i*35,(i%2?1:-1)*(95+level*6),{word,children:tree.children,root:true}))});
- $('challenge').textContent=t.emoji+' '+t.name+' · '+words.length+' מיל'+(words.length===1?'ה':'ים')+' בבועות הגדולות!';
- $('hint').textContent='כל בועה שאינה הכי קטנה מתפצלת לשתי בועות שוות — גם בלי אות! 🎁 חפשו יהלומים, כתרים, קשתות, מגנטים וקסם מהיר. רמזים וחיים נדירים.';
+ const lineup=words.flatMap((word,i)=>letterBubbleForest(word,formations[level][i]).map(node=>({word,node})));
+ lineup.forEach(({word,node},i)=>{
+  const x=(i+1)*W/(lineup.length+1);
+  const y=112+(i%3)*45;
+  const label=node.letterId?node.label:node.size>=2?word:'✨';
+  bubbles.push(makeBubble(label,node.size,x,y,(i%2?1:-1)*(95+level*6),{
+   word,letterId:node.letterId,children:node.children,root:true
+  }));
+ });
+ $('challenge').textContent=t.emoji+' '+t.name+' · '+lineup.length+' בועות התחלה · '+words.length+' מיל'+(words.length===1?'ה':'ים')+'!';
+ $('hint').textContent='הבועות משתנות מתחנה לתחנה! כל בועה גדולה מתפצלת לשתיים, גם בלי אות. 🎁 המון הפתעות; ⭐ עד '+hintCapForStage()+' רמזים חדשים בתחנה, ורמזים נדירים.';
  $('stageTrack').innerHTML=tasks.map((task,i)=>'<span class="'+(i<level?'done':i===level?'active':'')+'" title="'+task.name+'">'+(i<level?'✓':task.emoji)+'</span>').join('');
  updateWords();hud();toast('🔤 '+letterTargets().length+' אותיות מחכות לכם! 🎁 המון הפתעות קסומות בדרך.');
 }
@@ -461,7 +482,7 @@ function showModal(emoji,title,text,button,action){
 function resume(){paused=false;$('overlay').hidden=true;frameTime=performance.now();speak()}
 function start(){if(!started){started=true;makeStage()}resume()}
 function reset(){
- coins=saved.coins;points=0;hearts=7;hints=0;level=0;saved.run=null;save();started=true;makeStage();resume();
+ coins=saved.coins;points=0;hearts=7;hints=1;stageHintsCollected=0;level=0;saved.run=null;save();started=true;makeStage();resume();
 }
 function burst(x,y,color,count=13){for(let i=0;i<count;i++)particles.push({x,y,vx:rnd(-210,210),vy:rnd(-230,30),life:rnd(.35,.8),color,r:rnd(2,6)})}
 function fire(){if(paused||fireDelay>0||transition>0)return;beams.push({x:player.x,y:FLOOR-56,top:FLOOR-56,life:.95});fireDelay=rapidFire>0?.15:.37;beep(590,.08,'triangle');burst(player.x,FLOOR-57,'#ffe7a2',4)}
@@ -472,9 +493,11 @@ function surpriseAt(x,y,chance=.84){
  if(rand()>chance)return;
  // Frequent, varied surprises; hints and extra lives are deliberately rare.
  const roll=rand();
- const type=roll<.25?'coin':roll<.46?'gem':roll<.58?'crown':
+ let type=roll<.25?'coin':roll<.46?'gem':roll<.58?'crown':
   roll<.70?'rainbow':roll<.80?'lightning':roll<.89?'magnet':
   roll<.95?'clock':roll<.975?'shield':roll<.992?'star':'heart';
+ // Limit stars still on the ground as well as those already collected.
+ if(type==='star'&&stageHintsCollected+drops.filter(d=>d.type==='star').length>=hintCapForStage())type='gem';
  spawnDrop(Math.max(24,Math.min(W-24,x+rnd(-18,18))),y,type,'',type==='star'?10:17);
 }
 function hitBubble(b){
@@ -482,15 +505,11 @@ function hitBubble(b){
  bubbles.splice(i,1);
  burst(b.x,b.y,b.root?'#d5b4ff':'#a8edff',b.root?25:12);
  beep(500+b.size*110,.09,'sine');earnedPoints+=10;
- if(b.root){
-  splitIntoChildren(b);
-  toast('💥 '+b.word+' התפצלה לשתי בועות! גם בועות בלי אות מתפצלות עד לגודל הקטן ביותר.');
- }else{
-  if(b.letterId&&!collected.has(b.letterId)&&!drops.some(d=>d.type==='letter'&&d.id===b.letterId))
-   spawnDrop(b.x,b.y,'letter',b.label,9999,b.letterId);
-  // No letter is required for a bubble to split or release a surprise.
-  splitIntoChildren(b);
- }
+ if(b.letterId&&!collected.has(b.letterId)&&!drops.some(d=>d.type==='letter'&&d.id===b.letterId))
+  spawnDrop(b.x,b.y,'letter',b.label,9999,b.letterId);
+ // Split every bubble with children, including letterless and starting bubbles.
+ splitIntoChildren(b);
+ if(b.root)toast('💥 '+b.word+'! הבועות מתפצלות עד לגודל הקטן ביותר.');
  surpriseAt(b.x,b.y,b.root?1:.84);
  if(!b.root&&rand()<.16)surpriseAt(b.x+32,b.y,.85);
  hud();
@@ -511,7 +530,11 @@ function getDrop(d){
  }else if(d.type==='shield'){
   shield=6;toast('🛡️ מגן קסום! הגנה לשש שניות.');beep(620,.15);
  }else if(d.type==='star'){
-  hints=Math.min(99,hints+1);toast('⭐ הפתעה נדירה: רמז נוסף!');beep(1000,.1);saveRun();
+  if(stageHintsCollected<hintCapForStage()){
+   hints=Math.min(99,hints+1);stageHintsCollected++;
+   toast('⭐ רמז נדיר! אספתם '+stageHintsCollected+'/'+hintCapForStage()+' רמזים חדשים בתחנה.');
+   beep(1000,.1);saveRun();
+  }else{earnedPoints+=85;toast('💎 מכסת הרמזים לתחנה מלאה! קיבלתם נקודות במקום.');}
  }else if(d.type==='gem'){
   earnedPoints+=85;toast('💎 יהלום קסום! 85 נקודות בונוס.');beep(1080,.14);
  }else if(d.type==='crown'){
@@ -626,7 +649,7 @@ function finishStage(){
  if(transition)return;
  coins+=earned;points+=earnedPoints+150;earned=0;earnedPoints=0;
  saved.coins=coins;saved.best=Math.max(saved.best,level+1);saved.completed=saved.best===10;
- saved.run=level===9?null:{level:level+1,hearts,points,hints};
+ saved.run=level===9?null:{level:level+1,hearts,points,hints,stageHintsCollected:0};
  save();hud();
  $('modalEmoji').textContent='🎉🧚‍♀️📚';$('modalTitle').textContent='כל הכבוד! השלמתם את התחנה!';
  $('modalText').innerHTML='<p>אספתם את כל האותיות של <b>'+wordTargets().join(' · ')+'</b>, בניתם את המילים והתאמתם את פירושיהן!</p><p>⭐ ניקוד: <b>'+points+'</b> · 💜 חיים שנותרו: <b>'+hearts+'</b></p><p>✨ ממשיכים אוטומטית לתחנה הבאה...</p>';
@@ -638,7 +661,7 @@ function nextStage(){
   showModal('👑🫧🏰','אלופי בועות הקסם!','בניתם את מילות הקסם מאותיות שאספתם והתאמתם את פירושיהן והצלתם את הממלכה!<br>⭐ ניקוד סופי: <b>'+points+'</b> נקודות<br>🪙 סך המטבעות בקופה: <b>'+coins+'</b><br>💜 חיים שנותרו: <b>'+hearts+'</b>','🔄 משחקים שוב!',reset);
   return;
  }
- level++;makeStage();paused=false;$('overlay').hidden=true;frameTime=performance.now();speak();
+ level++;stageHintsCollected=0;makeStage();paused=false;$('overlay').hidden=true;frameTime=performance.now();speak();
 }
 function loseLife(reason){
  if(paused||transition)return;
