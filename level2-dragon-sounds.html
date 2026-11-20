@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#21113e"><title>🐉 ספר הצלילים של הדרקון | PLAYWISE</title>
+<style>
+*{box-sizing:border-box}html{background:#14092d}body{margin:0;min-height:100vh;font-family:Arial,"Noto Sans Hebrew",sans-serif;color:#fff9e9;background:radial-gradient(ellipse at 15% 12%,#6a3d9b8a,transparent 45%),radial-gradient(ellipse at 83% 75%,#277b7370,transparent 47%),linear-gradient(135deg,#1d103d,#37205a 65%,#120c29)}
+button{font:inherit;cursor:pointer}a{color:inherit}main{max-width:1120px;margin:auto;padding:20px 16px 65px}.hero{text-align:center;padding:9px 12px 17px}.hero .dragon{font-size:clamp(56px,9vw,98px);display:block;filter:drop-shadow(0 7px 15px #ffa65c88);animation:float 3.4s ease-in-out infinite}.hero h1{font-size:clamp(28px,5vw,52px);color:#ffe5a2;text-shadow:0 3px 0 #5c337a;margin:7px}.hero p{font-size:clamp(15px,2vw,20px);line-height:1.6;max-width:780px;margin:8px auto}
+.intro{background:#fff2ce;color:#3d2654;border:4px double #d4a75e;border-radius:23px;padding:19px 22px;margin:13px auto 22px;box-shadow:0 10px 25px #09051855;font-size:clamp(16px,2vw,20px);line-height:1.65;text-align:center}
+.sound-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.sound-card{position:relative;overflow:hidden;border:2px solid #b89aff;border-radius:22px;padding:19px 14px 15px;background:linear-gradient(155deg,#61378a,#301b5a);box-shadow:0 8px 0 #160c33,0 14px 30px #09051955;text-align:center;transition:transform .2s,border-color .2s}
+.sound-card:hover{transform:translateY(-4px)}.sound-card.heard{border-color:#ffea98;box-shadow:0 0 0 3px #ffed9b66,0 8px 0 #160c33}
+.sound-symbol{display:block;font:bold clamp(44px,7vw,68px) Georgia,serif;color:#ffe8a3;text-shadow:0 3px 0 #7d419b;direction:ltr;letter-spacing:2px}
+.sound-label{font-size:clamp(15px,2vw,18px);font-weight:900;color:#f5dfff;min-height:43px;display:grid;place-items:center}
+.examples{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:10px auto 13px}
+.example{border:1px solid #ffebbb;background:#ffffff1b;color:white;border-radius:13px;padding:9px 12px;font-weight:900;min-width:86px;line-height:1.5}
+.example strong{display:block;font-size:19px;direction:ltr}.example small{display:block;color:#ffe9bd;font-size:12px}
+.example:hover,.example:focus-visible{background:#8960ad;outline:2px solid #ffe7a4}
+.hear{border:2px solid #fff1b5;background:linear-gradient(#ffedb7,#eebc79);color:#4b245b;border-radius:13px;padding:10px 17px;font-weight:900;font-size:17px}
+.sound-card .tip{margin:11px 0 0;font-size:13px;color:#e3d0fb;line-height:1.6}
+.footer-panel{text-align:center;border:3px solid #e4bd80;border-radius:24px;padding:20px;background:#2d1955c9;margin:29px auto 0;max-width:780px}
+.footer-panel h2{color:#ffe6a1;margin:0 0 8px}.footer-panel p{font-size:17px;line-height:1.6}
+.next{border:2px solid #fff2c1;background:linear-gradient(125deg,#ffedb2,#ffbdde);color:#4d245d;border-radius:17px;font-size:clamp(18px,2.6vw,24px);font-weight:900;padding:14px 25px;box-shadow:0 5px 0 #98578c}
+.next:hover{filter:brightness(1.08);transform:translateY(-2px)}
+.note{font-size:13px;color:#e5c8ff}.mini-toast{min-height:28px;font-weight:bold;color:#ffe7a0;margin-top:12px}
+@keyframes float{50%{transform:translateY(-10px)}}@media(max-width:760px){.sound-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.sound-card{padding:13px 8px}.sound-label{min-height:35px}.examples{gap:5px}.example{min-width:67px;padding:7px 6px}.example strong{font-size:16px}}@media(max-width:440px){.sound-grid{grid-template-columns:1fr}.sound-card{padding:13px}.sound-symbol{font-size:48px}.sound-label{min-height:0}.hero{padding-top:4px}.intro{padding:13px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+</style></head>
+<body><main><header class="hero"><span class="dragon" aria-hidden="true">🐉📖✨</span><h1>ספר הצלילים הסודיים של הדרקון</h1><p>לפני שנכנסים למערה, הדרקון מלמד אותנו את צירופי האותיות שמייצרים צלילים מיוחדים באנגלית.</p></header>
+<div class="intro">🔮 <b>מהו צליל מיוחד?</b> לפעמים <b>שתי אותיות עובדות יחד</b> כדי ליצור צליל אחד, למשל <span dir="ltr"><b>SH</b></span> במילה <span dir="ltr"><b>SHIP</b></span>. ויש גם צירופים כמו <b>EE</b> ו־<b>OO</b> שמייצרים צליל תנועה. לחצו על המילים כדי לשמוע אותן!</div>
+<section class="sound-grid" id="soundGrid" aria-label="שישה צירופי אותיות מיוחדים"></section>
+<section class="footer-panel"><h2>🏰 מוכנים למבחן הדרקון?</h2><p>במשחק הבא הדרקון יציג מילים, ואתם תצטרכו לזהות את הצליל המיוחד. אחר כך תיכנסו ל<b>מבוך הכוכבים</b>, שבו כל כוכב מסתיר מילה!</p><button class="next" id="next" type="button">🐉 הבנתי! למשחק הצלילים</button><p class="note">אפשר להאזין לכל מילה כמה פעמים שרוצים. לא חייבים לשמוע את כולן כדי להמשיך.</p><div class="mini-toast" id="message" aria-live="polite"></div></section></main>
+<script>
+const sounds=[
+ {sound:'SH',label:'צליל שׁ',tip:'שתי אותיות שיוצרות יחד צליל כמו שׁ.',examples:[['SHIP','🚢','ספינה'],['FISH','🐟','דג'],['SHELL','🐚','צדף']]},
+ {sound:'CH',label:'צליל צ׳',tip:'שומעים צ׳ כמו בתחילת המילה CHAIR.',examples:[['CHAIR','🪑','כיסא'],['CHEESE','🧀','גבינה'],['CHICK','🐥','אפרוח']]},
+ {sound:'TH',label:'צליל לשון מיוחד',tip:'שימו בעדינות את קצה הלשון בין השיניים: THINK לעומת THIS — הצליל יכול להשתנות.',examples:[['THINK','🤔','לחשוב'],['THREE','3️⃣','שלוש'],['THUMB','👍','אגודל']]},
+ {sound:'EE',label:'צליל אִי ארוך',tip:'שתי אותיות E שנשמעות יחד כמו אי ארוך.',examples:[['TREE','🌳','עץ'],['BEE','🐝','דבורה'],['FEET','👣','כפות רגליים']]},
+ {sound:'OO',label:'צליל אוּ ארוך (לפעמים שונה)',tip:'ב־MOON שומעים אוּ ארוך. שימו לב: במילים אחרות כמו BOOK הצליל קצר יותר.',examples:[['MOON','🌙','ירח'],['SPOON','🥄','כף'],['ZOO','🦓','גן חיות']]},
+ {sound:'CK',label:'צליל ק',tip:'שתי אותיות בסוף מילה שיוצרות צליל ק אחד.',examples:[['DUCK','🦆','ברווז'],['SOCK','🧦','גרב'],['ROCK','🪨','סלע']]}
+];
+function say(word){if(!('speechSynthesis'in window))return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(word.toLowerCase());u.lang='en-US';u.rate=.73;speechSynthesis.speak(u)}catch(e){}}
+const grid=document.getElementById('soundGrid');
+sounds.forEach(s=>{
+ const card=document.createElement('article');card.className='sound-card';
+ const title=document.createElement('span');title.className='sound-symbol';title.textContent=s.sound;card.append(title);
+ const label=document.createElement('div');label.className='sound-label';label.textContent=s.label;card.append(label);
+ const examples=document.createElement('div');examples.className='examples';
+ for(const [word,emoji,meaning] of s.examples){const b=document.createElement('button');b.className='example';b.type='button';b.innerHTML='<strong>'+emoji+' '+word+'</strong><small>'+meaning+'</small>';b.onclick=()=>{say(word);card.classList.add('heard');document.getElementById('message').textContent='🔊 '+word+' · '+meaning};examples.append(b)}
+ card.append(examples);
+ const listen=document.createElement('button');listen.className='hear';listen.type='button';listen.textContent='🔊 השמיעו את '+s.sound;listen.onclick=()=>{say(s.examples[0][0]);card.classList.add('heard')};card.append(listen);
+ const tip=document.createElement('p');tip.className='tip';tip.textContent='💡 '+s.tip;card.append(tip);grid.append(card);
+});
+document.getElementById('next').onclick=()=>{try{localStorage.setItem('playwise-level2-dragon-lesson-v1','complete')}catch(e){}location.href='level2-quest.html?stage=5'};
+</script><script src="level2-world-navigation.js?v=dragon3" defer></script></body></html>
