@@ -35,16 +35,50 @@ button{font-family:inherit;cursor:pointer}.primary{border:2px solid #fff0b2;bord
 
 @media(max-width:600px){.overlay{position:fixed;inset:0;z-index:1000;overflow-y:auto;padding:12px;align-items:center}.modal{max-height:calc(100dvh - 24px);overflow-y:auto}.quiz-choices{gap:6px}.quiz-choices button{min-width:90px;padding:10px 11px}main{padding:55px 5px 25px}.back{padding:7px 10px;font-size:11px}.board{border-width:3px;border-radius:14px}.controls{gap:8px}.controls button{min-width:72px;min-height:54px}.controls .fire{min-width:125px}.challenge{margin:7px 4px;padding:7px}.hud span{padding:5px 8px}.stage-track{gap:3px;margin:7px}.stage-track span{border-radius:7px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+.arcade-panel{max-width:1000px;margin:-3px auto 10px;background:linear-gradient(180deg,#b9a7a5,#584268 15%,#392950);border:4px solid #e5bd85;border-top:0;border-radius:0 0 20px 20px;box-shadow:0 12px 28px #10052c88;padding:7px 12px 11px;direction:ltr}
+.arcade-clock{display:flex;align-items:center;gap:12px;color:#fff2bc;font-weight:1000;text-shadow:0 2px 2px #221333}
+.arcade-clock>span{font-size:clamp(13px,2vw,20px);white-space:nowrap}.arcade-clock>strong{font:1000 clamp(19px,3.4vw,33px) Arial;min-width:74px;text-align:right;color:#fff}
+.arcade-meter{height:23px;flex:1;min-width:40px;border:3px solid #2a1b3b;background:#28162e;border-radius:4px;padding:2px;box-shadow:inset 0 1px 5px #0c061a}
+.arcade-meter-fill{height:100%;width:100%;background:linear-gradient(#ff7c7d,#f72e45 35%,#c90e2d);box-shadow:0 0 8px #ff425a;transition:width .12s linear}
+.arcade-meter.urgent .arcade-meter-fill{background:linear-gradient(#ffeb9b,#f18a19);animation:timerPulse .6s infinite alternate}
+.arcade-bottom{display:grid;grid-template-columns:minmax(0,2.3fr) minmax(105px,1fr) minmax(105px,1fr);gap:8px;margin-top:7px}
+.arcade-bottom>div{background:#30203e;border:2px solid #9b8b9a;border-radius:5px;min-height:61px;padding:5px 9px;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.arcade-caption{color:#ffe6a2;font-size:clamp(10px,1.7vw,16px);font-weight:1000;letter-spacing:.5px}
+.life-icons{display:flex;flex-wrap:wrap;justify-content:center;gap:2px;font-size:clamp(17px,2.9vw,28px);line-height:1.35;min-height:32px}
+.life-icons .lost{filter:grayscale(1);opacity:.25}
+.arcade-score strong,.arcade-stage strong{font:bold clamp(19px,3vw,31px) Arial;color:#fff;line-height:1.2}
+.phonics-hero{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:10px auto}
+.phonics-picture{font-size:clamp(38px,7vw,66px);filter:drop-shadow(0 4px 7px #170a46)}
+.phonics-listen{background:#3c246e;color:#fff;border:2px solid #ffdc9a;border-radius:13px;padding:11px 15px;font-size:clamp(15px,2.5vw,19px);font-weight:900}
+.phonics-slots{display:flex;direction:ltr;justify-content:center;flex-wrap:wrap;gap:7px;margin:12px auto}
+.phonics-slot{min-width:clamp(49px,10vw,87px);min-height:54px;border:2px dashed #c5a2ff;border-radius:13px;background:#28164b;color:#fff6ca;display:grid;place-items:center;font:bold clamp(19px,3.2vw,27px) Arial;padding:6px 10px}
+.phonics-slot.filled{background:#2e826d;border:2px solid #9ff9c8}
+.phonics-help{color:#e4c9ff;font-size:clamp(13px,2vw,16px);margin:7px auto}
+.phonics-chunks{display:flex;direction:ltr;justify-content:center;gap:9px;flex-wrap:wrap;margin:14px auto}
+.phonics-chunks button{min-width:clamp(60px,12vw,105px);min-height:54px;background:linear-gradient(#ffefc5,#eeb77e);border:2px solid #ffeec7;border-radius:13px;color:#432054;font:bold clamp(19px,3vw,25px) Arial;padding:9px 13px;box-shadow:0 4px 0 #9a5d52}
+.phonics-chunks button:disabled{opacity:.32;filter:grayscale(.7);box-shadow:none}
+.phonics-chunks button:not(:disabled):active{transform:translateY(2px)}
+.quiz-progress{color:#fff1a6;font-weight:900}
+@media(max-width:600px){.arcade-panel{border-width:3px;padding:5px 5px 7px;margin:-2px 0 8px}.arcade-clock{gap:6px}.arcade-meter{height:17px}.arcade-clock>strong{min-width:52px;font-size:20px}.arcade-bottom{gap:3px;grid-template-columns:minmax(0,2fr) minmax(70px,1fr) minmax(67px,1fr)}.arcade-bottom>div{min-height:50px;padding:4px 2px}.arcade-caption{font-size:10px}.life-icons{font-size:17px;min-height:22px}.arcade-score strong,.arcade-stage strong{font-size:19px}.phonics-chunks{gap:5px}.phonics-chunks button{min-width:57px;min-height:47px;padding:7px}.phonics-slot{min-height:45px;min-width:43px;padding:4px}}
 </style></head><body>
 <a class="back" href="adventure-map.html">🗺️ חזרה לעולם</a>
 <main>
 <header><span class="eyebrow">🏰 משחק ההרפתקה הראשי של עולם 2</span><h1>🫧 Bubble Magic ✨</h1><p>בועות הקסם של הממלכה · זזים, מכוונים, מפוצצים, אוספים מטבעות ולומדים אנגלית!</p></header>
-<div class="hud" aria-live="polite"><span id="stageHud">🏰 תחנה 1/10</span><span id="coinHud">🪙 0 מטבעות</span><span id="heartHud">💜💜💜💜💜💜💜</span><span id="timeHud">⏳ 01:40</span><span id="scoreHud">⭐ 0 נקודות</span><span id="runeHud">📚 מילים: 0/3</span><span id="shieldHud">🛡️ מגן כבוי</span></div>
-<div class="challenge" aria-live="polite"><strong id="challenge">✨ אספו את מילות הקסם</strong><small id="hint">פוצצו את כל הבועות, אספו את המילים ופתרו את המשימה בסוף התחנה</small><div class="examples" id="answers"></div></div>
+<div class="hud" aria-live="polite"><span id="stageHud">🏰 תחנה 1/10</span><span id="coinHud">🪙 0 מטבעות</span><span id="runeHud">📚 מילים: 0/3</span><span id="shieldHud">🛡️ מגן כבוי</span></div>
+<div class="challenge" aria-live="polite"><strong id="challenge">✨ אספו את מילות הקסם</strong><small id="hint">פוצצו את כל הבועות, אספו מילים, בנו אותן מצלילים והתאימו לפירוש</small><div class="examples" id="answers"></div></div>
 <div class="stage-track" id="stageTrack" aria-label="התקדמות בעשר תחנות"></div>
 <div class="board"><canvas id="game" width="960" height="540" aria-label="משחק פעולה עם בועות קופצות ופיית קסם" role="img"></canvas>
-<div class="overlay" id="overlay"><div class="modal"><div class="emojis" id="modalEmoji">🧚‍♀️🫧🏰</div><h2 id="modalTitle">ברוכים הבאים לבועות הקסם!</h2><p id="modalText">עזרו לפיה לאסוף מילים באנגלית! בכל תחנה פוצצו את הבועות, אספו את כל המילים, ואז ענו על משימה בעזרתן. המילים נהיות מאתגרות יותר בכל תחנה.<br>💜 מתחילים עם <b>7 חיים לכל עשר התחנות יחד</b> ועם שעון לכל תחנה. בדרך אפשר לאסוף ⭐ נקודות, 💜 חיים נוספים, ⏳ זמן נוסף ו־🛡️ מגן זמני. בועות גדולות מתפצלות לקטנות!</p><button class="primary" id="play">✨ מתחילים בהרפתקה!</button></div></div>
+<div class="overlay" id="overlay"><div class="modal"><div class="emojis" id="modalEmoji">🧚‍♀️🫧🏰</div><h2 id="modalTitle">ברוכים הבאים לבועות הקסם!</h2><p id="modalText">עזרו לפיה לאסוף מילים באנגלית! בכל תחנה פוצצו את הבועות ואספו שלוש מילים. אחר כך <b>הקשיבו למילים, בנו אותן מחלקי צליל לפי הסדר, והתאימו כל מילה לפירוש בעברית</b>. המילים נעשות מאתגרות יותר בכל תחנה.<br>💜 מתחילים עם <b>7 חיים לכל עשר התחנות יחד</b> ועם שעון לכל תחנה. בדרך אפשר לאסוף ⭐ נקודות, 💜 חיים נוספים, ⏳ זמן נוסף ו־🛡️ מגן זמני. בועות גדולות מתפצלות לקטנות!</p><button class="primary" id="play">✨ מתחילים בהרפתקה!</button></div></div>
 </div>
+<section class="arcade-panel" aria-label="לוח המשחק: זמן, חיים וניקוד">
+ <div class="arcade-clock"><span>⏳ TIME</span><div class="arcade-meter" id="timeMeter" role="progressbar" aria-label="זמן שנותר" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><div class="arcade-meter-fill" id="timeFill"></div></div><strong id="timeHud" aria-live="off">01:40</strong></div>
+ <div class="arcade-bottom">
+  <div class="arcade-lives"><span class="arcade-caption">💜 LIVES · לכל המסע</span><div id="heartHud" class="life-icons" aria-label="7 חיים">🔥🔥🔥🔥🔥🔥🔥</div></div>
+  <div class="arcade-score"><span class="arcade-caption">⭐ SCORE</span><strong id="scoreHud">0</strong></div>
+  <div class="arcade-stage"><span class="arcade-caption">🏰 LEVEL</span><strong id="levelBottom">1 / 10</strong></div>
+ </div>
+</section>
 <div class="controls" aria-label="שליטה במשחק"><button id="left" aria-label="זוזו שמאלה">◀</button><button id="fire" class="fire" aria-label="יריית קסם">🪄 קסם!</button><button id="right" aria-label="זוזו ימינה">▶</button><button id="mute" class="mute" aria-label="השתקת צלילים">🔊</button></div>
 <div class="toast" id="toast" role="status" aria-live="polite">✨ פוצצו בועות, אספו מילים והצילו את הממלכה!</div>
 <p class="help">⌨️ במחשב: חצים או A/D לתנועה, רווח לירי · 📱 בנייד: כפתורי השליטה · אפשר להחזיק לחיצה רצופה</p>
