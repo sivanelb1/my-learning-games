@@ -170,11 +170,14 @@ message('💜 כמעט! שתי האבנים צריכות להחליף מקומו
 $('mirror').style.animation='wiggle .5s ease-in-out';setTimeout(()=>{$('mirror').style.animation='';slots=[null,null];used=[false,false];locked=false;selected=null;redraw()},850);return
 }
 $('mirror').classList.add('solved');chime();solved++;updateProgress();message('🌟 קסם! '+item.word+' — החזרתם למראה את שתי האותיות!');
-setTimeout(()=>{const last=solved===words.length;const card=last?'<div class="big">🪞👑🌈</div><h2>המראה זוהרת שוב!</h2><p>סידרתם שתי אותיות בכל אחת מעשר המילים והחזרתם את האור לממלכה!<br>💎 קיבלתם את אבן הקסם של תחנה 4!</p><button class="primary" id="next">🐉 למערת הדרקון</button><p><a href="adventure-map.html">🗺️ חזרה למפת הממלכה</a></p>':'<div class="big">🪞✨💎</div><h2>המראה התמלאה בקסם!</h2><p>השלמתם את המילה <b dir="ltr">'+item.word+'</b> עם שתי אותיות התנועה הנכונות!</p><button class="primary" id="next">🔮 למילה הקסומה הבאה</button>';
-$('resultCard').innerHTML=card;$('result').classList.remove('hidden');
-$('next').onclick=()=>{if(last){location.href='level2-quest.html?stage=5'}else{$('result').classList.add('hidden');index++;render();speak(words[index].word)}};
-if(last)saveCompletion();
-},1050)
+// Advance automatically after a short success animation; no between-word popup.
+if(solved===words.length){
+saveCompletion();
+message('👑 כל הכבוד! כל עשר המילים הושלמו. ממשיכים למערת הדרקון! 🐉');
+setTimeout(()=>{location.href='level2-quest.html?stage=5'},2600);
+}else{
+setTimeout(()=>{index++;render();speak(words[index].word)},1450);
+}
 }
 function saveCompletion(){try{const key='playwise-level2-royal-quest-v1';let d=JSON.parse(localStorage.getItem(key)||'[]');if(!Array.isArray(d))d=[];if(!d.includes(3))d.push(3);localStorage.setItem(key,JSON.stringify(d));localStorage.setItem('playwise-level2-vowel-mirror-v1','complete')}catch(e){}updateRoute()}
 $('reset').onclick=()=>{if(locked)return;slots=[null,null];used=[false,false];selected=null;redraw();message('✨ מתחילים מחדש! סדרו את שתי האבנים')};
