@@ -452,7 +452,7 @@ function makeStage(){
  const totalBubbles=formations[level].flat().reduce((sum,size)=>sum+(2**(size+1)-1),0);
  const rewardTypes=['heart',...Array(hintCapForStage()).fill('star')].sort(()=>rand()-.5);
  stageRewardPlan=rewardTypes.map((type,i)=>({hit:Math.round((i+1)*totalBubbles/(rewardTypes.length+1)),type}));
- seconds=stageTime();shield=0;invuln=0;fireDelay=0;transition=0;flash=0;quizOpen=false;gameOver=false;player.x=W/2;
+ seconds=stageTime();shield=7;invuln=0;fireDelay=0;transition=0;flash=0;quizOpen=false;gameOver=false;player.x=W/2;
  const words=wordTargets();
  const lineup=words.flatMap((word,i)=>letterBubbleForest(word,formations[level][i]).map(node=>({word,node})));
  lineup.forEach(({word,node},i)=>{
@@ -464,7 +464,7 @@ function makeStage(){
   }));
  });
  $('challenge').textContent=t.emoji+' '+t.name+' · '+lineup.length+' בועות התחלה · '+words.length+' מיל'+(words.length===1?'ה':'ים')+'!';
- $('hint').textContent='הבועות משתנות מתחנה לתחנה! כל בועה גדולה מתפצלת לשתיים, גם בלי אות. 🎁 בכל תחנה אפשר לאסוף 💜 לב אחד ו־⭐ '+hintCapForStage()+' רמזים נוספים.';
+ $('hint').textContent='הבועות משתנות מתחנה לתחנה! כל בועה גדולה מתפצלת לשתיים, גם בלי אות. 🎁 בכל תחנה מתחילים עם 🛡️ מגן ל־7 שניות ללא פגיעה! אפשר לאסוף 💜 לב אחד ו־⭐ '+hintCapForStage()+' רמזים נוספים.';
  $('stageTrack').innerHTML=tasks.map((task,i)=>'<span class="'+(i<level?'done':i===level?'active':'')+'" title="'+task.name+'">'+(i<level?'✓':task.emoji)+'</span>').join('');
  updateWords();hud();toast('🔤 '+letterTargets().length+' אותיות מחכות לכם! 🎁 המון הפתעות קסומות בדרך.');
 }
@@ -682,7 +682,7 @@ function finishStage(){
   '<p>השלמתם את תחנה <b>'+completedLevel+'</b> ובניתם את <b dir="ltr">'+completedWords+'</b>!</p>'+
   '<p>🏰 התחנה הבאה: <b>'+(level+1)+'/10 · '+tasks[level].name+'</b></p>'+
   '<p>💜 חיים: <b>'+hearts+'</b> · 💡 רמזים: <b>'+hints+'</b></p>'+
-  '<p>🎁 בתחנה החדשה אפשר לאסוף עוד <b>לב אחד ו־'+hintCapForStage()+' רמזים</b>. המשחק יתחיל רק כשתלחצו על הכפתור.</p>',
+  '<p>🎁 בתחנה החדשה אפשר לאסוף עוד <b>לב אחד ו־'+hintCapForStage()+' רמזים</b>. בתחילת התחנה יש לכם 🛡️ מגן ל־7 שניות. המשחק יתחיל רק כשתלחצו על הכפתור.</p>',
   '▶️ עוברים לשלב הבא',resume);
 }
 function loseLife(reason){
