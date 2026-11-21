@@ -183,7 +183,7 @@ function board(){
 quad([[0,0],[W,0],[W,H],[0,H]],'#b58c59','#edd9a2');
 for(let y=0;y<H;y++)for(let x=0;x<W;x++){
 const s=land[at(x,y)];
-if(s){cellQuad(x,y,(x+y)%2?'#8874a7':'#9a87b6','#d5c2e01b');if((x+y)%5===0){const p=project(x+.48,y+.5);ctx.fillStyle='#fff0bd44';ctx.fillRect(p.x-3,p.y-2,6,4)}}
+if(s){const edge=x===0||y===0||x===W-1||y===H-1;const painted=stage===0?['#ef96ba','#9cd5fb','#b5eac1','#ffe19b','#c9b3ef','#f6b98c']:['#93c9f6','#b7b1ef','#95e4d2','#e5c4f2','#f5d9a0'];cellQuad(x,y,edge?((x+y)%2?'#8874a7':'#9a87b6'):painted[(Math.floor(x/3)+Math.floor(y/2))%painted.length],edge?'#d5c2e01b':'#fff9db66');if((x+y)%5===0){const p=project(x+.48,y+.5);ctx.fillStyle='#fff0bd44';ctx.fillRect(p.x-3,p.y-2,6,4)}}
 else{cellQuad(x,y,(x+y)%2?'#dfbf70':'#e8c77a','#ffffff12');const p=project(x+.5,y+.5);ctx.strokeStyle='#fff2b216';ctx.beginPath();ctx.moveTo(p.x-11,p.y-4);ctx.lineTo(p.x+9,p.y+5);ctx.stroke()}
 }
 for(const t of trail){cellQuad(t.x,t.y,'#f5d37a','#fff4b5');const p=project(t.x+.5,t.y+.5);ctx.save();ctx.shadowColor='#ffe7a0';ctx.shadowBlur=14;ctx.fillStyle='#fff7ca';ctx.beginPath();ctx.arc(p.x,p.y,4,0,Math.PI*2);ctx.fill();ctx.restore()}
