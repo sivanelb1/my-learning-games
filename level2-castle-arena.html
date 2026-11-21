@@ -3,6 +3,8 @@
 <title>🏰 זירת הטירה הקסומה | PLAYWISE</title>
 <style>
 *{box-sizing:border-box}body{margin:0;min-height:100dvh;background:radial-gradient(ellipse at 50% 0%,#6a3f9b 0,#28154f 40%,#100923 100%);font-family:Arial,"Noto Sans Hebrew",sans-serif;color:#fff5dc}button,a{font:inherit}button{cursor:pointer}.wrap{max-width:1230px;margin:auto;padding:12px 13px 55px}.top{display:flex;justify-content:space-between;align-items:center;gap:8px}.top a,.tag{color:#ffe4ab;background:#3c2768;border:2px solid #d8b77d;padding:8px 13px;text-decoration:none;border-radius:13px;font-size:13px;font-weight:900}.title{text-align:center;padding:9px 0 8px}.title h1{font:bold clamp(27px,5vw,48px) Georgia,serif;color:#ffe4a6;margin:7px;text-shadow:0 3px #734191,0 0 17px #dcb6f9}.title p{color:#e8d6f8;font-size:15px;margin:5px;line-height:1.5}.layout{display:grid;grid-template-columns:minmax(0,1fr) 295px;gap:16px;align-items:start}.castle{background:linear-gradient(145deg,#4b316e,#27163f);border:4px solid #d5b075;border-radius:26px;padding:10px;box-shadow:0 18px 36px #09031b88;min-width:0}.arena-frame{position:relative;overflow:hidden;border-radius:17px;border:4px ridge #d5ad76;background:#3d62a1;box-shadow:0 0 0 3px #6e4c91,inset 0 0 24px #09071b}canvas{display:block;width:100%;height:auto;aspect-ratio:960/660;touch-action:none}.below{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:12px;font-weight:900;color:#ffe2a5;margin:10px 2px 3px}.sidebar{display:flex;flex-direction:column;gap:12px}.panel{border:3px solid #c7a0df;background:linear-gradient(150deg,#51327d,#2d1a55);border-radius:23px;padding:15px;box-shadow:0 10px 20px #0005}.panel h2{font-size:19px;color:#ffe3a5;margin:2px 0 12px}.goal{background:#fff6e6;border:3px solid #efcb85;border-radius:18px;color:#592b78;text-align:center;padding:13px}.goal small{display:block;font-weight:900;color:#805b9d;font-size:12px}.goal strong{display:block;font:bold 37px Georgia,serif;margin:6px 0;color:#7840a0}.goal .sub{font-size:13px;color:#725181;font-weight:900}.goal strong{font-size:24px}.targets{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin:11px 0}.target-chip{display:inline-flex;align-items:center;gap:6px;padding:8px 10px;background:#fff;border:2px solid var(--c);color:#482a68;border-radius:14px;font-weight:900;font-size:15px;box-shadow:0 2px 9px #4b237025;direction:ltr}.target-chip:before{content:"";width:15px;height:15px;border-radius:50%;background:var(--c);box-shadow:0 0 12px var(--c)}.target-chip.caught{opacity:.55;text-decoration:line-through;background:#e8e4ed}.challenge{margin-top:7px;background:#e9d9f8;border-radius:10px;padding:8px;color:#633a86;font-size:13px;font-weight:900}.progress{height:14px;border-radius:20px;background:#180d33;border:1px solid #b5a0cf;overflow:hidden;margin-top:12px}.fill{height:100%;width:0;background:linear-gradient(90deg,#ffb878,#ffe7a4,#8fe7be);transition:width .35s}.nums{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin-top:10px}.chip{text-align:center;padding:7px 0;border-radius:10px;background:#3c255e;border:2px solid #775995;color:#d4bce7;font-weight:900}.chip.done{background:#ffe09e;border-color:#fff1be;color:#673773}.status{font-size:14px;color:#ffe7ad;min-height:68px;line-height:1.5;font-weight:900;text-align:center;margin:12px 0}.hudline{display:flex;justify-content:space-between;gap:8px;font-size:15px;font-weight:900;color:#ffeba9;margin:8px 0}.controls{display:grid;grid-template-columns:repeat(3,64px);gap:6px;justify-content:center;direction:ltr;touch-action:none;margin:12px auto}.controls button{height:57px;width:64px;border:2px solid #f4d4a0;background:linear-gradient(#8958b2,#553184);color:white;font-size:27px;font-weight:900;border-radius:15px;touch-action:none;user-select:none;-webkit-user-select:none}.controls button:active,.controls button.down{background:#b181d4;transform:translateY(2px)}.controls .up{grid-column:2;grid-row:1}.controls .left{grid-column:1;grid-row:2}.controls .downkey{grid-column:2;grid-row:2}.controls .right{grid-column:3;grid-row:2}.actions{display:flex;justify-content:center;gap:7px;flex-wrap:wrap}.actions button{background:#6d4a91;border:2px solid #d0b0e3;color:#fff0ce;border-radius:12px;padding:9px 13px;font-size:13px;font-weight:900}.help{font-size:12px;color:#e3c9f6;line-height:1.6;text-align:center;margin:12px 0 0}.legend{font-size:12px;color:#e8d6ff;line-height:1.8;text-align:center}.overlay{position:fixed;inset:0;z-index:30;background:#0b061fdd;display:grid;place-items:center;padding:12px;overflow-y:auto}.overlay[hidden]{display:none}.modal{width:min(590px,100%);background:linear-gradient(155deg,#fff9eb,#ead6ff);color:#53276e;border:5px solid #f0ca81;border-radius:29px;text-align:center;padding:23px 18px;box-shadow:0 20px 55px #0009}.modal .big{font-size:60px}.modal h2{font-size:clamp(24px,5vw,33px);color:#783d97;margin:7px}.modal p{font-size:16px;line-height:1.65}.rules{background:#fffaf2;border-radius:15px;padding:12px 16px;text-align:right;font-size:14px;font-weight:700;line-height:1.9}.levels{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin:13px auto}.levels label{cursor:pointer;position:relative}.levels input{position:absolute;opacity:0}.levels span{display:block;padding:9px 12px;border-radius:13px;border:2px solid #cfabdb;background:#fff;color:#663d82;font-size:14px;font-weight:900}.levels input:checked+span{background:#ffe4a3;border-color:#a87b40}.levels input:focus-visible+span{outline:3px solid #693a95;outline-offset:2px}.primary{background:linear-gradient(#ffe5a4,#f3bd6d);color:#512c6d;border:3px solid #fff2ca;border-radius:17px;padding:13px 23px;font-size:19px;font-weight:900;box-shadow:0 5px 0 #a77c43;margin:9px}.sound{border:2px solid #cda9e2;background:#f2e6ff;color:#62377d;border-radius:11px;padding:7px 10px;font-size:13px;font-weight:900}.glow{color:#fff1a5}.bottom-note{color:#d8b7ed;text-align:center;font-size:12px;margin:15px auto;line-height:1.6}@media(max-width:970px){.layout{grid-template-columns:1fr}.sidebar{display:grid;grid-template-columns:1fr 1fr}}@media(max-width:590px){.sidebar{grid-template-columns:1fr}.castle{padding:5px;border-width:3px}.arena-frame{border-width:2px}.top a,.tag{font-size:11px;padding:7px}.panel{padding:12px}.title h1{font-size:29px}.modal{padding:15px 11px}.modal p{font-size:14px}.rules{font-size:13px}.controls{margin-top:5px}}@media(prefers-reduced-motion:reduce){.fill{transition:none}}
+
+.quiz-lead{margin:8px 0 15px;font-weight:800;color:#74488d}.quiz-counter{font-weight:900;color:#6d388f;background:#f7e9ff;border-radius:12px;padding:7px 13px;display:inline-block}.quiz-columns{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin:14px 0;direction:ltr}.quiz-col{display:flex;flex-direction:column;gap:9px}.quiz-tile{min-height:64px;display:flex;align-items:center;justify-content:center;gap:7px;border:3px solid #c4a3d9;border-radius:15px;background:#fff;color:#583a75;font-size:16px;font-weight:900;transition:transform .15s,border-color .15s,background .15s}.quiz-tile:focus-visible{outline:3px solid #5a3597;outline-offset:2px}.quiz-tile.selected{border-color:#7c3fb3;background:#e7d4ff;transform:scale(1.025)}.quiz-tile.matched{background:#d5f5df;border-color:#5ebc81;color:#285f40;opacity:.8}.quiz-tile:disabled{cursor:default}.quiz-swatch{display:block;width:39px;height:39px;border-radius:50%;background:var(--swatch);border:3px solid #fff;box-shadow:0 0 0 2px #8b7b9c,0 3px 9px #2223}.quiz-digit{font:bold 30px Georgia,serif;color:#6c4ca1}.quiz-feedback{min-height:35px;color:#694089;font-weight:900;font-size:15px;margin:8px 0}.quiz-continue{display:none}.quiz-continue.visible{display:inline-block}@media(max-width:420px){.quiz-columns{gap:7px}.quiz-tile{min-height:58px;font-size:13px}.quiz-swatch{width:32px;height:32px}.quiz-digit{font-size:25px}}
 </style></head>
 <body><main class="wrap"><nav class="top"><a href="level2-color-potions.html">🧪 בחזרה לשיקויים</a><span class="tag">🏰 תחנה 6 · משחק הסיום</span></nav>
 <header class="title"><h1>🏰 זירת הטירה הקסומה</h1><p>THE RAINBOW CASTLE · צבעו 80% מהזירה, ואז שחקו במשחק התאמת מילים!</p></header>
@@ -90,6 +92,60 @@ function checkWin(){return percent>=TARGET}
 function speakCaught(words){
 if(!words.length||!('speechSynthesis' in window))return;
 try{speechSynthesis.cancel();for(const word of words){const u=new SpeechSynthesisUtterance(word);u.lang='en-US';u.rate=.72;u.pitch=1.08;const voices=speechSynthesis.getVoices();u.voice=voices.find(v=>v.lang.toLowerCase()==='en-us')||voices.find(v=>v.lang.toLowerCase().startsWith('en'))||null;speechSynthesis.speak(u)}}catch(e){}
+}
+
+
+function shuffled(list){
+const a=list.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a
+}
+function showMatchingQuiz(){
+const cfg=STAGES[stage],items=stageWords.slice(),m=$('modal');
+m.innerHTML='';$('overlay').hidden=false;
+const icon=document.createElement('div');icon.className='big';icon.textContent=cfg.kind==='color'?'🎨🧩':'🔢🧩';
+const title=document.createElement('h2');title.textContent='כל הכבוד! צבעתם 80%! 🌟';
+const lead=document.createElement('p');lead.className='quiz-lead';lead.textContent=cfg.kind==='color'?'עכשיו משחק התאמה: לחצו על צבע ואז על המילה באנגלית שמתאימה לו.':'עכשיו משחק התאמה: לחצו על ספרה ואז על השם שלה באנגלית.';
+const counter=document.createElement('div');counter.className='quiz-counter';counter.setAttribute('aria-live','polite');
+const columns=document.createElement('div');columns.className='quiz-columns';
+const left=document.createElement('div'),right=document.createElement('div');left.className='quiz-col';right.className='quiz-col';
+const feedback=document.createElement('div');feedback.className='quiz-feedback';feedback.setAttribute('aria-live','polite');feedback.textContent='בחרו קודם צבע או מספר מהטור הראשון 👈';
+const next=document.createElement('button');next.className='primary quiz-continue';next.type='button';
+next.textContent=stage===0?'🔢 ממשיכים לשלב המספרים':'👑 מסיימים את הרפתקת הטירה';
+let selected=null,correct=0;
+const tiles=new Map();
+const refresh=()=>{counter.textContent='✨ '+correct+' / '+items.length+' התאמות נכונות'};
+function choose(item,button){
+if(button.disabled)return;
+if(selected&&tiles.has(selected.label))tiles.get(selected.label).classList.remove('selected');
+selected=item;button.classList.add('selected');
+feedback.textContent='מעולה! עכשיו מצאו את המילה באנגלית בטור השני.';
+}
+function match(item,button){
+speak(item.spoken);
+if(!selected){feedback.textContent='קודם בחרו צבע או מספר מהטור הראשון 💜';return}
+if(selected.label!==item.label){feedback.textContent='כמעט! נסו מילה אחרת. אפשר ללחוץ שוב כדי לשמוע 🔊';return}
+const leftButton=tiles.get(item.label);
+leftButton.disabled=true;button.disabled=true;leftButton.classList.remove('selected');leftButton.classList.add('matched');button.classList.add('matched');
+leftButton.textContent=cfg.kind==='color'?'✓ 🎨':'✓ '+item.label;button.textContent='✓ 🔊 '+item.spoken;
+selected=null;correct++;refresh();feedback.textContent='⭐ נכון מאוד! '+item.spoken;
+if(correct===items.length){feedback.textContent='🎉 כל ההתאמות נכונות! אתם אלופי האנגלית!';next.classList.add('visible')}
+}
+for(const item of shuffled(items)){
+const btn=document.createElement('button');btn.className='quiz-tile';btn.type='button';btn.setAttribute('aria-label',cfg.kind==='color'?'בחרו את העיגול בצבע המתאים':'בחרו את הספרה '+item.label);
+if(cfg.kind==='color'){const swatch=document.createElement('span');swatch.className='quiz-swatch';swatch.style.setProperty('--swatch',item.color);btn.append(swatch)}
+else{const digit=document.createElement('span');digit.className='quiz-digit';digit.textContent=item.label;btn.append(digit)}
+btn.onclick=()=>choose(item,btn);tiles.set(item.label,btn);left.append(btn)
+}
+for(const item of shuffled(items)){
+const btn=document.createElement('button');btn.className='quiz-tile';btn.type='button';btn.textContent='🔊 '+item.spoken;
+btn.setAttribute('aria-label','השמיעו ובחרו '+item.spoken);
+btn.onclick=()=>match(item,btn);right.append(btn)
+}
+columns.append(left,right);next.onclick=()=>{
+$('overlay').hidden=true;
+if(stage===0){stage=1;stageIntro()}
+else{state='play';win()}
+};
+m.append(icon,title,lead,counter,columns,feedback,next);refresh()
 }
 
 function openModal(icon,title,description,label,action){const m=$('modal');m.innerHTML='';const b=document.createElement('div');b.className='big';b.textContent=icon;const h=document.createElement('h2');h.textContent=title;const p=document.createElement('p');p.textContent=description;const btn=document.createElement('button');btn.className='primary';btn.type='button';btn.textContent=label;btn.onclick=()=>{$('overlay').hidden=true;action()};m.append(b,h,p,btn);$('overlay').hidden=false}
