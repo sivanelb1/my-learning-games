@@ -21,7 +21,7 @@
 .board.final .slot-portrait .family-face-img{width:1.08em;height:1.08em}
 
 /* Answer cards belong to the same illustrated screen as the tree, not below it. */
-.board:not(.final){display:flex;flex-direction:column;min-height:700px}
+.board:not(.final){display:flex;flex-direction:column;min-height:570px;height:clamp(570px,calc(100dvh - 175px),740px)}
 .board:not(.final) .tree-heading{flex:none}
 .board:not(.final) .tree-subheading{flex:none}
 .board:not(.final) .slots{flex:1 1 auto;min-height:260px;width:min(100%,1050px);margin:0 auto;align-content:center;justify-content:center;padding:12px 20px 18px}
@@ -46,7 +46,7 @@
 .board.final .portrait .portrait-face{font-size:39px}
 .board.final .portrait .portrait-name{font-size:10px}
 @media(max-width:760px){
- .board:not(.final){min-height:650px}
+ .board:not(.final){min-height:560px;height:clamp(560px,calc(100dvh - 175px),700px)}
  .board:not(.final) .slots{min-height:280px;padding:10px 7px 15px;gap:7px}
  .board:not(.final) .slot{height:145px}
  .board:not(.final) .slot-portrait{font-size:44px}
@@ -66,7 +66,7 @@
  .board.final .tray p{margin-bottom:7px}
 }
 @media(max-width:420px){
- .board:not(.final){min-height:560px}
+ .board:not(.final){min-height:530px;height:clamp(530px,calc(100dvh - 175px),640px)}
  .board:not(.final) .slots{min-height:250px;padding:7px 4px 12px}
  .board:not(.final) .slot{height:128px}
  .board:not(.final) .slot-portrait{font-size:35px}
