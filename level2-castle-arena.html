@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#251046">
+<title>🏰 זירת הקשת והמספרים | PLAYWISE</title>
+<style>
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100dvh;color:#fff9e8;font-family:Arial,"Noto Sans Hebrew",sans-serif;background:radial-gradient(circle at 50% 0,#75429d88,transparent 46%),radial-gradient(circle at 10% 70%,#34539d44,transparent 35%),#14092c}button,a{font:inherit}button{cursor:pointer}.wrap{max-width:1170px;margin:auto;padding:13px 14px 60px}.nav{display:flex;align-items:center;justify-content:space-between;gap:8px}.nav a,.tag{font-size:13px;font-weight:900;color:#ffe5a9;text-decoration:none;padding:9px 12px;border:2px solid #dfb779;border-radius:14px;background:#37205e}.hero{text-align:center;padding:15px 0 5px}.hero .crown{font-size:48px}.hero h1{font:bold clamp(29px,5vw,49px) Georgia,serif;color:#ffe3a4;text-shadow:0 4px #64318c,0 0 18px #d7a4f7aa;margin:8px 0}.hero p{font-size:16px;color:#e5d4f5;margin:7px auto;line-height:1.5}.layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:start;margin-top:14px}.castle{background:linear-gradient(135deg,#604076,#2b194c);border:4px solid #d8b57b;border-radius:27px;padding:12px;box-shadow:0 16px 36px #09021ca6;min-width:0}.battlements{display:flex;align-items:center;justify-content:space-around;font-size:28px;height:37px;overflow:hidden;user-select:none}.board-frame{position:relative;overflow:hidden;border:8px ridge #d5ad70;border-radius:17px;box-shadow:inset 0 0 24px #0b071f,0 0 0 3px #8a608c;background:#26163f;touch-action:none}canvas{display:block;width:100%;height:auto;aspect-ratio:28/20;touch-action:none}.board-footer{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin:11px 2px 2px;font-size:13px;color:#f9e4ae;font-weight:900}.sidebar{display:flex;flex-direction:column;gap:12px}.panel{border:3px solid #caa2e3;background:linear-gradient(150deg,#482873,#2b194f);border-radius:23px;padding:16px;box-shadow:0 9px 21px #0005}.panel h2{font-size:19px;color:#ffe4a2;margin:2px 0 12px}.target{background:#fff5e7;color:#4b236c;border:3px solid #eecb85;border-radius:19px;padding:14px;text-align:center}.target small{display:block;font-size:13px;font-weight:900;color:#865b9b}.target .word{font:bold 34px Georgia,serif;direction:ltr;color:#702e9a;letter-spacing:1px;margin:8px 0}.target .number{font-size:28px;color:#875325;font-weight:900;margin:6px}.target button{background:#f0dfff;border:2px solid #c29adc;color:#542878;border-radius:11px;padding:8px 11px;font-weight:900;margin-top:7px}.status{min-height:74px;margin:12px 0 6px;color:#ffe6ac;font-weight:900;font-size:15px;line-height:1.5;text-align:center}.progress{height:13px;background:#180b34;border:1px solid #ad8cc6;border-radius:12px;overflow:hidden}.progress .fill{height:100%;width:0;background:linear-gradient(90deg,#fa9dc2,#ffe69c,#8fe5b3);transition:width .35s}.numbers{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:11px}.number-chip{background:#39215f;border:2px solid #7f639a;color:#b8a6d2;border-radius:10px;text-align:center;padding:7px 0;font-weight:900}.number-chip.done{background:#ffdfa2;color:#63356c;border-color:#fff0c7;box-shadow:0 0 11px #ffe1a366}.hearts{font-size:22px;letter-spacing:2px}.legend{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:13px;color:#e8d5f7}.legend .dot{width:13px;height:13px;border-radius:50%;display:inline-block;background:#fcac63;box-shadow:0 0 9px #fcac63}.controls{display:grid;grid-template-columns:repeat(3,62px);justify-content:center;gap:6px;direction:ltr;touch-action:none;margin:12px auto}.controls button{width:62px;height:55px;border:2px solid #f3d8a4;background:linear-gradient(#8053a5,#5a3282);color:white;border-radius:15px;font-size:26px;font-weight:900;touch-action:none;user-select:none;-webkit-user-select:none}.controls button:active,.controls button.pressed{background:#ad79c6;transform:translateY(2px)}.controls .up{grid-column:2;grid-row:1}.controls .left{grid-column:1;grid-row:2}.controls .down{grid-column:2;grid-row:2}.controls .right{grid-column:3;grid-row:2}.buttons{display:flex;gap:7px;flex-wrap:wrap;justify-content:center}.buttons button{border:2px solid #c5a2df;background:#62408a;color:#fff1d2;border-radius:12px;padding:9px 12px;font-weight:900;font-size:13px}.tip{text-align:center;color:#dbc4ee;font-size:13px;line-height:1.6;margin-top:11px}.overlay{position:fixed;inset:0;z-index:20;background:#0c0625e6;display:grid;place-items:center;padding:14px;overflow-y:auto}.overlay[hidden]{display:none}.modal{width:min(560px,100%);background:linear-gradient(155deg,#fff8e9,#eddafa);color:#4f276c;border:5px solid #f0cc85;border-radius:30px;padding:22px 19px;text-align:center;box-shadow:0 18px 65px #000a}.modal .big{font-size:64px}.modal h2{color:#713395;font-size:clamp(24px,4vw,32px);margin:8px}.modal p{font-size:16px;line-height:1.65}.steps{text-align:right;margin:12px auto;padding:11px 18px;background:#fffaf0;border-radius:15px;line-height:1.8;font-weight:700;font-size:14px}.difficulty{display:flex;gap:7px;justify-content:center;margin:14px 0;flex-wrap:wrap}.difficulty label{cursor:pointer;position:relative}.difficulty input{position:absolute;opacity:0;width:1px;height:1px}.difficulty span{display:block;padding:10px 12px;border:2px solid #cda9dd;border-radius:12px;background:#fff;color:#542675;font-weight:900;font-size:14px}.difficulty input:checked+span{background:#ffe1a3;border-color:#ac783d}.difficulty input:focus-visible+span{outline:3px solid #67339c;outline-offset:2px}.primary{border:3px solid #fff1c0;background:linear-gradient(#ffe7a9,#f3bb64);color:#4b2668;border-radius:17px;padding:13px 23px;font-weight:900;font-size:20px;box-shadow:0 5px 0 #a97839;margin:8px 4px;text-decoration:none;display:inline-block}.secondary{border:2px solid #c49fd7;background:#f5e7ff;color:#52256f;border-radius:13px;padding:11px 15px;font-weight:900;margin:6px 4px}.confetti{position:fixed;inset:0;pointer-events:none;z-index:22}.spark{position:absolute;font-size:27px;animation:rise 1.8s ease-out forwards}@keyframes rise{0%{opacity:1;transform:translateY(0) scale(.6)}100%{opacity:0;transform:translateY(-180px) rotate(160deg) scale(1.3)}}@media(max-width:950px){.layout{grid-template-columns:1fr}.sidebar{display:grid;grid-template-columns:1fr 1fr}.controls{margin-top:5px}}@media(max-width:600px){.sidebar{grid-template-columns:1fr}.castle{padding:7px;border-width:3px}.board-frame{border-width:5px}.battlements{height:26px;font-size:20px}.hero .crown{font-size:37px}.nav a,.tag{font-size:11px;padding:7px}.panel{padding:12px}.target .word{font-size:28px}.controls button{height:59px}}@media(prefers-reduced-motion:reduce){.spark{animation:none}.progress .fill{transition:none}}
+</style></head>
+<body><main class="wrap">
+<nav class="nav"><a href="level2-color-potions.html">🧪 בחזרה לשיקויים</a><span class="tag">🏰 תחנה 6 · משחק הסיום</span></nav>
+<header class="hero"><div class="crown">🏰🌈👑</div><h1>זירת הקשת והמספרים</h1><p>THE RAINBOW CASTLE ARENA · לכדו את כדורי הצבע, אספו את המספרים ופתחו את שער הטירה!</p></header>
+<div class="layout">
+<section class="castle" aria-label="זירת קסוניקס קסומה"><div class="battlements" aria-hidden="true">🏰 ⚜️ 🏳️‍🌈 ⚜️ 🏰</div><div class="board-frame"><canvas id="arena" width="728" height="520" aria-label="זירת משחק שבה הקוסם נע בעזרת החצים, יוצר קווים לסגירת שטחים ולוכד כדורי צבע"></canvas></div><div class="board-footer"><span>🪄 קוסם הזירה · חצים / WASD</span><span>🟨 קו קסם · סגירת שטחים</span></div></section>
+<aside class="sidebar">
+<section class="panel"><h2>✨ משימת הקוסם</h2><div class="target"><small>לכדו את כדור הצבע</small><div class="word" id="targetWord" lang="en">RED</div><button type="button" id="listen">🔊 לשמוע באנגלית</button><small style="margin-top:10px">ואז אספו את המספר</small><div class="number" id="nextNumber">⭐ 1</div></div><div class="status" id="status" aria-live="polite">🪄 סגרו שטח סביב הכדור המתאים!</div><div class="progress" id="progress" role="progressbar" aria-label="מספרים שנאספו" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0"><div class="fill" id="fill"></div></div><div class="numbers" id="numbers"></div></section>
+<section class="panel"><h2>🕹️ תנועת הקוסם</h2><div class="legend"><span class="hearts" id="hearts">❤️❤️❤️</span><span>לבבות</span></div><div class="controls" id="controls"><button class="up" type="button" data-dir="up" aria-label="למעלה">↑</button><button class="left" type="button" data-dir="left" aria-label="שמאלה">←</button><button class="down" type="button" data-dir="down" aria-label="למטה">↓</button><button class="right" type="button" data-dir="right" aria-label="ימינה">→</button></div><div class="buttons"><button type="button" id="pause">⏸️ עצירה</button><button type="button" id="rules">❔ הוראות</button></div><div class="tip">החזיקו חץ כדי לזוז. אפשר גם להחליק על הזירה בטלפון. אל תיתנו לכדורים לגעת בקו לפני שסגרתם אותו!</div></section>
+</aside></div></main>
+<div class="overlay" id="overlay"><div class="modal" id="modal">
+<div class="big">🏰🪄🌈</div><h2>ברוכים הבאים לזירת הקשת!</h2><p>כדורי הצבע השתחררו בתוך הטירה! כדי להחזיר את הקסם צריך <b>לכלוא אותם</b> ולמצוא את המספרים האבודים.</p>
+<div class="steps">🕹️ הזיזו את הקוסם עם החצים או הכפתורים.<br>✨ צאו מהמסגרת וצרו קו קסם. חזרו אל קיר או שטח בטוח כדי לסגור אזור.<br>🌈 סגרו את הכדור ששמו מופיע באנגלית בתוך אזור קטן.<br>⭐ כשתצליחו יופיע מספר זהוב על הקו. גשו אליו ואספו אותו!<br>💜 אם כדור פוגע בקו הפתוח, מאבדים לב.</div>
+<div style="font-weight:900">בחרו רמת קושי:</div><div class="difficulty"><label><input type="radio" name="difficulty" value="easy"><span>🐢 קלילה</span></label><label><input type="radio" name="difficulty" value="normal" checked><span>🐉 רגילה</span></label><label><input type="radio" name="difficulty" value="hard"><span>⚡ מאתגרת</span></label></div>
+<button type="button" class="primary" id="start">🪄 נכנסים לזירה!</button></div></div><div class="confetti" id="confetti" aria-hidden="true"></div>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id),canvas=$('arena'),ctx=canvas.getContext('2d');
+const W=28,H=20,T=26,dirs={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]};
+const palette=[{name:'RED',he:'אדום',hex:'#f05264'},{name:'BLUE',he:'כחול',hex:'#4b95f9'},{name:'GREEN',he:'ירוק',hex:'#46d18a'},{name:'YELLOW',he:'צהוב',hex:'#ffe16a'},{name:'ORANGE',he:'כתום',hex:'#ff9b4a'},{name:'PURPLE',he:'סגול',hex:'#b480f2'},{name:'PINK',he:'ורוד',hex:'#fa8fc7'},{name:'BLACK',he:'שחור',hex:'#36344d'}];
+const roundColors=[0,1,2,3,4,5,6,7,1,4],saveKey='playwise-hidden-wonders-castle-arena-v1';
+let safe=[],trail=[],balls=[],player={x:14,y:19,fromX:14,fromY:19,anim:1},pickup=null,collected=0,lives=3,running=false,paused=true,mode='intro',held=null,lastStep=0,lastFrame=0,raf=null,level='normal',speed=120,failCooldown=0,stepCount=0;
+const idx=(x,y)=>y*W+x,inside=(x,y)=>x>=0&&y>=0&&x<W&&y<H;
+function say(s){$('status').textContent=s}
+function speak(word){if(!('speechSynthesis'in window))return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(word);u.lang='en-US';u.rate=.77;u.pitch=1.03;const voices=speechSynthesis.getVoices();u.voice=voices.find(v=>v.lang.toLowerCase()==='en-us')||voices.find(v=>v.lang.toLowerCase().startsWith('en'))||null;speechSynthesis.speak(u)}catch(e){}}
+function mix(a){let b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+function currentColor(){return palette[roundColors[Math.min(collected,9)]]}
+function hud(){$('targetWord').textContent=currentColor().name;$('nextNumber').textContent='⭐ '+(Math.min(collected+1,10));$('hearts').textContent='❤️'.repeat(lives)+'🖤'.repeat(3-lives);$('fill').style.width=(collected/10*100)+'%';$('progress').setAttribute('aria-valuenow',String(collected));$('numbers').innerHTML='';for(let i=1;i<=10;i++){const n=document.createElement('span');n.className='number-chip'+(i<=collected?' done':'');n.textContent=i;$('numbers').append(n)}}
+function resetFloor(){safe=new Uint8Array(W*H);for(let y=0;y<H;y++)for(let x=0;x<W;x++)if(x===0||x===W-1||y===0||y===H-1)safe[idx(x,y)]=1;trail=[];pickup=null;player={x:Math.floor(W/2),y:H-1,fromX:Math.floor(W/2),fromY:H-1,anim:1};held=null;stepCount=0}
+function freeSpot(others){for(let tries=0;tries<300;tries++){const x=3+Math.random()*(W-6),y=3+Math.random()*(H-6);if(safe[idx(Math.floor(x),Math.floor(y))])continue;if(others.every(b=>Math.hypot(b.x-x,b.y-y)>3))return{x,y}}return{x:W/2,y:H/2}}
+function spawnBalls(){balls=[];const count=level==='easy'?3:level==='hard'?6:4;const others=mix(palette.filter(c=>c.name!==currentColor().name)).slice(0,count-1);[currentColor(),...others].forEach((c,i)=>{const p=freeSpot(balls);const angle=Math.random()*Math.PI*2;const v=(level==='easy'?1.5:level==='hard'?2.9:2.1)+collected*.09;balls.push({x:p.x,y:p.y,vx:Math.cos(angle)*v,vy:Math.sin(angle)*v,color:c,target:i===0,r:.48})})}
+function newRound(){resetFloor();spawnBalls();mode='play';paused=false;running=true;lastStep=performance.now();lastFrame=lastStep;hud();say('🌈 לכדו את '+currentColor().name+'! סגרו שטח קטן סביב הכדור.');speak(currentColor().name);run()}
+function show(icon,title,body,button,action){const m=$('modal');m.innerHTML='';const big=document.createElement('div');big.className='big';big.textContent=icon;const h=document.createElement('h2');h.textContent=title;const p=document.createElement('p');p.textContent=body;const b=document.createElement('button');b.type='button';b.className='primary';b.textContent=button;b.onclick=()=>{$('overlay').hidden=true;action()};m.append(big,h,p,b);$('overlay').hidden=false}
+function start(){collected=0;lives=3;level=document.querySelector('input[name="difficulty"]:checked')?.value||level;hud();newRound()}
+function restartPosition(){trail=[];player={x:Math.floor(W/2),y:H-1,fromX:Math.floor(W/2),fromY:H-1,anim:1};held=null;failCooldown=performance.now()+550}
+function fail(){if(mode!=='play'||pickup||performance.now()<failCooldown)return;lives--;restartPosition();hud();if(lives<=0){paused=true;running=false;mode='over';stop();say('💜 נגמרו הלבבות!');show('💜🏰','הקוסם צריך מנוחה!','אספתם '+collected+' מספרים. נסו שוב וסגרו את קווי הקסם לפני שכדורי הצבע פוגעים בהם.','🔄 מתחילים מחדש',start)}else{say('💜 כדור צבע פגע בקו הקסם! נשארו '+lives+' לבבות. נסו שוב.');}}
+function movePlayer(dx,dy){
+if(!running||paused||mode!=='play')return;
+const nx=player.x+dx,ny=player.y+dy;if(!inside(nx,ny))return;
+if(pickup&&!safe[idx(nx,ny)]){say('⭐ המספר הזהוב מחכה על קו הקסם. לכו אליו!');return}
+if(trail.some(p=>p.x===nx&&p.y===ny)){return}
+const wasDrawing=trail.length>0;
+if(!safe[idx(nx,ny)]){trail.push({x:nx,y:ny});}
+player.fromX=player.x;player.fromY=player.y;player.x=nx;player.y=ny;player.anim=0;
+if(wasDrawing&&safe[idx(nx,ny)])closeTrail();
+if(pickup&&player.x===pickup.x&&player.y===pickup.y)collectNumber();
+}
+function closeTrail(){
+if(!trail.length)return;
+const originalOpen=safe.reduce((n,v)=>n+(v===0),0);
+const path=trail.map(p=>({...p}));
+for(const p of path)safe[idx(p.x,p.y)]=1;
+trail=[];
+const visited=new Uint8Array(W*H),components=[],lookup=new Int16Array(W*H);lookup.fill(-1);
+for(let y=1;y<H-1;y++)for(let x=1;x<W-1;x++){
+const start=idx(x,y);if(safe[start]||visited[start])continue;
+const q=[start],component=[];visited[start]=1;
+for(let head=0;head<q.length;head++){const n=q[head];component.push(n);const px=n%W,py=Math.floor(n/W);for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){const xx=px+dx,yy=py+dy;if(!inside(xx,yy))continue;const ni=idx(xx,yy);if(!safe[ni]&&!visited[ni]){visited[ni]=1;q.push(ni)}}}
+const ci=components.length;for(const n of component)lookup[n]=ci;components.push(component);
+}
+const occupancy=components.map(()=>0);
+for(const b of balls){const bx=Math.max(1,Math.min(W-2,Math.floor(b.x))),by=Math.max(1,Math.min(H-2,Math.floor(b.y)));const ci=lookup[idx(bx,by)];if(ci>=0)occupancy[ci]++}
+const target=balls.find(b=>b.target);let targetCi=-1;
+if(target){const bx=Math.max(1,Math.min(W-2,Math.floor(target.x))),by=Math.max(1,Math.min(H-2,Math.floor(target.y)));targetCi=lookup[idx(bx,by)]}
+const trapped=targetCi>=0&&components.length>=2&&components[targetCi].length<=originalOpen*.62;
+let claimed=0;
+components.forEach((comp,i)=>{if(occupancy[i]===0||(trapped&&i===targetCi)){for(const n of comp)safe[n]=1;claimed+=comp.length}});
+if(trapped){
+balls=balls.filter(b=>!b.target);
+for(const b of balls)if(safe[idx(Math.max(0,Math.min(W-1,Math.floor(b.x))),Math.max(0,Math.min(H-1,Math.floor(b.y))))]){const p=freeSpot(balls.filter(other=>other!==b));b.x=p.x;b.y=p.y}
+pickup=path[Math.floor(path.length/2)]||{x:player.x,y:player.y};
+mode='pickup';held=null;hud();say('🎉 לכדתם את '+currentColor().name+'! המספר '+(collected+1)+' הופיע על קו הקסם. לכו לאסוף אותו!');speak(currentColor().name);
+}else{
+for(const b of balls)if(safe[idx(Math.max(0,Math.min(W-1,Math.floor(b.x))),Math.max(0,Math.min(H-1,Math.floor(b.y))))]){const p=freeSpot(balls.filter(other=>other!==b));b.x=p.x;b.y=p.y}
+say(claimed>0?'✨ סגרתם שטח! עכשיו נסו לכלוא את '+currentColor().name+' באזור קטן.':'✨ הקו נסגר! נסו לחלק את הזירה כך שכדור '+currentColor().name+' יהיה באזור הקטן.');
+}
+}
+function collectNumber(){if(!pickup)return;pickup=null;collected++;hud();speak(['ONE','TWO','THREE','FOUR','FIVE','SIX','SEVEN','EIGHT','NINE','TEN'][collected-1]);say('⭐ אספתם '+collected+' — '+['ONE','TWO','THREE','FOUR','FIVE','SIX','SEVEN','EIGHT','NINE','TEN'][collected-1]+'!');mode='transition';held=null;stop();if(collected>=10){setTimeout(win,650)}else setTimeout(()=>{if(mode==='transition')newRound()},1050)}
+function win(){running=false;paused=true;mode='win';try{localStorage.setItem(saveKey,'complete')}catch(e){}celebrate();show('🏰👑🌈','ניצחתם בזירת הקשת!','לכדתם את כדורי הצבע ואספתם את כל עשרת המספרים באנגלית! ממלכת המספרים והצבעים חזרה לזהור בזכותכם.','🏰 חזרה לממלכה',()=>{window.location.href='level2-numbers-intro.html'})}
+function celebrate(){const el=$('confetti');for(let i=0;i<25;i++){const s=document.createElement('span');s.className='spark';s.textContent=['🌟','✨','🌈','💫'][i%4];s.style.left=(8+Math.random()*84)+'%';s.style.top=(55+Math.random()*30)+'%';s.style.animationDelay=(Math.random()*.5)+'s';el.append(s);setTimeout(()=>s.remove(),2300)}}
+function blocked(x,y){if(x<1||x>W-2||y<1||y>H-2)return true;return safe[idx(Math.floor(x),Math.floor(y))]===1}
+function updateBalls(dt){
+if(mode!=='play')return;
+for(const b of balls){
+const step=Math.min(.055,dt/1000);
+const nx=b.x+b.vx*step,ny=b.y+b.vy*step;
+if(blocked(nx-b.r, b.y)||blocked(nx+b.r,b.y)){b.vx*=-1}else b.x=nx;
+if(blocked(b.x,ny-b.r)||blocked(b.x,ny+b.r)){b.vy*=-1}else b.y=ny;
+for(const p of trail){if(Math.hypot(b.x-(p.x+.5),b.y-(p.y+.5))<b.r+.53){fail();return}}
+if(trail.length&&Math.hypot(b.x-(player.x+.5),b.y-(player.y+.5))<b.r+.56){fail();return}
+}
+}
+function drawFloor(){
+ctx.fillStyle='#26143f';ctx.fillRect(0,0,canvas.width,canvas.height);
+for(let y=0;y<H;y++)for(let x=0;x<W;x++){
+const sx=x*T,sy=y*T;
+if(safe[idx(x,y)]){ctx.fillStyle=(x+y)%2?'#8a6d9d':'#947ba9';ctx.fillRect(sx,sy,T,T);ctx.strokeStyle='#e3c7e021';ctx.strokeRect(sx+.5,sy+.5,T-1,T-1);if((x+y)%7===0){ctx.fillStyle='#fff3b425';ctx.fillRect(sx+10,sy+10,5,5)}}
+else{ctx.fillStyle=(x+y)%2?'#2d1c50':'#322154';ctx.fillRect(sx,sy,T,T);ctx.strokeStyle='#ffffff08';ctx.strokeRect(sx+.5,sy+.5,T-1,T-1)}
+}
+ctx.fillStyle='#ffe9a6';for(const p of trail){const x=p.x*T,y=p.y*T;ctx.fillStyle='#ffde7e';ctx.fillRect(x+3,y+3,T-6,T-6);ctx.fillStyle='#fff8c8';ctx.fillRect(x+9,y+9,T-18,T-18)}
+}
+function drawBalls(now){
+for(const b of balls){const x=b.x*T,y=b.y*T,r=b.r*T;ctx.save();ctx.shadowColor=b.color.hex;ctx.shadowBlur=b.target?24:13;const g=ctx.createRadialGradient(x-r*.4,y-r*.5,2,x,y,r);g.addColorStop(0,'#fffdf3');g.addColorStop(.24,b.color.hex);g.addColorStop(1,b.color.hex);ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;ctx.lineWidth=b.target?3:1.5;ctx.strokeStyle=b.target?'#ffe8a5':'#ffffff9e';ctx.stroke();if(b.target){ctx.strokeStyle='#fff2b9aa';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(x,y,r+4+Math.sin(now/260)*2,0,Math.PI*2);ctx.stroke()}ctx.restore()}
+}
+function drawPlayer(dt){
+player.anim=Math.min(1,player.anim+dt/(level==='hard'?90:110));
+const x=(player.fromX+(player.x-player.fromX)*player.anim+.5)*T,y=(player.fromY+(player.y-player.fromY)*player.anim+.5)*T;
+ctx.save();ctx.translate(x,y);ctx.shadowColor='#ffe49c';ctx.shadowBlur=12;ctx.fillStyle='#ffdb8e';ctx.beginPath();ctx.arc(0,0,12,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;ctx.fillStyle='#7a3ac1';ctx.beginPath();ctx.moveTo(-11,-3);ctx.lineTo(0,-20);ctx.lineTo(12,-3);ctx.closePath();ctx.fill();ctx.strokeStyle='#ffe9a3';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-9,-5);ctx.lineTo(9,-5);ctx.stroke();ctx.fillStyle='#3c2468';ctx.beginPath();ctx.arc(-4,3,1.8,0,Math.PI*2);ctx.arc(4,3,1.8,0,Math.PI*2);ctx.fill();ctx.fillStyle='#e889a8';ctx.beginPath();ctx.arc(0,7,2,0,Math.PI*2);ctx.fill();ctx.restore();
+}
+function drawPickup(now){if(!pickup)return;const x=(pickup.x+.5)*T,y=(pickup.y+.5)*T,r=13+Math.sin(now/190)*2;ctx.save();ctx.shadowColor='#ffdf75';ctx.shadowBlur=24;ctx.fillStyle='#ffdc72';ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#fff8d6';ctx.lineWidth=2;ctx.stroke();ctx.shadowBlur=0;ctx.font='bold 17px Arial';ctx.fillStyle='#593473';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(String(collected+1),x,y+1);ctx.restore()}
+function render(now,dt){drawFloor();drawBalls(now);drawPickup(now);drawPlayer(dt)}
+function frame(now){if(!running||paused)return;const dt=Math.min(40,Math.max(0,now-lastFrame));lastFrame=now;if(mode==='play'){updateBalls(dt);if(!running||paused)return}
+if(held&&now-lastStep>=speed){const v=dirs[held];if(v)movePlayer(v[0],v[1]);lastStep=now}
+render(now,dt);if(running&&!paused)raf=requestAnimationFrame(frame)}
+function stop(){if(raf!==null){cancelAnimationFrame(raf);raf=null}}
+function run(){stop();lastFrame=performance.now();lastStep=lastFrame;raf=requestAnimationFrame(frame)}
+function setHeld(d){if(!running||paused||!dirs[d])return;held=d;lastStep=performance.now();const v=dirs[d];movePlayer(v[0],v[1]);render(performance.now(),16)}
+function pause(){if(!running||paused||mode==='transition')return;paused=true;held=null;stop();show('⏸️🏰','הקוסם נח לרגע','הזירה מחכה לכם בדיוק מאותה נקודה.','▶️ ממשיכים בזירה',()=>{paused=false;run()})}
+$('start').onclick=()=>{$('overlay').hidden=true;level=document.querySelector('input[name="difficulty"]:checked')?.value||'normal';speed=level==='easy'?150:level==='hard'?85:115;start()};
+$('listen').onclick=()=>speak(currentColor().name);
+$('pause').onclick=pause;
+$('rules').onclick=()=>{if(running&&!paused)pause();else show('🏰🪄','איך משחקים?','זזים עם החצים, יוצרים קו קסם בשטח הכהה וסוגרים אותו על קיר בטוח. נסו לכלוא את כדור הצבע ששמו מופיע באנגלית בתוך שטח קטן. כשהצלחתם, אספו את המספר הזהוב שמופיע על הקו.','✨ הבנתי!',()=>{if(running){paused=false;run()}})};
+window.addEventListener('keydown',e=>{const key={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',w:'up',a:'left',s:'down',d:'right',W:'up',A:'left',S:'down',D:'right'}[e.key];if(key){if(running&&!paused){e.preventDefault();if(held!==key)setHeld(key)}else if(e.key.startsWith('Arrow'))e.preventDefault()}});
+window.addEventListener('keyup',e=>{const key={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',w:'up',a:'left',s:'down',d:'right',W:'up',A:'left',S:'down',D:'right'}[e.key];if(key&&held===key)held=null});
+document.querySelectorAll('[data-dir]').forEach(b=>{b.addEventListener('pointerdown',e=>{e.preventDefault();b.setPointerCapture?.(e.pointerId);b.classList.add('pressed');setHeld(b.dataset.dir)});const up=()=>{if(held===b.dataset.dir)held=null;b.classList.remove('pressed')};b.addEventListener('pointerup',up);b.addEventListener('pointercancel',up);b.addEventListener('lostpointercapture',up)});
+let swipe=null;canvas.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse')return;swipe={x:e.clientX,y:e.clientY};canvas.setPointerCapture?.(e.pointerId)});canvas.addEventListener('pointermove',e=>{if(!swipe||!running||paused)return;const dx=e.clientX-swipe.x,dy=e.clientY-swipe.y;if(Math.max(Math.abs(dx),Math.abs(dy))<24)return;setHeld(Math.abs(dx)>Math.abs(dy)?(dx>0?'right':'left'):(dy>0?'down':'up'));swipe={x:e.clientX,y:e.clientY}});canvas.addEventListener('pointerup',()=>{swipe=null;held=null});canvas.addEventListener('pointercancel',()=>{swipe=null;held=null});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&running&&!paused)pause()});
+resetFloor();spawnBalls();hud();render(0,16);
+})();
+</script></body></html>
