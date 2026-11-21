@@ -22,9 +22,23 @@ function sound(type){if(muted)return;try{var AC=window.AudioContext||window.webk
 function speak(word){if(muted||!("speechSynthesis" in window))return;try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(word);u.lang="en-US";u.rate=.78;u.pitch=1.06;speechSynthesis.speak(u)}catch(e){}}
 function rand(a,b){return a+Math.random()*(b-a)}
 function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),v=a[i];a[i]=a[j];a[j]=v}return a}
-function makePlatforms(){var xx=[0,420,590,375,160,360,580,385,165,360,540],result=[];for(var i=0;i<xx.length;i++){var x=i===0?0:xx[i]+(stage===1?((i%3)-1)*23:stage===2?((i%2)?-22:20):stage===3?((i%4)-1)*12:0);result.push({x:x,y:570-i*95,w:i===0?900:i===10?230:190,h:20,index:i})}return result}
+function makePlatforms(){
+var xx=[0,420,590,375,160,360,580,385,165,360,540],result=[];
+var movers=[[],[3,6,8],[2,4,7,9],[2,3,4,6,7,8,9]][stage];
+var spikes=[[],[],[3,7,9],[2,4,6,8,9]][stage];
+var gold=stage===3?[3,6,9]:[];
+for(var i=0;i<xx.length;i++){
+var x=i===0?0:xx[i]+(stage===1?((i%3)-1)*23:stage===2?((i%2)?-22:20):stage===3?((i%4)-1)*12:0);
+var moving=movers.includes(i),amp=moving?(stage===1?42+(i%2)*13:stage===2?55+(i%3)*12:68+(i%3)*11):0;
+result.push({x:x,baseX:x,y:570-i*95,w:i===0?900:i===10?230:190,h:20,index:i,moving:moving,amp:amp,speed:stage===1?.88+i*.055:stage===2?1.05+i*.045:1.2+i*.055,phase:i*1.12,bounce:0,gold:gold.includes(i),hazard:false});
+}
+spikes.forEach(function(i){var safe=result[i];result.push({x:safe.baseX<450?706:60,baseX:safe.baseX<450?706:60,y:safe.y,w:125,h:20,index:i,hazard:true,moving:false,bounce:0})});
+return result
+}
+function movePlatforms(){for(var i=0;i<platforms.length;i++){var p=platforms[i];if(p.moving)p.x=p.baseX+Math.sin(elapsed*p.speed+p.phase)*p.amp}}
+
 function resetPlayer(atCheckpoint){var p=platforms[atCheckpoint?checkpoint:0];player.x=p.x+p.w/2;player.y=p.y-player.h;player.vx=0;player.vy=JUMP;player.onGround=false;player.coyote=0;player.face=1;player.spin=0;player.angle=0;cameraY=Math.min(0,player.y-320);jumpBuffer=0}
-function setupStage(n){stage=n;platforms=makePlatforms();checkpoint=0;particles=[];finishLock=false;resetPlayer(false);setHud();$("worldLabel").textContent=["🌸 קומה 1 · טרמפולינות הפרחים","🍬 קומה 2 · קפיצות הממתקים","🌈 קומה 3 · ענני הקשת","✨ קומה 4 · כוכבי המסיבה"][n];$("floatingHint").classList.remove("faded");hasMoved=false;setStatus("🎁 כוונו את המתנה לטרמפולינות וקפצו עד לפסגה!")}
+function setupStage(n){stage=n;platforms=makePlatforms();checkpoint=0;particles=[];finishLock=false;resetPlayer(false);setHud();$("worldLabel").textContent=["🌸 קומה 1 · טרמפולינות הפרחים","🌀 קומה 2 · טרמפולינות זזות","⚠️ קומה 3 · היזהרו מהדוקרנים","⚡ קומה 4 · האתגר הגדול"][n];$("floatingHint").classList.remove("faded");hasMoved=false;setStatus(["🎁 קפצו עד לפסגה!","🌀 הטרמפולינות זזות — כוונו את המתנה!","⚠️ הימנעו מהדוקרנים האדומים!","⚡ היזהרו מדוקרנים ונצלו את הטרמפולינות הזהובות!"][n])}
 function setHud(){$("hudRecipient").textContent="🎁 מי הביא אותה?";$("hudFloor").textContent=(stage+1)+" / 4";$("stageDots").innerHTML="";for(var i=0;i<4;i++){var dot=document.createElement("i");dot.className=delivered.includes(i)?"done":i===stage?"current":"";$("stageDots").append(dot)}}
 function showHeight(){var h=Math.round(Math.max(0,Math.min(100,(570-(player.y+player.h))/950*100)));$("hudHeight").textContent=h+"%"}
 function spawn(x,y,count,color){for(var i=0;i<count;i++)particles.push({x:x,y:y,vx:rand(-145,145),vy:rand(-180,-35),life:rand(.35,.85),age:0,size:rand(3,8),color:color||["#ffe2a0","#fff","#f7a7d0","#a5edc7"][i%4]})}
@@ -32,7 +46,7 @@ function setOverlay(mode){overlayMode=mode;playing=false;keys.left=false;keys.ri
 var icon=$("overlayIcon"),tag=$("overlayTag"),title=$("overlayTitle"),desc=$("overlayText"),btn=$("overlayPrimary"),gift=GIFTS[stage];
 if(mode==="intro"){icon.textContent="🎂🎈🎁";tag.textContent="MY BIRTHDAY SURPRISE · הפתעת יום ההולדת";title.textContent="כולם הגיעו לחגוג את יום ההולדת שלי!";desc.textContent="כולם הביאו לי מתנות, אבל אני לא יודעת מי הביא כל מתנה ומה יש בפנים! בואו נקפוץ עם המתנות בין הטרמפולינות, נגיע לפסגה ונגלה מי הביא לי ומה! המתנה קופצת לבד — אתם מכוונים אותה בחצים ימינה ושמאלה.";btn.textContent="🎁 בואו נגלה את ההפתעות!";btn.onclick=function(){closeOverlay()}}
 else if(mode==="between"){icon.textContent="🎉"+gift.item+"✨";tag.textContent="SURPRISE FOUND · מצאנו מתנה!";title.textContent="איזו הפתעה!";desc.textContent="גילינו מי הביא את המתנה ומה היה בתוכה! מוכנים לגלות מי הביא את המתנה הבאה?";btn.textContent="⬆️ למתנה המסתורית הבאה!";btn.onclick=function(){setupStage(Math.min(3,stage+1));setOverlay("chapter")}}
-else if(mode==="chapter"){icon.textContent="🎁✨";tag.textContent="MYSTERY GIFT "+(stage+1)+" / 4";title.textContent="מי הביא את המתנה הזאת?";desc.textContent="המתנה הבאה בצבע "+["ורוד","סגול","ירוק","כתום"][stage]+"! קפצו איתה בין הטרמפולינות עד לפסגה. שם תגלו מי הביא אותה — ורק אז מה מסתתר בפנים!";btn.textContent="🌀 קופצים לגלות!";btn.onclick=function(){closeOverlay()}}
+else if(mode==="chapter"){icon.textContent="🎁✨";tag.textContent="MYSTERY GIFT "+(stage+1)+" / 4";title.textContent="מי הביא את המתנה הזאת?";desc.textContent="המתנה הבאה בצבע "+["ורוד","סגול","ירוק","כתום"][stage]+"! "+["הטרמפולינות רגילות כדי להתאמן בכיוון המתנה.","הפעם חלק מהטרמפולינות זזות מצד לצד! כוונו בזהירות.","שימו לב! לפעמים יש שתי טרמפולינות באותו גובה — אחת בטוחה ואחת עם דוקרנים אדומים. בחרו בבטוחה!","אתגר הסיום: טרמפולינות זזות מהר, דוקרנים וטרמפולינות זהובות שנותנות קפיצה חזקה במיוחד!"][stage]+" הגיעו לפסגה, גלו מי הביא את המתנה ומה מסתתר בתוכה!";btn.textContent="🌀 קופצים לגלות!";btn.onclick=function(){closeOverlay()}}
 else if(mode==="quiz"){icon.textContent="🎁🔍";tag.textContent="MYSTERY SOLVED · גילינו רמז!";title.textContent="מי הביא את המתנה?";desc.textContent="הגעתם לפסגה! עכשיו התג שעל המתנה נחשף. קראו את הרמז באנגלית ובחרו את בן המשפחה שהביא אותה:";var sign=document.createElement("button");sign.type="button";sign.className="sender-sign";sign.textContent="🔊 FROM: "+PEOPLE[stage].en;sign.onclick=function(){speak(PEOPLE[stage].en)};$("wordPreview").append(sign);$("overlayActions").hidden=true;renderQuiz();speak(PEOPLE[stage].en)}
 else if(mode==="reveal"){icon.textContent="🎊✨";tag.textContent="GIFT UNBOXED · ההפתעה נפתחה!";title.textContent="וואו! מה היה בתוך המתנה?";desc.textContent=PEOPLE[stage].name+" ("+PEOPLE[stage].nameHe+") הביא/ה לי מתנה!";var panel=$("giftReveal");panel.hidden=false;panel.style.setProperty("--gift-color",gift.color);var from=document.createElement("div");from.className="from-sign";from.textContent="FROM: "+PEOPLE[stage].en+" · "+PEOPLE[stage].he;panel.append(from);var box=document.createElement("div");box.className="gift-unbox";var base=document.createElement("div"),lid=document.createElement("div");base.className="box-base";lid.className="box-lid";var item=document.createElement("span");item.className="gift-content";item.textContent=gift.item;box.append(base,lid,item);panel.append(box);var name=document.createElement("div");name.className="gift-name";name.textContent=gift.en+" · "+gift.he;panel.append(name);var confetti=document.createElement("div");confetti.className="confetti";confetti.textContent="✨ 🎉 ⭐ 🎈 ✨";panel.append(confetti);btn.textContent=stage===3?"🎂 למסיבת יום ההולדת!":"🎁 למתנה הבאה!";btn.onclick=function(){if(stage===3){setOverlay("complete")}else setOverlay("between")};speak(gift.en);sound("win")}
 else if(mode==="complete"){icon.textContent="🏆🎂🎈";tag.textContent="HAPPY BIRTHDAY · יום הולדת שמח!";title.textContent="כל מתנות יום ההולדת נפתחו!";desc.textContent="איזה כיף! גילינו מי הביא את ארבע המתנות ומה היה בתוך כל אחת מהן. עכשיו מחכה לנו עץ המשפחה הגדול!";var recap=$("wordPreview");GIFTS.forEach(function(g,i){var c=document.createElement("div");c.className="word-card";var emoji=document.createElement("span");emoji.className="face";emoji.textContent=g.item;var name=document.createElement("strong");name.className="en";name.textContent=g.en;var who=document.createElement("span");who.className="he";who.textContent=PEOPLE[i].en+" · "+PEOPLE[i].he;c.append(emoji,name,who);recap.append(c)});btn.textContent="🌳 לעץ המשפחה הגדול!";btn.onclick=function(){location.href="level2-family-tree.html?activity=final"};var extra=document.createElement("button");extra.type="button";extra.className="secondary-action tower-replay";extra.textContent="🔄 לשחק שוב במגדל";extra.onclick=function(){state.party=[];delivered=[];save();setupStage(0);setOverlay("intro")};$("overlayActions").append(extra)}
@@ -48,12 +62,30 @@ window.addEventListener("keydown",function(e){var k=e.key;if(["ArrowLeft","Arrow
 $("soundBtn").onclick=function(){muted=!muted;$("soundBtn").textContent=muted?"🔇 צלילים כבויים":"🔊 צלילים פועלים";if(muted&&"speechSynthesis" in window)speechSynthesis.cancel()};
 $("restartBtn").onclick=function(){finishLock=false;checkpoint=0;resetPlayer(false);setStatus("🔄 מתחילים לקפוץ שוב!");if(!$("gameOverlay").hidden&&overlayMode==="quiz")setOverlay("chapter")};
 }
-function step(dt){elapsed+=dt;frame++;if(!playing||paused)return;var p=player;
-var desiredV=(keys.right?SPEED:0)-(keys.left?SPEED:0);p.vx+=(desiredV-p.vx)*Math.min(1,dt*12);if(Math.abs(p.vx)<.4)p.vx=0;if(p.vx)p.face=p.vx>0?1:-1;
+function step(dt){
+if(!playing||paused)return;
+elapsed+=dt;frame++;movePlatforms();
+var p=player,desiredV=(keys.right?SPEED:0)-(keys.left?SPEED:0);
+p.vx+=(desiredV-p.vx)*Math.min(1,dt*12);if(Math.abs(p.vx)<.4)p.vx=0;if(p.vx)p.face=p.vx>0?1:-1;
 p.spin=Math.min(1,p.spin+dt/.64);p.angle=p.spin*Math.PI*2;
 var prevBottom=p.y+p.h;p.vy=Math.min(MAX_FALL,p.vy+GRAVITY*dt);p.x+=p.vx*dt;p.y+=p.vy*dt;
 if(p.x<-p.w/2)p.x=W+p.w/2;if(p.x>W+p.w/2)p.x=-p.w/2;
-if(p.vy>=0){for(var i=0;i<platforms.length;i++){var f=platforms[i];if(prevBottom<=f.y+12&&p.y+p.h>=f.y&&p.x+p.w*.36>f.x&&p.x-p.w*.36<f.x+f.w){p.y=f.y-p.h;if(i===platforms.length-1){reachTop();return}p.vy=JUMP*(i%3===0&&i>0?1.13:1);p.spin=0;p.angle=0;sound("jump");spawn(p.x,f.y,16,["#ffe1a4","#ffd3ed","#a6f6e4"][i%3]);f.bounce=1;if(i>=5&&i>checkpoint){checkpoint=i;setStatus("⭐ נקודת שמירה! המשיכו לטפס!")}break}}}
+if(p.vy>=0){
+for(var i=0;i<platforms.length;i++){
+var f=platforms[i];
+if(prevBottom<=f.y+12&&p.y+p.h>=f.y&&p.x+p.w*.36>f.x&&p.x-p.w*.36<f.x+f.w){
+if(f.hazard){spawn(p.x,f.y,27,"#ffb2c5");sound("bad");resetPlayer(checkpoint>0);setStatus(checkpoint>0?"⚠️ אוי, דוקרנים! חזרנו לנקודת השמירה.":"⚠️ אוי, דוקרנים! ננסה שוב מההתחלה.");break}
+p.y=f.y-p.h;
+if(f.index===10){reachTop();return}
+p.vy=JUMP*(f.gold?1.25:f.index%3===0&&f.index>0?1.13:1);
+p.spin=0;p.angle=0;sound(f.gold?"win":"jump");
+spawn(p.x,f.y,f.gold?27:16,f.gold?"#ffe4a3":["#ffe1a4","#ffd3ed","#a6f6e4"][f.index%3]);f.bounce=1;
+if(f.index>=5&&f.index>checkpoint){checkpoint=f.index;setStatus("⭐ נקודת שמירה! המשיכו לטפס!")}
+else if(f.gold)setStatus("⚡ טרמפולינה זהובה! קפיצה גבוהה במיוחד!");
+break
+}
+}
+}
 if(p.y>650){resetPlayer(checkpoint>0);setStatus(checkpoint>0?"💜 המתנה חזרה לנקודת השמירה!":"💜 המתנה נפלה — היא מנסה שוב!");sound("bad")}
 var desired=Math.min(0,p.y-295);cameraY+=(desired-cameraY)*Math.min(1,dt*6);showHeight();
 for(var j=particles.length-1;j>=0;j--){var v=particles[j];v.age+=dt;v.x+=v.vx*dt;v.y+=v.vy*dt;v.vy+=260*dt;if(v.age>v.life)particles.splice(j,1)}
@@ -78,21 +110,36 @@ balloon(64,100,stage===3?"#f9d3b2":"#f29cbb",elapsed);balloon(837,200,stage===1?
 ctx.save();ctx.strokeStyle="#fff6e6bb";ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(0,36);ctx.quadraticCurveTo(450,85,900,34);ctx.stroke();for(var f=0;f<18;f++){var bx=f*54+5,by=38+Math.sin(f/17*Math.PI)*18;ctx.beginPath();ctx.moveTo(bx,by);ctx.lineTo(bx+19,by+35);ctx.lineTo(bx+38,by);ctx.closePath();ctx.fillStyle=["#ffd7a3","#e7a9d7","#a5e4c6","#c2b4f4"][f%4];ctx.fill()}ctx.restore();
 }
 function drawCastle(x,y,s){ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.globalAlpha=.62;rounded(-88,-85,176,145,12,"#fff3dc");rounded(-114,-128,53,188,9,"#f6cde4");rounded(62,-128,53,188,9,"#f6cde4");ctx.beginPath();ctx.moveTo(-125,-126);ctx.lineTo(-88,-184);ctx.lineTo(-50,-126);ctx.closePath();ctx.fillStyle="#b89ed8";ctx.fill();ctx.beginPath();ctx.moveTo(51,-126);ctx.lineTo(88,-184);ctx.lineTo(126,-126);ctx.closePath();ctx.fill();rounded(-24,-17,48,77,24,"#9a7dba");for(var i=-1;i<=1;i++){rounded(i*43-10,-63,20,28,10,"#b3e4e7")}ctx.restore()}
-function drawPlatform(f){var y=f.y-cameraY;if(y>H+80||y<-100)return;var isGoal=f.index===10,isBase=f.index===0;ctx.save();
-var spring=f.bounce||0,top=y+spring*8,center=f.x+f.w/2;
-ctx.shadowColor="#41366b70";ctx.shadowBlur=14;ctx.shadowOffsetY=9;
-rounded(f.x+9,top+5,f.w-18,19,10,"#70579d");
+function drawPlatform(f){
+var y=f.y-cameraY;if(y>H+80||y<-100)return;
+var isGoal=f.index===10,isBase=f.index===0;
+ctx.save();
+if(f.hazard){
+ctx.shadowColor="#d24c7b99";ctx.shadowBlur=17;ctx.shadowOffsetY=8;
+rounded(f.x,y+4,f.w,20,9,"#713c70","#fff0e5",2);
 ctx.shadowBlur=0;ctx.shadowOffsetY=0;
-for(var k=0;k<5;k++){var sx=f.x+21+k*(f.w-42)/4;ctx.beginPath();ctx.moveTo(sx,top+11);ctx.lineTo(sx+6,top+25-spring*5);ctx.lineTo(sx-3,top+31-spring*5);ctx.lineTo(sx+6,top+37-spring*5);ctx.strokeStyle="#ffe9bd";ctx.lineWidth=3;ctx.stroke()}
-var frame=ctx.createLinearGradient(0,top-15,0,top+10);frame.addColorStop(0,isGoal?"#ffdf87":"#f9c6db");frame.addColorStop(1,isGoal?"#f5a66c":"#a687d2");
+rounded(f.x,y-13,f.w,19,9,"#ef6580","#ffe0e2",3);
+for(var q=0;q<7;q++){var bx=f.x+9+q*18;ctx.beginPath();ctx.moveTo(bx-9,y-12);ctx.lineTo(bx,y-34-(q%2)*5);ctx.lineTo(bx+9,y-12);ctx.closePath();ctx.fillStyle="#fff2ed";ctx.fill();ctx.lineWidth=2;ctx.strokeStyle="#9e436b";ctx.stroke()}
+text("⚠",f.x+f.w/2,y+2,20,"#fff8e3");
+ctx.restore();return
+}
+var spring=f.bounce||0,top=y+spring*8,center=f.x+f.w/2;
+ctx.shadowColor=f.gold?"#ffdc75ad":"#41366b70";ctx.shadowBlur=f.gold?22:14;ctx.shadowOffsetY=9;
+rounded(f.x+9,top+5,f.w-18,19,10,f.gold?"#b77d55":"#70579d");
+ctx.shadowBlur=0;ctx.shadowOffsetY=0;
+for(var k=0;k<5;k++){var sx=f.x+21+k*(f.w-42)/4;ctx.beginPath();ctx.moveTo(sx,top+11);ctx.lineTo(sx+6,top+25-spring*5);ctx.lineTo(sx-3,top+31-spring*5);ctx.lineTo(sx+6,top+37-spring*5);ctx.strokeStyle=f.gold?"#fff1ac":"#ffe9bd";ctx.lineWidth=3;ctx.stroke()}
+var frame=ctx.createLinearGradient(0,top-15,0,top+10);frame.addColorStop(0,isGoal||f.gold?"#ffdf87":"#f9c6db");frame.addColorStop(1,isGoal||f.gold?"#f5a66c":"#a687d2");
 rounded(f.x,top-15,f.w,27,14,frame,"#fff8e8",4);
-var mat=ctx.createLinearGradient(0,top-10,0,top+7);mat.addColorStop(0,isGoal?"#ffed9f":["#b3f6e1","#ffb7d5","#c5b2fa"][stage%3]);mat.addColorStop(1,isGoal?"#f7c86b":["#72cbb6","#df89b6","#8f83d8"][stage%3]);
+var mat=ctx.createLinearGradient(0,top-10,0,top+7);mat.addColorStop(0,isGoal||f.gold?"#ffed9f":["#b3f6e1","#ffb7d5","#c5b2fa"][stage%3]);mat.addColorStop(1,isGoal||f.gold?"#f7c86b":["#72cbb6","#df89b6","#8f83d8"][stage%3]);
 rounded(f.x+10,top-10,f.w-20,16,8,mat);
 for(var j=0;j<Math.min(5,Math.floor(f.w/42));j++)star(f.x+26+j*39,top-2,4,"#fff7ce");
 if(f.index===5){text("⭐ SAVE",center,top-35,16,"#fff7ca");star(center-55,top-35,11,"#fff0b2")}
-if(!isBase&&!isGoal){ctx.save();ctx.translate(center,top-28);ctx.rotate(Math.sin(elapsed*2+f.index)*.12);star(0,0,9,["#fff2b3","#f9c8e5","#bbffdf"][f.index%3]);ctx.restore()}
+else if(f.gold){text("⚡",center,top-36,27,"#fff4b3")}
+else if(f.moving){text("↔",center,top-36,28,"#fff9e3")}
+else if(!isBase&&!isGoal){ctx.save();ctx.translate(center,top-28);ctx.rotate(Math.sin(elapsed*2+f.index)*.12);star(0,0,9,["#fff2b3","#f9c8e5","#bbffdf"][f.index%3]);ctx.restore()}
 if(isGoal)drawGoal(center,top-20);
-ctx.restore()}
+ctx.restore()
+}
 function drawGoal(x,y){var pulse=Math.sin(elapsed*3)*.1+1;ctx.save();ctx.translate(x,y);ctx.scale(pulse,pulse);var glow=ctx.createRadialGradient(0,-62,10,0,-62,115);glow.addColorStop(0,"#fff2a1c9");glow.addColorStop(1,"#fff2a100");ctx.fillStyle=glow;ctx.fillRect(-125,-180,250,190);
 rounded(-67,-129,134,125,17,"#ffefcf","#e2b9c5",7);ctx.beginPath();ctx.moveTo(-76,-129);ctx.lineTo(0,-190);ctx.lineTo(76,-129);ctx.closePath();ctx.fillStyle="#d996c0";ctx.fill();ctx.lineWidth=6;ctx.strokeStyle="#fff4d8";ctx.stroke();rounded(-38,-91,76,89,36,"#9d78bb","#fff7d3",5);ellipse(23,-42,4,4,"#fff2b2");text("?",-2,-111,32,"#fff");text("🏠",0,-154,30,"#fff");star(-73,-79,12,"#ffe6a0");star(77,-98,11,"#fff3bb");ctx.restore()}
 function drawPlayer(){var p=player,sy=p.y-cameraY;if(sy>H+120||sy<-120)return;
