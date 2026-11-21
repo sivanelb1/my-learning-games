@@ -4,21 +4,33 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#43346e">
-<title>עץ המשפחה הקסום · The Magic Family Tree | PLAYWISE</title>
+<title>עץ המשפחה מתעורר לחיים · מסיבת ההפתעה | PLAYWISE</title>
 <link rel="stylesheet" href="level2-family-tree.css?v=tree6-clear">
+<link rel="stylesheet" href="level2-family-magic.css?v=magic1">
 </head>
 <body>
 <nav class="top"><a href="level2-family-gate.html">🏡 חזרה לכפר המשפחה</a><span class="label">👨‍👩‍👧‍👦 תחנה 8 · משחק עץ המשפחה</span><a href="adventure-map.html">🗺️ מפת ההרפתקה</a></nav>
-<header class="hero"><h1>🌳 עץ המשפחה הקסום</h1><p>THE MAGIC FAMILY TREE · ארבעה עצים קטנים ועץ אחד ענק לסיום!</p></header>
+<header class="hero"><h1>✨ עץ המשפחה מתעורר לחיים!</h1><p>THE MAGIC FAMILY TREE · ארבעה עצים זוהרים · מסיבת הפתעה · עץ משפחה גדול לסיום!</p></header>
 <div class="hud"><span id="chapterHud">🏠 המשפחה הקרובה</span><span id="roundHud">🌳 עץ 1 מתוך 5</span><span id="countHud">⭐ 0 / 4</span></div>
-<div class="progress" role="progressbar" aria-label="התקדמות בניית עץ המשפחה" aria-valuemin="0" aria-valuemax="26" aria-valuenow="0" id="progress"><div class="progress-fill" id="progressFill"></div></div>
+<div class="progress" role="progressbar" aria-label="התקדמות בניית עץ המשפחה" aria-valuemin="0" aria-valuemax="30" aria-valuenow="0" id="progress"><div class="progress-fill" id="progressFill"></div></div>
 <main class="game">
 <section class="board" id="board" aria-label="עץ המשפחה">
-<div class="tree-glow"></div><div class="tree-heading" id="treeHeading">🌳 עץ המשפחה הקסום</div><div class="tree-subheading" id="treeSubheading">גררו תמונה למסגרת המתאימה</div><div class="slots" id="slots"></div>
-<section class="tray" aria-label="תמונות בני המשפחה לבחירה"><h2>👨‍👩‍👧‍👦 בני המשפחה מחכים למקום שלהם</h2><p>גררו תמונה למסגרת בעץ, או לחצו על תמונה ואז על המסגרת המתאימה.</p><div class="portrait-grid" id="portraits"></div></section>
+<div class="tree-glow"></div><div class="magic-fx" id="magicFx" aria-hidden="true"></div><div class="tree-heading" id="treeHeading">✨ עץ המשפחה מתעורר לחיים</div><div class="tree-subheading" id="treeSubheading">הקשיבו למילה ומצאו את הדמות</div>
+<section class="magic-activity awake-game" id="awakeGame" aria-label="העץ מתעורר לחיים">
+<div class="awake-top"><span id="awakeChapter">🏠 המשפחה הקרובה</span><span class="awake-count" id="awakeCount">🌸 0 / 4 פרחים זוהרים</span></div>
+<div class="awake-instruction"><strong>🔍 מי יאיר את הענף הבא?</strong><button class="awake-prompt" type="button" id="awakePrompt" aria-label="השמעת המילה באנגלית">🔊 MOTHER</button><span class="awake-hint" id="awakeHint">לחצו כדי לשמוע שוב ואז בחרו את הדמות</span></div>
+<div class="awake-leaves" id="awakeLeaves" aria-label="ארבע דמויות בין ענפי העץ"></div>
+</section>
+<section class="magic-activity party-game" id="partyGame" aria-label="מסיבת ההפתעה המשפחתית" hidden>
+<div class="party-backdrop" aria-hidden="true"></div><div class="party-heading">🎊 הפתעה! בואו ניתן מתנה לבן המשפחה הנכון! 🎊</div><div class="party-balloons" id="partyBalloons" aria-hidden="true"></div>
+<button type="button" class="party-gift" id="partyGift" aria-label="השמעת שם מקבל המתנה"><span class="gift-icon">🎁</span><span class="gift-word" id="partyGiftWord">AUNT</span><span class="gift-listen">🔊 לחצו לשמוע למי המתנה</span></button>
+<div class="party-count" id="partyCount">🎈 0 / 4 מתנות חולקו</div><div class="party-guests" id="partyGuests" aria-label="בחרו מי מקבל את המתנה"></div><div class="party-table" aria-hidden="true">🎂 🧁 🍰 🎉</div>
+</section>
+<div class="slots" id="slots" hidden></div>
+<section class="tray" id="tray" aria-label="תמונות בני המשפחה לבחירה" hidden><h2>👨‍👩‍👧‍👦 בני המשפחה מחכים למקום שלהם</h2><p>גררו תמונה למסגרת בעץ, או לחצו על תמונה ואז על המסגרת המתאימה.</p><div class="portrait-grid" id="portraits"></div></section>
 </section>
 <div class="feedback" id="feedback" role="status" aria-live="polite">✨ בואו נתחיל!</div>
-<section class="finale" id="finale" aria-live="polite"><div style="font-size:54px">🎉🌳👑</div><h2>העץ הקסום חזר לפרוח!</h2><p>הצלחתם להציב את כל עשרת בני המשפחה במקומות הנכונים. איזה מסע נפלא!</p><a href="adventure-map.html">🗺️ חזרה למפת ההרפתקה</a></section>
+<section class="finale" id="finale" aria-live="polite"><div style="font-size:54px">🎉🌳👑</div><h2>העץ הקסום חזר לפרוח!</h2><p>הערתם את העץ, חילקתם מתנות במסיבה ובניתם את עץ המשפחה הגדול! איזה מסע נפלא!</p><a href="adventure-map.html">🗺️ חזרה למפת ההרפתקה</a></section>
 </main>
 <div class="overlay" id="overlay" role="presentation">
 <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
@@ -29,7 +41,7 @@
 </section>
 </div>
 <script src="level2-family-tree-art.js?v=tree5-branches"></script>
-<script src="level2-family-tree.js?v=tree6-clear"></script>
-<script src="level2-world-navigation.js?v=family-tree-2"></script>
+<script src="level2-family-magic.js?v=magic1"></script>
+<script src="level2-world-navigation.js?v=family-magic-1"></script>
 </body>
 </html>
