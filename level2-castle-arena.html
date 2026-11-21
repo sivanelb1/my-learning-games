@@ -6,11 +6,11 @@
 </style></head>
 <body><main class="wrap"><nav class="top"><a href="level2-color-potions.html">🧪 בחזרה לשיקויים</a><span class="tag">🏰 תחנה 6 · משחק הסיום</span></nav>
 <header class="title"><h1>🏰 זירת הטירה הקסומה</h1><p>THE RAINBOW CASTLE · תפסו את כדורי הצבע הזוהרים, אספו מספרים ופתחו את שערי הטירה!</p></header>
-<div class="layout"><section class="castle"><div class="arena-frame"><canvas id="arena" width="960" height="660" aria-label="זירת טירה תלת ממדית מדומה: אביר הקשת סוגר שטחים ולוכד כדורי צבע זוהרים"></canvas></div><div class="below"><span>🛡️ אביר/ת הקשת · חצים / WASD</span><span>✨ קו אנרגיה · סגירת שטחים</span></div></section>
+<div class="layout"><section class="castle"><div class="arena-frame"><canvas id="arena" width="960" height="660" aria-label="זירת טירה תלת ממדית מדומה: אביר הקשת סוגר שטחים ולוכד כדורי צבע זוהרים"></canvas></div><div class="below"><span>🛡️ אביר הקשת · חצים / WASD</span><span>✨ קו אנרגיה · סגירת שטחים</span></div></section>
 <aside class="sidebar"><section class="panel"><h2>🏆 משימת הטירה</h2><div class="goal"><small>משימת הצבעים</small><strong id="stageNo">שלב 1 / 5</strong><div class="sub">תפסו את הצבעים:</div><div class="targets" id="targets" aria-label="צבעים לתפיסה"></div><div class="challenge" id="challenge">✨ אימון הקשת</div></div><div class="hudline"><span>🧩 שטח: <span id="percent">0.0%</span></span><span>⏱️ <span id="time">03:20</span></span></div><div class="progress" id="progress" role="progressbar" aria-label="התקדמות במספרים" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0"><div class="fill" id="fill"></div></div><div class="hudline"><span>⭐ מספרים: <span id="count">0/10</span></span><span id="hearts">❤️❤️❤️</span></div><div class="nums" id="nums"></div><div class="status" id="status" aria-live="polite">🪄 מוכנים לכבוש את הטירה?</div><button class="sound" id="hear" type="button">🔊 השמעת המספר הבא</button></section>
-<section class="panel"><h2>🕹️ שליטה באביר/ת הקשת</h2><div class="controls"><button type="button" class="up" data-dir="up" aria-label="למעלה">↑</button><button type="button" class="left" data-dir="left" aria-label="שמאלה">←</button><button type="button" class="downkey" data-dir="down" aria-label="למטה">↓</button><button type="button" class="right" data-dir="right" aria-label="ימינה">→</button></div><div class="actions"><button type="button" id="pause">⏸️ עצירה</button><button type="button" id="rules">❔ הוראות</button></div><div class="help">החזיקו חץ כדי לזוז. גם בטלפון אפשר להשתמש בחצים או להחליק על הזירה.</div><div class="legend">🌟 כדורים עם הילה = צבעי המשימה · ⚪ כדורים אחרים = מכשולים<br>⭐ מספר זהוב = לאיסוף · 🧊 ⏱️ ❤️ = בונוסים</div></section></aside></div>
+<section class="panel"><h2>🕹️ שליטה באביר הקשת</h2><div class="controls"><button type="button" class="up" data-dir="up" aria-label="למעלה">↑</button><button type="button" class="left" data-dir="left" aria-label="שמאלה">←</button><button type="button" class="downkey" data-dir="down" aria-label="למטה">↓</button><button type="button" class="right" data-dir="right" aria-label="ימינה">→</button></div><div class="actions"><button type="button" id="pause">⏸️ עצירה</button><button type="button" id="rules">❔ הוראות</button></div><div class="help">החזיקו חץ כדי לזוז. גם בטלפון אפשר להשתמש בחצים או להחליק על הזירה.</div><div class="legend">🌟 כדורים עם הילה = צבעי המשימה · ⚪ כדורים אחרים = מכשולים<br>⭐ מספר זהוב = לאיסוף · 🧊 ⏱️ ❤️ = בונוסים</div></section></aside></div>
 <div class="bottom-note">בכל שלב לוכדים שני צבעים חדשים. כל צבע ומספר מושמעים באנגלית, ובכל שלב נוסף אתגר חדש. 💜</div></main>
-<div class="overlay" id="overlay"><div class="modal" id="modal"><div class="big">🏰🛡️🎨</div><h2>אביר/ת הקשת יוצא/ת למשימה!</h2><p>בכל שלב תראו <b>שני צבעים באנגלית</b>. מצאו את שני הכדורים הזוהרים, סגרו סביבם שטח, ואספו את <b>המספרים הזהובים</b> כדי לפתוח את השלב הבא.</p><div class="rules">🛡️ זוזו על מסגרת האבן הבטוחה. צאו אל רצפת הזירה וצרו שובל צבע.<br>🌈 סגרו אזור קטן שבו נמצא כדור זוהר ששמו מופיע במשימה.<br>⭐ אחרי כל לכידה מופיע מספר זהוב על היבשה. גשו אליו ואספו אותו.<br>💜 כדור שנוגע בשובל או באביר/ה בזמן חיתוך גורם לאובדן לב.<br>⚡ בכל שלב מופיע מכשול חדש: כדורים מהירים, קירות מתפוררים ועוד.<br>🧊 בונוסים יכולים להאט כדורים, להוסיף זמן או לתת חיים.</div><div style="font-weight:900;margin-top:12px">בחרו דרגת קושי:</div><div class="levels"><label><input type="radio" name="difficulty" value="easy"><span>🐢 קלילה</span></label><label><input type="radio" name="difficulty" value="normal" checked><span>🐉 רגילה</span></label><label><input type="radio" name="difficulty" value="hard"><span>⚡ מאתגרת</span></label></div><button type="button" class="primary" id="start">🛡️ יוצאים להציל את הצבעים!</button></div></div>
+<div class="overlay" id="overlay"><div class="modal" id="modal"><div class="big">🏰🛡️🎨</div><h2>אביר הקשת יוצא/ת למשימה!</h2><p>בכל שלב תראו <b>שני צבעים באנגלית</b>. מצאו את שני הכדורים הזוהרים, סגרו סביבם שטח, ואספו את <b>המספרים הזהובים</b> כדי לפתוח את השלב הבא.</p><div class="rules">🛡️ זוזו על מסגרת האבן הבטוחה. צאו אל רצפת הזירה וצרו שובל צבע.<br>🌈 סגרו אזור קטן שבו נמצא כדור זוהר ששמו מופיע במשימה.<br>⭐ אחרי כל לכידה מופיע מספר זהוב על היבשה. גשו אליו ואספו אותו.<br>💜 כדור שנוגע בשובל או באביר בזמן חיתוך גורם לאובדן לב.<br>⚡ בכל שלב מופיע מכשול חדש: כדורים מהירים, קירות מתפוררים ועוד.<br>🧊 בונוסים יכולים להאט כדורים, להוסיף זמן או לתת חיים.</div><div style="font-weight:900;margin-top:12px">בחרו דרגת קושי:</div><div class="levels"><label><input type="radio" name="difficulty" value="easy"><span>🐢 קלילה</span></label><label><input type="radio" name="difficulty" value="normal" checked><span>🐉 רגילה</span></label><label><input type="radio" name="difficulty" value="hard"><span>⚡ מאתגרת</span></label></div><button type="button" class="primary" id="start">🛡️ יוצאים להציל את הצבעים!</button></div></div>
 <script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id),canvas=$('arena'),ctx=canvas.getContext('2d');
@@ -59,7 +59,7 @@ balls.push({x,y,vx:Math.cos(a)*ballSpeed,vy:Math.sin(a)*ballSpeed,color:COLORS[c
 }
 function spawnMines(){mines=[]}
 function begin(){
-captured=0;lives=level==='easy'?4:3;stage=0;caughtColors=new Set();stageCaptured=0;startStage()
+captured=0;lives=level==='easy'?4:3;stage=0;caughtColors=new Set();stageCaptured=0;stageIntro()
 }
 function startStage(){
 resetLand();caughtColors=new Set();stageCaptured=0;splitDone=false;
@@ -91,7 +91,7 @@ speak(NAMES[captured-1]);msg('🌟 מספר '+captured+' — '+NAMES[captured-1]
 hud();
 if(queue>0&&captured<10)spawnStar();
 else if(stageCaptured===2&&captured===(stage+1)*2){
-if(stage===4){win()}else{stage++;setTimeout(()=>{if(state==='play')stageIntro()},450)}
+if(stage===4){win()}else{stage++;state='stageclear';held=null;stopLoop();setTimeout(()=>{if(state==='stageclear')stageIntro()},450)}
 }
 }
 function checkWin(){return false}
@@ -163,7 +163,7 @@ if(hitX){b.vx*=-1;erode(b)}else b.x+=vx;
 const hitY=solid(Math.floor(b.x-r),Math.floor(b.y+vy))||solid(Math.floor(b.x+r),Math.floor(b.y+vy));
 if(hitY){b.vy*=-1;erode(b)}else b.y+=vy;
 for(const p of trail){if(Math.hypot(b.x-(p.x+.5),b.y-(p.y+.5))<r+.5){loseLife('כדור צבע פגע בשובל!');return}}
-if(trail.length&&Math.hypot(b.x-(ship.x+.5),b.y-(ship.y+.5))<r+.58){loseLife('כדור צבע פגע באביר/ה!');return}
+if(trail.length&&Math.hypot(b.x-(ship.x+.5),b.y-(ship.y+.5))<r+.58){loseLife('כדור צבע פגע באביר!');return}
 }
 }
 function update(dt){
@@ -255,7 +255,7 @@ function frame(now){if(state!=='play')return;const dt=Math.min(.04,Math.max(0,(n
 function startLoop(){stopLoop();lastFrame=performance.now();moveAcc=0;frameId=requestAnimationFrame(frame)}
 function hold(dir){if(state!=='play'||!V[dir])return;held=dir;moveAcc=0;const d=V[dir];step(d[0],d[1]);render(performance.now())}
 function pause(){if(state!=='play')return;state='paused';held=null;stopLoop();openModal('⏸️🏰','הטירה ממתינה לכם','השעון נעצר. אפשר להמשיך בדיוק מאותה נקודה.','▶️ ממשיכים!',()=>{state='play';startLoop()})}
-$('start').onclick=()=>{level=document.querySelector('input[name="difficulty"]:checked')?.value||'normal';$('overlay').hidden=true;begin();stageIntro()};
+$('start').onclick=()=>{level=document.querySelector('input[name="difficulty"]:checked')?.value||'normal';$('overlay').hidden=true;begin()};
 $('pause').onclick=pause;
 $('rules').onclick=()=>{if(state==='play')pause();else openModal('🏰🪄','חוקי הזירה','בכל שלב תפסו את שני כדורי הצבע הזוהרים שמופיעים במשימה. צרו קו קסם וחזרו לשטח בטוח. אם הכדור הזוהר נשאר בתוך שטח קטן — הוא נלכד. אספו את המספר הזהוב שעל היבשה. בכל שלב מופיע אתגר חדש.','הבנתי!',()=>{if(state==='paused'){state='play';startLoop()}})};
 $('hear').onclick=()=>speak(NAMES[Math.min(captured,9)]);
