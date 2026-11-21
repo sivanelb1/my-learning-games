@@ -68,6 +68,40 @@ body{background:radial-gradient(ellipse at 50% 0,#8155a3 0,#59418e 31%,#31275f 7
 .family-popup-enter{background:#f8d58f;color:#563e73}.family-popup-back{background:#78599b;color:#fff7eb}
 .family-popup-enter:disabled{background:#e6dbe5;color:#9b8d9f;cursor:not-allowed}
 @media(max-width:600px){.family-world>svg{border-radius:17px 17px 0 0}.family-house-hotspots{height:calc(100% - 108px)}.family-house-hotspot{top:14%;height:59%;border-radius:12px}.family-house-links{padding:9px 5px 12px;gap:5px;border-radius:0 0 16px 16px}.family-house-link{padding:8px 2px;border-radius:10px}.family-house-link em{font-size:9px}.family-world-caption{font-size:10px;max-width:95%;top:4px}.family-popup{padding:21px 12px;border-width:3px;border-radius:22px}.family-popup-words{gap:8px}.family-popup-word{min-height:141px;padding:10px 4px}.family-popup-word .emoji{font-size:37px}.family-popup-word .english{font-size:16px}}
+
+/* The village houses ARE the lesson selection. The original lesson UI now lives in a popup. */
+.family-world{overflow:hidden}
+.family-world>svg{border-radius:25px;display:block}
+.family-house-hotspots{inset:0;height:100%;pointer-events:none}
+.family-house-hotspot{top:21%;height:65%;pointer-events:auto;cursor:pointer}
+.family-house-hotspot[data-complete="true"]::after{content:"✓";position:absolute;top:0;right:3px;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;border:2px solid #fff;background:#399c80;color:white;font-weight:900;font-size:21px;box-shadow:0 3px 7px #24465a88}
+.family-house-hotspot[data-locked="true"]::after{content:"🔒";position:absolute;top:0;right:3px;font-size:20px;filter:drop-shadow(0 2px 3px #29234488)}
+.family-world-caption{top:auto;bottom:8px;max-width:92%;z-index:2}
+.family-popup-backdrop{padding:16px;align-items:center}
+.family-popup.family-lesson-modal{width:min(1260px,98vw);max-height:94dvh;padding:25px 22px 22px;border:3px solid #f5dca9;border-radius:32px;background:linear-gradient(155deg,#4c3b7c,#44396e 54%,#34366a);box-shadow:0 15px 0 #2c2659,0 30px 95px #110d2fc9;color:#fff2d8;text-align:initial;overscroll-behavior:contain}
+.family-lesson-modal-top{text-align:center;color:#ffdfa9;font-weight:900;font-size:clamp(12px,1.7vw,16px);padding:0 40px 3px}
+.family-lesson-modal-top span{display:inline-block;margin-inline-start:14px;color:#b6f1dc}
+.family-popup.family-lesson-modal .lesson-panel{border:0;background:transparent;box-shadow:none;margin:0 auto;padding:7px 0 10px;max-width:none}
+.family-popup.family-lesson-modal .chapter-heading{color:#ffe5ac;font:bold clamp(22px,3.3vw,34px) Georgia,serif;margin:19px auto 8px}
+.family-popup.family-lesson-modal .chapter-instruction{color:#e0f7f3;font-size:clamp(13px,1.6vw,16px);margin:8px auto 16px}
+.family-popup.family-lesson-modal .lesson-message{color:#e0f7f3}
+.family-popup.family-lesson-modal .lesson-cards{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.family-popup.family-lesson-modal .lesson-card{min-height:185px}
+.family-popup.family-lesson-modal .lesson-progress{margin:12px auto 8px}
+.family-popup.family-lesson-modal .chapter-track{margin:18px auto}
+.family-popup.family-lesson-modal .finish{margin:15px auto;padding:14px 10px}
+.family-popup.family-lesson-modal .finish h2{color:#ffe5ac}
+.family-popup.family-lesson-modal .finish p{color:#fff3df}
+.family-popup.family-lesson-modal .next-area{margin:20px auto 8px}
+.family-lesson-modal-actions{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin:10px auto 4px}
+.family-prev-house{background:#fff0d0;color:#514071;border:3px solid #ffdfaa;border-radius:16px;padding:11px 18px;font-weight:900;box-shadow:0 4px 0 #ab8caa}
+.family-prev-house:disabled{opacity:.45;cursor:not-allowed}
+.family-popup.family-lesson-modal .family-popup-back{border-color:#c9e7e5;background:#315b7a;color:#fff5dc}
+.family-popup.family-lesson-modal .family-popup-close{position:sticky;float:left;top:0;left:0;z-index:20;width:42px;height:42px;border:3px solid #f2d5b5;background:#fff3df;color:#514071;box-shadow:0 4px 0 #876b98}
+.family-popup.family-lesson-modal .lesson-card .tick{font-size:25px}
+.family-popup.family-lesson-modal .chapter-btn:disabled{opacity:.48}
+@media(max-width:750px){.family-popup.family-lesson-modal{padding:14px 11px;border-radius:22px}.family-popup.family-lesson-modal .lesson-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.family-popup.family-lesson-modal .lesson-card{min-height:158px}.family-popup.family-lesson-modal .chapter-btn{min-width:0;flex:1 1 43%;max-width:none;padding:9px 4px;font-size:13px}.family-lesson-modal-top{padding:5px 44px 4px 0}.family-house-hotspot{top:18%;height:68%}.family-world-caption{bottom:4px;font-size:10px}}
+@media(max-width:410px){.family-popup.family-lesson-modal .lesson-card .emoji{font-size:42px}.family-popup.family-lesson-modal .lesson-card .english{font-size:16px}.family-popup.family-lesson-modal .chapter-btn{font-size:12px}}
 </style></head><body><main class="wrap">
 <nav class="nav"><a href="level2-animal-rescue.html">🐾 חזרה לממלכת החיות</a><span>👨‍👩‍👧‍👦 תחנה 8 · ממלכת המשפחה</span></nav>
 <header class="hero"><div class="emoji">🏡👨‍👩‍👧‍👦✨</div><h1>ממלכת המשפחה</h1><p>THE FAMILY KINGDOM · STAGE 8 · עולם חדש · 16 מילים · 4 בתים קסומים</p></header>
@@ -78,13 +112,14 @@ body{background:radial-gradient(ellipse at 50% 0,#8155a3 0,#59418e 31%,#31275f 7
 <button type="button" class="family-house-hotspot" data-house="2" aria-label="סבא וסבתא · GRANDPARENTS · הצגת ארבע המילים"></button>
 <button type="button" class="family-house-hotspot" data-house="3" aria-label="קרובי משפחה · RELATIVES · הצגת ארבע המילים"></button>
 </div>
-<div class="family-house-links" role="group" aria-label="ארבע קבוצות המילים במשפחה">
-<button type="button" class="family-house-link" data-house="0"><span>🏠 המשפחה הקרובה</span><small lang="en">CLOSE FAMILY</small><em>🔍 פתחו מילים</em></button>
-<button type="button" class="family-house-link" data-house="1"><span>👶 הורים וילדים</span><small lang="en">PARENTS & CHILDREN</small><em>🔍 פתחו מילים</em></button>
-<button type="button" class="family-house-link" data-house="2"><span>👵 סבא וסבתא</span><small lang="en">GRANDPARENTS</small><em>🔍 פתחו מילים</em></button>
-<button type="button" class="family-house-link" data-house="3"><span>💜 קרובי משפחה</span><small lang="en">RELATIVES</small><em>🔍 פתחו מילים</em></button>
-</div><div class="family-world-caption">👆 לחצו על בית וגלו את המילים שלו · TAP A HOUSE</div></section>
-<section class="story">✨ <strong>ברוכים הבאים לממלכת המשפחה — עולם מספר 8!</strong> אחרי שהצלנו את החיות בממלכה הקודמת, הגענו לכפר קסום שבו גרות ארבע משפחות. בכל בית נכיר <strong>4 מילים חדשות באנגלית</strong>, עם תרגום לעברית והקראה. למדו את כולן כדי לפתוח את הבית הבא! 💜</section>
+<div class="family-world-caption">👆 בחרו בית כדי ללמוד את מילות המשפחה · CHOOSE A HOUSE</div></section>
+<section class="story">✨ <strong>ברוכים הבאים לממלכת המשפחה — עולם מספר 8!</strong> אחרי שהצלנו את החיות בממלכה הקודמת, הגענו לכפר קסום שבו גרות ארבע משפחות. <strong>לחצו על אחד הבתים בכפר</strong> כדי להיכנס לחדר הלמידה שלו! בכל בית נכיר <strong>4 מילים באנגלית</strong> עם תרגום, הקראה וסימן ✓ לכל מילה שנלמדה. השלימו בית כדי לפתוח את הבא! 💜</section>
+<div class="actions"><a class="primary" href="adventure-map.html">🗺️ להמשך המסע במפה</a><a class="secondary" href="adventure-map.html">🗺️ מפת הממלכה</a></div>
+<p class="note">🏡 לחצו על בית בכפר כדי ללמוד את המילים שלו. אפשר לחזור לכל בית שכבר נפתח, וההתקדמות נשמרת.</p>
+</main><div class="family-popup-backdrop" id="familyPopup" hidden>
+<section class="family-popup family-lesson-modal" role="dialog" aria-modal="true" aria-label="חדר לימוד בממלכת המשפחה" tabindex="-1">
+<button type="button" class="family-popup-close" id="familyPopupClose" aria-label="סגירת חדר הלימוד">✕</button>
+<div class="family-lesson-modal-top">🏡 ממלכת המשפחה · FAMILY KINGDOM <span id="familyHouseStatus"></span></div>
 <section class="lesson-panel" aria-label="חדרי הלימוד">
 <div class="lesson-progress"><span class="progress-text" id="overall">✨ 0 / 16 מילים</span><button class="mute" id="mute" type="button" aria-pressed="false">🔊 השמעה פעילה</button></div>
 <div class="bar" role="progressbar" aria-label="התקדמות בלימוד" aria-valuemin="0" aria-valuemax="16" aria-valuenow="0" id="progressBar"><div class="bar-fill" id="barFill"></div></div>
@@ -96,27 +131,19 @@ body{background:radial-gradient(ellipse at 50% 0,#8155a3 0,#59418e 31%,#31275f 7
 <div class="next-area"><button type="button" class="next" id="next" disabled>🔒 קודם לומדים את המילים</button></div>
 </section>
 <section class="finish" id="finish" aria-live="polite"><div style="font-size:65px">🎉👑✨</div><h2>אלופי המשפחה המלכותית!</h2><p>הכרתם את המשפחה באנגלית! כל הכבוד, שומרי הטירה!</p><a href="adventure-map.html">🗺️ להמשך המסע במפה</a></section>
-<div class="actions"><a class="primary" href="adventure-map.html">🗺️ להמשך המסע במפה</a><a class="secondary" href="adventure-map.html">🗺️ מפת הממלכה</a></div>
-<p class="note">✨ כל חדר מלמד כמה מילים בלבד. אפשר לחזור לחדרים שכבר סיימתם ולתרגל שוב, וההתקדמות נשמרת.</p>
-</main><div class="family-popup-backdrop" id="familyPopup" hidden>
-<section class="family-popup" role="dialog" aria-modal="true" aria-labelledby="familyPopupTitle" aria-describedby="familyPopupDesc" tabindex="-1">
-<button type="button" class="family-popup-close" id="familyPopupClose" aria-label="סגירת חלון המילים">✕</button>
-<div class="family-popup-top">🏡 ברוכים הבאים לבית המשפחה!</div>
-<h2 id="familyPopupTitle"></h2>
-<p id="familyPopupDesc">לחצו על כל מילה כדי לשמוע אותה באנגלית ולראות את התרגום לעברית.</p>
-<div class="family-popup-words" id="familyPopupWords"></div>
-<p class="family-popup-hint" id="familyPopupHint"></p>
-<div class="family-popup-actions">
-<button type="button" class="family-popup-enter" id="familyPopupEnter">🚪 נכנסים ללמוד בחדר</button>
-<button type="button" class="family-popup-back" id="familyPopupBack">💜 חזרה לכפר</button>
+
+<div class="family-lesson-modal-actions">
+<button type="button" class="family-prev-house" id="familyPrevHouse">🏠 לבית הקודם</button>
+<button type="button" class="family-popup-back" id="familyPopupBack">🏡 חזרה לכפר</button>
 </div>
 </section>
-</div><script>
+</div>
+<script>
 (()=>{'use strict';
 const TYPE="family",CHAPTERS=[{"title":"🏠 המשפחה הקרובה · CLOSE FAMILY","short":"🏠 המשפחה","words":[["MOTHER","אמא","👩"],["FATHER","אבא","👨"],["SISTER","אחות","👧"],["BROTHER","אח","👦"]]},{"title":"👶 הקטנים וההורים · PARENTS & CHILDREN","short":"👶 הורים וילדים","words":[["BABY","תינוק","👶"],["SON","בן","🧒"],["DAUGHTER","בת","👧"],["PARENTS","הורים","👨‍👩‍👧"]]},{"title":"👵 בית סבא וסבתא · GRANDPARENTS","short":"👵 סבא וסבתא","words":[["GRANDMA","סבתא","👵"],["GRANDPA","סבא","👴"],["GRANDMOTHER","סבתא","👵"],["GRANDFATHER","סבא","👴"]]},{"title":"💜 מפגש משפחתי · RELATIVES","short":"💜 קרובי משפחה","words":[["AUNT","דודה","👩‍🦰"],["UNCLE","דוד","👨‍🦱"],["COUSIN","בן או בת דוד/ה","🧑"],["FAMILY","משפחה","👨‍👩‍👧‍👦"]]}],TOTAL=16;
 const $=id=>document.getElementById(id);
 const STORAGE='playwise-animals-family-words-v1',COMPLETE='playwise-animals-family-'+TYPE+'-complete-v1';
-let learned={animals:[],family:[]},muted=false,chapter=0,previewHouse=null,previewTrigger=null;
+let learned={animals:[],family:[]},muted=false,chapter=0,previewTrigger=null;
 try{const data=JSON.parse(localStorage.getItem(STORAGE)||'{}');for(const k of ['animals','family'])if(Array.isArray(data[k]))learned[k]=data[k].filter(v=>typeof v==='string')}catch(e){}
 try{muted=localStorage.getItem('playwise-animals-family-muted')==='true'}catch(e){}
 const words=()=>CHAPTERS.flatMap(c=>c.words).map(w=>w[0]);
@@ -128,7 +155,7 @@ chapter=firstIncomplete();
 function save(){try{localStorage.setItem(STORAGE,JSON.stringify(learned))}catch(e){}}
 function speak(word){if(muted||!('speechSynthesis' in window))return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(word);u.lang='en-US';u.rate=.8;u.pitch=1.03;const voices=speechSynthesis.getVoices();u.voice=voices.find(v=>v.lang.toLowerCase()==='en-us')||voices.find(v=>v.lang.toLowerCase().startsWith('en'))||null;speechSynthesis.speak(u)}catch(e){}}
 function progress(){const n=words().filter(w=>seen().has(w)).length;$('overall').textContent='✨ '+n+' / '+TOTAL+' מילים שנלמדו';$('barFill').style.width=n/TOTAL*100+'%';$('progressBar').setAttribute('aria-valuenow',String(n));const done=n===TOTAL;$('finish').classList.toggle('visible',done);if(done)try{localStorage.setItem(COMPLETE,'complete')}catch(e){}}
-function render(){const track=$('chapters');track.innerHTML='';CHAPTERS.forEach((c,i)=>{const b=document.createElement('button');b.type='button';b.className='chapter-btn'+(i===chapter?' active':'')+(completed(i)?' complete':'');b.disabled=!unlocked(i);b.setAttribute('aria-current',i===chapter?'step':'false');b.textContent=(completed(i)?'✓ ':unlocked(i)?'🚪 ':'🔒 ')+'חדר '+(i+1);const sm=document.createElement('small');sm.textContent=c.short;b.append(sm);b.onclick=()=>{chapter=i;render()};track.append(b)});
+function render(){const canLearn=unlocked(chapter);const track=$('chapters');track.innerHTML='';CHAPTERS.forEach((c,i)=>{const b=document.createElement('button');b.type='button';b.className='chapter-btn'+(i===chapter?' active':'')+(completed(i)?' complete':'');b.disabled=!unlocked(i);b.setAttribute('aria-current',i===chapter?'step':'false');b.textContent=(completed(i)?'✓ ':unlocked(i)?'🚪 ':'🔒 ')+'חדר '+(i+1);const sm=document.createElement('small');sm.textContent=c.short;b.append(sm);b.onclick=()=>{chapter=i;render()};track.append(b)});
 $('chapterTitle').textContent='חדר '+(chapter+1)+' מתוך '+CHAPTERS.length+' · '+CHAPTERS[chapter].title;
 const root=$('cards');root.innerHTML='';
 for(const [word,he,emoji] of CHAPTERS[chapter].words){const b=document.createElement('button');b.type='button';b.className='lesson-card'+(seen().has(word)?' learned':'');b.setAttribute('aria-label',word+' – '+he+' – לחצו כדי לשמוע באנגלית');
@@ -137,14 +164,19 @@ const en=document.createElement('span');en.className='english';en.lang='en';en.t
 const tr=document.createElement('span');tr.className='hebrew';tr.textContent=he;
 const sound=document.createElement('span');sound.className='sound';sound.textContent='🔊 LISTEN';
 const tick=document.createElement('span');tick.className='tick';tick.textContent='✓';
-b.append(e,en,tr,sound,tick);b.onclick=()=>{speak(word);if(!seen().has(word)){learned[TYPE].push(word);save();render()}};root.append(b)}
+b.append(e,en,tr,sound,tick);b.onclick=()=>{speak(word);if(!unlocked(chapter))return;if(!seen().has(word)){learned[TYPE].push(word);save();render()}};root.append(b)}
 const done=completed(chapter),last=chapter===CHAPTERS.length-1,btn=$('next');
-btn.disabled=!done;btn.textContent=done?(last?'🏆 סיימנו! כל הכבוד!':'✨ לחדר הבא · NEXT ROOM'):'🔒 למדו את כל '+CHAPTERS[chapter].words.length+' המילים כדי לפתוח את החדר הבא';
-$('message').textContent=done?(last?'🎉 כל החדרים הושלמו! אפשר לחזור ולתרגל כל מילה.':'🎉 נהדר! כל המילים בחדר נלמדו. הדלת לחדר הבא נפתחה!'):'🐾 '+CHAPTERS[chapter].words.filter(w=>seen().has(w[0])).length+' מתוך '+CHAPTERS[chapter].words.length+' מילים נלמדו בחדר הזה';
+btn.disabled=!done||!canLearn;btn.textContent=done?(last?'🏆 סיימנו! כל הכבוד!':'✨ לחדר הבא · NEXT ROOM'):'🔒 למדו את כל '+CHAPTERS[chapter].words.length+' המילים כדי לפתוח את החדר הבא';
+$('message').textContent=!canLearn?'🔒 הבית הזה עדיין נעול. אפשר להאזין למילים, אבל כדי לסמן ✓ וללמוד צריך להשלים קודם את הבית הקודם.':done?(last?'🎉 כל החדרים הושלמו! אפשר לחזור ולתרגל כל מילה.':'🎉 נהדר! כל המילים בחדר נלמדו. הדלת לחדר הבא נפתחה!'):'🐾 '+CHAPTERS[chapter].words.filter(w=>seen().has(w[0])).length+' מתוך '+CHAPTERS[chapter].words.length+' מילים נלמדו בחדר הזה';
+$('instruction').textContent=canLearn?'✨ לחצו על כל תמונה כדי לשמוע באנגלית ולסמן ✓ שנלמדה. ארבע מילים בכל בית!':'🔒 אפשר להקשיב למילים בבית הזה, אך כדי ללמוד ולסמן ✓ צריך להשלים את הבתים הקודמים.';
+$('familyPrevHouse').disabled=chapter===0;
+$('familyHouseStatus').textContent=completed(chapter)?'✓ הבית הושלם':canLearn?'❤️ הבית פתוח ללמידה':'🔒 הבית נעול ללמידה';
+document.querySelectorAll('.family-house-hotspot').forEach(b=>{const i=Number(b.dataset.house);b.dataset.complete=String(completed(i));b.dataset.locked=String(!unlocked(i));b.setAttribute('aria-label',HOUSE_LABELS[i].he+' · '+HOUSE_LABELS[i].en+' · '+(completed(i)?'הבית הושלם':unlocked(i)?'פתוח ללמידה':'אפשר להציץ במילים, נעול ללמידה'))});
 progress()}
-$('next').onclick=()=>{if(!completed(chapter))return;if(chapter<CHAPTERS.length-1){chapter++;render();$('chapterTitle').scrollIntoView({behavior:'smooth',block:'center'})}else{$('finish').scrollIntoView({behavior:'smooth',block:'center'})}};
+$('next').onclick=()=>{if(!completed(chapter))return;if(chapter<CHAPTERS.length-1){chapter++;render();$('familyPopup').scrollTop=0;$('chapterTitle').scrollIntoView({behavior:'smooth',block:'nearest'})}else{$('finish').scrollIntoView({behavior:'smooth',block:'nearest'})}};
 function muteView(){$('mute').textContent=muted?'🔇 הקול מושתק · להפעלה':'🔊 השמעה פעילה · להשתקה';$('mute').setAttribute('aria-pressed',String(muted))}
 $('mute').onclick=()=>{muted=!muted;if(muted&&'speechSynthesis' in window)speechSynthesis.cancel();try{localStorage.setItem('playwise-animals-family-muted',String(muted))}catch(e){}muteView()};
+
 
 const HOUSE_LABELS=[
 {he:'המשפחה הקרובה',en:'CLOSE FAMILY'},
@@ -152,18 +184,14 @@ const HOUSE_LABELS=[
 {he:'סבא וסבתא',en:'GRANDPARENTS'},
 {he:'קרובי משפחה',en:'RELATIVES'}
 ];
-function closeHouse(){if($('familyPopup').hidden)return;$('familyPopup').hidden=true;document.body.style.overflow='';if(previewTrigger&&typeof previewTrigger.focus==='function')previewTrigger.focus();previewHouse=null}
-function openHouse(i,trigger){if(!CHAPTERS[i])return;previewHouse=i;previewTrigger=trigger||null;const title=$('familyPopupTitle');title.textContent='🏡 '+HOUSE_LABELS[i].he;const en=document.createElement('small');en.lang='en';en.textContent=HOUSE_LABELS[i].en;title.append(en);
-const root=$('familyPopupWords');root.innerHTML='';
-CHAPTERS[i].words.forEach(([word,he,emoji])=>{const b=document.createElement('button');b.type='button';b.className='family-popup-word';b.setAttribute('aria-label',word+' – '+he+' – לחצו להשמעה באנגלית');const e=document.createElement('span');e.className='emoji';e.textContent=emoji;const w=document.createElement('span');w.className='english';w.lang='en';w.textContent=word;const t=document.createElement('span');t.className='hebrew';t.textContent=he;const l=document.createElement('span');l.className='sound';l.textContent='🔊 LISTEN · לשמיעה';b.append(e,w,t,l);b.onclick=()=>speak(word);root.append(b)});
-const canEnter=unlocked(i);$('familyPopupEnter').disabled=!canEnter;$('familyPopupEnter').textContent=canEnter?'🚪 נכנסים ללמוד את המילים':'🔒 קודם משלימים את הבתים הקודמים';$('familyPopupHint').textContent=canEnter?'✨ אפשר לשמוע כאן את המילים, או להיכנס לחדר כדי ללמוד ולשמור התקדמות.':'💜 אפשר להכיר את המילים ולשמוע אותן כבר עכשיו! כדי לפתוח את החדר בלמידה, משלימים קודם את החדרים הקודמים.';
-$('familyPopup').hidden=false;document.body.style.overflow='hidden';$('familyPopupClose').focus()}
-document.querySelectorAll('[data-house]').forEach(b=>{b.onclick=()=>openHouse(Number(b.dataset.house),b)});
-$('familyPopupClose').onclick=closeHouse;$('familyPopupBack').onclick=closeHouse;
+function closeHouse(){if($('familyPopup').hidden)return;$('familyPopup').hidden=true;document.body.style.overflow='';if(previewTrigger&&typeof previewTrigger.focus==='function')previewTrigger.focus()}
+function openHouse(i,trigger){if(!CHAPTERS[i])return;chapter=i;previewTrigger=trigger||null;render();$('familyPopup').hidden=false;document.body.style.overflow='hidden';$('familyPopupClose').focus()}
+document.querySelectorAll('.family-house-hotspot').forEach(b=>{b.onclick=()=>openHouse(Number(b.dataset.house),b)});
+$('familyPopupClose').onclick=closeHouse;
+$('familyPopupBack').onclick=closeHouse;
+$('familyPrevHouse').onclick=()=>{if(chapter===0)return;chapter--;render();$('chapterTitle').scrollIntoView({behavior:'smooth',block:'nearest'})};
 $('familyPopup').addEventListener('click',e=>{if(e.target===$('familyPopup'))closeHouse()});
 document.addEventListener('keydown',e=>{if($('familyPopup').hidden)return;if(e.key==='Escape'){closeHouse();return}if(e.key==='Tab'){const modal=$('familyPopup');const controls=[...modal.querySelectorAll('button:not(:disabled)')];const first=controls[0],last=controls[controls.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}});
-$('familyPopupEnter').onclick=()=>{if(previewHouse===null||!unlocked(previewHouse))return;const i=previewHouse;closeHouse();chapter=i;render();$('chapterTitle').scrollIntoView({behavior:'smooth',block:'center'})};
-
 muteView();render();
 })();
 </script><script src="level2-world-navigation.js?v=family-stage8" defer></script></body></html>
