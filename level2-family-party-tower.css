@@ -2,3 +2,34 @@
 .overlay-actions[hidden],.overlay-actions [hidden]{display:none!important}
 .quiz-prompt{border:2px solid #e9c5d7;border-radius:15px;background:#fff3ce;padding:5px 18px;box-shadow:0 4px 0 #c8a5b6;cursor:pointer}
 .quiz-prompt:hover{background:#fff9e4}
+
+/* Gift tower v3: preserve a single 900:620 game coordinate system on every viewport. */
+.shell{width:min(950px,96%);margin-inline:auto}
+.game-screen{width:min(900px,100%);height:auto;aspect-ratio:900 / 620;margin-inline:auto;max-height:none}
+.game-screen canvas{width:100%;height:100%;display:block;object-fit:fill}
+.game-hud,.control-bar,.lower-bar,.below{width:min(900px,100%);margin-inline:auto}
+.auto-bounce-label{min-width:112px;display:flex;align-items:center;justify-content:center;gap:7px;border:3px solid #d1f5e4;border-radius:21px;padding:12px;background:#437a87;color:#fffce6;font-weight:900;font-size:28px;text-align:center}
+.auto-bounce-label span{font-size:13px;line-height:1.25}
+.gift-reveal{display:flex;flex-direction:column;align-items:center;gap:8px;margin:8px auto 15px;min-height:188px}
+.gift-reveal[hidden]{display:none!important}
+.gift-reveal .from-sign{direction:ltr;background:#fff9dd;color:#775387;border:3px dashed #b28ac1;border-radius:16px;padding:8px 19px;font-size:clamp(17px,2.5vw,24px);font-weight:1000;box-shadow:0 4px 0 #ddc2e3}
+.gift-unbox{position:relative;display:grid;place-items:center;width:140px;height:140px;margin:12px auto 0;isolation:isolate}
+.gift-unbox .box-base{position:absolute;bottom:4px;width:105px;height:80px;border-radius:10px;border:5px solid #fff5d6;background:var(--gift-color,#e8a1bf);box-shadow:0 9px 0 #ad7a9b,0 13px 17px #86679c80;animation:box-base-in .7s ease-out both}
+.gift-unbox .box-base:before{content:"";position:absolute;left:41px;top:0;width:13px;height:100%;background:#fff5ac}
+.gift-unbox .box-lid{position:absolute;bottom:80px;width:120px;height:25px;border:5px solid #fff5d6;border-radius:9px;background:var(--gift-color,#e8a1bf);transform-origin:15% 85%;animation:gift-lid-open 1s .45s cubic-bezier(.17,.84,.27,1.24) both}
+.gift-unbox .gift-content{position:absolute;bottom:50px;z-index:-1;font-size:65px;filter:drop-shadow(0 7px 8px #8b7094a0);animation:gift-pop 1.15s .9s cubic-bezier(.17,.84,.27,1.25) both}
+.gift-reveal .gift-name{font-size:22px;color:#65467c;font-weight:1000}
+.gift-reveal .gift-name small{font-size:14px;color:#8d70a2}
+@keyframes gift-lid-open{0%,28%{transform:rotate(0) translate(0,0)}75%,100%{transform:rotate(-33deg) translate(-34px,-43px)}}
+@keyframes gift-pop{0%,15%{transform:translateY(35px) scale(.2) rotate(-30deg);opacity:0}65%{transform:translateY(-44px) scale(1.2) rotate(13deg);opacity:1}100%{transform:translateY(-35px) scale(1);opacity:1}}
+@keyframes box-base-in{from{transform:scale(.7);opacity:.4}to{transform:scale(1);opacity:1}}
+.gift-reveal .confetti{font-size:22px;letter-spacing:10px}
+@media(max-width:650px){
+.game-screen{height:auto;aspect-ratio:900 / 620;min-height:0;border-width:4px}
+.auto-bounce-label{min-width:83px;font-size:22px;padding:7px;border-radius:15px}.auto-bounce-label span{font-size:10px}
+.control-bar{margin-top:14px}
+.floating-hint{font-size:10px;padding:6px 8px;max-width:95%;white-space:normal;text-align:center}
+.world-label{font-size:10px}
+.gift-reveal{min-height:145px}
+.gift-unbox{transform:scale(.83);margin:0}
+}
