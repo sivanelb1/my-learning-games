@@ -148,7 +148,7 @@
 <button type="button" class="mute" id="mute" aria-pressed="false">🔊 קול פעיל</button>
 <div class="overlay" id="overlay"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="em" id="modalEmoji">🏰🐶</div><h2 id="modalTitle">ברוכים הבאים לחצר החיות!</h2><p id="modalText">חמש חיות קטנות איבדו את הדרך הביתה. נלמד את השמות שלהן באנגלית, נמצא אותן ונחזיר אותן לבתים הקסומים!</p><div class="mini" id="modalAnimals" role="group" aria-label="חיות ללמידה"></div><p class="learn-hint">👆 לחצו על חיה כדי לראות את שמה באנגלית ולשמוע איך אומרים אותו!</p><p class="en" id="modalSub">3 rounds · 5 animals · no timer · no lives</p><button type="button" id="modalGo">✨ מתחילים להציל!</button><a class="alt" href="level2-animals-family-intro.html">📖 לחזור ללמוד</a></div></div>
 <div class="animal-word-layer hidden" id="animalWordLayer" aria-hidden="true"><div class="animal-word-card" role="dialog" aria-modal="true" aria-labelledby="animalWordEnglish"><button type="button" class="animal-word-close" id="animalWordClose" aria-label="סגירת כרטיס החיה">×</button><div class="animal-word-art" id="animalWordArt" aria-hidden="true"></div><h2 class="animal-word-english" id="animalWordEnglish" lang="en"></h2><p class="animal-word-hebrew" id="animalWordHebrew"></p><button type="button" class="animal-word-listen" id="animalWordListen">🔊 להשמיע באנגלית · LISTEN</button></div></div>
-<script src="level2-animal-art.js?v=illustrated1"></script><script src="level2-castle-background.js?v=castle-3d-1"></script><script src="level2-safari-background.js?v=safari1"></script><script src="level2-anime-pets.js?v=animepets2"></script><script src="https://cdn.jsdelivr.net/npm/phaser@3.90.0/dist/phaser.min.js" defer></script><script>
+<script src="level2-animal-art.js?v=illustrated1"></script><script src="level2-castle-background.js?v=castle-3d-1"></script><script src="level2-safari-background.js?v=safari1"></script><script src="https://cdn.jsdelivr.net/npm/phaser@3.90.0/dist/phaser.min.js" defer></script><script>
 (()=>{'use strict';
 const CHAPTERS=[
 {name:'חיות בית',short:'🏡 בית',theme:'pets',words:[['DOG','כלב','🐶'],['CAT','חתול','🐱'],['RABBIT','ארנב','🐰'],['FISH','דג','🐟'],['TURTLE','צב','🐢']]},
@@ -217,14 +217,6 @@ DOLPHIN:'1f42c',SHARK:'1f988',WHALE:'1f433',OCTOPUS:'1f419',CRAB:'1f980'
 const PW_FALLBACK={};
 CHAPTERS.forEach(group=>group.words.forEach(w=>PW_FALLBACK[w[0]]=w[2]));
 function setAnimalArt(container,word){
-const atlas=window.PWAnimeAtlas,idx=atlas?.words?.indexOf(word)??-1;
-if(idx>=0&&atlas.url){
- const art=document.createElement('span');art.className='pw-anime';
- art.style.backgroundImage='url("'+atlas.url+'")';
- art.style.backgroundPosition=(idx*25)+'% center';
- art.setAttribute('aria-hidden','true');container.append(art);
- return;
-}
 const code=PW_3D_EMOJI[word];
 if(code){
  const img=document.createElement('img');
