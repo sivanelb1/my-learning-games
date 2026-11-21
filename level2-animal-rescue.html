@@ -37,6 +37,23 @@
 .drag-ghost{width:125px;height:115px;display:flex;align-items:center;justify-content:center;font-size:unset}.drag-ghost svg{width:100%;height:100%;filter:drop-shadow(0 7px 5px #27385b66)}
 @media(max-width:650px){.houses{top:150px;gap:0;left:1px;right:1px}.house{min-height:134px;padding:6px 0 0}.house .building{height:100px}.house .sign{font-size:9px;min-width:92%;padding:3px 1px}.house.saved .saved-emoji{top:73px;font-size:23px}.animal-yard{min-height:127px;bottom:9px;gap:3px}.animal{height:clamp(106px,24vw,131px);width:clamp(57px,18vw,91px);border-radius:18px;padding:3px}.animal .picture{height:calc(100% - 18px)}.animal .tag{font-size:9px}}
 @media(max-width:370px){.houses{top:144px}.house .building{height:92px}.animal{height:103px;width:55px}}
+
+/* Open-world character presentation: clickable creatures, no card frames */
+.animal-yard{bottom:5px;align-items:flex-end;gap:clamp(4px,2vw,22px);min-height:170px;overflow:visible}
+.animal{background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;padding:0 3px 4px;width:clamp(87px,15vw,155px);height:clamp(138px,17vw,172px);filter:drop-shadow(0 9px 4px #244d5c66);transform-origin:50% 95%;animation:pw-ground-hop 2.8s ease-in-out infinite alternate!important}
+.animal .picture{height:100%;width:100%;overflow:visible}
+.animal .picture svg{width:100%;height:100%;filter:drop-shadow(0 5px 2px #3b4f6b55);transition:filter .25s}
+.animal .tag{display:none!important}
+.animal:hover,.animal:focus-visible{background:transparent!important;filter:drop-shadow(0 0 9px #fff6c9) drop-shadow(0 9px 4px #244d5c66);transform:translateY(-8px) scale(1.08)!important}
+.animal.selected{outline:0!important;background:transparent!important;filter:drop-shadow(0 0 12px #ffeb8d) drop-shadow(0 0 19px #ffe7a6)!important}
+.animal.selected .picture svg{filter:drop-shadow(0 0 9px #ffefaa)}
+.animal:focus-visible{outline:3px dashed #fff2b4!important;outline-offset:-3px;border-radius:40%!important}
+.animal.dragging{opacity:.2;filter:none}
+.animal.rescued{opacity:0;pointer-events:none}
+@keyframes pw-ground-hop{0%{translate:0 0}100%{translate:0 -7px}}
+@media(max-width:650px){.animal-yard{bottom:5px;min-height:132px;gap:1px}.animal{height:clamp(105px,26vw,141px);width:clamp(60px,19vw,94px);padding:0 1px 3px}}
+@media(max-width:370px){.animal{height:108px;width:57px}}
+@media(prefers-reduced-motion:reduce){.animal{animation:none!important}}
 </style></head>
 <body>
 <main class="wrap">
@@ -89,10 +106,10 @@ if(round===2){b.addEventListener('pointerdown',onDragStart);b.addEventListener('
 return b}
 function highlightSelected(){Array.from($('yard').children).forEach(b=>b.classList.toggle('selected',Number(b.dataset.index)===selected));$('feedback').className='feedback';$('feedback').textContent=selected===null?'':'✨ עכשיו בחרו את הבית עם השם באנגלית, או גררו אליו את החיה!'}
 function question(){if(busy)return;setHud();clearYard();makeHouses();const target=order[step],word=CHAPTERS[chapter].words[target][0];$('word').textContent=word;$('instruction').textContent=round===0?'🔍 הקשיבו ומצאו את החיה הנכונה!':'🐾 מצאו את החיה לפי שמה באנגלית!';$('help').textContent='💜 אין פסילות ואין שעון — אפשר לנסות שוב ולהקשיב למילה!';$('feedback').textContent='';$('feedback').className='feedback';
-const count=round===0?2:Math.min(5,3+Math.floor(step/2));const others=shuffle([0,1,2,3,4].filter(i=>i!==target)).slice(0,count-1);shuffle([target,...others]).forEach(i=>$('yard').append(makeAnimal(i,'🐾')));say(word)}
+const count=round===0?2:Math.min(5,3+Math.floor(step/2));const others=shuffle([0,1,2,3,4].filter(i=>i!==target)).slice(0,count-1);shuffle([target,...others]).forEach(i=>$('yard').append(makeAnimal(i,'')));say(word)}
 function pick(i,b){if(busy)return;const target=order[step];if(i!==target){b.classList.add('selected');$('feedback').className='feedback try';$('feedback').textContent='💛 כמעט! נסו חיה אחרת, או לחצו על 🔊 כדי לשמוע שוב.';nextTimer=setTimeout(()=>b.classList.remove('selected'),400);return}
 busy=true;b.classList.add('selected');$('feedback').className='feedback good';$('feedback').textContent='🌟 נהדר! '+CHAPTERS[chapter].words[i][0]+' · '+CHAPTERS[chapter].words[i][1];celebrate(b);say(CHAPTERS[chapter].words[i][0]);nextTimer=setTimeout(()=>{step++;busy=false;if(step>=5)endRound();else question()},900)}
-function roundThree(){round=2;step=0;saved=[];busy=false;setHud();clearYard();makeHouses();$('instruction').textContent='🏠 גררו כל חיה לבית שעליו כתוב השם שלה באנגלית!';$('word').textContent='ANIMAL RESCUE';$('help').textContent='👆 גוררים חיה אל הבית הנכון. בטלפון אפשר גם ללחוץ על החיה ואז על הבית.';$('feedback').textContent='✨ חמישה בתים וחמש חיות — הצילו את כולן!';shuffle([0,1,2,3,4]).forEach(i=>$('yard').append(makeAnimal(i,'↗ DRAG')))}
+function roundThree(){round=2;step=0;saved=[];busy=false;setHud();clearYard();makeHouses();$('instruction').textContent='🏠 גררו כל חיה לבית שעליו כתוב השם שלה באנגלית!';$('word').textContent='ANIMAL RESCUE';$('help').textContent='👆 גוררים חיה אל הבית הנכון. בטלפון אפשר גם ללחוץ על החיה ואז על הבית.';$('feedback').textContent='✨ חמישה בתים וחמש חיות — הצילו את כולן!';shuffle([0,1,2,3,4]).forEach(i=>$('yard').append(makeAnimal(i,'')))}
 function rescue(i,house){if(busy||saved.includes(i))return;const b=Array.from($('yard').children).find(x=>Number(x.dataset.index)===i);if(i!==house){$('feedback').className='feedback try';$('feedback').textContent='💛 זה לא הבית של החיה. הסתכלו על המילה באנגלית ונסו שוב!';if(b){b.classList.add('selected');nextTimer=setTimeout(()=>{if(b.isConnected)b.classList.remove('selected')},450)}return}
 busy=true;saved.push(i);step=saved.length;selected=null;const h=Array.from($('houses').children)[house];if(b){b.disabled=true;const from=b.getBoundingClientRect(),to=h.getBoundingClientRect();const dx=to.left+to.width/2-from.left-from.width/2,dy=to.top+to.height/2-from.top-from.height/2;if(typeof b.animate==='function'&&!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)){const anim=b.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:'translate('+dx+'px,'+dy+'px) scale(.5)',opacity:1},{transform:'translate('+dx+'px,'+dy+'px) scale(.3)',opacity:0}],{duration:760,easing:'ease-in-out',fill:'forwards'});anim.onfinish=()=>b.classList.add('rescued')}else b.classList.add('rescued')}h.classList.add('saved');h.disabled=true;const e=document.createElement('span');e.className='saved-emoji';e.textContent=CHAPTERS[chapter].words[i][2];h.append(e);celebrate(h);say(CHAPTERS[chapter].words[i][0]);$('feedback').className='feedback good';$('feedback').textContent='🏠 '+CHAPTERS[chapter].words[i][0]+' הגיע/ה הביתה!';setHud();nextTimer=setTimeout(()=>{busy=false;if(saved.length===5)finishChapter();else{$('feedback').textContent='✨ עוד '+(5-saved.length)+' חיות מחכות לבית!';const next=order.find(n=>!saved.includes(n));if(next!==undefined)say(CHAPTERS[chapter].words[next][0])}},950)}
 function endRound(){if(round===0){overlay('כל הכבוד! 🌟','זיהיתם את חמש החיות! עכשיו נוסיף עוד חיות לחצר ונתרגל את השמות שלהן באנגלית.','🦋✨','🐾 לסבב השני',()=>{round=1;step=0;order=shuffle([0,1,2,3,4]);question()})}else{overlay('השער לבתים נפתח! 🏠','עכשיו המשימה האמיתית: גררו כל חיה אל הבית שעליו כתוב שמה באנגלית. אפשר גם ללחוץ על חיה ואז על הבית המתאים.','🏰🔑','🏠 מתחילים להציל!',roundThree)}}
