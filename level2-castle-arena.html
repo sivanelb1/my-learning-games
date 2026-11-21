@@ -115,7 +115,7 @@ function spawnStar(){}
 function collectStar(){}
 function checkWin(){return percent>=TARGET}
 function speakCaught(words){
-if(muted||!words.length||!('speechSynthesis' in window))return;
+if(state==='play'||muted||!words.length||!('speechSynthesis' in window))return;
 try{speechSynthesis.cancel();for(const word of words){const u=new SpeechSynthesisUtterance(word);u.lang='en-US';u.rate=.72;u.pitch=1.08;const voices=speechSynthesis.getVoices();u.voice=voices.find(v=>v.lang.toLowerCase()==='en-us')||voices.find(v=>v.lang.toLowerCase().startsWith('en'))||null;speechSynthesis.speak(u)}}catch(e){}
 }
 
@@ -177,7 +177,7 @@ m.append(icon,title,lead,quizMute,counter,columns,feedback,next);refresh();updat
 function openModal(icon,title,description,label,action){const m=$('modal');m.innerHTML='';const b=document.createElement('div');b.className='big';b.textContent=icon;const h=document.createElement('h2');h.textContent=title;const p=document.createElement('p');p.textContent=description;const btn=document.createElement('button');btn.className='primary';btn.type='button';btn.textContent=label;btn.onclick=()=>{$('overlay').hidden=true;action()};m.append(b,h,p,btn);$('overlay').hidden=false}
 function stopLoop(){if(frameId!==null){cancelAnimationFrame(frameId);frameId=null}}
 function loseLife(reason){if(state!=='play'||invulnerable>0)return;lives--;trail=[];ship={x:12,y:H-1,px:12,py:H-1,lerp:1};held=null;invulnerable=2;hud();if(lives<=0){end(false,'נגמרו הלבבות!')}else msg('💜 '+reason+' נשארו '+lives+' לבבות.')}
-function end(success,reason){state=success?'win':'over';held=null;stopLoop();if(success){try{localStorage.setItem(SAVE,'complete')}catch(e){}openModal('🏰👑🌈','הצלתם את טירת הקשת!','צבעתם לפחות 80% מהזירה בכל שמונת השלבים, והתאמתם צבעים ומספרים למילים באנגלית! שער הטירה נפתח.','🗺️ חוזרים לממלכה',()=>{window.location.href='level2-numbers-intro.html'})}else{openModal('💜⏳','הקרב הסתיים',reason+' הגעתם לשלב '+(stage+1)+' וצבעתם '+percent.toFixed(1)+'% מהלוח. אפשר לנסות שוב!','🔄 משחק חדש',begin)}}
+function end(success,reason){state=success?'win':'over';held=null;stopLoop();if(success){try{localStorage.setItem(SAVE,'complete')}catch(e){}openModal('🏰👑🌈','הצלתם את טירת הקשת!','צבעתם לפחות 80% מהזירה בכל שמונת השלבים, והתאמתם צבעים ומספרים למילים באנגלית! שער הטירה נפתח.','🗺️ חוזרים לממלכה',()=>{window.location.href='level2-numbers-intro.html'})}else{openModal('💜⏳','ננסה שוב יחד!',reason+' הגעתם לשלב '+(stage+1)+' מתוך '+STAGES.length+' וצבעתם '+percent.toFixed(1)+'% מהלוח. ההתקדמות שלכם נשמרת במשחק הזה — נסו שוב את אותו השלב!','🔄 מנסים שוב את שלב '+(stage+1),()=>{lives=level==='easy'?4:3;stageIntro()})}}
 function win(){if(state==='play')end(true,'')}
 function step(dx,dy){if(state!=='play')return;const nx=ship.x+dx,ny=ship.y+dy;if(!inside(nx,ny))return;if(trail.some(p=>p.x===nx&&p.y===ny))return;
 const was=trail.length>0;
