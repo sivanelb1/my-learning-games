@@ -4,37 +4,37 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#493d89">
 <title>🎁 מגדל המתנות הקסום · Family Gift Tower | PLAYWISE</title>
-<link rel="stylesheet" href="level2-family-party-tower.css?v=tower2">
+<link rel="stylesheet" href="level2-family-party-tower.css?v=tower3">
 </head>
 <body>
 <nav class="top-nav"><a href="level2-family-gate.html">🏡 כפר המשפחה</a><span>PLAYWISE · FAMILY KINGDOM</span><a href="adventure-map.html">🗺️ מפת ההרפתקה</a></nav>
-<header class="heading"><div class="eyebrow">🎈 THE FAMILY SURPRISE PARTY 🎈</div><h1>🎁 מגדל המתנות הקסום</h1><p>קופצים בין קומות, מטפסים אל השמיים ומביאים מתנה לכל בני המשפחה!</p></header>
+<header class="heading"><div class="eyebrow">🎈 THE FAMILY SURPRISE PARTY 🎈</div><h1>🎁 מגדל המתנות הקסום</h1><p>המתנות קופצות עד השמיים! מי הביא לי מתנה ומה מסתתר בפנים?</p></header>
 <main class="shell">
-<div class="game-hud" aria-live="polite"><div class="hud-cell"><span class="hud-icon">🎁</span><span><small>המתנה הבאה</small><strong id="hudRecipient">AUNT · דודה</strong></span></div><div class="hud-cell hud-center"><small>קומה</small><strong id="hudFloor">1 / 4</strong><div class="stage-dots" id="stageDots" aria-label="ארבעה שלבים"></div></div><div class="hud-cell"><span class="hud-icon">⭐</span><span><small>הגובה במגדל</small><strong id="hudHeight">0%</strong></span></div></div>
-<section class="game-screen" id="gameScreen" aria-label="משחק פלטפורמות: זזים עם החצים וקופצים בין המדפים כדי להגיע למתנה למעלה">
-<canvas id="gameCanvas" width="900" height="620" aria-label="מגדל מתנות עם מדפים לטיפוס, דמות הנושאת מתנה ושער בקצה העליון"></canvas>
+<div class="game-hud" aria-live="polite"><div class="hud-cell"><span class="hud-icon">🎁</span><span><small>מתנה מסתורית</small><strong id="hudRecipient">🎁 מי הביא אותה?</strong></span></div><div class="hud-cell hud-center"><small>קומה</small><strong id="hudFloor">1 / 4</strong><div class="stage-dots" id="stageDots" aria-label="ארבעה שלבים"></div></div><div class="hud-cell"><span class="hud-icon">⭐</span><span><small>הגובה במגדל</small><strong id="hudHeight">0%</strong></span></div></div>
+<section class="game-screen" id="gameScreen" aria-label="משחק קפיצות: מכוונים קופסת מתנה בין טרמפולינות כדי להגיע לפסגה ולגלות מי הביא אותה">
+<canvas id="gameCanvas" width="900" height="620" aria-label="מגדל טרמפולינות עם קופסת מתנה מסתובבת וקופצת עד לפסגה"></canvas>
 <div class="world-label" id="worldLabel">🏡 קומה 1 · הבית של הדודה</div>
-<div class="floating-hint" id="floatingHint">⬅️ ➡️ לזוז · ⬆️ או רווח לקפוץ</div>
+<div class="floating-hint" id="floatingHint">⬅️ ➡️ לכוון את המתנה · הקפיצה אוטומטית!</div>
 <div class="game-paused" id="pauseNotice" hidden>⏸️ המשחק מושהה</div>
 <div class="game-overlay" id="gameOverlay" role="dialog" aria-modal="true" aria-labelledby="overlayTitle">
 <div class="overlay-panel">
 <div class="overlay-icon" id="overlayIcon">🎁🏰</div>
 <div class="overlay-tag" id="overlayTag">מסיבת ההפתעה</div>
-<h2 id="overlayTitle">בואו נביא מתנות למשפחה!</h2>
-<p id="overlayText">טפסו למעלה בין המדפים והגיעו אל הבית הזוהר. בכל קומה מחכה בן משפחה אחר!</p>
+<h2 id="overlayTitle">כולם הגיעו לחגוג את יום ההולדת שלי!</h2>
+<p id="overlayText">כולם הביאו לי מתנות! בואו נגלה מי הביא כל מתנה ומה מסתתר בתוכה.</p>
 <div class="word-preview" id="wordPreview"></div>
-<div class="quiz-options" id="quizOptions" hidden></div>
+<div class="quiz-options" id="quizOptions" hidden></div><div class="gift-reveal" id="giftReveal" hidden></div>
 <div class="overlay-actions" id="overlayActions"><button type="button" class="main-action" id="overlayPrimary">🎮 מתחילים לטפס!</button><a class="secondary-action" href="level2-family-gate.html">🏡 חזרה לכפר</a></div>
 </div></div>
 </section>
 <div class="control-bar">
 <div class="move-controls"><button type="button" class="control-btn" id="leftBtn" aria-label="לזוז שמאלה">◀</button><button type="button" class="control-btn" id="rightBtn" aria-label="לזוז ימינה">▶</button></div>
-<div class="control-tip">💡 אפשר לשחק גם במקלדת<br><span>← → לזוז · ↑ / SPACE לקפוץ</span></div>
-<button type="button" class="control-btn jump-btn" id="jumpBtn" aria-label="לקפוץ">⬆️<span>קפיצה</span></button>
+<div class="control-tip">🎁 המתנה קופצת לבד!<br><span>← → מכוונים אל הטרמפולינה הבאה</span></div>
+<div class="auto-bounce-label" aria-label="קפיצה אוטומטית">🌀<span>קפיצה<br>אוטומטית</span></div>
 </div>
 <div class="lower-bar"><button type="button" class="small-action" id="soundBtn">🔊 צלילים פועלים</button><button type="button" class="small-action" id="restartBtn">🔄 להתחיל את הקומה מחדש</button><span class="game-status" id="gameStatus" role="status" aria-live="polite">✨ כל קפיצה מקרבת אותנו למסיבה!</span></div>
-<div class="below"><span>🎈 4 קומות · 4 מתנות · מסיבה אחת גדולה</span><a href="level2-family-tree.html?activity=final">🌳 עץ המשפחה הגדול</a></div>
+<div class="below"><span>🎈 4 קומות · 4 מתנות מסתוריות · 4 הפתעות</span><a href="level2-family-tree.html?activity=final">🌳 עץ המשפחה הגדול</a></div>
 </main>
-<script src="level2-family-party-tower.js?v=tower2"></script>
+<script src="level2-family-party-tower.js?v=tower3"></script>
 <script src="level2-world-navigation.js?v=family-tower-3" defer></script>
 </body></html>
