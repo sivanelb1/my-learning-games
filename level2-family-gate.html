@@ -114,7 +114,7 @@ body{background:radial-gradient(ellipse at 50% 0,#8155a3 0,#59418e 31%,#31275f 7
 </div>
 <div class="family-world-caption">👆 בחרו בית כדי ללמוד את מילות המשפחה · CHOOSE A HOUSE</div></section>
 <section class="story">✨ <strong>ברוכים הבאים לממלכת המשפחה — עולם מספר 8!</strong> אחרי שהצלנו את החיות בממלכה הקודמת, הגענו לכפר קסום שבו גרות ארבע משפחות. <strong>לחצו על אחד הבתים בכפר</strong> כדי להיכנס לחדר הלמידה שלו! בכל בית נכיר <strong>4 מילים באנגלית</strong> עם תרגום, הקראה וסימן ✓ לכל מילה שנלמדה. השלימו בית כדי לפתוח את הבא! 💜</section>
-<div class="actions"><a class="primary" href="adventure-map.html">🗺️ להמשך המסע במפה</a><a class="secondary" href="adventure-map.html">🗺️ מפת הממלכה</a></div>
+<div class="actions"><a class="primary" href="level2-family-tree.html">🌳 למשחק עץ המשפחה הקסום</a><a class="secondary" href="adventure-map.html">🗺️ מפת הממלכה</a></div>
 <p class="note">🏡 לחצו על בית בכפר כדי ללמוד את המילים שלו. אפשר לחזור לכל בית שכבר נפתח, וההתקדמות נשמרת.</p>
 </main><div class="family-popup-backdrop" id="familyPopup" hidden>
 <section class="family-popup family-lesson-modal" role="dialog" aria-modal="true" aria-label="חדר לימוד בממלכת המשפחה" tabindex="-1">
@@ -130,7 +130,7 @@ body{background:radial-gradient(ellipse at 50% 0,#8155a3 0,#59418e 31%,#31275f 7
 <p class="lesson-message" id="message" aria-live="polite"></p>
 <div class="next-area"><button type="button" class="next" id="next" disabled>🔒 קודם לומדים את המילים</button></div>
 </section>
-<section class="finish" id="finish" aria-live="polite"><div style="font-size:65px">🎉👑✨</div><h2>אלופי המשפחה המלכותית!</h2><p>הכרתם את המשפחה באנגלית! כל הכבוד, שומרי הטירה!</p><a href="adventure-map.html">🗺️ להמשך המסע במפה</a></section>
+<section class="finish" id="finish" aria-live="polite"><div style="font-size:65px">🎉👑✨</div><h2>אלופי המשפחה המלכותית!</h2><p>הכרתם את המשפחה באנגלית! עכשיו בואו נבנה את עץ המשפחה הקסום בחמש משימות!</p><a href="level2-family-tree.html">🌳 מתחילים את משחק עץ המשפחה!</a></section>
 
 <div class="family-lesson-modal-actions">
 <button type="button" class="family-prev-house" id="familyPrevHouse">🏠 לבית הקודם</button>
@@ -194,4 +194,4 @@ $('familyPopup').addEventListener('click',e=>{if(e.target===$('familyPopup'))clo
 document.addEventListener('keydown',e=>{if($('familyPopup').hidden)return;if(e.key==='Escape'){closeHouse();return}if(e.key==='Tab'){const modal=$('familyPopup');const controls=[...modal.querySelectorAll('button:not(:disabled)')];const first=controls[0],last=controls[controls.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}});
 muteView();render();
 })();
-</script><script src="level2-world-navigation.js?v=family-stage8" defer></script></body></html>
+</script><script src="level2-world-navigation.js?v=family-tree-1" defer></script></body></html>
