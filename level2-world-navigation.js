@@ -12,7 +12,7 @@ const stations=[
  {title:'מערת הדרקון',emoji:'🐉',parts:[['📖','ספר הצלילים','level2-dragon-sounds.html'],['🐉','אתגר הצלילים','level2-quest.html?stage=5'],['⭐','מבוך הכוכבים','level2-dragon-maze.html']]},
  {title:'ממלכת הצבעים והמספרים',emoji:'🌈',parts:[['🚪','שער הממלכה','level2-numbers-intro.html'],['🐉','סנייק · 4 בחירות · 10 התאמות','level2-dragon-snake.html'],['🎨','ספר הצבעים','level2-colors-dictionary.html'],['🧪','גן השיקויים','level2-color-potions.html'],['🏰','זירת הטירה','level2-castle-arena.html'],['🌈','שער הקשת','level2-rainbow-bridge-finale.html']]},
  {title:'ממלכת החיות',emoji:'🐾',parts:[['📖','לומדים 25 חיות','level2-animals-family-intro.html'],['🐾','מצילים את החיות','level2-animal-rescue.html']]},
- {title:'ממלכת המשפחה',emoji:'👨‍👩‍👧‍👦',parts:[['🏡','שער המשפחה','level2-family-gate.html']]},
+ {title:'ממלכת המשפחה',emoji:'👨‍👩‍👧‍👦',parts:[['🏡','בתי המשפחה','level2-family-gate.html'],['🌳','עץ המשפחה הקסום','level2-family-tree.html']]},
  {title:'מפתחות האוצר',emoji:'🗝️',parts:[]},
  {title:'הכתר האבוד',emoji:'👑',parts:[]}
 ];
@@ -35,7 +35,8 @@ const files={
  'level2-rainbow-bridge-finale.html':[5,5],
  'level2-animals-family-intro.html':[6,0],
  'level2-animal-rescue.html':[6,1],
- 'level2-family-gate.html':[7,0]
+ 'level2-family-gate.html':[7,0],
+ 'level2-family-tree.html':[7,1]
 };
 let station=-1,part=0;
 const quest=filename==='level2-quest.html';
@@ -75,7 +76,7 @@ function isDone(st,p){
   if(p===5)return localStorage.getItem('playwise-hidden-wonders-rainbow-bridge-finale-v1')==='complete';
  }
  if(st===6)return p===0?localStorage.getItem('playwise-animals-family-animals-complete-v1')==='complete':localStorage.getItem('playwise-animals-rescue-v1')==='complete';
- if(st===7)return localStorage.getItem('playwise-animals-family-family-complete-v1')==='complete';
+ if(st===7)return p===0?localStorage.getItem('playwise-animals-family-family-complete-v1')==='complete':localStorage.getItem('playwise-family-tree-complete-v1')==='complete';
  return royal.includes(st);
  }catch(e){return false}
 }
