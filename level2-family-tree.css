@@ -132,3 +132,71 @@
  .board.final .slot-portrait{font-size:23px}
  .board.final .slot-person,.board.final .slot-person-he,.board.final .slot-relation-he{font-size:7px}
 }
+
+/* A family tree is a connected branching diagram, with round portraits and ribbon labels. */
+.board:not(.final){height:clamp(650px,calc(100dvh - 165px),820px);min-height:650px}
+.board .slots{position:relative;isolation:isolate}
+.board .slots::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:-1;background-repeat:no-repeat;background-size:100% 100%;opacity:.95}
+.board:not(.final) .slots{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));width:min(100%,980px);max-width:980px;min-height:390px;align-items:center;justify-items:center;gap:4px;padding:10px 16px 26px}
+.board:not(.final) .slots::before{background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201000%20450%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23624b34%22%20stroke-width%3D%2217%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20opacity%3D%22.78%22%3E%3Cpath%20d%3D%22M500%20450%20V210%20Q500%20151%20375%20103%22%2F%3E%3Cpath%20d%3D%22M500%20210%20Q500%20151%20625%20103%22%2F%3E%3Cpath%20d%3D%22M500%20310%20Q300%20285%20125%20334%22%2F%3E%3Cpath%20d%3D%22M500%20310%20Q700%20285%20875%20334%22%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23e9c98e%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%20opacity%3D%22.86%22%3E%3Cpath%20d%3D%22M500%20450%20V210%20Q500%20151%20375%20103%22%2F%3E%3Cpath%20d%3D%22M500%20210%20Q500%20151%20625%20103%22%2F%3E%3Cpath%20d%3D%22M500%20310%20Q300%20285%20125%20334%22%2F%3E%3Cpath%20d%3D%22M500%20310%20Q700%20285%20875%20334%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")}
+.board:not(.final) .slot:nth-child(1){grid-column:2;grid-row:1}
+.board:not(.final) .slot:nth-child(2){grid-column:3;grid-row:1}
+.board:not(.final) .slot:nth-child(3){grid-column:1;grid-row:2}
+.board:not(.final) .slot:nth-child(4){grid-column:4;grid-row:2}
+.board .slot,.board.final .slot,.board:not(.final) .slot{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;box-sizing:border-box;width:clamp(118px,13vw,156px);height:auto;aspect-ratio:1;border:7px solid #fff6d9;border-radius:50%;background:linear-gradient(145deg,#a9e48e,#5ebd7c 72%,#42996c);box-shadow:0 0 0 4px #7b9b54,0 9px 0 #496b4e,0 13px 24px #1f513e91;padding:5px;color:#365f45;transform:none!important;z-index:2;overflow:visible;flex:none}
+.board .slot:focus-visible,.board .slot.targeted{outline:5px solid #ffef9e;outline-offset:6px}
+.board .slot:hover:not(.filled){transform:translateY(-5px)!important;box-shadow:0 0 0 4px #8ca45a,0 12px 0 #496b4e,0 16px 25px #1f513e91}
+.board .slot-photo,.board .slot.filled .slot-photo{position:absolute;inset:5px;width:auto;height:auto;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;border:2px solid #d1e8a5;border-radius:50%;background:radial-gradient(circle at 45% 25%,#c4efa3,#80c76c);overflow:hidden;flex:none;padding:6px 2px}
+.board .slot-photo:before{font:bold clamp(48px,6vw,72px) Georgia,serif;color:#f6ffe2;opacity:.9;text-shadow:0 3px #519865}
+.board .slot.filled,.board.final .slot.filled{background:linear-gradient(145deg,#ffdfab,#d4f4bf);border-color:#fff1c1}
+.board .slot.filled .slot-photo{background:radial-gradient(circle at 45% 25%,#fff9e5,#e6f1d1);border-color:#9dcd92}
+.board .slot .slot-word,.board.final .slot .slot-word{position:absolute;top:calc(100% - 7px);left:50%;bottom:auto;transform:translateX(-50%) rotate(-1deg);width:clamp(135px,15vw,182px);min-height:30px;padding:6px 8px 4px;border:2px solid #c8a979;border-radius:7px 7px 13px 13px;background:linear-gradient(#fffaf0,#f8e8c9);box-shadow:0 4px 0 #9d825d,0 7px 10px #295a3f50;font-size:clamp(11px,1.5vw,17px);font-weight:1000;letter-spacing:.15px;line-height:1.08;color:#61456f;white-space:normal;overflow-wrap:anywhere;z-index:5;direction:ltr}
+.board .slot.filled .slot-word{color:#32755b}
+.board .slot .slot-tick{top:-8px;right:-8px;z-index:6}
+.board .slot .slot-portrait{font-size:clamp(43px,5vw,62px);line-height:1}
+.board .slot.filled .slot-portrait{font-size:clamp(43px,5vw,62px)}
+.board .slot .slot-person{font-size:11px;color:#694b75;font-weight:1000;line-height:1}
+.board .slot .slot-person-he,.board .slot .slot-relation-he{font-size:10px;line-height:1.05}
+.board .tray{border-color:#ffe6b4;background:linear-gradient(135deg,#59447fe8,#374e73ee)}
+.board:not(.final) .tray{margin-bottom:14px}
+.board.final{grid-template-columns:minmax(0,1fr) 270px;min-height:790px}
+.board.final .slots{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(4,minmax(0,1fr));gap:22px 6px;align-items:center;justify-items:center;align-content:stretch;min-height:650px;padding:10px 13px 32px}
+.board.final .slots::before{background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201000%20650%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23624b34%22%20stroke-width%3D%2214%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20opacity%3D%22.77%22%3E%3Cpath%20d%3D%22M500%20650V130%20M125%20100H875%20M125%20245H875%20M125%20390H875%20M125%20535H875%20M125%20100V135%20M375%20100V135%20M625%20100V135%20M875%20100V135%20M125%20245V280%20M375%20245V280%20M625%20245V280%20M875%20245V280%20M125%20390V425%20M375%20390V425%20M625%20390V425%20M875%20390V425%20M125%20535V570%20M375%20535V570%20M625%20535V570%20M875%20535V570%22%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23e8c993%22%20stroke-width%3D%224%22%20opacity%3D%22.92%22%3E%3Cpath%20d%3D%22M500%20650V130%20M125%20100H875%20M125%20245H875%20M125%20390H875%20M125%20535H875%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")}
+.board.final .slot{width:clamp(78px,8.7vw,115px);height:auto;aspect-ratio:1;border-width:5px;padding:2px}
+.board.final .slot .slot-photo{inset:3px;padding:2px}
+.board.final .slot .slot-photo:before{font-size:42px}
+.board.final .slot .slot-word{width:clamp(90px,9vw,127px);min-height:23px;padding:5px 3px 3px;font-size:clamp(9px,1vw,12px)}
+.board.final .slot .slot-portrait,.board.final .slot.filled .slot-portrait{font-size:clamp(29px,3.7vw,44px)}
+.board.final .slot .slot-person{font-size:9px}
+.board.final .slot .slot-person-he,.board.final .slot .slot-relation-he{font-size:8px}
+.board.final .tray{max-height:700px}
+@media(max-width:760px){
+ .board:not(.final){height:clamp(590px,calc(100dvh - 155px),740px);min-height:590px}
+ .board:not(.final) .slots{min-height:310px;padding:7px 5px 25px;gap:0}
+ .board:not(.final) .slot{width:clamp(74px,19vw,116px);border-width:5px}
+ .board:not(.final) .slot .slot-word{width:clamp(82px,23vw,124px);font-size:clamp(9px,2vw,13px);padding:5px 2px;min-height:24px}
+ .board:not(.final) .slot .slot-portrait,.board:not(.final) .slot.filled .slot-portrait{font-size:clamp(27px,7vw,44px)}
+ .board:not(.final) .slot .slot-person{font-size:clamp(7px,1.6vw,9px)}
+ .board:not(.final) .slot .slot-person-he,.board:not(.final) .slot .slot-relation-he{font-size:clamp(7px,1.5vw,9px)}
+ .board .slot .slot-tick{width:24px;height:24px;font-size:15px}
+ .board.final{min-height:0}
+ .board.final .slots{width:100%;min-height:510px;gap:20px 3px;padding:8px 7px 28px}
+ .board.final .slot{width:clamp(63px,16vw,99px);border-width:4px}
+ .board.final .slot .slot-word{width:clamp(73px,19vw,106px);font-size:clamp(8px,1.7vw,11px);min-height:20px;padding:4px 1px}
+ .board.final .slot .slot-portrait,.board.final .slot.filled .slot-portrait{font-size:clamp(23px,5vw,36px)}
+ .board.final .slot .slot-person{font-size:clamp(7px,1.5vw,9px)}
+ .board.final .slot .slot-person-he,.board.final .slot .slot-relation-he{font-size:clamp(6px,1.3vw,8px)}
+}
+@media(max-width:420px){
+ .board:not(.final){height:clamp(560px,calc(100dvh - 145px),660px);min-height:560px}
+ .board:not(.final) .slots{min-height:285px;padding:5px 2px 20px}
+ .board:not(.final) .slot{width:clamp(65px,19vw,84px);border-width:4px}
+ .board:not(.final) .slot .slot-word{width:clamp(78px,23vw,102px);font-size:9px;min-height:20px}
+ .board:not(.final) .slot .slot-portrait,.board:not(.final) .slot.filled .slot-portrait{font-size:26px}
+ .board:not(.final) .slot .slot-person,.board:not(.final) .slot .slot-person-he,.board:not(.final) .slot .slot-relation-he{font-size:7px}
+ .board.final .slots{min-height:430px;gap:14px 1px}
+ .board.final .slot{width:clamp(56px,16vw,70px)}
+ .board.final .slot .slot-word{width:clamp(67px,19vw,82px);font-size:7px}
+ .board.final .slot .slot-portrait,.board.final .slot.filled .slot-portrait{font-size:21px}
+ .board.final .slot .slot-person,.board.final .slot .slot-person-he,.board.final .slot .slot-relation-he{font-size:6px}
+}
