@@ -70,7 +70,7 @@ function isDone(st,p){
   if(p===1){const a=JSON.parse(localStorage.getItem('playwise-hidden-wonders-numbers-dictionary-v1')||'[]');return Array.isArray(a)&&a.length>=10}
   if(p===2)return localStorage.getItem('playwise-hidden-wonders-numbers-snake-v1')==='complete';
   if(p===3){const a=JSON.parse(localStorage.getItem('playwise-hidden-wonders-colors-dictionary-v1')||'[]');return Array.isArray(a)&&a.length>=8}
-  if(p===4)return localStorage.getItem('playwise-hidden-wonders-color-potions-v1')==='complete';
+  if(p===4)return localStorage.getItem('playwise-hidden-wonders-colors-potions-v1')==='complete';
   if(p===5)return localStorage.getItem('playwise-hidden-wonders-castle-arena-v7')==='complete';
   if(p===6)return localStorage.getItem('playwise-hidden-wonders-rainbow-bridge-finale-v1')==='complete';
  }
