@@ -81,7 +81,7 @@ function isDone(st,p){
   if(p===0)return localStorage.getItem('playwise-animals-family-family-complete-v1')==='complete';
   const x=JSON.parse(localStorage.getItem('playwise-family-magic-progress-v1')||'{}');
   if(p>=1&&p<=4)return Array.isArray(x.awake)&&Array.isArray(x.awake[p-1])&&x.awake[p-1].length===4;
-  if(p===5)return Array.isArray(x.party)&&x.party.length===4;
+  if(p===5){const tower=JSON.parse(localStorage.getItem("playwise-family-gift-tower-v1")||"[]");return Array.isArray(tower)&&tower.length===4;}
   return localStorage.getItem('playwise-family-tree-complete-v3')==='complete';
  }
  return royal.includes(st);
