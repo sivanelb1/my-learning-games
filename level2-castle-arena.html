@@ -18,7 +18,7 @@ const W=24,H=16,INNER=(W-2)*(H-2),NAMES=['ONE','TWO','THREE','FOUR','FIVE','SIX'
 const COLORS=[['RED','#f04762'],['BLUE','#3a9bf6'],['GREEN','#44d48c'],['YELLOW','#fbe363'],['PURPLE','#b585ef'],['ORANGE','#ff9b4b'],['PINK','#fa8dbd'],['BLACK','#38384e']];
 const V={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]},KEYS={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',w:'up',a:'left',s:'down',d:'right',W:'up',A:'left',S:'down',D:'right'};
 const SAVE='playwise-hidden-wonders-castle-arena-v2';
-let land=new Uint8Array(W*H),trail=[],balls=[],mines=[],power=null,star=null,queue=0,ship={x:12,y:15,px:12,py:15,lerp:1},captured=0,percent=0,lives=3,time=200,level='normal',state='intro',held=null,frameId=null,lastFrame=0,moveAcc=0,bonusClock=0,invulnerable=0,slowUntil=0,fastUntil=0,stepMs=88,ballSpeed=2,particles=[],touchStart=null,elapsed=0,won=false;
+let land=new Uint8Array(W*H),trail=[],balls=[],mines=[],power=null,star=null,queue=0,ship={x:12,y:15,px:12,py:15,lerp:1},captured=0,percent=0,lives=3,time=200,level='normal',state='intro',held=null,frameId=null,lastFrame=0,moveAcc=0,bonusClock=0,invulnerable=0,slowUntil=0,fastUntil=0,stepMs=88,ballSpeed=2,particles=[],touchStart=null,elapsed=0,won=false,splitDone=false;
 const at=(x,y)=>y*W+x,inside=(x,y)=>x>=0&&y>=0&&x<W&&y<H,solid=(x,y)=>!inside(x,y)||land[at(x,y)]===1;
 function speak(t){if(!('speechSynthesis'in window))return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=.76;u.pitch=1.08;const voices=speechSynthesis.getVoices();u.voice=voices.find(v=>v.lang.toLowerCase()==='en-us')||voices.find(v=>v.lang.toLowerCase().startsWith('en'))||null;speechSynthesis.speak(u)}catch(e){}}
 function msg(t){$('status').textContent=t}
@@ -32,7 +32,7 @@ function perimeter(){const a=[];for(let x=0;x<W;x++)a.push([x,0]);for(let y=1;y<
 const ring=perimeter();
 function spawnBalls(){balls=[];const n=level==='easy'?2:level==='hard'?5:3;for(let i=0;i<n;i++){const x=3+Math.random()*(W-6),y=3+Math.random()*(H-6),a=Math.random()*Math.PI*2,c=COLORS[i%COLORS.length];balls.push({x,y,vx:Math.cos(a)*ballSpeed,vy:Math.sin(a)*ballSpeed,color:c,r:.36,type:i===n-1&&level==='hard'?'eater':'normal'})}}
 function spawnMines(){mines=[];const n=level==='easy'?0:level==='hard'?2:1;for(let i=0;i<n;i++)mines.push({pos:Math.floor(ring.length*(.14+i*.41)),direction:i%2?-1:1,acc:0})}
-function begin(){resetLand();captured=0;lives=3;time=level==='easy'?240:level==='hard'?155:200;stepMs=level==='easy'?108:level==='hard'?72:88;ballSpeed=level==='easy'?1.8:level==='hard'?3.4:2.4;bonusClock=0;elapsed=0;invulnerable=0;slowUntil=0;fastUntil=0;particles=[];won=false;spawnBalls();spawnMines();state='play';hud();msg('🚀 צאו מהמסגרת וסגרו שטח! היזהרו מכדורי הצבע.');startLoop()}
+function begin(){resetLand();captured=0;lives=3;time=level==='easy'?240:level==='hard'?155:200;stepMs=level==='easy'?108:level==='hard'?72:88;ballSpeed=level==='easy'?1.8:level==='hard'?3.4:2.4;bonusClock=0;elapsed=0;invulnerable=0;slowUntil=0;fastUntil=0;particles=[];won=false;splitDone=false;spawnBalls();spawnMines();state='play';hud();msg('🚀 צאו מהמסגרת וסגרו שטח! היזהרו מכדורי הצבע.');startLoop()}
 function percentUpdate(){let n=0;for(let y=1;y<H-1;y++)for(let x=1;x<W-1;x++)if(land[at(x,y)])n++;percent=n/INNER*100;const entitled=Math.min(10,Math.floor((percent+0.0001)/7.5));queue=Math.max(queue,entitled-captured);if(!star&&queue>0)spawnStar();hud()}
 function findSafeNear(x,y,forbid){let best=null,score=1e9;for(let j=0;j<H;j++)for(let i=0;i<W;i++){if(!land[at(i,j)]||(forbid&&forbid(i,j)))continue;const d=Math.abs(i-x)+Math.abs(j-y);if(d<score&&d>=2){best={x:i,y:j};score=d}}return best||{x:ship.x,y:ship.y}}
 function spawnStar(){if(queue<=0||captured>=10)return;const p=findSafeNear(ship.x,ship.y,(x,y)=>x===ship.x&&y===ship.y);star={...p,n:captured+1};msg('⭐ המספר '+(captured+1)+' הופיע על היבשה! אספו אותו כדי לשמוע באנגלית.')}
@@ -84,8 +84,9 @@ if(trail.length&&Math.hypot(b.x-(ship.x+.5),b.y-(ship.y+.5))<r+.58){loseLife('כ
 }}
 function update(dt){if(state!=='play')return;elapsed+=dt;time-=dt;if(time<=0){time=0;hud();end(false,'הזמן נגמר!');return}
 if(invulnerable>0)invulnerable=Math.max(0,invulnerable-dt);
-if(!power&&elapsed>18&&Math.floor((elapsed-18)/20)>Math.floor((elapsed-dt-18)/20))spawnPower();
+if(!power&&elapsed>18&&Math.floor((elapsed-18)/20)>=Math.floor((elapsed-dt-18)/20)&&Math.floor(elapsed/20)>Math.floor((elapsed-dt)/20))spawnPower();
 if(power&&elapsed>power.until)power=null;
+if(level==='hard'&&!splitDone&&percent>=50&&balls.length<8){splitDone=true;const source=balls[0];if(source){balls.push({...source,x:source.x+.12,y:source.y+.12,vx:-source.vx*1.35,vy:source.vy*1.35,color:COLORS[6],type:'normal'});msg('⚡ כדור צבע מהיר נוסף נכנס לזירה!')}}
 updateBalls(dt);updateMines(dt);
 if(held){moveAcc+=dt*1000;const period=elapsed<fastUntil?stepMs*.57:stepMs;if(moveAcc>=period){moveAcc%=period;const d=V[held];if(d)step(d[0],d[1])}}
 ship.lerp=Math.min(1,ship.lerp+dt*1000/stepMs);hud()}
