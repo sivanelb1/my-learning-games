@@ -40,7 +40,7 @@ function start(){collected=0;lives=3;level=document.querySelector('input[name="d
 function restartPosition(){trail=[];player={x:Math.floor(W/2),y:H-1,fromX:Math.floor(W/2),fromY:H-1,anim:1};held=null;failCooldown=performance.now()+550}
 function fail(){if(mode!=='play'||pickup||performance.now()<failCooldown)return;lives--;restartPosition();hud();if(lives<=0){paused=true;running=false;mode='over';stop();say('💜 נגמרו הלבבות!');show('💜🏰','הקוסם צריך מנוחה!','אספתם '+collected+' מספרים. נסו שוב וסגרו את קווי הקסם לפני שכדורי הצבע פוגעים בהם.','🔄 מתחילים מחדש',start)}else{say('💜 כדור צבע פגע בקו הקסם! נשארו '+lives+' לבבות. נסו שוב.');}}
 function movePlayer(dx,dy){
-if(!running||paused||mode!=='play')return;
+if(!running||paused||(mode!=='play'&&mode!=='pickup'))return;
 const nx=player.x+dx,ny=player.y+dy;if(!inside(nx,ny))return;
 if(pickup&&!safe[idx(nx,ny)]){say('⭐ המספר הזהוב מחכה על קו הקסם. לכו אליו!');return}
 if(trail.some(p=>p.x===nx&&p.y===ny)){return}
