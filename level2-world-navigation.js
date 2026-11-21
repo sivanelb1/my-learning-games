@@ -10,7 +10,7 @@ const stations=[
  {title:'יער החרוזים',emoji:'🦄',parts:[['🍄','להעיר את הפיות','level2-rhyming-forest.html']]},
  {title:'מראת התנועות',emoji:'🪞',parts:[['🔮','אבני הקסם','level2-vowel-gems.html'],['💎','הצלת הקריסטלים','level2-vowel-gems-b.html'],['🪞','מראת התנועות','level2-vowel-mirror.html']]},
  {title:'מערת הדרקון',emoji:'🐉',parts:[['📖','ספר הצלילים','level2-dragon-sounds.html'],['🐉','אתגר הצלילים','level2-quest.html?stage=5'],['⭐','מבוך הכוכבים','level2-dragon-maze.html']]},
- {title:'ממלכת הצבעים והמספרים',emoji:'🌈',parts:[['🚪','שער הממלכה','level2-numbers-intro.html'],['📖','ספר המספרים','level2-numbers-dictionary.html'],['🐉','דרקון המספרים','level2-dragon-snake.html'],['🎨','ספר הצבעים','level2-colors-dictionary.html'],['🧪','גן השיקויים','level2-color-potions.html'],['🏰','זירת הטירה','level2-castle-arena.html'],['🌈','שער הקשת','level2-rainbow-bridge-finale.html']]},
+ {title:'ממלכת הצבעים והמספרים',emoji:'🌈',parts:[['🚪','שער הממלכה','level2-numbers-intro.html'],['🐉','סנייק · 4 בחירות · 10 התאמות','level2-dragon-snake.html'],['🎨','ספר הצבעים','level2-colors-dictionary.html'],['🧪','גן השיקויים','level2-color-potions.html'],['🏰','זירת הטירה','level2-castle-arena.html'],['🌈','שער הקשת','level2-rainbow-bridge-finale.html']]},
  {title:'טירת החיות והמשפחה',emoji:'🦋',parts:[['🏰','שער החיות והמשפחה','level2-animals-family-intro.html']]},
  {title:'גשר הטירה',emoji:'🏰',parts:[]},
  {title:'מפתחות האוצר',emoji:'🗝️',parts:[]},
@@ -28,12 +28,11 @@ const files={
  'level2-dragon-sounds.html':[4,0],
  'level2-dragon-maze.html':[4,2],
  'level2-numbers-intro.html':[5,0],
- 'level2-numbers-dictionary.html':[5,1],
- 'level2-dragon-snake.html':[5,2],
- 'level2-colors-dictionary.html':[5,3],
- 'level2-color-potions.html':[5,4],
- 'level2-castle-arena.html':[5,5],
- 'level2-rainbow-bridge-finale.html':[5,6],
+ 'level2-dragon-snake.html':[5,1],
+ 'level2-colors-dictionary.html':[5,2],
+ 'level2-color-potions.html':[5,3],
+ 'level2-castle-arena.html':[5,4],
+ 'level2-rainbow-bridge-finale.html':[5,5],
  'level2-animals-family-intro.html':[6,0]
 };
 let station=-1,part=0;
@@ -66,13 +65,12 @@ function isDone(st,p){
  if(st===3)return p===0?localStorage.getItem('playwise-level2-vowels-intro-v1')==='complete':p===1?localStorage.getItem('playwise-level2-vowels-rescue-v1')==='complete':localStorage.getItem('playwise-level2-vowel-mirror-v1')==='complete'||royal.includes(3);
  if(st===4)return p===0?localStorage.getItem('playwise-level2-dragon-lesson-v1')==='complete':p===1?royal.includes(4):localStorage.getItem('playwise-level2-dragon-maze-v1')==='complete';
  if(st===5){
-  if(p===0)return !!localStorage.getItem('playwise-hidden-wonders-numbers-dictionary-v1');
-  if(p===1){const a=JSON.parse(localStorage.getItem('playwise-hidden-wonders-numbers-dictionary-v1')||'[]');return Array.isArray(a)&&a.length>=10}
-  if(p===2)return localStorage.getItem('playwise-hidden-wonders-numbers-snake-v1')==='complete';
-  if(p===3){const a=JSON.parse(localStorage.getItem('playwise-hidden-wonders-colors-dictionary-v1')||'[]');return Array.isArray(a)&&a.length>=8}
-  if(p===4)return localStorage.getItem('playwise-hidden-wonders-colors-potions-v1')==='complete';
-  if(p===5)return localStorage.getItem('playwise-hidden-wonders-castle-arena-v7')==='complete';
-  if(p===6)return localStorage.getItem('playwise-hidden-wonders-rainbow-bridge-finale-v1')==='complete';
+  if(p===0)return localStorage.getItem('playwise-hidden-wonders-numbers-snake-v1')==='complete';
+  if(p===1)return localStorage.getItem('playwise-hidden-wonders-numbers-snake-v1')==='complete';
+  if(p===2){const a=JSON.parse(localStorage.getItem('playwise-hidden-wonders-colors-dictionary-v1')||'[]');return Array.isArray(a)&&a.length>=8}
+  if(p===3)return localStorage.getItem('playwise-hidden-wonders-colors-potions-v1')==='complete';
+  if(p===4)return localStorage.getItem('playwise-hidden-wonders-castle-arena-v7')==='complete';
+  if(p===5)return localStorage.getItem('playwise-hidden-wonders-rainbow-bridge-finale-v1')==='complete';
  }
  if(st===6)return localStorage.getItem('playwise-hidden-wonders-rainbow-bridge-finale-v1')==='complete';
  return royal.includes(st);
