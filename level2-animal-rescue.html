@@ -54,6 +54,11 @@
 @media(max-width:650px){.animal-yard{bottom:5px;min-height:132px;gap:1px}.animal{height:clamp(105px,26vw,141px);width:clamp(60px,19vw,94px);padding:0 1px 3px}}
 @media(max-width:370px){.animal{height:108px;width:57px}}
 @media(prefers-reduced-motion:reduce){.animal{animation:none!important}}
+
+/* Anime-quality original illustration assets: transparent and frame-free */
+.animal .picture .pw-anime,.drag-ghost .pw-anime{display:block;width:100%;height:100%;background-repeat:no-repeat;background-size:500% 100%;background-color:transparent!important;filter:drop-shadow(0 5px 3px #32496044);transition:filter .25s ease}
+.animal:hover .pw-anime,.animal.selected .pw-anime{filter:drop-shadow(0 0 11px #fff1a9)}
+.drag-ghost .pw-anime{width:125px;height:115px}
 </style></head>
 <body>
 <main class="wrap">
@@ -76,7 +81,7 @@
 </main>
 <button type="button" class="mute" id="mute" aria-pressed="false">🔊 קול פעיל</button>
 <div class="overlay" id="overlay"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="em" id="modalEmoji">🏰🐶</div><h2 id="modalTitle">ברוכים הבאים לחצר החיות!</h2><p id="modalText">חמש חיות קטנות איבדו את הדרך הביתה. נלמד את השמות שלהן באנגלית, נמצא אותן ונחזיר אותן לבתים הקסומים!</p><div class="mini" id="modalAnimals" aria-hidden="true"></div><p class="en" id="modalSub">3 rounds · 5 animals · no timer · no lives</p><button type="button" id="modalGo">✨ מתחילים להציל!</button><a class="alt" href="level2-animals-family-intro.html">📖 לחזור ללמוד</a></div></div>
-<script src="level2-animal-art.js?v=illustrated1"></script><script src="https://cdn.jsdelivr.net/npm/phaser@3.90.0/dist/phaser.min.js" defer></script><script>
+<script src="level2-animal-art.js?v=illustrated1"></script><script src="level2-anime-pets.js?v=animepets1"></script><script src="https://cdn.jsdelivr.net/npm/phaser@3.90.0/dist/phaser.min.js" defer></script><script>
 (()=>{'use strict';
 const CHAPTERS=[
 {name:'חיות בית',short:'🏡 בית',theme:'pets',words:[['DOG','כלב','🐶'],['CAT','חתול','🐱'],['RABBIT','ארנב','🐰'],['FISH','דג','🐟'],['TURTLE','צב','🐢']]},
@@ -100,7 +105,17 @@ function track(){const root=$('track');root.innerHTML='';CHAPTERS.forEach((c,i)=
 function setHud(){$('chapterHud').textContent=CHAPTERS[chapter].short+' · '+(chapter+1)+'/5';$('roundHud').textContent='✨ סבב '+(round+1)+' מתוך 3';const n=round*5+step;$('starsHud').textContent='⭐ '+n+' / 15';$('fill').style.width=(n/15*100)+'%';$('progress').setAttribute('aria-valuenow',String(n));$('scene').dataset.theme=CHAPTERS[chapter].theme;$('worldArt').src=PWAnimalArt.uri(PWAnimalArt.scenerySVG(CHAPTERS[chapter].theme))}
 function clearYard(){$('yard').innerHTML='';$('houses').innerHTML='';selected=null;drag=null;removeGhost()}
 function makeHouses(){const root=$('houses');root.innerHTML='';CHAPTERS[chapter].words.forEach(([word,he,emoji],i)=>{const b=document.createElement('button');b.type='button';b.className='house'+(round===2?' target':'');b.dataset.index=String(i);b.disabled=round!==2||saved.includes(i);b.setAttribute('aria-label','בית '+word+' '+he);b.style.setProperty('--house',['#ab91c8','#7eafd3','#cf9ba4','#b5c49a','#e4b58c'][i]);const sign=document.createElement('span');sign.className='sign';sign.textContent=round===2?word:'✦';const building=document.createElement('span');building.className='building';const door=document.createElement('span');door.className='door';door.textContent='🚪';building.append(door);const houseArt=document.createElement('img');houseArt.alt='';houseArt.setAttribute('aria-hidden','true');houseArt.src=PWAnimalArt.uri(PWAnimalArt.houseSVG(i));building.prepend(houseArt);b.append(sign,building);if(saved.includes(i)){b.classList.add('saved');const e=document.createElement('span');e.className='saved-emoji';e.textContent=emoji;b.append(e)}b.onclick=()=>{if(round===2&&selected!==null)rescue(selected,i)};root.append(b)})}
-function makeAnimal(i,label){const w=CHAPTERS[chapter].words[i],b=document.createElement('button');b.type='button';b.className='animal';b.dataset.index=String(i);b.setAttribute('aria-label',w[0]+' · '+w[1]);const emoji=document.createElement('span');emoji.className='picture';emoji.innerHTML=PWAnimalArt.animalSVG(w[0]);const tag=document.createElement('span');tag.className='tag';tag.textContent=label;b.append(emoji,tag);
+
+function setAnimalArt(container,word){
+const atlas=window.PWAnimeAtlas,idx=atlas?.words?.indexOf(word)??-1;
+if(idx>=0&&atlas.url){
+ const art=document.createElement('span');art.className='pw-anime';
+ art.style.backgroundImage='url("'+atlas.url+'")';
+ art.style.backgroundPosition=(idx*25)+'% center';
+ art.setAttribute('aria-hidden','true');container.append(art);
+}else container.innerHTML=PWAnimalArt.animalSVG(word);
+}
+function makeAnimal(i,label){const w=CHAPTERS[chapter].words[i],b=document.createElement('button');b.type='button';b.className='animal';b.dataset.index=String(i);b.setAttribute('aria-label',w[0]+' · '+w[1]);const emoji=document.createElement('span');emoji.className='picture';setAnimalArt(emoji,w[0]);const tag=document.createElement('span');tag.className='tag';tag.textContent=label;b.append(emoji,tag);
 b.onclick=()=>{if(busy||performance.now()<skipClickUntil)return;if(round<2)pick(i,b);else{selected=i;highlightSelected()}};
 if(round===2){b.addEventListener('pointerdown',onDragStart);b.addEventListener('pointermove',onDragMove);b.addEventListener('pointerup',onDragEnd);b.addEventListener('pointercancel',cancelDrag)}
 return b}
@@ -119,7 +134,7 @@ function startChapter(){clearTimeout(nextTimer);busy=false;round=0;step=0;saved=
 function celebrate(element){const scene=$('scene'),r=element.getBoundingClientRect(),parent=scene.getBoundingClientRect();if(window.PWPhaserBurst)window.PWPhaserBurst(r.left-parent.left+r.width/2,r.top-parent.top+r.height/2);for(let j=0;j<7;j++){const p=document.createElement('span');p.className='particle';p.textContent=['✨','⭐','💫','🌟'][j%4];p.style.left=(r.left-parent.left+r.width/2)+'px';p.style.top=(r.top-parent.top+r.height/2)+'px';p.style.setProperty('--dx',(Math.random()*180-90)+'px');p.style.setProperty('--dy',(-30-Math.random()*110)+'px');scene.append(p);setTimeout(()=>p.remove(),880)}}
 function removeGhost(){if(ghost){ghost.remove();ghost=null}}
 function onDragStart(e){if(busy||round!==2)return;const b=e.currentTarget;drag={i:Number(b.dataset.index),x:e.clientX,y:e.clientY,moved:false,b};if(b.setPointerCapture)try{b.setPointerCapture(e.pointerId)}catch(err){}}
-function onDragMove(e){if(!drag||drag.b!==e.currentTarget)return;const d=Math.hypot(e.clientX-drag.x,e.clientY-drag.y);if(!drag.moved&&d>9){drag.moved=true;drag.b.classList.add('dragging');ghost=document.createElement('div');ghost.className='drag-ghost';ghost.innerHTML=PWAnimalArt.animalSVG(CHAPTERS[chapter].words[drag.i][0]);document.body.append(ghost)}if(drag.moved){e.preventDefault();ghost.style.left=e.clientX+'px';ghost.style.top=e.clientY+'px';Array.from($('houses').children).forEach(h=>{const r=h.getBoundingClientRect();h.classList.toggle('hovered',e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom)})}}
+function onDragMove(e){if(!drag||drag.b!==e.currentTarget)return;const d=Math.hypot(e.clientX-drag.x,e.clientY-drag.y);if(!drag.moved&&d>9){drag.moved=true;drag.b.classList.add('dragging');ghost=document.createElement('div');ghost.className='drag-ghost';setAnimalArt(ghost,CHAPTERS[chapter].words[drag.i][0]);document.body.append(ghost)}if(drag.moved){e.preventDefault();ghost.style.left=e.clientX+'px';ghost.style.top=e.clientY+'px';Array.from($('houses').children).forEach(h=>{const r=h.getBoundingClientRect();h.classList.toggle('hovered',e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom)})}}
 function onDragEnd(e){if(!drag||drag.b!==e.currentTarget)return;const d=drag;drag=null;d.b.classList.remove('dragging');Array.from($('houses').children).forEach(h=>h.classList.remove('hovered'));removeGhost();if(!d.moved)return;skipClickUntil=performance.now()+400;const hit=Array.from($('houses').children).find(h=>{const r=h.getBoundingClientRect();return e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom});if(hit)rescue(d.i,Number(hit.dataset.index));else{$('feedback').className='feedback try';$('feedback').textContent='🐾 נסו לגרור את החיה עד לבית עם השם המתאים.'}}
 function cancelDrag(){if(drag){drag.b.classList.remove('dragging');drag=null;removeGhost();Array.from($('houses').children).forEach(h=>h.classList.remove('hovered'))}}
 
