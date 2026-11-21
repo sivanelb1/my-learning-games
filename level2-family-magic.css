@@ -98,3 +98,9 @@
  .party-game{min-height:650px}
  .party-gift{padding:8px 22px}
 }
+
+.party-gift{touch-action:none;user-select:none;-webkit-user-select:none}
+.gift-drag-ghost{position:fixed;left:0;top:0;transform:translate(-50%,-50%) rotate(-10deg);font-size:85px;z-index:9999;pointer-events:none;filter:drop-shadow(0 12px 15px #503366a9);animation:gift-float .6s ease-in-out infinite alternate}
+@keyframes gift-float{from{rotate:-5deg}to{rotate:5deg}}
+.party-guest.gifted{animation:gift-success .55s ease}
+@keyframes gift-success{0%{transform:scale(.85)}55%{transform:scale(1.08)}100%{transform:scale(1)}}
