@@ -12,7 +12,7 @@ const stations=[
  {title:'מערת הדרקון',emoji:'🐉',parts:[['📖','ספר הצלילים','level2-dragon-sounds.html'],['🐉','אתגר הצלילים','level2-quest.html?stage=5'],['⭐','מבוך הכוכבים','level2-dragon-maze.html']]},
  {title:'ממלכת הצבעים והמספרים',emoji:'🌈',parts:[['🚪','שער הממלכה','level2-numbers-intro.html'],['🐉','סנייק · 4 בחירות · 10 התאמות','level2-dragon-snake.html'],['🎨','ספר הצבעים','level2-colors-dictionary.html'],['🧪','גן השיקויים','level2-color-potions.html'],['🏰','זירת הטירה','level2-castle-arena.html'],['🌈','שער הקשת','level2-rainbow-bridge-finale.html']]},
  {title:'ממלכת החיות',emoji:'🐾',parts:[['📖','לומדים 25 חיות','level2-animals-family-intro.html'],['🐾','מצילים את החיות','level2-animal-rescue.html']]},
- {title:'ממלכת המשפחה',emoji:'👨‍👩‍👧‍👦',parts:[['🏡','בתי המשפחה','level2-family-gate.html'],['🌳','עץ המשפחה הקסום','level2-family-tree.html']]},
+ {title:'ממלכת המשפחה',emoji:'👨‍👩‍👧‍👦',parts:[['🏡','בתי המשפחה','level2-family-gate.html'],['🌸','עץ המשפחה הקרובה','level2-family-tree.html?activity=close'],['🌼','עץ הורים וילדים','level2-family-tree.html?activity=parents'],['🌺','עץ סבא וסבתא','level2-family-tree.html?activity=grandparents'],['🌷','עץ קרובי משפחה','level2-family-tree.html?activity=relatives'],['🎁','מסיבת ההפתעה','level2-family-tree.html?activity=party'],['🌳','העץ הגדול','level2-family-tree.html?activity=final']]},
  {title:'מפתחות האוצר',emoji:'🗝️',parts:[]},
  {title:'הכתר האבוד',emoji:'👑',parts:[]}
 ];
@@ -41,7 +41,7 @@ const files={
 let station=-1,part=0;
 const quest=filename==='level2-quest.html';
 if(quest){station=Math.max(0,Math.min(9,(Number(qs.get('stage'))||5)-1));if(station===4)part=1;}
-else if(files[filename]){station=files[filename][0];part=files[filename][1];}
+else if(files[filename]){station=files[filename][0];part=files[filename][1];if(filename==='level2-family-tree.html'){const stages={close:1,parents:2,grandparents:3,relatives:4,party:5,final:6};part=stages[qs.get('activity')]||1;}}
 if(station<0)return;
 const style=document.createElement('style');
 style.id='pw-embedded-stage-style';
@@ -56,7 +56,7 @@ returnLink.className='pw-stage-return';
 returnLink.href='adventure-map.html';
 returnLink.textContent='🗺️ חזרה לעולם';
 document.body.append(returnLink);
-const nav=document.createElement('nav');nav.className='pw-embedded-nav'+(station===5?' pw-embedded-wide':'');nav.id='pw-embedded-navigation';nav.setAttribute('aria-label','מיני־משחקים של התחנה הנוכחית');
+const nav=document.createElement('nav');nav.className='pw-embedded-nav'+(station===5||station===7?' pw-embedded-wide':'');nav.id='pw-embedded-navigation';nav.setAttribute('aria-label','מיני־משחקים של התחנה הנוכחית');
 const heroBadge=document.createElement('div');heroBadge.className='pw-stage-hero-badge';
 function isDone(st,p){
  try{
@@ -76,7 +76,13 @@ function isDone(st,p){
   if(p===5)return localStorage.getItem('playwise-hidden-wonders-rainbow-bridge-finale-v1')==='complete';
  }
  if(st===6)return p===0?localStorage.getItem('playwise-animals-family-animals-complete-v1')==='complete':localStorage.getItem('playwise-animals-rescue-v1')==='complete';
- if(st===7)return p===0?localStorage.getItem('playwise-animals-family-family-complete-v1')==='complete':localStorage.getItem('playwise-family-tree-complete-v3')==='complete';
+ if(st===7){
+  if(p===0)return localStorage.getItem('playwise-animals-family-family-complete-v1')==='complete';
+  const x=JSON.parse(localStorage.getItem('playwise-family-magic-progress-v1')||'{}');
+  if(p>=1&&p<=4)return Array.isArray(x.awake)&&Array.isArray(x.awake[p-1])&&x.awake[p-1].length===4;
+  if(p===5)return Array.isArray(x.party)&&x.party.length===4;
+  return localStorage.getItem('playwise-family-tree-complete-v3')==='complete';
+ }
  return royal.includes(st);
  }catch(e){return false}
 }
