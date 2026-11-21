@@ -59,6 +59,40 @@
 .animal .picture .pw-anime,.drag-ghost .pw-anime{display:block;width:100%;height:100%;background-repeat:no-repeat;background-size:500% 100%;background-color:transparent!important;filter:drop-shadow(0 5px 3px #32496044);transition:filter .25s ease}
 .animal:hover .pw-anime,.animal.selected .pw-anime{filter:drop-shadow(0 0 11px #fff1a9)}
 .drag-ghost .pw-anime{width:125px;height:115px}
+
+/* 2026-11-21 full-illustration rescue: painterly 3D castle, no duplicated SVG houses, 25 polished 3D animals */
+.scene{aspect-ratio:1200 / 550;min-height:460px;border:5px solid #ffe3b1;border-radius:26px;box-shadow:0 8px 0 #7854a0,0 15px 24px #15113b80;overflow:hidden}
+.scene .world-art{display:none!important}
+.houses{left:0;right:0;top:26%;height:34%;gap:0;z-index:3;align-items:stretch}
+.house{min-height:0!important;height:100%;padding:0!important;justify-content:flex-start;background:transparent!important;border:0!important;cursor:default}
+.house .building,.house .building img,.house .door{visibility:hidden!important;pointer-events:none!important}
+.house .building{height:100%!important;width:100%!important}
+.house .sign{position:absolute;top:-11px;left:10%;right:10%;z-index:6;min-width:0;margin:0;padding:5px 2px;border-radius:12px;background:#fff6db;color:#5b357f;border:3px solid #e9c997;box-shadow:0 4px 0 #8d6c9b;font-weight:1000;font-size:clamp(12px,1.8vw,18px);transition:transform .2s}
+.scene:not([data-round="2"]) .house .sign{opacity:0;pointer-events:none}
+.house.target{cursor:pointer}
+.house.target:hover,.house.hovered{background:radial-gradient(ellipse at 50% 60%,#fff5ac99,transparent 68%)!important}
+.house.target:hover .sign,.house.hovered .sign{transform:translateY(-6px);background:#fffbd6}
+.house.saved{background:radial-gradient(ellipse at 50% 55%,#c6ffbc99,transparent 70%)!important}
+.house.saved .sign{background:#dcffdc;border-color:#87d4a4}
+.house.saved .saved-emoji{top:35%;left:40%;font-size:36px;z-index:8;animation:pop .6s both}
+.animal-yard{z-index:6;bottom:1%;left:2%;right:2%;min-height:34%;gap:clamp(0px,1.3vw,20px)}
+.animal{width:clamp(115px,17vw,185px);height:clamp(147px,18vw,194px);border:0!important;background:transparent!important;box-shadow:none!important;border-radius:0!important;padding:0!important;filter:drop-shadow(0 11px 5px #233a415c);overflow:visible!important}
+.animal .picture{height:100%;width:100%;display:flex;justify-content:center;align-items:flex-end;overflow:visible!important}
+.animal .picture .pw-anime{width:100%;height:100%;background-size:500% 100%;background-position-y:center;filter:drop-shadow(0 8px 3px #2d454a6b)}
+.animal .picture .pw-3d{display:block;width:100%;height:100%;object-fit:contain;object-position:bottom;filter:drop-shadow(0 8px 4px #2a485066);user-select:none;pointer-events:none}
+.pw-emoji-fallback{font-size:clamp(75px,11vw,130px);line-height:1;filter:drop-shadow(0 8px 4px #2a485066)}
+.drag-ghost .pw-3d{width:125px;height:115px;object-fit:contain}
+.animal.selected{filter:drop-shadow(0 0 14px #fff2ad) drop-shadow(0 8px 3px #3b495d)!important}
+.animal:hover .pw-3d{filter:drop-shadow(0 0 9px #fff9cb)}
+@media(max-width:650px){
+.scene{min-height:410px;aspect-ratio:auto}
+.houses{top:27%;height:32%}
+.house .sign{font-size:9px;top:-8px;left:1%;right:1%;padding:4px 0}
+.animal-yard{min-height:25%;bottom:1%;gap:0}
+.animal{width:clamp(60px,19vw,95px);height:clamp(92px,26vw,134px)}
+.pw-emoji-fallback{font-size:clamp(48px,13vw,77px)}
+}
+@media(max-width:370px){.scene{min-height:390px}.animal{width:59px;height:96px}}
 </style></head>
 <body>
 <main class="wrap">
@@ -81,7 +115,7 @@
 </main>
 <button type="button" class="mute" id="mute" aria-pressed="false">🔊 קול פעיל</button>
 <div class="overlay" id="overlay"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="em" id="modalEmoji">🏰🐶</div><h2 id="modalTitle">ברוכים הבאים לחצר החיות!</h2><p id="modalText">חמש חיות קטנות איבדו את הדרך הביתה. נלמד את השמות שלהן באנגלית, נמצא אותן ונחזיר אותן לבתים הקסומים!</p><div class="mini" id="modalAnimals" aria-hidden="true"></div><p class="en" id="modalSub">3 rounds · 5 animals · no timer · no lives</p><button type="button" id="modalGo">✨ מתחילים להציל!</button><a class="alt" href="level2-animals-family-intro.html">📖 לחזור ללמוד</a></div></div>
-<script src="level2-animal-art.js?v=illustrated1"></script><script src="level2-anime-pets.js?v=animepets2"></script><script src="https://cdn.jsdelivr.net/npm/phaser@3.90.0/dist/phaser.min.js" defer></script><script>
+<script src="level2-animal-art.js?v=illustrated1"></script><script src="level2-castle-background.js?v=castle-3d-1"></script><script src="level2-anime-pets.js?v=animepets2"></script><script src="https://cdn.jsdelivr.net/npm/phaser@3.90.0/dist/phaser.min.js" defer></script><script>
 (()=>{'use strict';
 const CHAPTERS=[
 {name:'חיות בית',short:'🏡 בית',theme:'pets',words:[['DOG','כלב','🐶'],['CAT','חתול','🐱'],['RABBIT','ארנב','🐰'],['FISH','דג','🐟'],['TURTLE','צב','🐢']]},
@@ -102,10 +136,19 @@ $('mute').onclick=()=>{muted=!muted;try{localStorage.setItem('playwise-animals-f
 $('speak').onclick=()=>{if(round===2){const n=order.find(i=>!saved.includes(i));if(n!==undefined)say(CHAPTERS[chapter].words[n][0])}else say(CHAPTERS[chapter].words[order[step]][0])};
 function overlay(title,text,emoji,button,callback){clearTimeout(nextTimer);$('modalTitle').textContent=title;$('modalText').textContent=text;$('modalEmoji').textContent=emoji;$('modalAnimals').innerHTML='';CHAPTERS[chapter].words.forEach(w=>{const s=document.createElement('span');s.textContent=w[2];$('modalAnimals').append(s)});$('modalGo').textContent=button;$('modalGo').onclick=()=>{$('overlay').classList.add('hidden');callback()};$('overlay').classList.remove('hidden');$('modalGo').focus()}
 function track(){const root=$('track');root.innerHTML='';CHAPTERS.forEach((c,i)=>{const b=document.createElement('button');b.type='button';b.className=(i===chapter?'active ':'')+(done.includes(i)?'complete':'');b.disabled=i>0&&!done.includes(i-1);b.textContent=(done.includes(i)?'✓ ':i>0&&!done.includes(i-1)?'🔒 ':'🚪 ')+c.short;b.setAttribute('aria-current',i===chapter?'step':'false');b.onclick=()=>{chapter=i;startChapter()};root.append(b)})}
-function setHud(){$('chapterHud').textContent=CHAPTERS[chapter].short+' · '+(chapter+1)+'/5';$('roundHud').textContent='✨ סבב '+(round+1)+' מתוך 3';const n=round*5+step;$('starsHud').textContent='⭐ '+n+' / 15';$('fill').style.width=(n/15*100)+'%';$('progress').setAttribute('aria-valuenow',String(n));$('scene').dataset.theme=CHAPTERS[chapter].theme;$('worldArt').src=PWAnimalArt.uri(PWAnimalArt.scenerySVG(CHAPTERS[chapter].theme))}
+function setHud(){$('scene').dataset.round=String(round);$('chapterHud').textContent=CHAPTERS[chapter].short+' · '+(chapter+1)+'/5';$('roundHud').textContent='✨ סבב '+(round+1)+' מתוך 3';const n=round*5+step;$('starsHud').textContent='⭐ '+n+' / 15';$('fill').style.width=(n/15*100)+'%';$('progress').setAttribute('aria-valuenow',String(n));$('scene').dataset.theme=CHAPTERS[chapter].theme;$('worldArt').src='';if(window.PWCastleBackground){$('scene').style.backgroundImage='url("'+window.PWCastleBackground+'")';$('scene').style.backgroundSize='100% 100%';$('scene').style.backgroundPosition='center'}}
 function clearYard(){$('yard').innerHTML='';$('houses').innerHTML='';selected=null;drag=null;removeGhost()}
-function makeHouses(){const root=$('houses');root.innerHTML='';CHAPTERS[chapter].words.forEach(([word,he,emoji],i)=>{const b=document.createElement('button');b.type='button';b.className='house'+(round===2?' target':'');b.dataset.index=String(i);b.disabled=round!==2||saved.includes(i);b.setAttribute('aria-label','בית '+word+' '+he);b.style.setProperty('--house',['#ab91c8','#7eafd3','#cf9ba4','#b5c49a','#e4b58c'][i]);const sign=document.createElement('span');sign.className='sign';sign.textContent=round===2?word:'✦';const building=document.createElement('span');building.className='building';const door=document.createElement('span');door.className='door';door.textContent='🚪';building.append(door);const houseArt=document.createElement('img');houseArt.alt='';houseArt.setAttribute('aria-hidden','true');houseArt.src=PWAnimalArt.uri(PWAnimalArt.houseSVG(i));building.prepend(houseArt);b.append(sign,building);if(saved.includes(i)){b.classList.add('saved');const e=document.createElement('span');e.className='saved-emoji';e.textContent=emoji;b.append(e)}b.onclick=()=>{if(round===2&&selected!==null)rescue(selected,i)};root.append(b)})}
+function makeHouses(){const root=$('houses');root.innerHTML='';CHAPTERS[chapter].words.forEach(([word,he,emoji],i)=>{const b=document.createElement('button');b.type='button';b.className='house'+(round===2?' target':'');b.dataset.index=String(i);b.disabled=round!==2||saved.includes(i);b.setAttribute('aria-label','בית '+word+' '+he);b.style.setProperty('--house',['#ab91c8','#7eafd3','#cf9ba4','#b5c49a','#e4b58c'][i]);const sign=document.createElement('span');sign.className='sign';sign.textContent=round===2?word:'✦';const building=document.createElement('span');building.className='building';const door=document.createElement('span');door.className='door';door.textContent='🚪';building.append(door);const houseArt=document.createElement('img');houseArt.alt='';houseArt.setAttribute('aria-hidden','true');houseArt.src=PWAnimalArt.uri(PWAnimalArt.houseSVG(i));building.prepend(houseArt);b.append(sign,building);if(saved.includes(i)){b.classList.add('saved');const e=document.createElement('span');e.className='saved-emoji';e.textContent='✨';b.append(e)}b.onclick=()=>{if(round===2&&selected!==null)rescue(selected,i)};root.append(b)})}
 
+const PW_3D_EMOJI={
+DOG:'1f415',CAT:'1f408',RABBIT:'1f430',FISH:'1f41f',TURTLE:'1f422',
+COW:'1f404',HORSE:'1f40e',SHEEP:'1f411',DUCK:'1f986',CHICKEN:'1f414',
+LION:'1f981',ZEBRA:'1f993',MONKEY:'1f412',ELEPHANT:'1f418',GIRAFFE:'1f992',
+FOX:'1f98a',BEAR:'1f43b',BIRD:'1f426',OWL:'1f989',SQUIRREL:'1f43f',
+DOLPHIN:'1f42c',SHARK:'1f988',WHALE:'1f433',OCTOPUS:'1f419',CRAB:'1f980'
+};
+const PW_FALLBACK={};
+CHAPTERS.forEach(group=>group.words.forEach(w=>PW_FALLBACK[w[0]]=w[2]));
 function setAnimalArt(container,word){
 const atlas=window.PWAnimeAtlas,idx=atlas?.words?.indexOf(word)??-1;
 if(idx>=0&&atlas.url){
@@ -113,7 +156,22 @@ if(idx>=0&&atlas.url){
  art.style.backgroundImage='url("'+atlas.url+'")';
  art.style.backgroundPosition=(idx*25)+'% center';
  art.setAttribute('aria-hidden','true');container.append(art);
-}else container.innerHTML=PWAnimalArt.animalSVG(word);
+ return;
+}
+const code=PW_3D_EMOJI[word];
+if(code){
+ const img=document.createElement('img');
+ img.className='pw-3d';
+ img.alt='';
+ img.draggable=false;
+ img.loading='eager';
+ img.decoding='async';
+ img.src='https://cdn.jsdelivr.net/gh/shuding/fluentui-emoji-unicode/assets/'+code+'_3d.png';
+ img.onerror=()=>{const span=document.createElement('span');span.className='pw-emoji-fallback';span.textContent=PW_FALLBACK[word]||'🐾';img.replaceWith(span)};
+ container.append(img);
+}else{
+ const span=document.createElement('span');span.className='pw-emoji-fallback';span.textContent=PW_FALLBACK[word]||'🐾';container.append(span);
+}
 }
 function makeAnimal(i,label){const w=CHAPTERS[chapter].words[i],b=document.createElement('button');b.type='button';b.className='animal';b.dataset.index=String(i);b.setAttribute('aria-label',w[0]+' · '+w[1]);const emoji=document.createElement('span');emoji.className='picture';setAnimalArt(emoji,w[0]);const tag=document.createElement('span');tag.className='tag';tag.textContent=label;b.append(emoji,tag);
 b.onclick=()=>{if(busy||performance.now()<skipClickUntil)return;if(round<2)pick(i,b);else{selected=i;highlightSelected()}};
@@ -126,7 +184,7 @@ function pick(i,b){if(busy)return;const target=order[step];if(i!==target){b.clas
 busy=true;b.classList.add('selected');$('feedback').className='feedback good';$('feedback').textContent='🌟 נהדר! '+CHAPTERS[chapter].words[i][0]+' · '+CHAPTERS[chapter].words[i][1];celebrate(b);say(CHAPTERS[chapter].words[i][0]);nextTimer=setTimeout(()=>{step++;busy=false;if(step>=5)endRound();else question()},900)}
 function roundThree(){round=2;step=0;saved=[];busy=false;setHud();clearYard();makeHouses();$('instruction').textContent='🏠 גררו כל חיה לבית שעליו כתוב השם שלה באנגלית!';$('word').textContent='ANIMAL RESCUE';$('help').textContent='👆 גוררים חיה אל הבית הנכון. בטלפון אפשר גם ללחוץ על החיה ואז על הבית.';$('feedback').textContent='✨ חמישה בתים וחמש חיות — הצילו את כולן!';shuffle([0,1,2,3,4]).forEach(i=>$('yard').append(makeAnimal(i,'')))}
 function rescue(i,house){if(busy||saved.includes(i))return;const b=Array.from($('yard').children).find(x=>Number(x.dataset.index)===i);if(i!==house){$('feedback').className='feedback try';$('feedback').textContent='💛 זה לא הבית של החיה. הסתכלו על המילה באנגלית ונסו שוב!';if(b){b.classList.add('selected');nextTimer=setTimeout(()=>{if(b.isConnected)b.classList.remove('selected')},450)}return}
-busy=true;saved.push(i);step=saved.length;selected=null;const h=Array.from($('houses').children)[house];if(b){b.disabled=true;const from=b.getBoundingClientRect(),to=h.getBoundingClientRect();const dx=to.left+to.width/2-from.left-from.width/2,dy=to.top+to.height/2-from.top-from.height/2;if(typeof b.animate==='function'&&!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)){const anim=b.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:'translate('+dx+'px,'+dy+'px) scale(.5)',opacity:1},{transform:'translate('+dx+'px,'+dy+'px) scale(.3)',opacity:0}],{duration:760,easing:'ease-in-out',fill:'forwards'});anim.onfinish=()=>b.classList.add('rescued')}else b.classList.add('rescued')}h.classList.add('saved');h.disabled=true;const e=document.createElement('span');e.className='saved-emoji';e.textContent=CHAPTERS[chapter].words[i][2];h.append(e);celebrate(h);say(CHAPTERS[chapter].words[i][0]);$('feedback').className='feedback good';$('feedback').textContent='🏠 '+CHAPTERS[chapter].words[i][0]+' הגיע/ה הביתה!';setHud();nextTimer=setTimeout(()=>{busy=false;if(saved.length===5)finishChapter();else{$('feedback').textContent='✨ עוד '+(5-saved.length)+' חיות מחכות לבית!';const next=order.find(n=>!saved.includes(n));if(next!==undefined)say(CHAPTERS[chapter].words[next][0])}},950)}
+busy=true;saved.push(i);step=saved.length;selected=null;const h=Array.from($('houses').children)[house];if(b){b.disabled=true;const from=b.getBoundingClientRect(),to=h.getBoundingClientRect();const dx=to.left+to.width/2-from.left-from.width/2,dy=to.top+to.height/2-from.top-from.height/2;if(typeof b.animate==='function'&&!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)){const anim=b.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:'translate('+dx+'px,'+dy+'px) scale(.5)',opacity:1},{transform:'translate('+dx+'px,'+dy+'px) scale(.3)',opacity:0}],{duration:760,easing:'ease-in-out',fill:'forwards'});anim.onfinish=()=>b.classList.add('rescued')}else b.classList.add('rescued')}h.classList.add('saved');h.disabled=true;const e=document.createElement('span');e.className='saved-emoji';e.textContent='✨';h.append(e);celebrate(h);say(CHAPTERS[chapter].words[i][0]);$('feedback').className='feedback good';$('feedback').textContent='🏠 '+CHAPTERS[chapter].words[i][0]+' הגיע/ה הביתה!';setHud();nextTimer=setTimeout(()=>{busy=false;if(saved.length===5)finishChapter();else{$('feedback').textContent='✨ עוד '+(5-saved.length)+' חיות מחכות לבית!';const next=order.find(n=>!saved.includes(n));if(next!==undefined)say(CHAPTERS[chapter].words[next][0])}},950)}
 function endRound(){if(round===0){overlay('כל הכבוד! 🌟','זיהיתם את חמש החיות! עכשיו נוסיף עוד חיות לחצר ונתרגל את השמות שלהן באנגלית.','🦋✨','🐾 לסבב השני',()=>{round=1;step=0;order=shuffle([0,1,2,3,4]);question()})}else{overlay('השער לבתים נפתח! 🏠','עכשיו המשימה האמיתית: גררו כל חיה אל הבית שעליו כתוב שמה באנגלית. אפשר גם ללחוץ על חיה ואז על הבית המתאים.','🏰🔑','🏠 מתחילים להציל!',roundThree)}}
 function finishChapter(){if(!done.includes(chapter)){done.push(chapter);persist()}track();setHud();const last=chapter===4;overlay(last?'🏆 הצלתם את כל החיות!':'🎉 כל החיות חזרו הביתה!',last?'איזה מסע מדהים! הכרתם 25 חיות באנגלית ועזרתם לכולן למצוא בית. שער המשפחה מחכה לכם!':'חמש החיות הגיעו לבתים שלהן! הדלת לחדר הבא בטירה נפתחה, עם חמש חיות חדשות.','🎊🏰🐾',last?'👑 לחגוג את הניצחון!':'🚪 לחדר הבא!',()=>{if(last){showFinal()}else{chapter++;startChapter()}})}
 function showFinal(){overlay('👑 שומרי החיות של הטירה!','סיימתם את כל חמשת חדרי ההצלה. אפשר לחזור לשחק, או להמשיך לשער המשפחה.','🏆🐾✨','👨‍👩‍👧‍👦 לשער המשפחה',()=>{location.href='level2-family-gate.html'});const link=document.createElement('a');link.className='alt';link.href='level2-animals-family-intro.html';link.textContent='📖 לספר החיות';$('modalAnimals').append(link)}
