@@ -83,7 +83,7 @@ HOLE_ROWS[profile.holes].forEach(function(i){
 var safe=platforms[i],other=platforms.find(function(p){return p.fork&&p.index===i});
 if(!other)return;
 var safeCenter=safe.baseX+safe.w/2,otherCenter=other.baseX+other.w/2;
-holes.push({x:(safeCenter+otherCenter)/2,y:safe.y-67,r:28+(group===2?3:0),pull:group===2?112:100,row:i});
+holes.push({x:safeCenter+(otherCenter-safeCenter)*.6,y:safe.y-67,r:28+(group===2?3:0),pull:group===2?112:100,row:i});
 });
 return holes
 }
@@ -130,7 +130,7 @@ for(var bh=0;bh<blackHoles.length;bh++){var hole=blackHoles[bh],dx=hole.x-(p.x+p
 p.x+=p.vx*dt;p.y+=p.vy*dt;
 if(p.x<-p.w/2)p.x=W+p.w/2;if(p.x>W+p.w/2)p.x=-p.w/2;
 // Spikes kill on any contact, including when moving upward or sideways.
-for(var hi=0;hi<platforms.length;hi++){var hazard=platforms[hi];if(hazard.hazard&&p.x+p.w*.42>hazard.x+4&&p.x-p.w*.42<hazard.x+hazard.w-4&&p.y+p.h>hazard.y-37&&p.y<hazard.y+10){failStage("spikes");return}}
+for(var hi=0;hi<platforms.length;hi++){var hazard=platforms[hi];if(hazard.hazard&&p.vy>=0&&prevBottom<=hazard.y-13&&p.x+p.w*.42>hazard.x+4&&p.x-p.w*.42<hazard.x+hazard.w-4&&p.y+p.h>hazard.y-37&&p.y+p.h<hazard.y+18){failStage("spikes");return}}
 if(p.vy>=0){
 for(var i=0;i<platforms.length;i++){
 var f=platforms[i];
