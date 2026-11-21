@@ -77,3 +77,58 @@
  .board.final .slot{height:99px}
  .board.final .tray{max-height:190px}
 }
+
+/* Every character displays their English name, Hebrew name and Hebrew family relationship. */
+.portrait .portrait-name{font-weight:1000;direction:ltr;line-height:1.05;overflow-wrap:anywhere}
+.portrait-hebrew-name,.portrait-relation{display:block;max-width:100%;text-align:center;line-height:1.15;overflow-wrap:anywhere}
+.portrait-hebrew-name{font-size:12px;font-weight:900;color:#725181}
+.portrait-relation{font-size:12px;font-weight:1000;color:#3d806f}
+.board:not(.final) .portrait{min-height:135px;gap:3px}
+.board:not(.final) .portrait .portrait-face{font-size:49px}
+.board:not(.final) .portrait .portrait-name{font-size:12px}
+.board:not(.final) .portrait-hebrew-name,.board:not(.final) .portrait-relation{font-size:12px}
+.slot-person,.slot-person-he,.slot-relation-he{display:block;text-align:center;max-width:100%;line-height:1.05;overflow-wrap:anywhere}
+.slot-person{font-weight:1000}
+.slot-person-he{font-size:11px;font-weight:900;color:#7a547c}
+.slot-relation-he{font-size:11px;font-weight:900;color:#3a806e}
+.slot.filled .slot-photo{gap:2px}
+.board:not(.final) .slot.filled .slot-portrait{font-size:52px}
+.review-card .nm{display:block!important;direction:ltr;font-size:13px;font-weight:1000;color:#64457e;overflow-wrap:anywhere}
+.review-card .name-he{font-size:12px;font-weight:900;color:#775b87}
+.review-card .he{font-weight:900;color:#337c70}
+.review-card .en{font-size:clamp(12px,1.6vw,17px)}
+.dialog .review-grid.sixteen .nm{display:block!important;font-size:10px}
+.dialog .review-grid.sixteen .name-he{font-size:10px}
+.dialog .review-grid.sixteen .he{font-size:10px}
+.dialog .review-grid.sixteen .en{font-size:11px}
+.board.final .portrait{min-height:128px}
+.board.final .portrait .portrait-face{font-size:34px}
+.board.final .portrait .portrait-name{font-size:10px}
+.board.final .portrait-hebrew-name,.board.final .portrait-relation{font-size:10px}
+.board.final .slot-person{font-size:9px}
+.board.final .slot-person-he,.board.final .slot-relation-he{font-size:9px}
+.board.final .slot-portrait{font-size:35px}
+@media(max-width:760px){
+ .board:not(.final) .portrait{min-height:121px;padding:5px 2px}
+ .board:not(.final) .portrait .portrait-face{font-size:clamp(29px,6vw,42px)}
+ .board:not(.final) .portrait .portrait-name{font-size:clamp(9px,2vw,11px)}
+ .board:not(.final) .portrait-hebrew-name,.board:not(.final) .portrait-relation{font-size:11px}
+ .board:not(.final) .slot.filled .slot-portrait{font-size:35px}
+ .board:not(.final) .slot-person-he,.board:not(.final) .slot-relation-he{font-size:9px}
+ .board.final .portrait{min-height:105px}
+ .board.final .portrait-hebrew-name,.board.final .portrait-relation{font-size:9px}
+ .board.final .slot-portrait{font-size:29px}
+ .board.final .slot-person-he,.board.final .slot-relation-he{font-size:8px}
+ .review-card .nm{font-size:11px}
+ .review-card .name-he{font-size:10px}
+}
+@media(max-width:420px){
+ .board:not(.final) .portrait{min-height:109px}
+ .board:not(.final) .portrait .portrait-face{font-size:30px}
+ .board:not(.final) .portrait-hebrew-name,.board:not(.final) .portrait-relation{font-size:10px}
+ .board:not(.final) .slot.filled .slot-portrait{font-size:27px}
+ .board:not(.final) .slot-person{font-size:9px}
+ .board:not(.final) .slot-person-he,.board:not(.final) .slot-relation-he{font-size:8px}
+ .board.final .slot-portrait{font-size:23px}
+ .board.final .slot-person,.board.final .slot-person-he,.board.final .slot-relation-he{font-size:7px}
+}
