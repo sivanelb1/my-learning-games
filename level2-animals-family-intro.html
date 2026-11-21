@@ -23,7 +23,7 @@ button,a{font:inherit}button{cursor:pointer}.wrap{width:min(1130px,97%);margin:a
 @media(max-width:750px){.lesson-cards{grid-template-columns:repeat(3,minmax(0,1fr))}.lesson-card{min-height:163px}}
 @media(max-width:500px){.lesson-panel{padding:14px 10px}.chapter-btn{min-width:110px;flex:1 1 120px;font-size:13px}.lesson-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.lesson-card{min-height:150px}.lesson-card .emoji{font-size:48px}.lesson-card .english{font-size:17px}}
 </style></head><body><main class="wrap">
-<nav class="nav"><a href="level2-rainbow-bridge-finale.html">⬅️ שער הקשת</a><span>🦋 תחנה 7 · שלב 1: חיות</span></nav>
+<nav class="nav"><a href="level2-rainbow-bridge-finale.html">⬅️ שער הקשת</a><span>🦋 תחנה 7 · ממלכת החיות</span></nav>
 <header class="hero"><div class="emoji">🏰🦁🐾</div><h1>שער החיות הקסום</h1><p>THE ANIMAL GATE · 25 חיות באנגלית · 5 חדרים · 5 חיות בכל חדר</p></header>
 <section class="story">🦁 <strong>ברוכים הבאים לשער החיות!</strong> כאן לומדים לאט לאט: רק <strong>5 חיות בכל פעם</strong>. לחצו על כל חיה כדי לשמוע את שמה באנגלית. כשתכירו את כל החמש, תיפתח הדלת לחדר הבא. אחרי חמשת החדרים נגיע אל <strong>שער המשפחה</strong>! ✨</section>
 <section class="lesson-panel" aria-label="חדרי הלימוד">
@@ -38,7 +38,7 @@ button,a{font:inherit}button{cursor:pointer}.wrap{width:min(1130px,97%);margin:a
 </section>
 <section class="finish" id="finish" aria-live="polite"><div style="font-size:65px">🎉👑✨</div><h2>אלופי ממלכת החיות!</h2><p>למדתם 25 חיות באנגלית, חמישה חדרים קסומים — ועכשיו אפשר להציל אותן במשחק הטירה לפני שממשיכים לשער המשפחה!</p><a href="level2-animal-rescue.html">🏰🐾 למשחק הצלת החיות · ANIMAL RESCUE</a></section>
 <div class="actions"><a class="primary" href="level2-animal-rescue.html">🐾 משחק הצלת החיות · ANIMAL RESCUE</a><a class="secondary" href="adventure-map.html">🗺️ מפת הממלכה</a></div>
-<p class="note">✨ קודם לומדים את החיות בקבוצות קטנות, אחר כך מצילים אותן במשחק הטירה, ורק לאחר מכן ממשיכים לשער המשפחה. ההתקדמות נשמרת.</p>
+<p class="note">✨ קודם לומדים את החיות בקבוצות קטנות, אחר כך מצילים אותן במשחק הטירה, ורק לאחר מכן עוברים לתחנה 8 — ממלכת המשפחה. ההתקדמות נשמרת.</p>
 </main><script>
 (()=>{'use strict';
 const TYPE="animals",CHAPTERS=[{"title":"🏡 חדר חיות הבית · PETS","short":"🏡 חיות בית","words":[["DOG","כלב","🐶"],["CAT","חתול","🐱"],["RABBIT","ארנב","🐰"],["FISH","דג","🐟"],["TURTLE","צב","🐢"]]},{"title":"🚜 חצר החווה · FARM","short":"🚜 חווה","words":[["COW","פרה","🐄"],["HORSE","סוס","🐎"],["SHEEP","כבשה","🐑"],["DUCK","ברווז","🦆"],["CHICKEN","תרנגולת","🐔"]]},{"title":"🌴 ארמון הג'ונגל · WILD ANIMALS","short":"🌴 חיות בר","words":[["LION","אריה","🦁"],["ZEBRA","זברה","🦓"],["MONKEY","קוף","🐒"],["ELEPHANT","פיל","🐘"],["GIRAFFE","ג׳ירפה","🦒"]]},{"title":"🌲 היער הקסום · FOREST","short":"🌲 יער","words":[["FOX","שועל","🦊"],["BEAR","דוב","🐻"],["BIRD","ציפור","🐦"],["OWL","ינשוף","🦉"],["SQUIRREL","סנאי","🐿️"]]},{"title":"🌊 המפרץ הכחול · SEA","short":"🌊 ים","words":[["DOLPHIN","דולפין","🐬"],["SHARK","כריש","🦈"],["WHALE","לווייתן","🐳"],["OCTOPUS","תמנון","🐙"],["CRAB","סרטן","🦀"]]}],TOTAL=25;
@@ -75,4 +75,4 @@ function muteView(){$('mute').textContent=muted?'🔇 הקול מושתק · ל�
 $('mute').onclick=()=>{muted=!muted;if(muted&&'speechSynthesis' in window)speechSynthesis.cancel();try{localStorage.setItem('playwise-animals-family-muted',String(muted))}catch(e){}muteView()};
 muteView();render();
 })();
-</script><script src="level2-world-navigation.js?v=animalrescue1" defer></script></body></html>
+</script><script src="level2-world-navigation.js?v=family-stage8" defer></script></body></html>
