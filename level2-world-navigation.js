@@ -76,7 +76,7 @@ function isDone(st,p){
   if(p===5)return localStorage.getItem('playwise-hidden-wonders-rainbow-bridge-finale-v1')==='complete';
  }
  if(st===6)return p===0?localStorage.getItem('playwise-animals-family-animals-complete-v1')==='complete':localStorage.getItem('playwise-animals-rescue-v1')==='complete';
- if(st===7)return p===0?localStorage.getItem('playwise-animals-family-family-complete-v1')==='complete':localStorage.getItem('playwise-family-tree-complete-v2')==='complete';
+ if(st===7)return p===0?localStorage.getItem('playwise-animals-family-family-complete-v1')==='complete':localStorage.getItem('playwise-family-tree-complete-v3')==='complete';
  return royal.includes(st);
  }catch(e){return false}
 }
