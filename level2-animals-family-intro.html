@@ -36,9 +36,9 @@ button,a{font:inherit}button{cursor:pointer}.wrap{width:min(1130px,97%);margin:a
 <p class="lesson-message" id="message" aria-live="polite"></p>
 <div class="next-area"><button type="button" class="next" id="next" disabled>🔒 קודם לומדים את המילים</button></div>
 </section>
-<section class="finish" id="finish" aria-live="polite"><div style="font-size:65px">🎉👑✨</div><h2>אלופי ממלכת החיות!</h2><p>למדתם 25 חיות באנגלית, חמישה חדרים קסומים — ועכשיו אפשר להמשיך לשער המשפחה!</p><a href="level2-family-gate.html">👨‍👩‍👧‍👦 לשער המשפחה · FAMILY</a></section>
-<div class="actions"><a class="primary" href="level2-family-gate.html">👨‍👩‍👧‍👦 לשער המשפחה · FAMILY</a><a class="secondary" href="adventure-map.html">🗺️ מפת הממלכה</a></div>
-<p class="note">✨ כל חדר מלמד כמה מילים בלבד. אפשר לחזור לחדרים שכבר סיימתם ולתרגל שוב, וההתקדמות נשמרת.</p>
+<section class="finish" id="finish" aria-live="polite"><div style="font-size:65px">🎉👑✨</div><h2>אלופי ממלכת החיות!</h2><p>למדתם 25 חיות באנגלית, חמישה חדרים קסומים — ועכשיו אפשר להציל אותן במשחק הטירה לפני שממשיכים לשער המשפחה!</p><a href="level2-animal-rescue.html">🏰🐾 למשחק הצלת החיות · ANIMAL RESCUE</a></section>
+<div class="actions"><a class="primary" href="level2-animal-rescue.html">🐾 משחק הצלת החיות · ANIMAL RESCUE</a><a class="secondary" href="adventure-map.html">🗺️ מפת הממלכה</a></div>
+<p class="note">✨ קודם לומדים את החיות בקבוצות קטנות, אחר כך מצילים אותן במשחק הטירה, ורק לאחר מכן ממשיכים לשער המשפחה. ההתקדמות נשמרת.</p>
 </main><script>
 (()=>{'use strict';
 const TYPE="animals",CHAPTERS=[{"title":"🏡 חדר חיות הבית · PETS","short":"🏡 חיות בית","words":[["DOG","כלב","🐶"],["CAT","חתול","🐱"],["RABBIT","ארנב","🐰"],["FISH","דג","🐟"],["TURTLE","צב","🐢"]]},{"title":"🚜 חצר החווה · FARM","short":"🚜 חווה","words":[["COW","פרה","🐄"],["HORSE","סוס","🐎"],["SHEEP","כבשה","🐑"],["DUCK","ברווז","🦆"],["CHICKEN","תרנגולת","🐔"]]},{"title":"🌴 ארמון הג'ונגל · WILD ANIMALS","short":"🌴 חיות בר","words":[["LION","אריה","🦁"],["ZEBRA","זברה","🦓"],["MONKEY","קוף","🐒"],["ELEPHANT","פיל","🐘"],["GIRAFFE","ג׳ירפה","🦒"]]},{"title":"🌲 היער הקסום · FOREST","short":"🌲 יער","words":[["FOX","שועל","🦊"],["BEAR","דוב","🐻"],["BIRD","ציפור","🐦"],["OWL","ינשוף","🦉"],["SQUIRREL","סנאי","🐿️"]]},{"title":"🌊 המפרץ הכחול · SEA","short":"🌊 ים","words":[["DOLPHIN","דולפין","🐬"],["SHARK","כריש","🦈"],["WHALE","לווייתן","🐳"],["OCTOPUS","תמנון","🐙"],["CRAB","סרטן","🦀"]]}],TOTAL=25;
@@ -75,4 +75,4 @@ function muteView(){$('mute').textContent=muted?'🔇 הקול מושתק · ל�
 $('mute').onclick=()=>{muted=!muted;if(muted&&'speechSynthesis' in window)speechSynthesis.cancel();try{localStorage.setItem('playwise-animals-family-muted',String(muted))}catch(e){}muteView()};
 muteView();render();
 })();
-</script><script src="level2-world-navigation.js?v=animalstage1" defer></script></body></html>
+</script><script src="level2-world-navigation.js?v=animalrescue1" defer></script></body></html>
