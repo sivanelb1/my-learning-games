@@ -8,8 +8,8 @@ var CHAPTERS=[
 ];
 var KEY="playwise-family-tree-progress-v1",COMPLETE="playwise-family-tree-complete-v2";
 var $=function(id){return document.getElementById(id)};
-var state={done:[[],[],[],[]],final:[],placements:[{},{},{},{},{}]},stage=0,selected=null,drag=null,modalNext=null,busy=false;
-function load(){try{var x=JSON.parse(localStorage.getItem(KEY)||"{}");if(x&&Array.isArray(x.done)&&x.done.length===4){state.done=x.done.map(function(a){return Array.isArray(a)?a.filter(function(v){return Number.isInteger(v)&&v>=0&&v<4}):[]});state.final=Array.isArray(x.final)&&x.final.length<=10?x.final.filter(function(v){return Number.isInteger(v)&&v>=0&&v<10}):[];if(Array.isArray(x.placements)){state.placements=state.placements.map(function(_,i){var p=x.placements[i];return p&&typeof p==="object"&&!Array.isArray(p)?p:{}})}if(Array.isArray(x.final)&&x.final.length>10)state.placements[4]={}}}catch(e){}}
+var state={done:[[],[],[],[]],final:[],finalSchema:2,placements:[{},{},{},{},{}]},stage=0,selected=null,drag=null,modalNext=null,busy=false;
+function load(){try{var x=JSON.parse(localStorage.getItem(KEY)||"{}");if(x&&Array.isArray(x.done)&&x.done.length===4){state.done=x.done.map(function(a){return Array.isArray(a)?a.filter(function(v){return Number.isInteger(v)&&v>=0&&v<4}):[]});state.final=x.finalSchema===2&&Array.isArray(x.final)&&x.final.length<=10?x.final.filter(function(v){return Number.isInteger(v)&&v>=0&&v<10}):[];if(Array.isArray(x.placements)){state.placements=state.placements.map(function(_,i){var p=x.placements[i];return p&&typeof p==="object"&&!Array.isArray(p)?p:{}})}if(x.finalSchema!==2||Array.isArray(x.final)&&x.final.length>10)state.placements[4]={}}}catch(e){}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
 function flattened(){return CHAPTERS.reduce(function(acc,c){return acc.concat(c.words)},[])}
 // Only ten family members belong on the final tree: grandparents, two couples, their children.
