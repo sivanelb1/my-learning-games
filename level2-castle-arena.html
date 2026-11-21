@@ -6,25 +6,32 @@
 
 .quiz-lead{margin:8px 0 15px;font-weight:800;color:#74488d}.quiz-counter{font-weight:900;color:#6d388f;background:#f7e9ff;border-radius:12px;padding:7px 13px;display:inline-block}.quiz-columns{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin:14px 0;direction:ltr}.quiz-col{display:flex;flex-direction:column;gap:9px}.quiz-tile{min-height:64px;display:flex;align-items:center;justify-content:center;gap:7px;border:3px solid #c4a3d9;border-radius:15px;background:#fff;color:#583a75;font-size:16px;font-weight:900;transition:transform .15s,border-color .15s,background .15s}.quiz-tile:focus-visible{outline:3px solid #5a3597;outline-offset:2px}.quiz-tile.selected{border-color:#7c3fb3;background:#e7d4ff;transform:scale(1.025)}.quiz-tile.matched{background:#d5f5df;border-color:#5ebc81;color:#285f40;opacity:.8}.quiz-tile:disabled{cursor:default}.quiz-swatch{display:block;width:39px;height:39px;border-radius:50%;background:var(--swatch);border:3px solid #fff;box-shadow:0 0 0 2px #8b7b9c,0 3px 9px #2223}.quiz-digit{font:bold 30px Georgia,serif;color:#6c4ca1}.quiz-feedback{min-height:35px;color:#694089;font-weight:900;font-size:15px;margin:8px 0}.quiz-continue{display:none}.quiz-continue.visible{display:inline-block}@media(max-width:420px){.quiz-columns{gap:7px}.quiz-tile{min-height:58px;font-size:13px}.quiz-swatch{width:32px;height:32px}.quiz-digit{font-size:25px}}
 .mute-toggle{position:absolute;bottom:14px;left:14px;z-index:3;display:flex;align-items:center;gap:7px;direction:rtl;border:2px solid #f7d99b;border-radius:15px;padding:9px 13px;background:#30214cde;color:#fff4ce;font-weight:900;font-size:14px;box-shadow:0 4px 16px #160c3699;backdrop-filter:blur(5px);touch-action:manipulation}.mute-toggle:focus-visible{outline:3px solid #fff;outline-offset:3px}.mute-toggle[aria-pressed="true"]{background:#57425ce8;border-color:#d6b5d6}@media(max-width:520px){.mute-toggle{bottom:8px;left:8px;font-size:12px;padding:7px 9px}}
+.stage-path{display:flex;justify-content:center;gap:4px;flex-wrap:wrap;margin:11px auto 0;direction:ltr}.stage-dot{font-size:13px;display:grid;place-items:center;width:25px;height:25px;border:1px solid #d5b7df;border-radius:8px;background:#ede4f3;opacity:.55}.stage-dot.current{background:#ffe3a4;border:2px solid #a877d0;opacity:1;box-shadow:0 0 9px #d8a8ed}.stage-dot.passed{opacity:1;background:#d0f3da}.audio-reminder{color:#ffe7b3;font-size:12px;font-weight:800;text-align:center;padding:8px 2px}.quiz-mute{display:block;margin:8px auto 10px;background:#ede0ff;color:#59357d;border:2px solid #b58ccf;border-radius:12px;padding:8px 14px;font-size:14px;font-weight:900}.quiz-mute:focus-visible{outline:3px solid #6a42a0;outline-offset:2px}
 </style></head>
 <body><main class="wrap"><nav class="top"><a href="level2-color-potions.html">🧪 בחזרה לשיקויים</a><span class="tag">🏰 תחנה 6 · משחק הסיום</span></nav>
 <header class="title"><h1>🏰 זירת הטירה הקסומה</h1><p>THE RAINBOW CASTLE · צבעו 80% מהזירה, ואז שחקו במשחק התאמת מילים!</p></header>
 <div class="layout"><section class="castle"><div class="arena-frame"><canvas id="arena" width="960" height="660" aria-label="זירת טירה תלת ממדית מדומה: אביר הקשת סוגר שטחים ולוכד כדורי צבע זוהרים"></canvas><button type="button" class="mute-toggle" id="mute" aria-pressed="false" aria-label="השתקת קריינות המשחק">🔊 קול פעיל</button></div><div class="below"><span>🛡️ אביר הקשת · חצים / WASD</span><span>✨ קו אנרגיה · סגירת שטחים</span></div></section>
-<aside class="sidebar"><section class="panel"><h2>🏆 משימת הטירה</h2><div class="goal"><small id="missionType">ממלכת הצבעים</small><strong id="stageNo">שלב 1 / 2</strong><div class="sub" id="missionLine">צבעו לפחות 80% מהלוח!</div><div class="targets" id="targets" aria-label="המילים של השלב"></div><div class="challenge" id="challenge">🎨 הכדורים הצבעוניים</div></div><div class="hudline"><span>🧩 שטח: <span id="percent">0.0%</span></span><span>⏱️ <span id="time">03:20</span></span></div><div class="progress" id="progress" role="progressbar" aria-label="אחוז שטח צבוע" aria-valuemin="0" aria-valuemax="80" aria-valuenow="0"><div class="fill" id="fill"></div></div><div class="hudline"><span>🔊 שמות שהושמעו: <span id="count">0</span></span><span id="hearts">❤️❤️❤️</span></div><div class="nums" id="nums" aria-label="מילים שנלכדו"></div><div class="status" id="status" aria-live="polite">🪄 מוכנים לכבוש את הטירה?</div><button class="sound" id="hear" type="button">🔊 השמעת משימת השלב</button></section>
+<aside class="sidebar"><section class="panel"><h2>🏆 משימת הטירה</h2><div class="goal"><small id="missionType">ממלכת הצבעים</small><strong id="stageNo">שלב 1 / 8</strong><div class="sub" id="missionLine">צבעו לפחות 80% מהלוח!</div><div class="targets" id="targets" aria-label="המילים של השלב"></div><div class="challenge" id="challenge">🎨 הכדורים הצבעוניים</div><div id="stagePath" class="stage-path" aria-label="התקדמות בשמונת שלבי הטירה"></div></div><div class="hudline"><span>🧩 שטח: <span id="percent">0.0%</span></span><span>⏱️ <span id="time">03:20</span></span></div><div class="progress" id="progress" role="progressbar" aria-label="אחוז שטח צבוע" aria-valuemin="0" aria-valuemax="80" aria-valuenow="0"><div class="fill" id="fill"></div></div><div class="hudline"><span>🔊 שמות שהושמעו: <span id="count">0</span></span><span id="hearts">❤️❤️❤️</span></div><div class="nums" id="nums" aria-label="מילים שנלכדו"></div><div class="status" id="status" aria-live="polite">🪄 מוכנים לכבוש את הטירה?</div><div class="audio-reminder">🔊 שומעים אנגלית במשחק ההתאמה שבסיום כל שלב</div></section>
 <section class="panel"><h2>🕹️ שליטה באביר הקשת</h2><div class="controls"><button type="button" class="up" data-dir="up" aria-label="למעלה">↑</button><button type="button" class="left" data-dir="left" aria-label="שמאלה">←</button><button type="button" class="downkey" data-dir="down" aria-label="למטה">↓</button><button type="button" class="right" data-dir="right" aria-label="ימינה">→</button></div><div class="actions"><button type="button" id="pause">⏸️ עצירה</button><button type="button" id="rules">❔ הוראות</button></div><div class="help">החזיקו חץ כדי לזוז. גם בטלפון אפשר להשתמש בחצים או להחליק על הזירה.</div><div class="legend">🎨 צבעו 80% מהלוח ואז התאימו מילים באנגלית<br>⚫ כדור שחור מכרסם בקירות · 🧊 ⏱️ ❤️ = בונוסים</div></section></aside></div>
-<div class="bottom-note">שני שלבים: צבעים ומספרים. צבעו 80% מהלוח, ואז התאימו את הצבעים או המספרים למילים באנגלית! לכל מילה יש כפתור השמעה. 💜</div></main>
-<div class="overlay" id="overlay"><div class="modal" id="modal"><div class="big">🏰🛡️🎨</div><h2>אביר הקשת מחזיר את הצבעים לטירה!</h2><p>יש שני שלבים: <b>שלב הצבעים</b> ואחריו <b>שלב המספרים</b>. צבעו <b>80% מהזירה</b>, ואז פתרו משחק התאמה קצר כדי להמשיך.</p><div class="rules">🛡️ זוזו על המסגרת הבטוחה, חצו את הזירה וחזרו אל שטח צבוע כדי לסגור אזור.<br>🎨 רק אזור בלי כדורים מתמלא בצבע. כדורים שנכלאים נשארים בתוך האזור שלהם וממשיכים לנוע!<br>🔊 כשמצמצמים וכובשים סביב כדור, שומעים את שם הצבע או המספר באנגלית.<br>⚫ הכדורים השחורים מכרסמים בקירות שכבר צבעתם — היזהרו!<br>💜 פגיעה בשובל הפתוח או באביר בזמן חיתוך גורמת לאובדן לב.<br>🏆 צבעו לפחות 80% מהלוח כדי לפתוח משחק התאמה של מילים באנגלית.</div><div style="font-weight:900;margin-top:12px">בחרו דרגת קושי:</div><div class="levels"><label><input type="radio" name="difficulty" value="easy"><span>🐢 קלילה</span></label><label><input type="radio" name="difficulty" value="normal" checked><span>🐉 רגילה</span></label><label><input type="radio" name="difficulty" value="hard"><span>⚡ מאתגרת</span></label></div><button type="button" class="primary" id="start">🛡️ יוצאים לצבוע את הטירה!</button></div></div>
+<div class="bottom-note">8 שלבים: צבעים ומספרים מתחלפים, עם מילים ועיצוב טירה שונים בכל שלב! הקריינות מופיעה רק במשחק ההתאמה בסוף השלב. 💜</div></main>
+<div class="overlay" id="overlay"><div class="modal" id="modal"><div class="big">🏰🛡️🎨</div><h2>אביר הקשת מחזיר את הצבעים לטירה!</h2><p>יש <b>8 שלבים קסומים</b> שמתחלפים בין צבעים למספרים. בכל שלב צבעו <b>80% מהזירה</b> ואז פתרו משחק התאמה קצר באנגלית.</p><div class="rules">🛡️ זוזו על המסגרת הבטוחה, חצו את הזירה וחזרו אל שטח צבוע כדי לסגור אזור.<br>🎨 רק אזור בלי כדורים מתמלא בצבע. כדורים שנכלאים נשארים בתוך האזור שלהם וממשיכים לנוע!<br>🔇 במהלך כיבוש הזירה אין קריינות. 🔊 במשחק ההתאמה שבסוף כל שלב אפשר ללחוץ על מילה ולשמוע אותה באנגלית.<br>⚫ הכדורים השחורים מכרסמים בקירות שכבר צבעתם — היזהרו!<br>💜 פגיעה בשובל הפתוח או באביר בזמן חיתוך גורמת לאובדן לב.<br>🏆 צבעו לפחות 80% מהלוח כדי לפתוח משחק התאמה של מילים באנגלית.</div><div style="font-weight:900;margin-top:12px">בחרו דרגת קושי:</div><div class="levels"><label><input type="radio" name="difficulty" value="easy"><span>🐢 קלילה</span></label><label><input type="radio" name="difficulty" value="normal" checked><span>🐉 רגילה</span></label><label><input type="radio" name="difficulty" value="hard"><span>⚡ מאתגרת</span></label></div><button type="button" class="primary" id="start">🛡️ יוצאים לצבוע את הטירה!</button></div></div>
 <script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id),canvas=$('arena'),ctx=canvas.getContext('2d');
 const W=24,H=16,INNER=(W-2)*(H-2),NAMES=['ONE','TWO','THREE','FOUR','FIVE','SIX','SEVEN','EIGHT','NINE','TEN'];
 const COLORS=[['RED','#f04762'],['BLUE','#3a9bf6'],['GREEN','#44d48c'],['YELLOW','#fbe363'],['PURPLE','#b585ef'],['ORANGE','#ff9b4b'],['PINK','#fa8dbd'],['BLACK','#38384e']];
 const V={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]},KEYS={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',w:'up',a:'left',s:'down',d:'right',W:'up',A:'left',S:'down',D:'right'};
-const SAVE='playwise-hidden-wonders-castle-arena-v6';
+const SAVE='playwise-hidden-wonders-castle-arena-v7';
 const TARGET=80;
 const STAGES=[
-{kind:'color',title:'🎨 ממלכת הצבעים',hint:'צבעו 80% מהזירה עם שלושה כדורי צבע וכדור שחור אחד. אחר כך התאימו צבעים למילים באנגלית!',speed:.92,eroders:1},
-{kind:'number',title:'🔢 ממלכת המספרים',hint:'צבעו 80% מהזירה עם ארבעה כדורי מספר וכדור שחור אחד. אחר כך התאימו ספרות לשמות באנגלית!',speed:1.07,eroders:1}
+{kind:'color',title:'🎨 חצר הקשת',icon:'🌈',hint:'לומדים את RED, BLUE, YELLOW.',words:[0,1,3],speed:.91,eroders:1,sky:['#408fdd','#9fdcf2','#7b62b6'],wall:['#66569a','#51417d'],floor:['#f0cf86','#dfb971'],paint:['#ef96ba','#9cd5fb','#b5eac1','#ffe19b','#c9b3ef','#f6b98c'],flag:'#f6a7c4'},
+{kind:'number',title:'🔢 מגדל השעונים',icon:'🕰️',hint:'לומדים את ONE, TWO, THREE, FOUR.',words:[1,2,3,4],speed:.94,eroders:1,sky:['#3d78bd','#a8d8f2','#5c629d'],wall:['#58618e','#3c4772'],floor:['#e9d5a0','#d6c088'],paint:['#91cbe5','#b5d8fa','#e0cbf3','#a9dbd3','#d9e5b7'],flag:'#f1d38b'},
+{kind:'color',title:'🎨 גן האזמרגד',icon:'🌿',hint:'לומדים את GREEN, ORANGE, PURPLE.',words:[2,5,4],speed:.96,eroders:1,sky:['#399e9c','#a8e6d2','#507e8a'],wall:['#438b82','#316b70'],floor:['#dfd39b','#c3c995'],paint:['#8fdcba','#b9e6a1','#a6d6ef','#eedca5','#cbb5f0'],flag:'#ffe79b'},
+{kind:'number',title:'🔢 אולם הכוכבים',icon:'⭐',hint:'לומדים את FIVE, SIX, SEVEN, EIGHT.',words:[5,6,7,8],speed:.98,eroders:1,sky:['#4854a4','#8c9ddc','#65488e'],wall:['#5b548e','#3d376c'],floor:['#e2c6a0','#cfb184'],paint:['#9caff0','#b9c5f4','#e1c0f0','#e6dbb2','#a9d5eb'],flag:'#f7c86b'},
+{kind:'color',title:'🎨 חצר הפרחים',icon:'🌸',hint:'לומדים את PINK, RED, GREEN.',words:[6,0,2],speed:1,eroders:1,sky:['#df83b0','#f9d5db','#ad7baf'],wall:['#ac6c9b','#83567f'],floor:['#efd2a6','#e2b98c'],paint:['#f7b2c8','#f8d7ac','#c6e8b5','#b8dcef','#e4c7f3'],flag:'#b6f4c4'},
+{kind:'number',title:'🔢 מצודת הירח',icon:'🌙',hint:'לומדים את NINE, TEN, ONE, FIVE.',words:[9,10,1,5],speed:1.01,eroders:1,sky:['#263a83','#707bbd','#6e559d'],wall:['#565486','#38375f'],floor:['#c9c0a8','#b9ac98'],paint:['#9db6e9','#c5b7ec','#94d9d7','#e6d3b0','#b9c8f1'],flag:'#d9d3ff'},
+{kind:'color',title:'🎨 גשר השקיעה',icon:'🌅',hint:'לומדים את BLUE, YELLOW, PURPLE.',words:[1,3,4],speed:1.03,eroders:1,sky:['#e89b78','#f9d1a3','#a86da2'],wall:['#986c9e','#745487'],floor:['#f2cf98','#dcae7e'],paint:['#f8c49b','#e9b1d2','#b8d9f4','#f9e3a1','#c5b0ed'],flag:'#ffe1a1'},
+{kind:'number',title:'🔢 כס הקשת',icon:'👑',hint:'לומדים את TWO, FOUR, SEVEN, TEN.',words:[2,4,7,10],speed:1.05,eroders:1,sky:['#7658b7','#c0a5f0','#8e67a9'],wall:['#815eaa','#604584'],floor:['#e7c99a','#d7b37f'],paint:['#f0a5cc','#a6d7fb','#a6e4c7','#ffe0a3','#c6b4f6','#f6bf9c'],flag:'#ffe49b'}
 ];
 let land=new Uint8Array(W*H),trail=[],balls=[],mines=[],power=null,star=null,queue=0,ship={x:12,y:15,px:12,py:15,lerp:1},captured=0,percent=0,lives=3,time=200,level='normal',state='intro',held=null,frameId=null,lastFrame=0,moveAcc=0,bonusClock=0,invulnerable=0,slowUntil=0,fastUntil=0,stepMs=88,ballSpeed=2,particles=[],touchStart=null,elapsed=0,won=false,splitDone=false,stage=0,caughtWords=[],stageCaptured=0,stageWords=[];
 const at=(x,y)=>y*W+x,inside=(x,y)=>x>=0&&y>=0&&x<W&&y<H,solid=(x,y)=>!inside(x,y)||land[at(x,y)]===1;
@@ -33,9 +40,8 @@ try{muted=localStorage.getItem('playwise-castle-muted')==='true'}catch(e){}
 function updateMuteButton(){
 const b=$('mute');b.textContent=muted?'🔇 קול מושתק':'🔊 קול פעיל';
 b.setAttribute('aria-pressed',String(muted));
-b.setAttribute('aria-label',muted?'הפעלת קריינות המשחק':'השתקת קריינות המשחק');
-$('hear').disabled=muted;
-$('hear').title=muted?'אפשר להפעיל קול באמצעות הכפתור בפינה השמאלית התחתונה':'השמעת משימת השלב';
+b.setAttribute('aria-label',muted?'הפעלת קריינות משחקי ההתאמה':'השתקת קריינות משחקי ההתאמה');
+const qb=$('quizMute');if(qb){qb.textContent=muted?'🔇 קול מושתק — להפעיל':'🔊 קול פעיל — להשתיק';qb.setAttribute('aria-pressed',String(muted))}
 }
 function setMuted(value){
 muted=value;
@@ -50,8 +56,11 @@ function hud(){
 $('percent').textContent=percent.toFixed(1)+'%';$('time').textContent=formatTime(time);
 $('fill').style.width=Math.min(100,percent/TARGET*100)+'%';$('progress').setAttribute('aria-valuenow',String(Math.min(TARGET,percent.toFixed(1))));
 $('count').textContent=String(stageCaptured);$('hearts').textContent='❤️'.repeat(lives)+'🖤'.repeat(Math.max(0,3-lives));
-const cfg=STAGES[stage];$('stageNo').textContent='שלב '+(stage+1)+' / 2';$('missionType').textContent=cfg.title;$('missionLine').textContent='צבעו לפחות 80% מהלוח!';$('challenge').textContent=cfg.kind==='color'?'🎨 תפסו כדורי צבע':'🔢 תפסו כדורי מספר';
-const t=$('targets');t.innerHTML='';const chip=document.createElement('span');chip.className='target-chip';chip.style.setProperty('--c',cfg.kind==='color'?'#ed6ba3':'#b78ae9');chip.textContent=cfg.kind==='color'?'COLORS':'NUMBERS 1–10';t.append(chip);
+const cfg=STAGES[stage];$('stageNo').textContent='שלב '+(stage+1)+' / '+STAGES.length;
+$('missionType').textContent=cfg.title;$('missionLine').textContent='צבעו לפחות 80% מהלוח!';
+$('challenge').textContent=cfg.icon+' '+(cfg.kind==='color'?'כדורי צבע':'כדורי מספר');
+const t=$('targets');t.innerHTML='';const chip=document.createElement('span');chip.className='target-chip';chip.style.setProperty('--c',cfg.flag);chip.textContent=cfg.kind==='color'?'COLORS':'NUMBERS';t.append(chip);
+const p=$('stagePath');p.innerHTML='';STAGES.forEach((entry,i)=>{const dot=document.createElement('span');dot.className='stage-dot'+(i===stage?' current':i<stage?' passed':'');dot.textContent=entry.kind==='color'?'🎨':'🔢';dot.title='שלב '+(i+1)+' — '+entry.title;p.append(dot)});
 $('nums').innerHTML='';for(const word of caughtWords.slice(-10)){const e=document.createElement('span');e.className='chip done';e.textContent=word;$('nums').append(e)}
 }
 function project(x,y){const z=y/H;return{x:480+(x-W/2)*(27.7+9.5*z),y:160+y*25.8}}
@@ -64,7 +73,7 @@ function spawnBalls(){
 balls=[];const cfg=STAGES[stage],mult=(level==='easy'?.75:level==='hard'?1.28:1)*cfg.speed;
 ballSpeed=2.05*mult;
 const count=cfg.kind==='color'?3:4,blackCount=cfg.eroders;
-const names=cfg.kind==='color'?[0,1,2,3,4,5,6].sort(()=>Math.random()-.5).slice(0,count):[1,2,3,4,5,6,7,8,9,10].sort(()=>Math.random()-.5).slice(0,count);
+const names=cfg.words;
 for(let i=0;i<count+blackCount;i++){
 let x=3+Math.random()*(W-6),y=3+Math.random()*(H-6);
 for(let k=0;k<100&&balls.some(b=>Math.hypot(b.x-x,b.y-y)<2.6);k++){x=3+Math.random()*(W-6);y=3+Math.random()*(H-6)}
@@ -82,7 +91,7 @@ function spawnMines(){mines=[]}
 function begin(){lives=level==='easy'?4:3;stage=0;stageIntro()}
 function startStage(){
 resetLand();caughtWords=[];stageCaptured=0;splitDone=false;
-time=(level==='easy'?330:level==='hard'?210:270)+(stage===1?20:0);
+time=(level==='easy'?340:level==='hard'?225:285)+(stage>=4?15:0);
 stepMs=level==='easy'?100:level==='hard'?70:85;
 elapsed=0;invulnerable=1.2;slowUntil=0;fastUntil=0;particles=[];power=null;spawnBalls();spawnMines();state='play';
 hud();msg('🏆 צבעו 80% מהזירה, ואז פתרו את משחק ההתאמה! '+STAGES[stage].title);startLoop()
@@ -90,9 +99,9 @@ hud();msg('🏆 צבעו 80% מהזירה, ואז פתרו את משחק ההת�
 function stageIntro(){
 state='stageIntro';held=null;stopLoop();
 const cfg=STAGES[stage];
-openModal(stage===0?'🏰🎨':'🏰🔢','שלב '+(stage+1)+' מתוך 2 — '+cfg.title,
-cfg.hint+' הכדורים לא נעלמים: רק שטח בלי כדורים נצבע. כשמצמצמים כדור שומעים את שמו באנגלית. לאחר 80% תיפתח משימת התאמה קצרה.',
-'🛡️ מתחילים את שלב '+(stage+1),()=>{startStage();speak(stage===0?'Colors. Paint eighty percent of the board.':'Numbers. Paint eighty percent of the board.')})
+openModal(cfg.icon,'שלב '+(stage+1)+' מתוך '+STAGES.length+' — '+cfg.title,
+cfg.hint+' צבעו 80% מהלוח. הכדורים לא נעלמים: רק שטח בלי כדורים נצבע. במהלך השלב אין קריינות — בסיום מחכה משחק התאמה עם השמעה באנגלית.',
+'🛡️ מתחילים את שלב '+(stage+1),startStage)
 }
 function percentUpdate(){let n=0;for(let y=1;y<H-1;y++)for(let x=1;x<W-1;x++)if(land[at(x,y)])n++;percent=n/INNER*100;hud();if(state==='play'&&percent>=TARGET)finishStage()}
 function finishStage(){
@@ -120,12 +129,13 @@ m.innerHTML='';$('overlay').hidden=false;
 const icon=document.createElement('div');icon.className='big';icon.textContent=cfg.kind==='color'?'🎨🧩':'🔢🧩';
 const title=document.createElement('h2');title.textContent='כל הכבוד! צבעתם 80%! 🌟';
 const lead=document.createElement('p');lead.className='quiz-lead';lead.textContent=cfg.kind==='color'?'עכשיו משחק התאמה: לחצו על צבע ואז על המילה באנגלית שמתאימה לו.':'עכשיו משחק התאמה: לחצו על ספרה ואז על השם שלה באנגלית.';
+const quizMute=document.createElement('button');quizMute.type='button';quizMute.id='quizMute';quizMute.className='quiz-mute';quizMute.onclick=()=>setMuted(!muted);
 const counter=document.createElement('div');counter.className='quiz-counter';counter.setAttribute('aria-live','polite');
 const columns=document.createElement('div');columns.className='quiz-columns';
 const left=document.createElement('div'),right=document.createElement('div');left.className='quiz-col';right.className='quiz-col';
 const feedback=document.createElement('div');feedback.className='quiz-feedback';feedback.setAttribute('aria-live','polite');feedback.textContent='בחרו קודם צבע או מספר מהטור הראשון 👈';
 const next=document.createElement('button');next.className='primary quiz-continue';next.type='button';
-next.textContent=stage===0?'🔢 ממשיכים לשלב המספרים':'👑 מסיימים את הרפתקת הטירה';
+next.textContent=stage===STAGES.length-1?'👑 מסיימים את הרפתקת הטירה':'✨ ממשיכים לשלב '+(stage+2)+' מתוך '+STAGES.length;
 let selected=null,correct=0;
 const tiles=new Map();
 const refresh=()=>{counter.textContent='✨ '+correct+' / '+items.length+' התאמות נכונות'};
@@ -158,16 +168,16 @@ btn.onclick=()=>match(item,btn);right.append(btn)
 }
 columns.append(left,right);next.onclick=()=>{
 $('overlay').hidden=true;
-if(stage===0){stage=1;stageIntro()}
+if(stage<STAGES.length-1){stage++;stageIntro()}
 else{state='play';win()}
 };
-m.append(icon,title,lead,counter,columns,feedback,next);refresh()
+m.append(icon,title,lead,quizMute,counter,columns,feedback,next);refresh();updateMuteButton()
 }
 
 function openModal(icon,title,description,label,action){const m=$('modal');m.innerHTML='';const b=document.createElement('div');b.className='big';b.textContent=icon;const h=document.createElement('h2');h.textContent=title;const p=document.createElement('p');p.textContent=description;const btn=document.createElement('button');btn.className='primary';btn.type='button';btn.textContent=label;btn.onclick=()=>{$('overlay').hidden=true;action()};m.append(b,h,p,btn);$('overlay').hidden=false}
 function stopLoop(){if(frameId!==null){cancelAnimationFrame(frameId);frameId=null}}
 function loseLife(reason){if(state!=='play'||invulnerable>0)return;lives--;trail=[];ship={x:12,y:H-1,px:12,py:H-1,lerp:1};held=null;invulnerable=2;hud();if(lives<=0){end(false,'נגמרו הלבבות!')}else msg('💜 '+reason+' נשארו '+lives+' לבבות.')}
-function end(success,reason){state=success?'win':'over';held=null;stopLoop();if(success){try{localStorage.setItem(SAVE,'complete')}catch(e){}openModal('🏰👑🌈','הצלתם את טירת הקשת!','צבעתם לפחות 80% מהזירה בשני השלבים, והתאמתם את הצבעים והמספרים למילים באנגלית! שער הטירה נפתח.','🗺️ חוזרים לממלכה',()=>{window.location.href='level2-numbers-intro.html'})}else{openModal('💜⏳','הקרב הסתיים',reason+' הגעתם לשלב '+(stage+1)+' וצבעתם '+percent.toFixed(1)+'% מהלוח. אפשר לנסות שוב!','🔄 משחק חדש',begin)}}
+function end(success,reason){state=success?'win':'over';held=null;stopLoop();if(success){try{localStorage.setItem(SAVE,'complete')}catch(e){}openModal('🏰👑🌈','הצלתם את טירת הקשת!','צבעתם לפחות 80% מהזירה בכל שמונת השלבים, והתאמתם צבעים ומספרים למילים באנגלית! שער הטירה נפתח.','🗺️ חוזרים לממלכה',()=>{window.location.href='level2-numbers-intro.html'})}else{openModal('💜⏳','הקרב הסתיים',reason+' הגעתם לשלב '+(stage+1)+' וצבעתם '+percent.toFixed(1)+'% מהלוח. אפשר לנסות שוב!','🔄 משחק חדש',begin)}}
 function win(){if(state==='play')end(true,'')}
 function step(dx,dy){if(state!=='play')return;const nx=ship.x+dx,ny=ship.y+dy;if(!inside(nx,ny))return;if(trail.some(p=>p.x===nx&&p.y===ny))return;
 const was=trail.length>0;
@@ -215,7 +225,7 @@ spoken.push(b.spoken);caughtWords.push(b.label);stageCaptured++;b.lastAnnouncedA
 }
 });
 // Balls NEVER disappear. Only components without balls are painted.
-if(spoken.length){msg('🔊 תחמתם כדורים באזור קטן: '+spoken.join(' + ')+'! הם נשארים בזירה וממשיכים לנוע.');speakCaught(spoken)}
+if(spoken.length){msg('✨ תחמתם כדורים באזור קטן: '+spoken.join(' + ')+'! הם ממשיכים לנוע. תוכלו לשמוע את שמותיהם במשחק ההתאמה.')}
 else if(filled>0)msg('🌈 צבעתם אזור ריק! המשיכו עד 80%.');
 else msg('🛡️ הקו הפך לקיר, אבל יש כדורים בשני הצדדים — הם נשארים במשחק.');
 percentUpdate()
@@ -324,7 +334,7 @@ ctx.restore()
 }
 function mineDraw(m){const p0=ring[m.pos],p=project(p0[0]+.5,p0[1]+.5);ctx.save();ctx.translate(p.x,p.y-5);ctx.shadowColor='#f96b88';ctx.shadowBlur=13;ctx.fillStyle='#352a42';ctx.beginPath();ctx.arc(0,0,12,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#fa7193';ctx.lineWidth=3;for(let a=0;a<8;a++){const rad=a*Math.PI/4;ctx.beginPath();ctx.moveTo(Math.cos(rad)*9,Math.sin(rad)*9);ctx.lineTo(Math.cos(rad)*16,Math.sin(rad)*16);ctx.stroke()}ctx.fillStyle='#ff6d91';ctx.beginPath();ctx.arc(-3,-3,3,0,Math.PI*2);ctx.fill();ctx.restore()}
 function itemDraw(obj,now){if(!obj)return;const p=project(obj.x+.5,obj.y+.5),text=obj.n?String(obj.n):({slow:'🧊',speed:'⚡',time:'⏱️',life:'❤️',trap:'⚠️'}[obj.type]||'⭐');ctx.save();ctx.shadowColor='#ffe38b';ctx.shadowBlur=18;ctx.fillStyle='#ffe29a';ctx.beginPath();ctx.arc(p.x,p.y-10+Math.sin(now/180)*3,17,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;ctx.font=obj.n?'bold 21px Arial':'20px Arial';ctx.fillStyle='#65417e';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(text,p.x,p.y-9+Math.sin(now/180)*3);ctx.restore()}
-function paintHud(){ctx.save();ctx.fillStyle='#17397aa8';ctx.fillRect(0,0,960,69);ctx.textAlign='left';ctx.font='bold 29px Arial';ctx.fillStyle='#fff';ctx.shadowColor='#26d7ff';ctx.shadowBlur=7;ctx.fillText('❤️ '+lives,20,44);ctx.fillText('⏱ '+formatTime(time),310,44);ctx.fillText(percent.toFixed(1)+'%',640,44);ctx.fillText('🎯 80%',798,44);ctx.font='bold 18px Arial';ctx.fillText('STAGE '+(stage+1)+'/2',470,65);ctx.shadowBlur=0;ctx.restore()}
+function paintHud(){ctx.save();ctx.fillStyle='#17397aa8';ctx.fillRect(0,0,960,69);ctx.textAlign='left';ctx.font='bold 29px Arial';ctx.fillStyle='#fff';ctx.shadowColor='#26d7ff';ctx.shadowBlur=7;ctx.fillText('❤️ '+lives,20,44);ctx.fillText('⏱ '+formatTime(time),310,44);ctx.fillText(percent.toFixed(1)+'%',640,44);ctx.fillText('🎯 80%',798,44);ctx.font='bold 18px Arial';ctx.fillText('STAGE '+(stage+1)+'/'+STAGES.length,470,65);ctx.shadowBlur=0;ctx.restore()}
 function render(now){bg();board();for(const b of balls)orb(b,now);itemDraw(power,now);itemDraw(star,now);shipDraw(now);paintHud()}
 function frame(now){if(state!=='play')return;const dt=Math.min(.04,Math.max(0,(now-lastFrame)/1000));lastFrame=now;update(dt);render(now);if(state==='play')frameId=requestAnimationFrame(frame)}
 function startLoop(){stopLoop();lastFrame=performance.now();moveAcc=0;frameId=requestAnimationFrame(frame)}
@@ -332,8 +342,7 @@ function hold(dir){if(state!=='play'||!V[dir])return;held=dir;moveAcc=0;const d=
 function pause(){if(state!=='play')return;state='paused';held=null;stopLoop();openModal('⏸️🏰','הטירה ממתינה לכם','השעון נעצר. אפשר להמשיך בדיוק מאותה נקודה.','▶️ ממשיכים!',()=>{state='play';startLoop()})}
 $('start').onclick=()=>{level=document.querySelector('input[name="difficulty"]:checked')?.value||'normal';$('overlay').hidden=true;begin()};
 $('pause').onclick=pause;
-$('rules').onclick=()=>{if(state==='play')pause();else openModal('🏰🪄','חוקי הזירה','צבעו 80% מהזירה. שלב ראשון: כדורי צבע. שלב שני: כדורי מספר. סגרו שטחים בלי כדורים כדי לצבוע אותם; כדורים לעולם לא נעלמים. רק אזורים בלי כדורים נצבעים, וכשמצמצמים כדור באזור קטן שמו יושמע באנגלית. היזהרו מהכדור השחור שמכרסם בקירות. אחרי כל שלב תיפתח משימת התאמה לימודית.','הבנתי!',()=>{if(state==='paused'){state='play';startLoop()}})};
-$('hear').onclick=()=>speak(stage===0?'Colors. Paint eighty percent.':'Numbers. Paint eighty percent.');
+$('rules').onclick=()=>{if(state==='play')pause();else openModal('🏰🪄','חוקי הזירה','צבעו 80% מהזירה בכל אחד משמונת השלבים, עם צבעים ומספרים מתחלפים. סגרו שטחים בלי כדורים כדי לצבוע אותם; כדורים לעולם לא נעלמים. רק אזורים בלי כדורים נצבעים, ובמהלך השלב אין קריינות; במשחק ההתאמה שבסוף כל שלב אפשר לשמוע מילים באנגלית. היזהרו מהכדור השחור שמכרסם בקירות. אחרי כל שלב תיפתח משימת התאמה לימודית.','הבנתי!',()=>{if(state==='paused'){state='play';startLoop()}})};
 $('mute').onclick=()=>setMuted(!muted);
 updateMuteButton();
 window.addEventListener('keydown',e=>{const d=KEYS[e.key];if(!d)return;if(state==='play'){e.preventDefault();if(held!==d)hold(d)}else if(e.key.startsWith('Arrow'))e.preventDefault()});
