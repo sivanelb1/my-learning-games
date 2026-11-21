@@ -200,3 +200,63 @@
  .board.final .slot .slot-portrait,.board.final .slot.filled .slot-portrait{font-size:21px}
  .board.final .slot .slot-person,.board.final .slot .slot-person-he,.board.final .slot .slot-relation-he{font-size:6px}
 }
+
+/* Final tree: a real, simple, three-generation family diagram — only ten relatives. */
+.board.final{grid-template-columns:minmax(0,1fr) 252px;grid-template-rows:auto auto minmax(0,1fr);min-height:760px}
+.board.final .slots{
+ display:grid;direction:ltr;grid-template-columns:repeat(12,minmax(0,1fr));
+ grid-template-rows:160px 190px 170px;gap:10px 0;align-items:center;justify-items:center;
+ align-content:center;justify-content:stretch;
+ min-height:0;height:610px;width:100%;max-width:none;margin:0;
+ padding:20px 7px 25px;position:relative;isolation:isolate;
+ background:linear-gradient(180deg,#fff8dc1a,#fff8dc06);
+}
+.board.final .slots::before{background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201200%20600%22%20preserveAspectRatio%3D%22none%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23fff2c6%22%20stroke-width%3D%2222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20opacity%3D%22.93%22%3E%3Cpath%20d%3D%22M550%20115V154H750V115%20M650%20154V202H250V300%20M650%20202H950V300%20M250%20363V445V500%20M950%20363V438H750V505%20M950%20438H1150V505%22%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%2379583b%22%20stroke-width%3D%2213%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M550%20115V154H750V115%20M650%20154V202H250V300%20M650%20202H950V300%20M250%20363V445V500%20M950%20363V438H750V505%20M950%20438H1150V505%22%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23d4aa73%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M550%20115V154H750V115%20M650%20154V202H250V300%20M650%20202H950V300%20M250%20363V445V500%20M950%20363V438H750V505%20M950%20438H1150V505%22%2F%3E%3C%2Fg%3E%3Ccircle%20cx%3D%22650%22%20cy%3D%22202%22%20r%3D%2212%22%20fill%3D%22%23fff0bb%22%20stroke%3D%22%2379583b%22%20stroke-width%3D%225%22%2F%3E%3Ccircle%20cx%3D%22950%22%20cy%3D%22438%22%20r%3D%2210%22%20fill%3D%22%23fff0bb%22%20stroke%3D%22%2379583b%22%20stroke-width%3D%224%22%2F%3E%3Ccircle%20cx%3D%22250%22%20cy%3D%22445%22%20r%3D%2210%22%20fill%3D%22%23fff0bb%22%20stroke%3D%22%2379583b%22%20stroke-width%3D%224%22%2F%3E%3C%2Fsvg%3E");background-size:100% 100%;inset:0;opacity:1;z-index:-1}
+.board.final .slot{grid-row:auto;grid-column:auto;align-self:center;justify-self:center;width:clamp(67px,8vw,104px);height:auto;aspect-ratio:1;border-width:5px;padding:2px}
+.board.final .slot[data-slot="0"]{grid-column:6;grid-row:1} /* grandma */
+.board.final .slot[data-slot="1"]{grid-column:8;grid-row:1} /* grandpa */
+.board.final .slot[data-slot="2"]{grid-column:11;grid-row:2} /* mother */
+.board.final .slot[data-slot="3"]{grid-column:9;grid-row:2} /* father */
+.board.final .slot[data-slot="4"]{grid-column:2;grid-row:2} /* uncle */
+.board.final .slot[data-slot="5"]{grid-column:4;grid-row:2} /* aunt */
+.board.final .slot[data-slot="6"]{grid-column:12;grid-row:3} /* son */
+.board.final .slot[data-slot="7"]{grid-column:10;grid-row:3} /* daughter */
+.board.final .slot[data-slot="8"]{grid-column:8;grid-row:3} /* baby */
+.board.final .slot[data-slot="9"]{grid-column:3;grid-row:3} /* cousin */
+.board.final .family-parents-label{
+ grid-column:9 / 12;grid-row:2;align-self:start;justify-self:center;
+ transform:translateY(-8px);z-index:4;direction:ltr;
+ font-weight:1000;font-size:clamp(11px,1.5vw,16px);line-height:1.1;
+ white-space:nowrap;color:#5c4377;background:linear-gradient(#fff9e5,#fbe7ba);
+ border:2px solid #a88b6d;border-radius:20px;padding:6px 12px;
+ box-shadow:0 3px 0 #8a7655,0 5px 10px #2b523b66;
+}
+.board.final .slot .slot-word{font-size:clamp(8px,.98vw,12px);width:clamp(83px,9vw,118px);min-height:22px;padding:4px 2px}
+.board.final .slot .slot-portrait,.board.final .slot.filled .slot-portrait{font-size:clamp(27px,3.2vw,42px)}
+.board.final .slot .slot-person{font-size:9px}
+.board.final .slot .slot-person-he,.board.final .slot .slot-relation-he{font-size:8px}
+.board.final .tray{max-height:620px;align-self:start}
+.board.final .tray .portrait-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+.board.final .tray .portrait{min-height:111px}
+@media(max-width:760px){
+ .board.final{display:flex;flex-direction:column;min-height:0;overflow:hidden}
+ .board.final .slots{grid-template-rows:125px 145px 125px;height:450px;min-height:450px;padding:14px 3px 20px;gap:6px 0}
+ .board.final .slot{width:clamp(43px,13vw,75px);border-width:3px}
+ .board.final .slot .slot-word{font-size:clamp(7px,1.7vw,10px);width:clamp(57px,17vw,86px);min-height:18px;padding:3px 1px}
+ .board.final .slot .slot-portrait,.board.final .slot.filled .slot-portrait{font-size:clamp(19px,5vw,30px)}
+ .board.final .slot .slot-person{font-size:clamp(6px,1.35vw,8px)}
+ .board.final .slot .slot-person-he,.board.final .slot .slot-relation-he{font-size:clamp(6px,1.2vw,7px)}
+ .board.final .family-parents-label{font-size:clamp(9px,2vw,12px);padding:4px 5px;transform:translateY(-3px)}
+ .board.final .tray{max-height:215px;width:calc(100% - 12px);overflow-y:auto}
+ .board.final .tray .portrait-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}
+ .board.final .tray .portrait{min-height:100px}
+}
+@media(max-width:420px){
+ .board.final .slots{grid-template-rows:115px 133px 112px;height:410px;min-height:410px}
+ .board.final .slot{width:clamp(38px,12.7vw,54px);border-width:3px}
+ .board.final .slot .slot-word{width:clamp(53px,16.5vw,72px);font-size:7px}
+ .board.final .slot .slot-portrait,.board.final .slot.filled .slot-portrait{font-size:18px}
+ .board.final .slot .slot-person,.board.final .slot .slot-person-he,.board.final .slot .slot-relation-he{font-size:6px}
+ .board.final .family-parents-label{font-size:9px;padding:4px 3px}
+ .board.final .tray .portrait-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
+}
