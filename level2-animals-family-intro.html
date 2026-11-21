@@ -21,4 +21,4 @@ const data={animals:{title:'🦁 שער החיות · ANIMALS',words:[['LION','�
 function speak(word){if(!('speechSynthesis' in window))return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(word);u.lang='en-US';u.rate=.8;speechSynthesis.speak(u)}catch(e){}}
 document.querySelectorAll('[data-kind]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-kind]').forEach(d=>d.classList.toggle('open',d===b));const selected=data[b.dataset.kind],root=document.getElementById('words');root.innerHTML='';document.getElementById('peekTitle').textContent=selected.title;for(const [word,he,emoji] of selected.words){const btn=document.createElement('button');btn.className='word';btn.type='button';btn.textContent='🔊 '+emoji+' '+word;const label=document.createElement('small');label.textContent=he;btn.append(label);btn.onclick=()=>speak(word);root.append(btn)}document.getElementById('peek').classList.add('visible')});
 })();
-</script></body></html>
+</script><script src="level2-world-navigation.js?v=rainbow6" defer></script></body></html>
