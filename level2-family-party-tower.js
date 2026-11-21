@@ -33,31 +33,66 @@ function sound(type){if(muted)return;try{var AC=window.AudioContext||window.webk
 function speak(word){if(muted||!("speechSynthesis" in window))return;try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(word);u.lang="en-US";u.rate=.78;u.pitch=1.06;speechSynthesis.speak(u)}catch(e){}}
 function rand(a,b){return a+Math.random()*(b-a)}
 function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),v=a[i];a[i]=a[j];a[j]=v}return a}
+// Difficulty increases across each eight-gift adventure. Tower 2 begins
+// around the difficulty of the later levels of Tower 1, not at beginner level.
+var LEVELS=[
+[{moving:0,spikes:0,holes:0},{moving:1,spikes:0,holes:0},
+ {moving:2,spikes:0,holes:0},{moving:2,spikes:1,holes:0},
+ {moving:3,spikes:1,holes:1},{moving:3,spikes:2,holes:1},
+ {moving:4,spikes:2,holes:2},{moving:5,spikes:3,holes:2}],
+[{moving:4,spikes:2,holes:1},{moving:5,spikes:2,holes:2},
+ {moving:5,spikes:3,holes:2},{moving:6,spikes:3,holes:2},
+ {moving:6,spikes:3,holes:3},{moving:6,spikes:4,holes:3},
+ {moving:7,spikes:4,holes:3},{moving:7,spikes:4,holes:3}]
+];
+var profile=LEVELS[group-1][0];
+// The main path is always reachable. The only rows with two trampolines
+// are rows with a black hole BETWEEN them, providing a safe choice.
+var MAIN_CENTERS=[450,490,550,490,430,470,520,480,430,490,530];
+var HOLE_ROWS=[[],[5],[3,7],[2,5,8]];
 function makePlatforms(){
-var xx=[0,420,590,375,160,360,580,385,165,360,540],result=[];
-var movers=[[],[3,6,8],[2,4,7,9],[2,3,4,6,7,8,9]][difficulty];
-var spikes=[[],[],[3,7,9],[2,4,6,8,9]][difficulty];
-var gold=difficulty===3?[3,6,9]:[];
-for(var i=0;i<xx.length;i++){
-var x=i===0?0:xx[i]+(difficulty===1?((i%3)-1)*23:difficulty===2?((i%2)?-22:20):difficulty===3?((i%4)-1)*12:0);
-var moving=movers.includes(i),amp=moving?(difficulty===1?42+(i%2)*13:difficulty===2?55+(i%3)*12:68+(i%3)*11):0;
-result.push({x:x,baseX:x,y:570-i*95,w:i===0?900:i===10?230:190,h:20,index:i,moving:moving,amp:amp,speed:difficulty===1?.88+i*.055:difficulty===2?1.05+i*.045:1.2+i*.055,phase:i*1.12,bounce:0,gold:gold.includes(i),hazard:false});
+var result=[],holeRows=HOLE_ROWS[profile.holes],movingCandidates=[2,4,6,8,3,7,9,1,5].filter(function(i){return !holeRows.includes(i)});
+var movingRows=movingCandidates.slice(0,profile.moving);
+var speedBoost=(group===2?.32:0)+stage*.055;
+for(var i=0;i<MAIN_CENTERS.length;i++){
+var w=i===0?900:i===10?230:190,center=MAIN_CENTERS[i];
+var x=i===0?0:center-w/2,moving=movingRows.includes(i);
+var amp=moving?28+Math.min(31,stage*3)+(group===2?7:0):0;
+result.push({x:x,baseX:x,y:570-i*95,w:w,h:20,index:i,moving:moving,amp:amp,speed:.82+speedBoost+i*.035,phase:i*1.12,bounce:0,gold:(group===1?stage>=6:stage>=3)&&[3,6,9].includes(i),hazard:false});
 }
-spikes.forEach(function(i){var safe=result[i];result.push({x:safe.baseX<450?706:60,baseX:safe.baseX<450?706:60,y:safe.y,w:125,h:20,index:i,hazard:true,moving:false,bounce:0})});
-// Alternative routes at the same height, never overlapping spike rows.
-var forks=difficulty===0?[]:difficulty===3?[3,5,7]:[2,4,6,8];
-forks.forEach(function(i){var main=result[i],width=155,other=main.baseX<380?main.baseX+255:main.baseX-255;other=Math.max(18,Math.min(W-width-18,other));result.push({x:other,baseX:other,y:main.y,w:width,h:20,index:i,moving:difficulty>=2&&i%2===0,amp:difficulty>=2&&i%2===0?23:0,speed:.75+i*.04,phase:i*.6,bounce:0,gold:false,hazard:false,fork:true})});
+// A fork is *always* paired with a hole. No hole means only one platform.
+holeRows.forEach(function(i){
+var main=result[i],safeCenter=main.baseX+main.w/2;
+var side=safeCenter>=475?-1:1,otherCenter=safeCenter+side*300;
+otherCenter=Math.max(105,Math.min(795,otherCenter));
+var w=170,otherX=otherCenter-w/2;
+result.push({x:otherX,baseX:otherX,y:main.y,w:w,h:20,index:i,moving:false,amp:0,speed:0,phase:0,bounce:0,gold:false,hazard:false,fork:true});
+});
+// Spike patches sit on the EDGES of existing platforms; they do not
+// introduce a third route or create an impossible full-width spike row.
+var spikeCandidates=[4,7,2,9,6,3,8,5].filter(function(i){return !holeRows.includes(i)});
+spikeCandidates.slice(0,profile.spikes).forEach(function(i,j){
+var parent=result[i],width=43,left=(j+stage)%2===0,offset=left?8:parent.w-width-8;
+result.push({x:parent.x+offset,baseX:parent.baseX+offset,y:parent.y,w:width,h:20,index:i,hazard:true,spikePatch:true,parentIndex:i,offset:offset,moving:false,bounce:0});
+});
 return result
 }
 function makeBlackHoles(){
-if(stage<3)return [];
-var locations=stage===3?[[635,210]]:stage===4?[[480,90]]:stage===5?[[590,230],[275,-220]]:stage===6?[[560,205],[290,-265]]:[[595,245],[270,-225],[655,-495]];
-return locations.map(function(p,i){return {x:p[0],y:p[1],r:32+(i%2)*5,pull:115+(i%2)*12}})
+var holes=[];
+HOLE_ROWS[profile.holes].forEach(function(i){
+var safe=platforms[i],other=platforms.find(function(p){return p.fork&&p.index===i});
+if(!other)return;
+var safeCenter=safe.baseX+safe.w/2,otherCenter=other.baseX+other.w/2;
+holes.push({x:(safeCenter+otherCenter)/2,y:safe.y-67,r:28+(group===2?3:0),pull:group===2?112:100,row:i});
+});
+return holes
 }
-function movePlatforms(){for(var i=0;i<platforms.length;i++){var p=platforms[i];if(p.moving)p.x=p.baseX+Math.sin(elapsed*p.speed+p.phase)*p.amp}}
-
+function movePlatforms(){
+for(var i=0;i<platforms.length;i++){var p=platforms[i];if(p.moving)p.x=p.baseX+Math.sin(elapsed*p.speed+p.phase)*p.amp}
+for(var j=0;j<platforms.length;j++){var patch=platforms[j];if(patch.spikePatch)patch.x=platforms[patch.parentIndex].x+patch.offset}
+}
 function resetPlayer(atCheckpoint){var p=platforms[atCheckpoint?checkpoint:0];player.x=p.x+p.w/2;player.y=p.y-player.h;player.vx=0;player.vy=JUMP;player.onGround=false;player.coyote=0;player.face=1;player.spin=0;player.angle=0;cameraY=Math.min(0,player.y-320);jumpBuffer=0}
-function setupStage(n){stage=n;difficulty=Math.min(3,Math.floor((n+1)/2));platforms=makePlatforms();blackHoles=makeBlackHoles();checkpoint=0;particles=[];finishLock=false;resetPlayer(false);setHud();$("worldLabel").textContent=["🌸 קפיצות ראשונות","🌀 טרמפולינות זזות","⚠️ היזהרו מהדוקרנים","⚡ אתגר הטרמפולינות"][difficulty]+" · "+(n+1)+" / 8";$("floatingHint").classList.remove("faded");hasMoved=false;setStatus(["🎁 קפצו עד לפסגה!","🌀 בחרו בין שני מסלולי טרמפולינות!","⚠️ דוקרנים פוסלים את כל הסיבוב!","🕳️ היזהרו מהחורים השחורים ומהדוקרנים!"][difficulty])}
+function setupStage(n){stage=n;difficulty=Math.min(3,Math.floor((n+1)/2));profile=LEVELS[group-1][n];platforms=makePlatforms();blackHoles=makeBlackHoles();checkpoint=0;particles=[];finishLock=false;resetPlayer(false);setHud();$("worldLabel").textContent=(group===2?"⚡ מגדל האתגרים · ":"🎁 מגדל המתנות · ")+(n+1)+" / 8";$("floatingHint").classList.remove("faded");hasMoved=false;setStatus(profile.holes?"🕳️ חור שחור! רק כאן יש שני מסלולים — בחרו את הצד הבטוח!":profile.spikes?"⚠️ דוקרנים על שולי הטרמפולינות! נחתו במרכז.":"🎁 קפצו בין הטרמפולינות עד לפסגה!")}
 function setHud(){$("hudRecipient").textContent="🎁 מי הביא אותה?";$("hudFloor").textContent=(stage+1)+" / 8";$("stageDots").innerHTML="";for(var i=0;i<8;i++){var dot=document.createElement("i");dot.className=delivered.includes(i)?"done":i===stage?"current":"";$("stageDots").append(dot)}}
 function showHeight(){var h=Math.round(Math.max(0,Math.min(100,(570-(player.y+player.h))/950*100)));$("hudHeight").textContent=h+"%"}
 function spawn(x,y,count,color){for(var i=0;i<count;i++)particles.push({x:x,y:y,vx:rand(-145,145),vy:rand(-180,-35),life:rand(.35,.85),age:0,size:rand(3,8),color:color||["#ffe2a0","#fff","#f7a7d0","#a5edc7"][i%4]})}
@@ -66,7 +101,7 @@ var icon=$("overlayIcon"),tag=$("overlayTag"),title=$("overlayTitle"),desc=$("ov
 if(mode==="intro"){icon.textContent="🎂🎈🎁";tag.textContent="MY BIRTHDAY SURPRISE · הפתעת יום ההולדת";title.textContent="כולם הגיעו לחגוג את יום ההולדת שלי!";desc.textContent="כולם הביאו לי מתנות! במשחק הזה נגלה שמונה מתנות של "+(group===1?"המשפחה הקרובה, ההורים והילדים":"הסבים, הסבתות וקרובי המשפחה")+". בכל פסגה נגלה מי הביא את המתנה ומה מסתתר בפנים! המתנה קופצת לבד — אתם מכוונים אותה בחצים ימינה ושמאלה.";btn.textContent="🎁 בואו נגלה את ההפתעות!";btn.onclick=function(){closeOverlay()}}
 else if(mode==="failed"){icon.textContent=failureReason==="hole"?"🕳️💫":"⚠️💥";tag.textContent="GAME OVER · הסיבוב נפסל";title.textContent=failureReason==="hole"?"החור השחור שאב את המתנה!":failureReason==="spikes"?"אוי! נחתתם על הדוקרנים!":"המתנה נפלה מהמגדל!";desc.textContent="הסיבוב הסתיים. חוזרים לתחילת המתנה הנוכחית, בלי נקודות שמירה. המתנות שכבר גיליתם נשמרות! בחרו מסלול אחר והיזהרו מהמכשולים.";btn.textContent="🔄 לנסות את המתנה שוב";btn.onclick=function(){setupStage(stage);closeOverlay()}}
 else if(mode==="between"){icon.textContent="🎉"+gift.item+"✨";tag.textContent="SURPRISE FOUND · מצאנו מתנה!";title.textContent="איזו הפתעה!";desc.textContent="גילינו מי הביא את המתנה ומה היה בתוכה! מוכנים לגלות מי הביא את המתנה הבאה?";btn.textContent="⬆️ למתנה המסתורית הבאה!";btn.onclick=function(){setupStage(Math.min(7,stage+1));setOverlay("chapter")}}
-else if(mode==="chapter"){icon.textContent="🎁✨";tag.textContent="MYSTERY GIFT "+(stage+1)+" / 8";title.textContent="מי הביא את המתנה הזאת?";desc.textContent="המתנה הבאה בצבע "+["ורוד","סגול","ירוק","כתום","ורוד","כחול","ירוק","כתום"][stage]+"! "+["הטרמפולינות רגילות כדי להתאמן בכיוון המתנה.","יש שתי דרכים לעלות בחלק מהקומות!","בחרו בין שתי טרמפולינות באותו גובה.","דוקרנים וחור שחור ראשון! נגיעה במכשול פוסלת את כל הסיבוב.","החור השחור שואב מתנות שמתקרבות אליו! חפשו מסלול בטוח.","שני חורים שחורים, דוקרנים ודרכים חלופיות!","היזהרו משני חורים שחורים ובחרו את המסלול הבטוח.","אתגר הסיום: שלושה חורים שחורים, דוקרנים וטרמפולינות זהובות!"][stage]+" הגיעו לפסגה, גלו מי הביא את המתנה ומה מסתתר בתוכה!";btn.textContent="🌀 קופצים לגלות!";btn.onclick=function(){closeOverlay()}}
+else if(mode==="chapter"){icon.textContent="🎁✨";tag.textContent="MYSTERY GIFT "+(stage+1)+" / 8";title.textContent="מי הביא את המתנה הזאת?";desc.textContent="המתנה הבאה בצבע "+["ורוד","סגול","ירוק","כתום","ורוד","כחול","ירוק","כתום"][stage]+"! "+(profile.holes?"יש "+(profile.holes===1?"חור שחור אחד":profile.holes+" חורים שחורים")+"! בכל שורה שיש בה חור שחור יש שתי טרמפולינות, אחת מכל צד. בחרו מסלול בטוח. ":"אין חורים שחורים בשלב הזה, ולכן יש רק טרמפולינה אחת בכל שורה. ")+(profile.spikes?"דוקרנים נמצאים בשולי חלק מהטרמפולינות, ונגיעה בהם פוסלת את הסיבוב. ":"")+(profile.moving?"חלק מהטרמפולינות זזות מצד לצד — תזמנו את הנחיתה. ":"")+" הגיעו לפסגה, גלו מי הביא את המתנה ומה מסתתר בתוכה!";btn.textContent="🌀 קופצים לגלות!";btn.onclick=function(){closeOverlay()}}
 else if(mode==="quiz"){icon.textContent="🎁🔍";tag.textContent="MYSTERY SOLVED · גילינו רמז!";title.textContent="מי הביא את המתנה?";desc.textContent="הגעתם לפסגה! עכשיו התג שעל המתנה נחשף. קראו את הרמז באנגלית ובחרו את בן המשפחה שהביא אותה:";var sign=document.createElement("button");sign.type="button";sign.className="sender-sign";sign.textContent="🔊 FROM: "+PEOPLE[stage].en+" · "+PEOPLE[stage].name;sign.onclick=function(){speak(PEOPLE[stage].en)};$("wordPreview").append(sign);$("overlayActions").hidden=true;renderQuiz();speak(PEOPLE[stage].en)}
 else if(mode==="reveal"){icon.textContent="🎊✨";tag.textContent="GIFT UNBOXED · ההפתעה נפתחה!";title.textContent="וואו! מה היה בתוך המתנה?";desc.textContent=PEOPLE[stage].name+" ("+PEOPLE[stage].nameHe+") הביא/ה לי מתנה!";var panel=$("giftReveal");panel.hidden=false;panel.style.setProperty("--gift-color",gift.color);var from=document.createElement("div");from.className="from-sign";from.textContent="FROM: "+PEOPLE[stage].en+" · "+PEOPLE[stage].he;panel.append(from);var box=document.createElement("div");box.className="gift-unbox";var base=document.createElement("div"),lid=document.createElement("div");base.className="box-base";lid.className="box-lid";var item=document.createElement("span");item.className="gift-content";item.textContent=gift.item;box.append(base,lid,item);panel.append(box);var name=document.createElement("div");name.className="gift-name";name.textContent=gift.en+" · "+gift.he;panel.append(name);var confetti=document.createElement("div");confetti.className="confetti";confetti.textContent="✨ 🎉 ⭐ 🎈 ✨";panel.append(confetti);btn.textContent=stage===7?"🎂 לסיום המסיבה!":"🎁 למתנה הבאה!";btn.onclick=function(){if(stage===7){setOverlay("complete")}else setOverlay("between")};speak(gift.en);sound("win")}
 else if(mode==="complete"){icon.textContent="🏆🎂🎈";tag.textContent="HAPPY BIRTHDAY · יום הולדת שמח!";title.textContent="כל שמונה מתנות יום ההולדת נפתחו!";desc.textContent=group===1?"איזה כיף! גילינו את כל שמונה המתנות של המשפחה הקרובה, ההורים והילדים! עכשיו נמשיך לעץ סבא וסבתא.":"איזה כיף! גילינו את כל שמונה המתנות של הסבים, הסבתות וקרובי המשפחה! עכשיו מחכה לנו עץ המשפחה הגדול!";var recap=$("wordPreview");GIFTS.forEach(function(g,i){var c=document.createElement("div");c.className="word-card";var emoji=document.createElement("span");emoji.className="face";emoji.textContent=g.item;var name=document.createElement("strong");name.className="en";name.textContent=g.en;var who=document.createElement("span");who.className="he";who.textContent=PEOPLE[i].en+" · "+PEOPLE[i].he;c.append(emoji,name,who);recap.append(c)});btn.textContent=group===1?"🌺 לעץ סבא וסבתא!":"🌳 לעץ המשפחה הגדול!";btn.onclick=function(){location.href=group===1?"level2-family-tree.html?activity=grandparents":"level2-family-tree.html?activity=final"};var extra=document.createElement("button");extra.type="button";extra.className="secondary-action tower-replay";extra.textContent="🔄 לשחק שוב במגדל";extra.onclick=function(){state.party=[];delivered=[];save();setupStage(0);setOverlay("intro")};$("overlayActions").append(extra)}
@@ -95,7 +130,7 @@ for(var bh=0;bh<blackHoles.length;bh++){var hole=blackHoles[bh],dx=hole.x-(p.x+p
 p.x+=p.vx*dt;p.y+=p.vy*dt;
 if(p.x<-p.w/2)p.x=W+p.w/2;if(p.x>W+p.w/2)p.x=-p.w/2;
 // Spikes kill on any contact, including when moving upward or sideways.
-for(var hi=0;hi<platforms.length;hi++){var hazard=platforms[hi];if(hazard.hazard&&p.x+p.w*.85>hazard.x+5&&p.x+p.w*.15<hazard.x+hazard.w-5&&p.y+p.h>hazard.y-38&&p.y<hazard.y+16){failStage("spikes");return}}
+for(var hi=0;hi<platforms.length;hi++){var hazard=platforms[hi];if(hazard.hazard&&p.x+p.w*.42>hazard.x+4&&p.x-p.w*.42<hazard.x+hazard.w-4&&p.y+p.h>hazard.y-37&&p.y<hazard.y+10){failStage("spikes");return}}
 if(p.vy>=0){
 for(var i=0;i<platforms.length;i++){
 var f=platforms[i];
@@ -143,13 +178,10 @@ function drawPlatform(f){
 var y=f.y-cameraY;if(y>H+80||y<-100)return;
 var isGoal=f.index===10,isBase=f.index===0;
 ctx.save();
-if(f.hazard){
-ctx.shadowColor="#d24c7b99";ctx.shadowBlur=17;ctx.shadowOffsetY=8;
-rounded(f.x,y+4,f.w,20,9,"#713c70","#fff0e5",2);
-ctx.shadowBlur=0;ctx.shadowOffsetY=0;
-rounded(f.x,y-13,f.w,19,9,"#ef6580","#ffe0e2",3);
-for(var q=0;q<7;q++){var bx=f.x+9+q*18;ctx.beginPath();ctx.moveTo(bx-9,y-12);ctx.lineTo(bx,y-34-(q%2)*5);ctx.lineTo(bx+9,y-12);ctx.closePath();ctx.fillStyle="#fff2ed";ctx.fill();ctx.lineWidth=2;ctx.strokeStyle="#9e436b";ctx.stroke()}
-text("⚠",f.x+f.w/2,y+2,20,"#fff8e3");
+if(f.spikePatch){
+ctx.shadowColor="#d24c7b99";ctx.shadowBlur=12;ctx.shadowOffsetY=2;
+rounded(f.x,y-13,f.w,11,4,"#d95372","#ffe0e2",2);
+for(var q=0;q<3;q++){var bx=f.x+7+q*14;ctx.beginPath();ctx.moveTo(bx-7,y-11);ctx.lineTo(bx,y-36-(q%2)*4);ctx.lineTo(bx+7,y-11);ctx.closePath();ctx.fillStyle="#fff2ed";ctx.fill();ctx.lineWidth=2;ctx.strokeStyle="#9e436b";ctx.stroke()}
 ctx.restore();return
 }
 var spring=f.bounce||0,top=y+spring*8,center=f.x+f.w/2;
