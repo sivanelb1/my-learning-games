@@ -5,19 +5,19 @@
 *{box-sizing:border-box}body{margin:0;min-height:100dvh;background:radial-gradient(ellipse at 50% 0%,#6a3f9b 0,#28154f 40%,#100923 100%);font-family:Arial,"Noto Sans Hebrew",sans-serif;color:#fff5dc}button,a{font:inherit}button{cursor:pointer}.wrap{max-width:1230px;margin:auto;padding:12px 13px 55px}.top{display:flex;justify-content:space-between;align-items:center;gap:8px}.top a,.tag{color:#ffe4ab;background:#3c2768;border:2px solid #d8b77d;padding:8px 13px;text-decoration:none;border-radius:13px;font-size:13px;font-weight:900}.title{text-align:center;padding:9px 0 8px}.title h1{font:bold clamp(27px,5vw,48px) Georgia,serif;color:#ffe4a6;margin:7px;text-shadow:0 3px #734191,0 0 17px #dcb6f9}.title p{color:#e8d6f8;font-size:15px;margin:5px;line-height:1.5}.layout{display:grid;grid-template-columns:minmax(0,1fr) 295px;gap:16px;align-items:start}.castle{background:linear-gradient(145deg,#4b316e,#27163f);border:4px solid #d5b075;border-radius:26px;padding:10px;box-shadow:0 18px 36px #09031b88;min-width:0}.arena-frame{position:relative;overflow:hidden;border-radius:17px;border:4px ridge #d5ad76;background:#3d62a1;box-shadow:0 0 0 3px #6e4c91,inset 0 0 24px #09071b}canvas{display:block;width:100%;height:auto;aspect-ratio:960/660;touch-action:none}.below{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:12px;font-weight:900;color:#ffe2a5;margin:10px 2px 3px}.sidebar{display:flex;flex-direction:column;gap:12px}.panel{border:3px solid #c7a0df;background:linear-gradient(150deg,#51327d,#2d1a55);border-radius:23px;padding:15px;box-shadow:0 10px 20px #0005}.panel h2{font-size:19px;color:#ffe3a5;margin:2px 0 12px}.goal{background:#fff6e6;border:3px solid #efcb85;border-radius:18px;color:#592b78;text-align:center;padding:13px}.goal small{display:block;font-weight:900;color:#805b9d;font-size:12px}.goal strong{display:block;font:bold 37px Georgia,serif;margin:6px 0;color:#7840a0}.goal .sub{font-size:13px;color:#725181;font-weight:900}.goal strong{font-size:24px}.targets{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin:11px 0}.target-chip{display:inline-flex;align-items:center;gap:6px;padding:8px 10px;background:#fff;border:2px solid var(--c);color:#482a68;border-radius:14px;font-weight:900;font-size:15px;box-shadow:0 2px 9px #4b237025;direction:ltr}.target-chip:before{content:"";width:15px;height:15px;border-radius:50%;background:var(--c);box-shadow:0 0 12px var(--c)}.target-chip.caught{opacity:.55;text-decoration:line-through;background:#e8e4ed}.challenge{margin-top:7px;background:#e9d9f8;border-radius:10px;padding:8px;color:#633a86;font-size:13px;font-weight:900}.progress{height:14px;border-radius:20px;background:#180d33;border:1px solid #b5a0cf;overflow:hidden;margin-top:12px}.fill{height:100%;width:0;background:linear-gradient(90deg,#ffb878,#ffe7a4,#8fe7be);transition:width .35s}.nums{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin-top:10px}.chip{text-align:center;padding:7px 0;border-radius:10px;background:#3c255e;border:2px solid #775995;color:#d4bce7;font-weight:900}.chip.done{background:#ffe09e;border-color:#fff1be;color:#673773}.status{font-size:14px;color:#ffe7ad;min-height:68px;line-height:1.5;font-weight:900;text-align:center;margin:12px 0}.hudline{display:flex;justify-content:space-between;gap:8px;font-size:15px;font-weight:900;color:#ffeba9;margin:8px 0}.controls{display:grid;grid-template-columns:repeat(3,64px);gap:6px;justify-content:center;direction:ltr;touch-action:none;margin:12px auto}.controls button{height:57px;width:64px;border:2px solid #f4d4a0;background:linear-gradient(#8958b2,#553184);color:white;font-size:27px;font-weight:900;border-radius:15px;touch-action:none;user-select:none;-webkit-user-select:none}.controls button:active,.controls button.down{background:#b181d4;transform:translateY(2px)}.controls .up{grid-column:2;grid-row:1}.controls .left{grid-column:1;grid-row:2}.controls .downkey{grid-column:2;grid-row:2}.controls .right{grid-column:3;grid-row:2}.actions{display:flex;justify-content:center;gap:7px;flex-wrap:wrap}.actions button{background:#6d4a91;border:2px solid #d0b0e3;color:#fff0ce;border-radius:12px;padding:9px 13px;font-size:13px;font-weight:900}.help{font-size:12px;color:#e3c9f6;line-height:1.6;text-align:center;margin:12px 0 0}.legend{font-size:12px;color:#e8d6ff;line-height:1.8;text-align:center}.overlay{position:fixed;inset:0;z-index:30;background:#0b061fdd;display:grid;place-items:center;padding:12px;overflow-y:auto}.overlay[hidden]{display:none}.modal{width:min(590px,100%);background:linear-gradient(155deg,#fff9eb,#ead6ff);color:#53276e;border:5px solid #f0ca81;border-radius:29px;text-align:center;padding:23px 18px;box-shadow:0 20px 55px #0009}.modal .big{font-size:60px}.modal h2{font-size:clamp(24px,5vw,33px);color:#783d97;margin:7px}.modal p{font-size:16px;line-height:1.65}.rules{background:#fffaf2;border-radius:15px;padding:12px 16px;text-align:right;font-size:14px;font-weight:700;line-height:1.9}.levels{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin:13px auto}.levels label{cursor:pointer;position:relative}.levels input{position:absolute;opacity:0}.levels span{display:block;padding:9px 12px;border-radius:13px;border:2px solid #cfabdb;background:#fff;color:#663d82;font-size:14px;font-weight:900}.levels input:checked+span{background:#ffe4a3;border-color:#a87b40}.levels input:focus-visible+span{outline:3px solid #693a95;outline-offset:2px}.primary{background:linear-gradient(#ffe5a4,#f3bd6d);color:#512c6d;border:3px solid #fff2ca;border-radius:17px;padding:13px 23px;font-size:19px;font-weight:900;box-shadow:0 5px 0 #a77c43;margin:9px}.sound{border:2px solid #cda9e2;background:#f2e6ff;color:#62377d;border-radius:11px;padding:7px 10px;font-size:13px;font-weight:900}.glow{color:#fff1a5}.bottom-note{color:#d8b7ed;text-align:center;font-size:12px;margin:15px auto;line-height:1.6}@media(max-width:970px){.layout{grid-template-columns:1fr}.sidebar{display:grid;grid-template-columns:1fr 1fr}}@media(max-width:590px){.sidebar{grid-template-columns:1fr}.castle{padding:5px;border-width:3px}.arena-frame{border-width:2px}.top a,.tag{font-size:11px;padding:7px}.panel{padding:12px}.title h1{font-size:29px}.modal{padding:15px 11px}.modal p{font-size:14px}.rules{font-size:13px}.controls{margin-top:5px}}@media(prefers-reduced-motion:reduce){.fill{transition:none}}
 </style></head>
 <body><main class="wrap"><nav class="top"><a href="level2-color-potions.html">🧪 בחזרה לשיקויים</a><span class="tag">🏰 תחנה 6 · משחק הסיום</span></nav>
-<header class="title"><h1>🏰 זירת הטירה הקסומה</h1><p>THE RAINBOW CASTLE · צבעו 90% מהזירה! תחילה צבעים, אחר כך מספרים.</p></header>
+<header class="title"><h1>🏰 זירת הטירה הקסומה</h1><p>THE RAINBOW CASTLE · צבעו 90% מהזירה! הכדורים נשארים במשחק — רק שטח ריק נצבע.</p></header>
 <div class="layout"><section class="castle"><div class="arena-frame"><canvas id="arena" width="960" height="660" aria-label="זירת טירה תלת ממדית מדומה: אביר הקשת סוגר שטחים ולוכד כדורי צבע זוהרים"></canvas></div><div class="below"><span>🛡️ אביר הקשת · חצים / WASD</span><span>✨ קו אנרגיה · סגירת שטחים</span></div></section>
 <aside class="sidebar"><section class="panel"><h2>🏆 משימת הטירה</h2><div class="goal"><small id="missionType">ממלכת הצבעים</small><strong id="stageNo">שלב 1 / 2</strong><div class="sub" id="missionLine">צבעו לפחות 90% מהלוח!</div><div class="targets" id="targets" aria-label="המילים של השלב"></div><div class="challenge" id="challenge">🎨 הכדורים הצבעוניים</div></div><div class="hudline"><span>🧩 שטח: <span id="percent">0.0%</span></span><span>⏱️ <span id="time">03:20</span></span></div><div class="progress" id="progress" role="progressbar" aria-label="אחוז שטח צבוע" aria-valuemin="0" aria-valuemax="90" aria-valuenow="0"><div class="fill" id="fill"></div></div><div class="hudline"><span>🎯 כדורים שנלכדו: <span id="count">0</span></span><span id="hearts">❤️❤️❤️</span></div><div class="nums" id="nums" aria-label="מילים שנלכדו"></div><div class="status" id="status" aria-live="polite">🪄 מוכנים לכבוש את הטירה?</div><button class="sound" id="hear" type="button">🔊 השמעת משימת השלב</button></section>
-<section class="panel"><h2>🕹️ שליטה באביר הקשת</h2><div class="controls"><button type="button" class="up" data-dir="up" aria-label="למעלה">↑</button><button type="button" class="left" data-dir="left" aria-label="שמאלה">←</button><button type="button" class="downkey" data-dir="down" aria-label="למטה">↓</button><button type="button" class="right" data-dir="right" aria-label="ימינה">→</button></div><div class="actions"><button type="button" id="pause">⏸️ עצירה</button><button type="button" id="rules">❔ הוראות</button></div><div class="help">החזיקו חץ כדי לזוז. גם בטלפון אפשר להשתמש בחצים או להחליק על הזירה.</div><div class="legend">🎨 צבעו 90% באמצעות סגירת שטחים · 🔴 כדורי צבע / 🔢 כדורי מספר<br>⚫ כדורים שחורים מכרסמים בקירות · 🧊 ⏱️ ❤️ = בונוסים</div></section></aside></div>
-<div class="bottom-note">שני שלבים: תחילה צבעים, אחר כך מספרים. כל כדור שנלכד מושמע באנגלית, והמטרה היא לצבוע 90% מהזירה בכל שלב. 💜</div></main>
-<div class="overlay" id="overlay"><div class="modal" id="modal"><div class="big">🏰🛡️🎨</div><h2>אביר הקשת מחזיר את הצבעים לטירה!</h2><p>יש שני שלבים: <b>שלב הצבעים</b> ואחריו <b>שלב המספרים</b>. בכל שלב המטרה היא <b>לצבוע 90% מהזירה</b>, ממש כמו במשחק כיבוש השטחים המקורי.</p><div class="rules">🛡️ זוזו על המסגרת הבטוחה, חצו את הזירה וחזרו אל שטח צבוע כדי לסגור אזור.<br>🎨 אזור בלי כדורים מתמלא בצבע. אם כולאים כדור בשטח קטן, גם הוא נלכד!<br>🔊 בכל לכידה תשמעו את שם הצבע או המספר באנגלית.<br>⚫ הכדורים השחורים מכרסמים בקירות שכבר צבעתם — היזהרו!<br>💜 פגיעה בשובל הפתוח או באביר בזמן חיתוך גורמת לאובדן לב.<br>🏆 צבעו לפחות 90% מהלוח כדי לעבור לשלב הבא.</div><div style="font-weight:900;margin-top:12px">בחרו דרגת קושי:</div><div class="levels"><label><input type="radio" name="difficulty" value="easy"><span>🐢 קלילה</span></label><label><input type="radio" name="difficulty" value="normal" checked><span>🐉 רגילה</span></label><label><input type="radio" name="difficulty" value="hard"><span>⚡ מאתגרת</span></label></div><button type="button" class="primary" id="start">🛡️ יוצאים לצבוע את הטירה!</button></div></div>
+<section class="panel"><h2>🕹️ שליטה באביר הקשת</h2><div class="controls"><button type="button" class="up" data-dir="up" aria-label="למעלה">↑</button><button type="button" class="left" data-dir="left" aria-label="שמאלה">←</button><button type="button" class="downkey" data-dir="down" aria-label="למטה">↓</button><button type="button" class="right" data-dir="right" aria-label="ימינה">→</button></div><div class="actions"><button type="button" id="pause">⏸️ עצירה</button><button type="button" id="rules">❔ הוראות</button></div><div class="help">החזיקו חץ כדי לזוז. גם בטלפון אפשר להשתמש בחצים או להחליק על הזירה.</div><div class="legend">🎨 רק אזורים ללא כדורים מתמלאים בצבע · 🔴 צבעים / 🔢 מספרים<br>⚫ כדורים שחורים מכרסמים בקירות · 🧊 ⏱️ ❤️ = בונוסים</div></section></aside></div>
+<div class="bottom-note">שני שלבים: צבעים ומספרים. הכדורים לעולם לא נעלמים! רק אזור ללא כדורים נצבע. כשכולאים כדור באזור מצומצם שומעים את שמו באנגלית. 💜</div></main>
+<div class="overlay" id="overlay"><div class="modal" id="modal"><div class="big">🏰🛡️🎨</div><h2>אביר הקשת מחזיר את הצבעים לטירה!</h2><p>יש שני שלבים: <b>שלב הצבעים</b> ואחריו <b>שלב המספרים</b>. בכל שלב המטרה היא <b>לצבוע 90% מהזירה</b>, ממש כמו במשחק כיבוש השטחים המקורי.</p><div class="rules">🛡️ זוזו על המסגרת הבטוחה, חצו את הזירה וחזרו אל שטח צבוע כדי לסגור אזור.<br>🎨 רק אזור בלי כדורים מתמלא בצבע. כדורים שנכלאים נשארים בתוך האזור שלהם וממשיכים לנוע!<br>🔊 כשמצמצמים וכובשים סביב כדור, שומעים את שם הצבע או המספר באנגלית.<br>⚫ הכדורים השחורים מכרסמים בקירות שכבר צבעתם — היזהרו!<br>💜 פגיעה בשובל הפתוח או באביר בזמן חיתוך גורמת לאובדן לב.<br>🏆 צבעו לפחות 90% מהלוח כדי לעבור לשלב הבא.</div><div style="font-weight:900;margin-top:12px">בחרו דרגת קושי:</div><div class="levels"><label><input type="radio" name="difficulty" value="easy"><span>🐢 קלילה</span></label><label><input type="radio" name="difficulty" value="normal" checked><span>🐉 רגילה</span></label><label><input type="radio" name="difficulty" value="hard"><span>⚡ מאתגרת</span></label></div><button type="button" class="primary" id="start">🛡️ יוצאים לצבוע את הטירה!</button></div></div>
 <script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id),canvas=$('arena'),ctx=canvas.getContext('2d');
 const W=24,H=16,INNER=(W-2)*(H-2),NAMES=['ONE','TWO','THREE','FOUR','FIVE','SIX','SEVEN','EIGHT','NINE','TEN'];
 const COLORS=[['RED','#f04762'],['BLUE','#3a9bf6'],['GREEN','#44d48c'],['YELLOW','#fbe363'],['PURPLE','#b585ef'],['ORANGE','#ff9b4b'],['PINK','#fa8dbd'],['BLACK','#38384e']];
 const V={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]},KEYS={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',w:'up',a:'left',s:'down',d:'right',W:'up',A:'left',S:'down',D:'right'};
-const SAVE='playwise-hidden-wonders-castle-arena-v4';
+const SAVE='playwise-hidden-wonders-castle-arena-v5';
 const TARGET=90;
 const STAGES=[
 {kind:'color',title:'🎨 ממלכת הצבעים',hint:'לכדו כדורים צבעוניים וצבעו 90% מהזירה! היזהרו משני הכדורים השחורים שמכרסמים בקירות.',speed:1,eroders:2},
@@ -50,11 +50,12 @@ const names=cfg.kind==='color'?[0,1,2,3,4,5,6].sort(()=>Math.random()-.5).slice(
 for(let i=0;i<count+blackCount;i++){
 let x=3+Math.random()*(W-6),y=3+Math.random()*(H-6);
 for(let k=0;k<100&&balls.some(b=>Math.hypot(b.x-x,b.y-y)<2.6);k++){x=3+Math.random()*(W-6);y=3+Math.random()*(H-6)}
-const a=Math.random()*Math.PI*2,eater=i>=count,value=eater?(cfg.kind==='color'?'BLACK':String((i-count+7)%10+1)):String(names[i]);
-const ci=cfg.kind==='color'?(eater?7:names[i]):(i%7);
-const label=cfg.kind==='color'?COLORS[ci][0]:(eater?value:String(names[i]));
-const spoken=cfg.kind==='color'?label:NAMES[Number(label)-1];
-balls.push({x,y,vx:Math.cos(a)*ballSpeed*(eater?0.88:1),vy:Math.sin(a)*ballSpeed*(eater?0.88:1),color:eater?COLORS[7]:cfg.kind==='color'?COLORS[ci]:COLORS[(Number(label)-1)%7],label,spoken,r:.36,type:eater?'eater':'normal',lastErode:0})
+const a=Math.random()*Math.PI*2,eater=i>=count;
+const ci=cfg.kind==='color'?(eater?7:names[i]):0;
+const label=eater?(cfg.kind==='color'?'BLACK':''):cfg.kind==='color'?COLORS[ci][0]:String(names[i]);
+const spoken=cfg.kind==='color'?label:(eater?null:NAMES[Number(label)-1]);
+const color=eater?COLORS[7]:cfg.kind==='color'?COLORS[ci]:['NUMBER','#6353c9'];
+balls.push({x,y,vx:Math.cos(a)*ballSpeed*(eater?0.88:1),vy:Math.sin(a)*ballSpeed*(eater?0.88:1),color,label,spoken,r:.36,type:eater?'eater':'normal',lastErode:0,lastAnnouncedArea:INNER})
 }
 }
 function spawnMines(){mines=[]}
@@ -70,7 +71,7 @@ function stageIntro(){
 state='stageIntro';held=null;stopLoop();
 const cfg=STAGES[stage];
 openModal(stage===0?'🏰🎨':'🏰🔢','שלב '+(stage+1)+' מתוך 2 — '+cfg.title,
-cfg.hint+' כל כדור שתכלאו יושמע באנגלית. כדי לנצח צריך לצבוע 90% מהלוח.',
+cfg.hint+' הכדורים לא נעלמים: רק שטח בלי כדורים נצבע. כשכולאים כדור באזור קטן שומעים את שמו באנגלית. המטרה: 90% מהלוח.',
 '🛡️ מתחילים את שלב '+(stage+1),()=>{startStage();speak(stage===0?'Colors. Paint ninety percent of the board.':'Numbers. Paint ninety percent of the board.')})
 }
 function percentUpdate(){let n=0;for(let y=1;y<H-1;y++)for(let x=1;x<W-1;x++)if(land[at(x,y)])n++;percent=n/INNER*100;hud();if(state==='play'&&percent>=TARGET)finishStage()}
@@ -79,7 +80,7 @@ if(state!=='play')return;
 held=null;stopLoop();
 if(stage===STAGES.length-1){win();return}
 stage++;state='stageclear';
-openModal('🎨✨🏰','כל הכבוד! צבעתם 90% מהזירה!','לכדתם '+stageCaptured+' כדורים והחזרתם את הצבעים לטירה. השלב הבא: ממלכת המספרים!','🔢 ממשיכים למספרים',stageIntro)
+openModal('🎨✨🏰','כל הכבוד! צבעתם 90% מהזירה!','צבעתם את רוב הזירה בלי להעלים אף כדור! השלב הבא: ממלכת המספרים!','🔢 ממשיכים למספרים',stageIntro)
 }
 
 function findSafeNear(x,y,forbid){let best=null,score=1e9;for(let j=0;j<H;j++)for(let i=0;i<W;i++){if(!land[at(i,j)]||(forbid&&forbid(i,j)))continue;const d=Math.abs(i-x)+Math.abs(j-y);if(d<score&&d>=2){best={x:i,y:j};score=d}}return best||{x:ship.x,y:ship.y}}
@@ -107,31 +108,44 @@ if(power&&ship.x===power.x&&ship.y===power.y)collectPower();
 }
 function closeArea(){
 if(!trail.length)return;
-const path=trail.slice(),openBefore=land.reduce((n,v)=>n+(v===0),0),before=percent;
+const path=trail.slice(),openBefore=land.reduce((n,v)=>n+(v===0),0);
 for(const p of path)land[at(p.x,p.y)]=1;trail=[];
 const seen=new Uint8Array(W*H),regions=[],labels=new Int16Array(W*H);labels.fill(-1);
 for(let y=1;y<H-1;y++)for(let x=1;x<W-1;x++){
 const start=at(x,y);if(land[start]||seen[start])continue;
 const region=[],q=[start];seen[start]=1;
-for(let head=0;head<q.length;head++){const id=q[head],xx=id%W,yy=Math.floor(id/W);region.push(id);for(const [dx,dy] of [[0,1],[0,-1],[1,0],[-1,0]]){const a=xx+dx,b=yy+dy;if(!inside(a,b))continue;const j=at(a,b);if(!land[j]&&!seen[j]){seen[j]=1;q.push(j)}}}
+for(let head=0;head<q.length;head++){
+const id=q[head],xx=id%W,yy=Math.floor(id/W);region.push(id);
+for(const [dx,dy] of [[0,1],[0,-1],[1,0],[-1,0]]){
+const a=xx+dx,b=yy+dy;if(!inside(a,b))continue;
+const j=at(a,b);if(!land[j]&&!seen[j]){seen[j]=1;q.push(j)}
+}}
 const k=regions.length;for(const id of region)labels[id]=k;regions.push(region)
 }
 const occupant=regions.map(()=>[]);
-for(const b of balls){const x=Math.max(1,Math.min(W-2,Math.floor(b.x))),y=Math.max(1,Math.min(H-2,Math.floor(b.y))),k=labels[at(x,y)];if(k>=0)occupant[k].push(b)}
-const removed=new Set(),spoken=[];
+for(const b of balls){
+const x=Math.max(1,Math.min(W-2,Math.floor(b.x))),y=Math.max(1,Math.min(H-2,Math.floor(b.y))),k=labels[at(x,y)];
+if(k>=0)occupant[k].push(b)
+}
+let filled=0;const spoken=[];
 regions.forEach((region,k)=>{
 const group=occupant[k];
-const canCatch=group.length>0&&region.length<=openBefore*.55;
-if(group.length===0||canCatch){
+if(group.length===0){
 for(const id of region)land[id]=1;
-for(const b of group){removed.add(b);spoken.push(b.spoken);caughtWords.push(b.label);stageCaptured++}
+filled+=region.length;
+}else{
+for(const b of group){
+const previous=b.lastAnnouncedArea||INNER;
+if(b.spoken&&region.length<=Math.min(previous*.76,openBefore*.72)){
+spoken.push(b.spoken);caughtWords.push(b.label);stageCaptured++;b.lastAnnouncedArea=region.length
+}
+}
 }
 });
-balls=balls.filter(b=>!removed.has(b));
-for(const b of balls){const x=Math.floor(b.x),y=Math.floor(b.y);if(solid(x,y)){const p=randomOpen();b.x=p.x;b.y=p.y}}
-if(spoken.length){msg('🎨 לכדתם '+spoken.join(' + ')+'! כל הכבוד!');speakCaught(spoken)}
-else if(percent>before+.1)msg('✨ צובעים עוד שטח! המשיכו לכיוון 90%.');
-else msg('🛡️ הקו נסגר! תחמו אזורים ללא כדורים כדי לצבוע אותם.');
+// Balls NEVER disappear. Only components without balls are painted.
+if(spoken.length){msg('🔊 כלאתם כדורים באזור קטן: '+spoken.join(' + ')+'! הם ממשיכים לנוע בתוכו.');speakCaught(spoken)}
+else if(filled>0)msg('🌈 צבעתם אזור ריק! המשיכו עד 90%.');
+else msg('🛡️ הקו הפך לקיר, אבל יש כדורים בשני הצדדים — הם נשארים במשחק.');
 percentUpdate()
 }
 function randomOpen(){for(let n=0;n<600;n++){const x=2+Math.random()*(W-4),y=2+Math.random()*(H-4);if(!solid(Math.floor(x),Math.floor(y)))return{x,y}}return{x:W/2,y:H/2}}
@@ -193,12 +207,12 @@ function orb(b,now){
 const p=project(b.x,b.y),r=13+b.y/H*5;ctx.save();
 ctx.shadowColor=b.color[1];ctx.shadowBlur=b.type==='eater'?22:18;
 const g=ctx.createRadialGradient(p.x-r*.42,p.y-r*.5,2,p.x,p.y,r);
-g.addColorStop(0,'#fffef4');g.addColorStop(.25,b.color[1]);g.addColorStop(1,b.color[1]);
+g.addColorStop(0,b.type==='eater'?'#8d8d9d':STAGES[stage].kind==='number'?'#978ce6':'#fffef4');g.addColorStop(.25,b.color[1]);g.addColorStop(1,b.type==='eater'?'#20202c':STAGES[stage].kind==='number'?'#4c3fb3':b.color[1]);
 ctx.fillStyle=g;ctx.beginPath();ctx.arc(p.x,p.y-7,r,0,Math.PI*2);ctx.fill();
 ctx.lineWidth=2;ctx.strokeStyle=b.type==='eater'?'#ffb4c2':'#ffffffc9';ctx.stroke();ctx.shadowBlur=0;
 if(b.type==='eater'){ctx.strokeStyle='#f7a5be';ctx.lineWidth=2.5;ctx.beginPath();ctx.arc(p.x,p.y-7,r+5+Math.sin(now/280)*1.7,0,Math.PI*2);ctx.stroke();ctx.fillStyle='#fff';ctx.font='13px Arial';ctx.textAlign='center';ctx.fillText('⚒',p.x,p.y-r-8)}
-if(STAGES[stage].kind==='number'){ctx.fillStyle='#fff';ctx.font='bold 20px Arial';ctx.textAlign='center';ctx.shadowColor='#20102d';ctx.shadowBlur=5;ctx.fillText(b.label,p.x,p.y+1);ctx.shadowBlur=0}
-else{ctx.font='bold 12px Arial';ctx.fillStyle='#fff';ctx.textAlign='center';ctx.shadowColor='#21163c';ctx.shadowBlur=5;ctx.fillText(b.label,p.x,p.y+r+13)}
+if(STAGES[stage].kind==='number'&&b.type!=='eater'){ctx.fillStyle='#fff';ctx.font='bold 20px Arial';ctx.textAlign='center';ctx.shadowColor='#20102d';ctx.shadowBlur=5;ctx.fillText(b.label,p.x,p.y+1);ctx.shadowBlur=0}
+else if(STAGES[stage].kind==='color'){ctx.font='bold 12px Arial';ctx.fillStyle='#fff';ctx.textAlign='center';ctx.shadowColor='#21163c';ctx.shadowBlur=5;ctx.fillText(b.label,p.x,p.y+r+13)}
 ctx.restore()
 }
 function shipDraw(now){
@@ -246,7 +260,7 @@ function hold(dir){if(state!=='play'||!V[dir])return;held=dir;moveAcc=0;const d=
 function pause(){if(state!=='play')return;state='paused';held=null;stopLoop();openModal('⏸️🏰','הטירה ממתינה לכם','השעון נעצר. אפשר להמשיך בדיוק מאותה נקודה.','▶️ ממשיכים!',()=>{state='play';startLoop()})}
 $('start').onclick=()=>{level=document.querySelector('input[name="difficulty"]:checked')?.value||'normal';$('overlay').hidden=true;begin()};
 $('pause').onclick=pause;
-$('rules').onclick=()=>{if(state==='play')pause();else openModal('🏰🪄','חוקי הזירה','צבעו 90% מהזירה. שלב ראשון: כדורי צבע. שלב שני: כדורי מספר. סגרו שטחים בלי כדורים כדי לצבוע אותם; אם סגרתם כדור בתוך אזור קטן, הוא נלכד ושמו יושמע באנגלית. היזהרו מהכדורים השחורים שמכרסמים בקירות.','הבנתי!',()=>{if(state==='paused'){state='play';startLoop()}})};
+$('rules').onclick=()=>{if(state==='play')pause();else openModal('🏰🪄','חוקי הזירה','צבעו 90% מהזירה. שלב ראשון: כדורי צבע. שלב שני: כדורי מספר. סגרו שטחים בלי כדורים כדי לצבוע אותם; כדורים לעולם לא נעלמים. רק אזורים בלי כדורים נצבעים, וכשמצמצמים כדור באזור קטן שמו יושמע באנגלית. היזהרו מהכדורים השחורים שמכרסמים בקירות.','הבנתי!',()=>{if(state==='paused'){state='play';startLoop()}})};
 $('hear').onclick=()=>speak(stage===0?'Colors. Paint ninety percent.':'Numbers. Paint ninety percent.');
 window.addEventListener('keydown',e=>{const d=KEYS[e.key];if(!d)return;if(state==='play'){e.preventDefault();if(held!==d)hold(d)}else if(e.key.startsWith('Arrow'))e.preventDefault()});
 window.addEventListener('keyup',e=>{const d=KEYS[e.key];if(d&&held===d)held=null});
