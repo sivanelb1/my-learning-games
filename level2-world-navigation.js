@@ -12,7 +12,7 @@ const stations=[
  {title:'מערת הדרקון',emoji:'🐉',parts:[['📖','ספר הצלילים','level2-dragon-sounds.html'],['🐉','אתגר הצלילים','level2-quest.html?stage=5'],['⭐','מבוך הכוכבים','level2-dragon-maze.html']]},
  {title:'ממלכת הצבעים והמספרים',emoji:'🌈',parts:[['🚪','שער הממלכה','level2-numbers-intro.html'],['🐉','סנייק · 4 בחירות · 10 התאמות','level2-dragon-snake.html'],['🎨','ספר הצבעים','level2-colors-dictionary.html'],['🧪','גן השיקויים','level2-color-potions.html'],['🏰','זירת הטירה','level2-castle-arena.html'],['🌈','שער הקשת','level2-rainbow-bridge-finale.html']]},
  {title:'ממלכת החיות',emoji:'🐾',parts:[['📖','לומדים 25 חיות','level2-animals-family-intro.html'],['🐾','מצילים את החיות','level2-animal-rescue.html']]},
- {title:'ממלכת המשפחה',emoji:'👨‍👩‍👧‍👦',parts:[['🏡','בתי המשפחה','level2-family-gate.html'],['🌸','עץ המשפחה הקרובה','level2-family-tree.html?activity=close'],['🌼','עץ הורים וילדים','level2-family-tree.html?activity=parents'],['🌺','עץ סבא וסבתא','level2-family-tree.html?activity=grandparents'],['🌷','עץ קרובי משפחה','level2-family-tree.html?activity=relatives'],['🎁','מגדל המתנות הקסום','level2-family-party-tower.html'],['🌳','העץ הגדול','level2-family-tree.html?activity=final']]},
+ {title:'ממלכת המשפחה',emoji:'👨‍👩‍👧‍👦',parts:[['🏡','בתי המשפחה','level2-family-gate.html'],['🌸','עץ המשפחה הקרובה','level2-family-tree.html?activity=close'],['🌼','עץ הורים וילדים','level2-family-tree.html?activity=parents'],['🎁','מגדל המתנות · חלק א׳','level2-family-party-tower.html?set=1'],['🌺','עץ סבא וסבתא','level2-family-tree.html?activity=grandparents'],['🌷','עץ קרובי משפחה','level2-family-tree.html?activity=relatives'],['🎁','מגדל המתנות · חלק ב׳','level2-family-party-tower.html?set=2'],['🌳','העץ הגדול','level2-family-tree.html?activity=final']]},
  {title:'מפתחות האוצר',emoji:'🗝️',parts:[]},
  {title:'הכתר האבוד',emoji:'👑',parts:[]}
 ];
@@ -37,12 +37,12 @@ const files={
  'level2-animal-rescue.html':[6,1],
  'level2-family-gate.html':[7,0],
  'level2-family-tree.html':[7,1],
- 'level2-family-party-tower.html':[7,5]
+ 'level2-family-party-tower.html':[7,3]
 };
 let station=-1,part=0;
 const quest=filename==='level2-quest.html';
 if(quest){station=Math.max(0,Math.min(9,(Number(qs.get('stage'))||5)-1));if(station===4)part=1;}
-else if(files[filename]){station=files[filename][0];part=files[filename][1];if(filename==='level2-family-tree.html'){const stages={close:1,parents:2,grandparents:3,relatives:4,party:5,final:6};part=stages[qs.get('activity')]||1;}}
+else if(files[filename]){station=files[filename][0];part=files[filename][1];if(filename==='level2-family-tree.html'){const stages={close:1,parents:2,grandparents:4,relatives:5,party:6,final:7};part=stages[qs.get('activity')]||1;}if(filename==='level2-family-party-tower.html')part=qs.get('set')==='2'?6:3;}
 if(station<0)return;
 const style=document.createElement('style');
 style.id='pw-embedded-stage-style';
@@ -80,8 +80,8 @@ function isDone(st,p){
  if(st===7){
   if(p===0)return localStorage.getItem('playwise-animals-family-family-complete-v1')==='complete';
   const x=JSON.parse(localStorage.getItem('playwise-family-magic-progress-v1')||'{}');
-  if(p>=1&&p<=4)return Array.isArray(x.awake)&&Array.isArray(x.awake[p-1])&&x.awake[p-1].length===4;
-  if(p===5){const tower=JSON.parse(localStorage.getItem("playwise-family-gift-tower-v1")||"[]");return Array.isArray(tower)&&tower.length===4;}
+  if(p===1||p===2||p===4||p===5){const idx=p<=2?p-1:p-2;return Array.isArray(x.awake)&&Array.isArray(x.awake[idx])&&x.awake[idx].length===4;}
+  if(p===3||p===6){const tower=JSON.parse(localStorage.getItem(p===3?'playwise-family-gift-tower-first-v1':'playwise-family-gift-tower-second-v1')||'[]');return Array.isArray(tower)&&tower.length===8;}
   return localStorage.getItem('playwise-family-tree-complete-v3')==='complete';
  }
  return royal.includes(st);
