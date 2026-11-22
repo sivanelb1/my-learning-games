@@ -3,7 +3,9 @@
    Obstacles cost hearts; pink ramps launch the car into a safe jump. */
 (function(){
 'use strict';
-const W=480,H=610,LANES=3,MAX_DT=.045;
+const W=480,H=610,LANES=3,MAX_DT=.045,MIN_DRIVE_SECONDS=43;
+// A five-row cycle keeps pickups special: most rows require a safe-lane decision.
+const ROW_PATTERNS=['single-clear','double-clear','double-ramp','single-ramp','double-word'];
 const rand=(a,b)=>a+Math.random()*(b-a);
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const $=(root,sel)=>root.querySelector(sel);
@@ -14,26 +16,22 @@ function round(ctx,x,y,w,h,r){ctx.beginPath();ctx.roundRect(x,y,w,h,r)}
 function poly(ctx,pts){ctx.beginPath();ctx.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<pts.length;i++)ctx.lineTo(pts[i][0],pts[i][1]);ctx.closePath()}
 function mount(opts){
  const root=opts.element,words=opts.words.map(w=>({en:w[0],he:w[1],emoji:w[2]}));
- root.innerHTML='<div class="activity-heading"><div class="mini-pill">🏎️ מירוץ המפלצת · MONSTER ROAD RALLY</div><h2>המפלצת יוצאת למסע!</h2><p>המכונית נוסעת לבד! זזים ימינה ושמאלה, מתחמקים ממכשולים, קופצים ברמפות ואוספים את כל איברי הגוף באנגלית.</p></div>'+
+ root.innerHTML='<div class="activity-heading"><div class="mini-pill">🏎️ מירוץ המכונית הקסומה · MAGIC ROAD RALLY</div><h2>יוצאים למירוץ הקסום!</h2><p>המכונית נוסעת לבד! בחרו את הנתיב הבטוח: לפעמים יש שני מכשולים, לפעמים רמפה, ורק מדי כמה שורות מופיעה מילה לאיסוף. 🚧🏎️</p></div>'+
  '<section class="road-game" aria-label="משחק נהיגה בשלושה נתיבים">'+
- '<div class="road-hud"><div class="road-hearts" id="roadHearts" aria-label="לבבות">❤️ ❤️ ❤️</div><div class="road-score">🧩 <b id="roadScore">0 / '+words.length+'</b></div><button class="road-pause" type="button" id="roadPause" aria-label="השהיית המשחק">⏸️</button></div>'+
- '<div class="road-screen"><canvas id="roadCanvas" width="480" height="610" role="img" aria-label="כביש שלושה נתיבים עם מכונית המפלצת, איברי גוף לאיסוף, מכשולים ורמפות"></canvas>'+
+ '<div class="road-hud"><div class="road-hearts" id="roadHearts" aria-label="לבבות">❤️ ❤️ ❤️</div><div class="road-score">🧩 <b id="roadScore">0 / '+words.length+'</b></div><div class="road-timer" aria-label="זמן נסיעה">⏱️ <b id="roadTimer">0:00</b></div><button class="road-pause" type="button" id="roadPause" aria-label="השהיית המשחק">⏸️</button></div>'+
+ '<div class="road-screen"><canvas id="roadCanvas" width="480" height="610" role="img" aria-label="כביש במבט מלמעלה עם מכונית סגולה, נתיבים בטוחים, איברי גוף לאיסוף, מכשולים ורמפות"></canvas>'+
  '<div class="road-float" id="roadFloat" aria-live="polite"></div>'+
- '<div class="road-overlay" id="roadOverlay"><div class="road-overlay-inner"><div class="road-overlay-emoji">🚙👾🌈</div><h3 id="roadOverlayTitle">מוכנים להרפתקה?</h3><p id="roadOverlayText">אספו את כל המילים! זוזו עם החצים במקלדת או עם הכפתורים. היזהרו מהמכשולים, וקפצו על הרמפות הוורודות!</p><button class="road-primary" type="button" id="roadAction">🚦 יוצאים לדרך!</button></div></div></div>'+
+ '<div class="road-overlay" id="roadOverlay"><div class="road-overlay-inner"><div class="road-overlay-emoji">🚙🌈⭐</div><h3 id="roadOverlayTitle">מוכנים להרפתקה?</h3><p id="roadOverlayText">התכוננו למסלול ארוך ומאתגר! לא בכל שורה יש מילה. הסתכלו קדימה, מצאו את הנתיב הפנוי, התחמקו משני מכשולים וקפצו על רמפות ורודות. אספו את כל איברי הגוף!</p><button class="road-primary" type="button" id="roadAction">🚦 יוצאים לדרך!</button></div></div></div>'+
  '<div class="road-controls" dir="ltr"><button class="road-steer" id="roadLeft" type="button" aria-label="לנתיב השמאלי">⬅️ <span>שמאלה</span></button><div class="road-control-tip">🎯 אוספים מילים<br>🚧 מתחמקים<br>🌈 קופצים!</div><button class="road-steer" id="roadRight" type="button" aria-label="לנתיב הימני"><span>ימינה</span> ➡️</button></div>'+
  '<div class="road-inventory"><h3>🎒 האיברים שאספנו · <span lang="en">BODY WORDS</span></h3><div class="road-word-list" id="roadWords"></div></div>'+
  '<div class="road-help">💡 מחשב: ← → או A / D · טלפון: לחצו על החצים או החליקו על הכביש</div></section>';
  const canvas=$(root,'#roadCanvas'),ctx=canvas.getContext('2d'),screen=$(root,'.road-screen');
- const hearts=$(root,'#roadHearts'),score=$(root,'#roadScore'),inventory=$(root,'#roadWords');
+ const hearts=$(root,'#roadHearts'),score=$(root,'#roadScore'),timer=$(root,'#roadTimer'),inventory=$(root,'#roadWords');
  const overlay=$(root,'#roadOverlay'),overlayTitle=$(root,'#roadOverlayTitle'),overlayText=$(root,'#roadOverlayText');
  const action=$(root,'#roadAction'),pause=$(root,'#roadPause'),float=$(root,'#roadFloat');
  const left=$(root,'#roadLeft'),right=$(root,'#roadRight');
- let state='ready',lane=1,visualLane=1,lives=3,items=[],collected=new Set(),spawnCount=words.map(()=>0);
+ let state='ready',lane=1,visualLane=1,lives=3,items=[],collected=new Set(),spawnCount=words.map(()=>0),rowIndex=0;
  let roadTime=0,spawnTimer=.5,anim=0,last=0,now=0,jumpUntil=0,shieldUntil=0,shakeUntil=0,flashUntil=0,flashText='',flashColor='#fff',disposed=false,winTimer=0;
- const monster=new Image();monster.src='assets/playwise-monster-3d.svg?v=approved3d1';
- const decorative=Array.from({length:16},(_,i)=>({x:i%2?455:25,y:(i*103)%610,kind:i%4}));
- const gradients={};
- function gradient(name,top,bottom){let g=gradients[name];if(!g){g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,top);g.addColorStop(1,bottom);gradients[name]=g}return g}
  function updateHud(){
    hearts.textContent='❤️ '.repeat(lives)+'🤍 '.repeat(3-lives);
    score.textContent=collected.size+' / '+words.length;
@@ -45,20 +43,27 @@ function mount(opts){
  function hideOverlay(){overlay.hidden=true}
  function steer(d){if(state!=='running')return;lane=clamp(lane+d,0,2)}
  function spawnRow(){
-   const missing=words.map((_,i)=>i).filter(i=>!collected.has(i));
-   if(!missing.length)return;
-   const fewest=Math.min(...missing.map(i=>spawnCount[i]));
-   const pool=missing.filter(i=>spawnCount[i]===fewest);
-   const wi=pool[Math.floor(Math.random()*pool.length)];
-   spawnCount[wi]++;
-   const pickupLane=Math.floor(rand(0,3));
-   const rest=[0,1,2].filter(i=>i!==pickupLane);
-   const hazardLane=rest[Math.floor(rand(0,2))];
-   const rampLane=rest.find(i=>i!==hazardLane);
-   const y=-55;
-   items.push({type:'word',lane:pickupLane,y,wi,hit:false});
-   if(roadTime>3||collected.size>0)items.push({type:'hazard',lane:hazardLane,y,variant:Math.floor(rand(0,3)),hit:false});
-   if(Math.random()<.45)items.push({type:'ramp',lane:rampLane,y,hit:false});
+   // The player can always pass safely: never fill all three lanes with hazards.
+   // Each five-row set contains only ONE word; other rows are tactical challenges.
+   const pattern=ROW_PATTERNS[rowIndex++%ROW_PATTERNS.length];
+   const all=[0,1,2],main=Math.floor(rand(0,LANES));
+   const other=all.filter(l=>l!==main);
+   const y=-75;
+   const obstacle=l=>items.push({type:'hazard',lane:l,y,variant:Math.floor(rand(0,3)),hit:false});
+   const ramp=l=>items.push({type:'ramp',lane:l,y,hit:false});
+   if(pattern==='single-clear'){obstacle(main);return}
+   if(pattern==='single-ramp'){obstacle(main);ramp(other[Math.floor(rand(0,2))]);return}
+   // A single open lane, ramp, or word is flanked by two hazards.
+   obstacle(other[0]);obstacle(other[1]);
+   if(pattern==='double-ramp'){ramp(main);return}
+   if(pattern==='double-word'&&collected.size<words.length){
+     const missing=words.map((_,i)=>i).filter(i=>!collected.has(i));
+     const fewest=Math.min(...missing.map(i=>spawnCount[i]));
+     const pool=missing.filter(i=>spawnCount[i]===fewest);
+     const wi=pool[Math.floor(rand(0,pool.length))];
+     spawnCount[wi]++;
+     items.push({type:'word',lane:main,y,wi,hit:false});
+   }
  }
  function resetTraffic(){items=[];lane=1;visualLane=1;spawnTimer=.25;jumpUntil=0;shieldUntil=now+1.5;winTimer=0}
  function start(){
@@ -75,7 +80,7 @@ function mount(opts){
    if(obj.hit||obj.lane!==lane)return;
    obj.hit=true;
    if(obj.type==='word'){
-     if(!collected.has(obj.wi)){collected.add(obj.wi);const w=words[obj.wi];message('✨ '+w.en+' · '+w.he,'#fff4a4');say(w.en);updateHud();if(collected.size===words.length){winTimer=.9;shieldUntil=now+2;}}
+     if(!collected.has(obj.wi)){collected.add(obj.wi);const w=words[obj.wi];message('✨ '+w.en+' · '+w.he,'#fff4a4');say(w.en);updateHud();if(collected.size===words.length){shieldUntil=now+1.5;}}
    }else if(obj.type==='ramp'){
      jumpUntil=now+1.55;message('🌈 קפיצה קסומה!','#ffffff');say('Jump!');
    }else if(obj.type==='hazard'&&now>jumpUntil&&now>shieldUntil){
@@ -87,11 +92,19 @@ function mount(opts){
    now+=dt;roadTime+=dt;
    visualLane+=(lane-visualLane)*Math.min(1,dt*11);
    spawnTimer-=dt;
-   if(spawnTimer<=0&&collected.size<words.length){spawnRow();spawnTimer=1.22+rand(0,.18);}
+   if(spawnTimer<=0&&(collected.size<words.length||roadTime<MIN_DRIVE_SECONDS)){
+     spawnRow();spawnTimer=1.26+rand(0,.12);
+   }
+   const seconds=Math.floor(roadTime);
+   const clock=Math.floor(seconds/60)+':'+String(seconds%60).padStart(2,'0');
+   if(timer.textContent!==clock)timer.textContent=clock;
    const speed=265+Math.min(45,roadTime*.8);
    for(const obj of items){obj.y+=speed*dt;if(!obj.hit&&obj.y>=472&&obj.y<=505)collision(obj);}
    items=items.filter(obj=>obj.y<650&&!obj.hit);
-   if(winTimer>0){winTimer-=dt;if(winTimer<=0&&state==='running')won();}
+   if(collected.size===words.length&&roadTime>=MIN_DRIVE_SECONDS){
+     if(!winTimer){winTimer=1.1;message('🏁 קו הסיום!','#fff4a4')}
+     else{winTimer-=dt;if(winTimer<=0&&state==='running')won()}
+   }
  }
  function backdrop(){
    // Bird's-eye parkland: no horizon, no shrinking scenery.
@@ -178,37 +191,35 @@ function mount(opts){
    ctx.shadowBlur=0;ctx.fillStyle='#fff6a4';ctx.font='bold 45px system-ui';ctx.textAlign='center';ctx.fillText('↑',0,19);ctx.restore();
  }
  function car(){
-   // Top-down convertible: symmetric proportions, monster sitting inside.
+   // Closed-roof toy car, viewed from DIRECTLY overhead. No front-facing character.
    const x=laneX(visualLane,492);
-   const jump=now<jumpUntil?Math.sin(Math.PI*clamp((jumpUntil-now)/1.55,0,1))*44:0;
+   const jump=now<jumpUntil?Math.sin(Math.PI*clamp((jumpUntil-now)/1.55,0,1))*42:0;
    const y=490-jump;
    ctx.save();
    if(now<shakeUntil)ctx.translate(Math.sin(now*80)*7,0);
-   ctx.fillStyle='#4c3b7355';ctx.beginPath();ctx.ellipse(x,506,42-jump*.13,69-jump*.16,0,0,Math.PI*2);ctx.fill();
+   ctx.fillStyle='#3e2f6655';ctx.beginPath();ctx.ellipse(x,508,42-jump*.15,72-jump*.2,0,0,Math.PI*2);ctx.fill();
    ctx.translate(x,y);
-   if(now<shieldUntil){ctx.strokeStyle='#b5ffff';ctx.lineWidth=4;ctx.setLineDash([9,6]);ctx.beginPath();ctx.ellipse(0,0,54,85,0,0,Math.PI*2);ctx.stroke();ctx.setLineDash([])}
-   // Four wheels, seen from above.
-   ctx.fillStyle='#453b63';
-   for(const xx of [-46,34])for(const yy of [-48,37]){round(ctx,xx,yy,12,34,6);ctx.fill()}
-   ctx.shadowColor='#62428c77';ctx.shadowBlur=12;ctx.shadowOffsetY=7;
-   ctx.fillStyle='#9156d3';round(ctx,-42,-72,84,147,28);ctx.fill();
+   if(now<shieldUntil){ctx.strokeStyle='#b5ffff';ctx.lineWidth=4;ctx.setLineDash([9,6]);ctx.beginPath();ctx.ellipse(0,0,54,86,0,0,Math.PI*2);ctx.stroke();ctx.setLineDash([])}
+   // Four symmetric wheels.
+   ctx.fillStyle='#41345e';
+   for(const xx of [-47,35])for(const yy of [-51,35]){round(ctx,xx,yy,12,36,6);ctx.fill()}
+   ctx.shadowColor='#513b8d77';ctx.shadowBlur=13;ctx.shadowOffsetY=6;
+   ctx.fillStyle='#8052c7';round(ctx,-42,-74,84,148,28);ctx.fill();
    ctx.shadowBlur=0;ctx.shadowOffsetY=0;
-   ctx.fillStyle='#d5a1f5';round(ctx,-37,-67,74,138,23);ctx.fill();
-   // Bonnet and dashboard, both clearly viewed from above.
-   ctx.fillStyle='#f2c5ff';round(ctx,-33,-64,66,31,13);ctx.fill();
-   ctx.fillStyle='#b1edff';round(ctx,-31,-27,62,42,15);ctx.fill();
-   ctx.fillStyle='#6b489c';round(ctx,-31,6,62,36,17);ctx.fill();
-   ctx.fillStyle='#ffe2ff';round(ctx,-27,9,54,30,14);ctx.fill();
-   // The approved blue monster is visible as the driver.
-   if(monster.complete&&monster.naturalWidth){
-     ctx.save();ctx.beginPath();ctx.ellipse(0,7,33,40,0,0,Math.PI*2);ctx.clip();
-     ctx.drawImage(monster,-36,-40,72,84);ctx.restore();
-   }else{ctx.font='47px system-ui';ctx.textAlign='center';ctx.fillText('👾',0,20)}
-   ctx.fillStyle='#b878e0';round(ctx,-34,41,68,27,12);ctx.fill();
-   ctx.fillStyle='#fff3b0';ctx.font='25px system-ui';ctx.textAlign='center';ctx.fillText('⭐',0,63);
-   ctx.fillStyle='#fff7c7';round(ctx,-35,-62,17,9,4);ctx.fill();round(ctx,18,-62,17,9,4);ctx.fill();
-   ctx.fillStyle='#ff9cb7';round(ctx,-33,64,17,6,3);ctx.fill();round(ctx,16,64,17,6,3);ctx.fill();
-   if(jump>0){ctx.font='27px system-ui';ctx.fillText('✨',-54,-25);ctx.fillText('✨',48,36)}
+   ctx.fillStyle='#d6a1fb';round(ctx,-36,-69,72,138,25);ctx.fill();
+   // Front bonnet and headlights at the TOP of the car.
+   ctx.fillStyle='#ecb9fa';round(ctx,-32,-66,64,34,12);ctx.fill();
+   ctx.fillStyle='#fff5a6';round(ctx,-33,-64,16,10,4);ctx.fill();round(ctx,17,-64,16,10,4);ctx.fill();
+   // Windshield, roof, and rear window: unmistakable bird's-eye silhouette.
+   ctx.fillStyle='#7550b5';round(ctx,-33,-30,66,87,21);ctx.fill();
+   ctx.fillStyle='#99e6ff';round(ctx,-29,-27,58,29,10);ctx.fill();
+   ctx.fillStyle='#d6a1fb';round(ctx,-28,6,56,34,13);ctx.fill();
+   ctx.fillStyle='#fff2b1';ctx.font='26px system-ui';ctx.textAlign='center';ctx.fillText('⭐',0,33);
+   ctx.fillStyle='#a3e6fb';round(ctx,-27,43,54,15,7);ctx.fill();
+   ctx.fillStyle='#ff86b3';round(ctx,-32,62,17,8,3);ctx.fill();round(ctx,15,62,17,8,3);ctx.fill();
+   // Highlights along both sides add depth without tilting the view.
+   ctx.strokeStyle='#fff0ff';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-34,-48);ctx.lineTo(-34,41);ctx.moveTo(34,-48);ctx.lineTo(34,41);ctx.stroke();
+   if(jump>0){ctx.font='27px system-ui';ctx.fillText('✨',-55,-26);ctx.fillText('✨',49,36)}
    ctx.restore();
  }
  function paint(){
@@ -230,7 +241,7 @@ function mount(opts){
  canvas.addEventListener('pointerdown',pointerStart);canvas.addEventListener('pointerup',pointerEnd);
  document.addEventListener('keydown',onKey);document.addEventListener('visibilitychange',visibility);
  updateHud();anim=requestAnimationFrame(frame);
- return {destroy,getState:()=>({state,lane,lives,collected:collected.size,total:words.length})};
+ return {destroy,getState:()=>({state,lane,lives,collected:collected.size,total:words.length,rowIndex,roadTime,items:items.map(o=>({type:o.type,lane:o.lane,wi:o.wi,y:o.y}))})};
 }
 window.PlaywiseBodyRoad={mount};
 })();
