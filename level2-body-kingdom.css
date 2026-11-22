@@ -38,3 +38,26 @@
  .diagram-board .diagram-lines path{stroke-width:4.5}
  .learn-cards{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+
+/* A genuinely missing body part: each SVG patient begins with a dotted silhouette.
+   The selected part only becomes visible after a correct answer. */
+.monster-wrap{width:min(100%,285px);height:270px;margin:12px auto 7px;overflow:visible}
+.monster.monster-illustrated{position:absolute;bottom:0;left:50%;width:255px;height:265px;transform:translateX(-50%);filter:drop-shadow(0 9px 4px #5c466340);transition:none;overflow:visible}
+.monster-illustrated .monster-svg{display:block;width:100%;height:100%;overflow:visible}
+.monster-illustrated .monster-part{transform-box:fill-box;transform-origin:center;transition:opacity .15s ease}
+.monster-illustrated:not(.repaired) .monster-part.needs-repair{opacity:0}
+.monster-illustrated .repair-placeholder{opacity:1;filter:drop-shadow(0 0 3px #6d5292);transition:opacity .3s ease}
+.monster-illustrated.repaired .repair-placeholder{opacity:0}
+.monster-illustrated .repair-sparkles{opacity:0;transform-box:fill-box;transform-origin:center}
+.monster-illustrated.repaired .repair-sparkles{animation:pw-repair-sparkles 1.35s ease-out both}
+.monster-illustrated.repaired .monster-part.needs-repair{opacity:1;animation:pw-repair-pop .7s cubic-bezier(.18,1.45,.3,1) both}
+.monster-illustrated.repaired.happy{animation:pw-monster-cheer 1.15s ease-in-out 1}
+.monster-illustrated[data-missing="HEAD"]:not(.repaired) .monster-head{opacity:0}
+.monster-illustrated .repair-placeholder path,.monster-illustrated .repair-placeholder circle,.monster-illustrated .repair-placeholder ellipse,.monster-illustrated .repair-placeholder rect{vector-effect:non-scaling-stroke}
+@keyframes pw-repair-pop{0%{transform:scale(.15);opacity:0}60%{transform:scale(1.25);opacity:1}100%{transform:scale(1);opacity:1}}
+@keyframes pw-repair-sparkles{0%{opacity:0;transform:scale(.3)}20%{opacity:1;transform:scale(1.15)}70%{opacity:1;transform:scale(1.05)}100%{opacity:0;transform:scale(1.45)}}
+@keyframes pw-monster-cheer{0%,100%{transform:translateX(-50%) translateY(0)}25%,70%{transform:translateX(-50%) translateY(-13px)}48%{transform:translateX(-50%) translateY(0)}}
+.monster-wrap .monster-speech{right:-98px;top:10px;max-width:160px;z-index:3}
+@media(max-width:740px){.monster-wrap .monster-speech{right:-52px;top:4px;max-width:130px}}
+@media(max-width:430px){.monster-wrap{width:240px}.monster.monster-illustrated{width:230px;height:240px}.monster-wrap .monster-speech{right:-36px;top:0;max-width:105px;font-size:11px;padding:7px 5px}}
+@media(prefers-reduced-motion:reduce){.monster-illustrated.repaired .monster-part.needs-repair{opacity:1}.monster-illustrated.repaired .repair-placeholder{opacity:0}}
