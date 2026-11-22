@@ -1,39 +1,39 @@
 <!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PLAYWISE | A An The Games</title><style>
 *{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:radial-gradient(circle at 15% 0%,#e9d5ff,#f6f2ff 48%,#e1f8f1);color:#342354}main{max-width:790px;margin:auto;padding:18px 14px 45px}h1{text-align:center;color:#6941a4;margin:8px}h2{text-align:center}p{line-height:1.6}.tabs{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:20px 0}.tabs button,.btn{border:0;border-radius:16px;background:#7450b6;color:#fff;font-size:17px;font-weight:bold;padding:13px 18px;cursor:pointer}.tabs button.on{background:#1b927b}.card{background:white;border:2px solid #e1d5f4;border-radius:23px;padding:20px;box-shadow:0 10px 26px #34235416}.hidden{display:none!important}.center{text-align:center}.question{font-size:clamp(24px,5vw,35px);direction:ltr;text-align:center;font-weight:bold;margin:22px 0}.choices{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}.choices button{border:2px solid #a58bd5;border-radius:16px;background:#f4ecff;padding:15px 23px;font-size:23px;font-weight:bold;color:#3b285b;cursor:pointer}.choices button:disabled{opacity:.65}.status{text-align:center;min-height:48px;font-weight:bold;margin:14px 0}.progress{height:12px;background:#eee4f7;border-radius:20px;overflow:hidden;margin:15px 0}.fill{height:100%;background:#39b999;width:0;transition:width .25s}.board{direction:ltr;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px;max-width:470px;margin:20px auto;padding:10px;background:#574088;border:5px solid #a58be1;border-radius:22px}.gem{aspect-ratio:1;border:2px solid #ffffff88;border-radius:19px;box-shadow:inset 0 -6px 0 #0002,0 3px 5px #0002;cursor:pointer;font-size:clamp(20px,5vw,36px);display:grid;place-items:center;touch-action:manipulation}.gem.sel{outline:4px solid #ffce56;transform:scale(.93)}.gem[data-c="0"]{background:#ff7b9c}.gem[data-c="1"]{background:#5bc9f3}.gem[data-c="2"]{background:#ffc75d}.gem[data-c="3"]{background:#8bdc9a}.targets{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.target{background:#f3edff;border-radius:12px;padding:9px 3px;text-align:center;font-size:14px;font-weight:bold}.target.done{background:#c9f5df}.modal{position:fixed;inset:0;background:#181334b9;display:grid;place-items:center;padding:16px;z-index:9}.dialog{background:#fff;color:#342354;border-radius:23px;padding:25px 16px;max-width:520px;width:100%;box-shadow:0 20px 70px #0006}.note{text-align:center;color:#675681}.score{text-align:center;font-weight:bold;color:#6745a3}@media(max-width:440px){.card{padding:12px}.board{gap:3px;padding:6px}.gem{border-radius:12px}.targets{gap:4px}.target{font-size:12px}}</style></head><body><main><h1>🎮 PLAYWISE · A / AN / THE</h1><p class="center">שני משחקים חדשים להכנה למבחן ✨</p><div class="tabs"><button id="tab1" class="on" onclick="showGame(1)">🍎 משחק 1 · בחירה</button><button id="tab2" onclick="showGame(2)">🍬 משחק 2 · סוכריות</button></div>
-<section id="game1" class="card"><h2>🍎 בוחרים A / AN / THE</h2><p class="center">בחרו את המילה המתאימה למשפט. בכל שאלה יש תשובה אחת נכונה.</p><div class="score" id="choiceCount"></div><div class="progress"><div class="fill" id="choiceBar"></div></div><div class="question" id="choiceSentence"></div><p class="center" id="choiceHebrew"></p><div class="choices" id="choiceButtons"></div><div class="status" id="choiceFeedback" aria-live="polite"></div><p class="center"><button class="btn hidden" id="choiceNext" onclick="nextChoice()">ממשיכים ✨</button></p></section>
+<section class="card" style="margin-bottom:16px"><h2>🔤 מה הן אותיות הניקוד?</h2><p class="center">באנגלית יש <strong>5 אותיות ניקוד</strong>:</p><div class="question" style="color:#7850b7;letter-spacing:8px">A E I O U</div><p>💜 <strong>ככה אנחנו לומדים:</strong> אות ניקוד = אות תנועה. כל אות אחרת היא אות עיצור.</p><p>🍎 <strong>A</strong> — לפני מילה שמתחילה באות עיצור, למשל <b dir="ltr">a bag · a pencil</b>.</p><p>🐘 <strong>AN</strong> — לפני מילה שמתחילה באות ניקוד, למשל <b dir="ltr">an animal · an igloo</b>.</p><p>⭐ <strong>THE</strong> — כשמדברים על משהו מסוים או מוכר, למשל <b dir="ltr">I have a bag. The bag is blue.</b></p><p class="note">בשלב הראשון משתמשים בכלל האותיות כדי ללמוד בקלות. בהמשך לומדים שיש מילים יוצאות דופן, שבהן מקשיבים לצליל.</p></section><section id="game1" class="card"><h2>🍎 בוחרים A / AN / THE</h2><p class="center">בחרו את המילה המתאימה למשפט. בכל שאלה יש תשובה אחת נכונה.</p><div class="score" id="choiceCount"></div><div class="progress"><div class="fill" id="choiceBar"></div></div><div class="question" id="choiceSentence"></div><p class="center" id="choiceHebrew"></p><div class="choices" id="choiceButtons"></div><div class="status" id="choiceFeedback" aria-live="polite"></div><p class="center"><button class="btn hidden" id="choiceNext" onclick="nextChoice()">ממשיכים ✨</button></p></section>
 <section id="game2" class="card hidden"><h2>🍬 Candy Grammar</h2><p class="center">החליפו בין שתי סוכריות שכנות כדי ליצור רצף של 3 ומעלה מאותו צבע. אספו את היעד בכל אחד מארבעת הצבעים וענו על ארבע שאלות כדי לעבור לשלב הבא!</p><div class="score" id="levelText"></div><div class="targets" id="targets"></div><div class="board" id="board" aria-label="לוח סוכריות"></div><div class="status" id="boardStatus" aria-live="polite"></div><p class="note">לחצו על סוכרייה ואז על סוכרייה שכנה כדי להחליף ביניהן.</p><p class="center"><button class="btn" onclick="restartLevel()">↻ מתחילים את השלב מחדש</button></p></section></main>
 <div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="dialog"><h2 id="modalTitle"></h2><p id="modalHelp" class="center"></p><div class="question" id="modalSentence"></div><p class="center" id="modalHebrew"></p><div class="choices" id="modalChoices"></div><div class="status" id="modalFeedback" aria-live="polite"></div><p class="center"><button class="btn hidden" id="modalNext" onclick="finishQuestion()">ממשיכים 🚀</button></p></div></div>
 <script>
 const $=id=>document.getElementById(id);
 const easy=[
 ["I have ___ bag.","יש לי תיק כלשהו.","a","לפני bag משתמשים ב־a."],
-["She sees ___ animal.","היא רואה בעל חיים כלשהו.","an","animal מתחילה בצליל תנועה."],
-["This is ___ pencil.","זה עיפרון כלשהו.","a","pencil מתחילה בצליל עיצור."],
-["He has ___ igloo.","יש לו איגלו כלשהו.","an","igloo מתחילה בצליל תנועה."],
-["I see ___ car.","אני רואה מכונית כלשהי.","a","car מתחילה בצליל עיצור."],
-["It is ___ orange.","זה תפוז כלשהו.","an","orange מתחילה בצליל תנועה."],
-["She has ___ chair.","יש לה כיסא כלשהו.","a","chair מתחילה בצליל עיצור."],
-["This is ___ apple.","זה תפוח כלשהו.","an","apple מתחילה בצליל תנועה."]
+["She sees ___ animal.","היא רואה בעל חיים כלשהו.","an","animal מתחילה באות ניקוד."],
+["This is ___ pencil.","זה עיפרון כלשהו.","a","pencil מתחילה באות עיצור."],
+["He has ___ igloo.","יש לו איגלו כלשהו.","an","igloo מתחילה באות ניקוד."],
+["I see ___ car.","אני רואה מכונית כלשהי.","a","car מתחילה באות עיצור."],
+["It is ___ orange.","זה תפוז כלשהו.","an","orange מתחילה באות ניקוד."],
+["She has ___ chair.","יש לה כיסא כלשהו.","a","chair מתחילה באות עיצור."],
+["This is ___ apple.","זה תפוח כלשהו.","an","apple מתחילה באות ניקוד."]
 ];
 const medium=[
 ["I have a bag. ___ bag is blue.","יש לי תיק. התיק כחול.","the","התיק כבר הוזכר ולכן הוא מסוים."],
 ["There is a cat. ___ cat is small.","יש חתול. החתול קטן.","the","אנחנו כבר יודעים על איזה חתול מדובר."],
-["I see ___ elephant in the zoo.","אני רואה פיל כלשהו בגן החיות.","an","elephant מתחילה בצליל תנועה."],
+["I see ___ elephant in the zoo.","אני רואה פיל כלשהו בגן החיות.","an","elephant מתחילה באות ניקוד."],
 ["She has a pencil. ___ pencil is red.","יש לה עיפרון. העיפרון אדום.","the","העיפרון כבר הוזכר."],
-["This is ___ umbrella.","זוהי מטרייה כלשהי.","an","umbrella מתחילה בצליל תנועה."],
+["This is ___ umbrella.","זוהי מטרייה כלשהי.","an","umbrella מתחילה באות ניקוד."],
 ["Look at ___ sun!","הביטו בשמש!","the","השמש היא דבר מסוים ומוכר."],
-["He has ___ new car.","יש לו מכונית חדשה כלשהי.","a","new מתחילה בצליל עיצור."],
+["He has ___ new car.","יש לו מכונית חדשה כלשהי.","a","new מתחילה באות עיצור."],
 ["I see a dog. ___ dog is happy.","אני רואה כלב. הכלב שמח.","the","מדובר בכלב שכבר הזכרנו."]
 ];
 const hard=[
-["She found ___ old book.","היא מצאה ספר ישן כלשהו.","an","old מתחילה בצליל תנועה."],
+["She found ___ old book.","היא מצאה ספר ישן כלשהו.","an","old מתחילה באות ניקוד."],
 ["We saw a house. ___ house has a garden.","ראינו בית. לבית יש גינה.","the","הבית כבר הוזכר."],
 ["He is ___ honest boy.","הוא ילד ישר.","an","ב־honest האות h שקטה, ולכן הצליל הראשון הוא תנועה."],
-["She has ___ useful idea.","יש לה רעיון שימושי.","a","useful מתחילה בצליל /y/ כמו you."],
+["She has ___ useful idea.","יש לה רעיון שימושי.","a","useful מתחילה בצליל /y/ כמו you — יוצא דופן לכלל האותיות."],
 ["I ate an apple. ___ apple was sweet.","אכלתי תפוח. התפוח היה מתוק.","the","התפוח כבר הוזכר."],
-["We waited for ___ hour.","חיכינו שעה.","an","hour מתחילה בצליל תנועה כי h שקטה."],
+["We waited for ___ hour.","חיכינו שעה.","an","hour מתחילה באות ניקוד כי h שקטה."],
 ["___ moon looks bright tonight.","הירח נראה בהיר הלילה.","the","הירח הוא דבר מסוים ומוכר."],
-["He bought ___ uniform.","הוא קנה מדים.","a","uniform מתחילה בצליל /y/."]
+["He bought ___ uniform.","הוא קנה מדים.","a","uniform מתחילה בצליל /y/ — יוצא דופן לכלל האותיות."]
 ];
 function pool(l){return l===1?easy:l===2?medium:hard}
 function mix(a){a=a.slice();for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
