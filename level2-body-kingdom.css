@@ -167,3 +167,6 @@ body{background:radial-gradient(ellipse at 12% 18%,#f8d7f7 0,transparent 35%),ra
 /* Keep the selected anatomy pointer visibly golden after the visual refresh. */
 .diagram-board .diagram-lines .diagram-arrow.arrow-active path{stroke:#ffb341;stroke-width:6}
 .diagram-board .diagram-lines .diagram-arrow.arrow-active circle{fill:#ffb341;stroke:#fff}
+
+/* Real generated 3D character image, not a hand-coded approximation. */
+.diagram-board .diagram-person .pw-boy-3d{display:block;width:100%;height:100%;object-fit:contain;object-position:center;user-select:none;-webkit-user-drag:none;pointer-events:none;filter:drop-shadow(0 7px 7px #6d5d9a26)}
