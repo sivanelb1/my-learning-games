@@ -134,46 +134,75 @@ function startHospital(final){caseFinal=final;caseList=hospitalCases(final);case
 function monsterIllustration(word){
  const missing=word[0];
  const part=(name,art)=>'<g class="monster-part '+(missing===name?'needs-repair':'')+'" data-part="'+name+'">'+art+'</g>';
- const skin='#ffe3ca',line='#815f92';
- const legLeft='<path d="M94 200 Q88 215 92 230 L110 230 Q116 215 115 201" fill="var(--monster)" stroke="'+line+'" stroke-width="3"/>';
- const footLeft='<ellipse cx="99" cy="232" rx="23" ry="11" fill="#ffb6c6" stroke="'+line+'" stroke-width="3"/>';
- const legRight=part('LEG','<path d="M128 202 Q126 216 130 230 L149 230 Q156 215 152 202" fill="var(--monster)" stroke="'+line+'" stroke-width="3"/>'+part('FOOT','<ellipse cx="148" cy="232" rx="23" ry="11" fill="#ffb6c6" stroke="'+line+'" stroke-width="3"/>'));
- const leftArm='<path d="M78 153 Q56 151 48 174 L41 187" fill="none" stroke="var(--monster)" stroke-width="24" stroke-linecap="round"/><circle cx="40" cy="189" r="14" fill="'+skin+'" stroke="'+line+'" stroke-width="3"/>';
- const rightArm=part('ARM','<path d="M166 153 Q190 151 199 174 L203 187" fill="none" stroke="var(--monster)" stroke-width="24" stroke-linecap="round"/>'+part('HAND','<circle cx="203" cy="190" r="15" fill="'+skin+'" stroke="'+line+'" stroke-width="3"/>'+part('FINGER','<path d="M210 180 L221 170 M215 188 L228 181 M215 196 L227 196" stroke="'+skin+'" stroke-width="8" stroke-linecap="round"/><path d="M210 180 L221 170 M215 188 L228 181 M215 196 L227 196" stroke="'+line+'" stroke-width="1.6" stroke-linecap="round"/>')));
- const ears=part('EARS','<ellipse cx="57" cy="91" rx="16" ry="23" fill="'+skin+'" stroke="'+line+'" stroke-width="3"/><ellipse cx="183" cy="91" rx="16" ry="23" fill="'+skin+'" stroke="'+line+'" stroke-width="3"/><path d="M55 87 Q63 83 63 97 M185 87 Q177 83 177 97" stroke="#e9a8a3" stroke-width="3" fill="none"/>');
- const hair=part('HAIR','<path d="M76 49 Q70 24 87 30 L96 40 Q100 11 117 22 L124 38 Q143 12 155 30 L151 45 Q171 30 174 53 Q136 41 112 53 Q90 47 76 49 Z" fill="#66528d" stroke="'+line+'" stroke-width="3" stroke-linejoin="round"/>');
- const eyes=part('EYES','<ellipse cx="97" cy="91" rx="14" ry="18" fill="white"/><ellipse cx="143" cy="91" rx="14" ry="18" fill="white"/><ellipse cx="99" cy="94" rx="7" ry="10" fill="#493a68"/><ellipse cx="145" cy="94" rx="7" ry="10" fill="#493a68"/><circle cx="102" cy="90" r="3.5" fill="white"/><circle cx="148" cy="90" r="3.5" fill="white"/>');
- const nose=part('NOSE','<ellipse cx="120" cy="112" rx="7" ry="5" fill="#ec9ea4"/><circle cx="117" cy="111" r="1.5" fill="#a97183"/><circle cx="123" cy="111" r="1.5" fill="#a97183"/>');
- const mouth=part('MOUTH','<ellipse cx="120" cy="131" rx="22" ry="15" fill="#754a78" stroke="'+line+'" stroke-width="2"/>'+part('TEETH','<path d="M103 122 Q120 117 137 122 L135 129 L105 129 Z" fill="#fffef7"/>')+part('TONGUE','<ellipse cx="120" cy="139" rx="12" ry="5" fill="#f79bad"/>'));
- const brain=part('BRAIN','<path d="M107 63 Q95 57 101 49 Q105 44 112 48 Q116 37 123 45 Q134 39 138 49 Q150 49 142 60 Q134 67 123 64 Q114 69 107 63 Z" fill="#f5b5da" stroke="#c37ea8" stroke-width="2"/><path d="M117 47 Q114 54 122 57 M132 46 Q127 53 133 58" fill="none" stroke="#c37ea8" stroke-width="2"/>');
- const head=part('HEAD','<circle cx="120" cy="88" r="65" fill="'+skin+'" stroke="'+line+'" stroke-width="4"/>'+ears+hair+brain+eyes+nose+mouth+'<ellipse cx="77" cy="113" rx="11" ry="5" fill="#f8a8b7" opacity=".5"/><ellipse cx="164" cy="113" rx="11" ry="5" fill="#f8a8b7" opacity=".5"/>');
- const heart=part('HEART','<path d="M113 172 C97 155 91 174 120 193 C149 174 143 155 127 172 L120 178 Z" fill="#ff8fa7" stroke="#fff0ef" stroke-width="3"/>');
- const bone=part('BONE','<path d="M103 209 Q96 204 94 211 Q88 211 90 218 Q92 223 98 219 L107 228 Q112 235 116 230 Q123 231 123 225 Q123 220 117 222 L107 212 Q109 205 103 209 Z" fill="#fff9e8" stroke="#d2b6c5" stroke-width="2"/>');
+ const paws=part('FOOT',`<g><ellipse cx="153" cy="225" rx="28" ry="14" fill="url(#pwPurplePaw)" stroke="#8450a9" stroke-width="2"/><path d="M141 220 L139 231 M153 219 L152 233 M165 220 L166 231" stroke="#b787e4" stroke-width="3" stroke-linecap="round"/></g>`);
+ const leg=part('LEG',`<path d="M133 198 Q133 220 144 225 Q166 233 173 210 L168 190 Z" fill="url(#pwBlueFur)" stroke="#42a7e5" stroke-width="2"/>${paws}`);
+ const hand=part('HAND',`<g><path d="M203 166 Q222 164 225 178 Q235 184 226 193 Q229 205 216 207 Q205 217 196 203 Q189 192 195 180 Z" fill="url(#pwBlueFur)" stroke="#44a7e0" stroke-width="2"/>${part('FINGER','<path d="M216 190 Q223 195 220 202 M207 194 Q214 204 208 209" fill="none" stroke="#3da9e8" stroke-width="4" stroke-linecap="round"/>')}</g>`);
+ const arm=part('ARM',`<path d="M174 142 Q199 138 212 162 L217 178 Q219 194 205 195 Q193 195 189 181 L172 171 Z" fill="url(#pwBlueFur)" stroke="#3ea6e0" stroke-width="2"/>${hand}`);
+ const ears=part('EARS',`<g><path d="M55 98 Q28 76 26 103 Q24 129 58 131 Z" fill="url(#pwBlueFur)" stroke="#2999d6" stroke-width="3"/><path d="M185 98 Q211 76 214 103 Q217 129 182 131 Z" fill="url(#pwBlueFur)" stroke="#2999d6" stroke-width="3"/><path d="M49 102 Q35 91 36 108 Q38 117 51 120 M192 102 Q207 91 204 108 Q202 117 189 120" fill="#e8a5ec" stroke="#b976d3" stroke-width="2"/></g>`);
+ const hair=part('HAIR',`<g fill="url(#pwPurpleFur)" stroke="#8550b6" stroke-width="1.8"><path d="M91 52 Q77 27 98 26 Q105 11 119 27 Q128 6 141 25 Q160 18 157 38 Q173 35 167 54 Q130 45 91 52 Z"/><path d="M108 30 Q101 14 112 10 Q127 13 124 29 M136 31 Q148 8 157 17 Q158 29 147 39"/></g>`);
+ const eyes=part('EYES',`<g><ellipse cx="96" cy="106" rx="19" ry="23" fill="#fffdfd" stroke="#d4b7e7" stroke-width="1.8"/><ellipse cx="146" cy="106" rx="19" ry="23" fill="#fffdfd" stroke="#d4b7e7" stroke-width="1.8"/><ellipse cx="100" cy="108" rx="12" ry="16" fill="url(#pwIrisPurple)"/><ellipse cx="150" cy="108" rx="12" ry="16" fill="url(#pwIrisPurple)"/><ellipse cx="101" cy="110" rx="6" ry="11" fill="#221744"/><ellipse cx="151" cy="110" rx="6" ry="11" fill="#221744"/><circle cx="103" cy="100" r="5" fill="#fff"/><circle cx="153" cy="100" r="5" fill="#fff"/><circle cx="95" cy="115" r="2.4" fill="#d4c6ff"/><circle cx="145" cy="115" r="2.4" fill="#d4c6ff"/><path d="M78 89 L73 84 M82 85 L80 79 M158 84 L163 79 M164 89 L170 85" stroke="#72429c" stroke-width="2.7" stroke-linecap="round"/></g>`);
+ const nose=part('NOSE',`<path d="M116 126 Q121 122 126 126 Q130 132 121 134 Q113 132 116 126 Z" fill="#79a7f2" stroke="#398dcb" stroke-width="1.5"/>`);
+ const teeth=part('TEETH',`<path d="M104 142 L111 143 L111 152 L107 154 Q103 150 104 142 Z M135 142 L142 141 L139 152 L136 154 Z" fill="#fffdf8" stroke="#e6dcf8" stroke-width="1.4"/>`);
+ const tongue=part('TONGUE',`<path d="M108 159 Q120 148 133 159 Q128 169 119 169 Q111 169 108 159 Z" fill="#ff94ad"/>`);
+ const mouth=part('MOUTH',`<g><path d="M97 141 Q120 132 147 140 Q143 168 122 170 Q104 169 97 141 Z" fill="#603c85" stroke="#8650a2" stroke-width="2.5"/>${teeth}${tongue}</g>`);
+ const brain=part('BRAIN',`<g><path d="M103 64 Q97 56 103 50 Q111 47 115 53 Q121 42 129 51 Q140 47 141 58 Q149 66 139 72 Q128 79 118 71 Q107 77 103 64 Z" fill="#f6b1d7" stroke="#d77cad" stroke-width="2"/><path d="M116 52 Q111 60 120 65 M132 51 Q126 60 134 68" stroke="#d77cad" stroke-width="2" fill="none"/></g>`);
+ const head=part('HEAD',`<g>
+ <!-- fuzzy, cloudlike silhouette and glossy shading -->
+ <path d="M55 111 Q41 103 53 87 Q44 70 62 62 Q57 47 77 45 Q85 31 104 39 Q122 24 139 37 Q157 31 170 48 Q190 44 192 64 Q208 74 196 90 Q206 105 192 119 Q193 145 174 155 Q158 170 138 164 Q121 176 102 166 Q80 169 70 150 Q49 145 55 127 Q43 120 55 111 Z" fill="url(#pwBlueFur)" stroke="#329edc" stroke-width="2.5"/>
+ <path d="M66 80 Q87 50 120 48 Q156 43 180 76" fill="none" stroke="#dcf8ff" stroke-width="7" opacity=".44" stroke-linecap="round"/>
+ ${ears}${hair}${brain}${eyes}${nose}${mouth}
+ <ellipse cx="71" cy="134" rx="13" ry="7" fill="#ff8eae" opacity=".7"/><ellipse cx="173" cy="134" rx="13" ry="7" fill="#ff8eae" opacity=".7"/>
+ <g fill="#a174dc" opacity=".83"><circle cx="64" cy="78" r="5"/><circle cx="176" cy="71" r="5"/><circle cx="181" cy="140" r="4"/></g>
+ </g>`);
+ const heart=part('HEART',`<g><path d="M105 177 C86 156 77 183 120 210 C163 183 154 156 135 177 L120 187 Z" fill="#fffaf9" stroke="#e5e5ff" stroke-width="2.5"/><path d="M109 182 C94 169 92 187 120 201 C148 187 146 169 131 182 L120 190 Z" fill="#ff78b5"/><path d="M108 178 Q113 177 117 181" stroke="#ffd3ec" stroke-width="3" fill="none" stroke-linecap="round"/></g>`);
+ const bone=part('BONE',`<g transform="translate(113 207) rotate(-15)"><path d="M-10 -4 Q-18 -12 -22 -5 Q-28 -3 -23 3 Q-19 7 -14 4 L6 8 Q11 14 17 8 Q24 9 23 2 Q21 -3 15 -2 L-6 -7 Q-8 -12 -14 -10 Z" fill="#fffdf4" stroke="#d4b7d8" stroke-width="2"/></g>`);
  const markers={
- HEAD:'<circle cx="120" cy="88" r="64"/>',HAIR:'<path d="M75 49 Q92 9 122 30 Q154 10 173 50"/>',
- EYES:'<ellipse cx="97" cy="91" rx="14" ry="18"/><ellipse cx="143" cy="91" rx="14" ry="18"/>',
- EARS:'<ellipse cx="57" cy="91" rx="16" ry="23"/><ellipse cx="183" cy="91" rx="16" ry="23"/>',
- NOSE:'<ellipse cx="120" cy="112" rx="9" ry="7"/>',MOUTH:'<ellipse cx="120" cy="131" rx="22" ry="15"/>',
- TEETH:'<rect x="103" y="120" width="34" height="9" rx="4"/>',TONGUE:'<ellipse cx="120" cy="139" rx="12" ry="6"/>',
- HAND:'<circle cx="203" cy="190" r="15"/>',ARM:'<path d="M166 153 Q190 151 199 174 L203 187" stroke-width="23"/>',
- FINGER:'<path d="M210 180 L221 170 M215 188 L228 181 M215 196 L227 196" stroke-width="7"/>',
- LEG:'<path d="M128 202 Q126 216 130 230 L149 230 Q156 215 152 202 Z"/>',
- FOOT:'<ellipse cx="148" cy="232" rx="23" ry="11"/>',
- HEART:'<path d="M113 172 C97 155 91 174 120 193 C149 174 143 155 127 172 L120 178 Z"/>',
- BRAIN:'<path d="M107 63 Q95 57 101 49 Q105 44 112 48 Q116 37 123 45 Q134 39 138 49 Q150 49 142 60 Q134 67 123 64 Q114 69 107 63 Z"/>',
- BONE:'<path d="M103 209 Q96 204 94 211 Q88 211 90 218 Q92 223 98 219 L107 228 Q112 235 116 230 Q123 231 123 225 Q123 220 117 222 L107 212 Q109 205 103 209 Z"/>'
+ HEAD:'<path d="M55 111 Q41 103 53 87 Q44 70 62 62 Q57 47 77 45 Q85 31 104 39 Q122 24 139 37 Q157 31 170 48 Q190 44 192 64 Q208 74 196 90 Q206 105 192 119 Q193 145 174 155 Q158 170 138 164 Q121 176 102 166 Q80 169 70 150 Q49 145 55 127 Q43 120 55 111 Z"/>',
+ HAIR:'<path d="M91 52 Q77 27 98 26 Q105 11 119 27 Q128 6 141 25 Q160 18 157 38 Q173 35 167 54"/>',
+ EYES:'<ellipse cx="96" cy="106" rx="19" ry="23"/><ellipse cx="146" cy="106" rx="19" ry="23"/>',
+ EARS:'<ellipse cx="39" cy="109" rx="18" ry="23"/><ellipse cx="202" cy="109" rx="18" ry="23"/>',
+ NOSE:'<ellipse cx="121" cy="130" rx="10" ry="7"/>',
+ MOUTH:'<ellipse cx="121" cy="151" rx="26" ry="18"/>',
+ TEETH:'<path d="M104 142 L111 143 L111 152 L107 154 Z M135 142 L142 141 L139 152 L136 154 Z"/>',
+ TONGUE:'<ellipse cx="120" cy="159" rx="12" ry="7"/>',
+ HAND:'<ellipse cx="211" cy="192" rx="18" ry="20"/>',
+ ARM:'<path d="M174 142 Q199 138 212 162 L217 178 Q219 194 205 195 Q193 195 189 181 L172 171 Z"/>',
+ FINGER:'<path d="M216 190 Q223 195 220 202 M207 194 Q214 204 208 209"/>',
+ LEG:'<path d="M133 198 Q133 220 144 225 Q166 233 173 210 L168 190 Z"/>',
+ FOOT:'<ellipse cx="153" cy="225" rx="28" ry="14"/>',
+ HEART:'<path d="M105 177 C86 156 77 183 120 210 C163 183 154 156 135 177 L120 187 Z"/>',
+ BRAIN:'<path d="M103 64 Q97 56 103 50 Q111 47 115 53 Q121 42 129 51 Q140 47 141 58 Q149 66 139 72 Q128 79 118 71 Q107 77 103 64 Z"/>',
+ BONE:'<path d="M93 203 L134 217"/>'
  };
- return '<svg class="monster-svg" viewBox="0 0 240 250" role="img" aria-label="מפלצת מצוירת שחסר לה איבר אחד" xmlns="http://www.w3.org/2000/svg">'+
- '<ellipse cx="120" cy="244" rx="92" ry="6" fill="#8f70a1" opacity=".18"/>'+
- legLeft+footLeft+legRight+leftArm+rightArm+
- '<rect x="69" y="139" width="102" height="76" rx="37" fill="var(--monster)" stroke="'+line+'" stroke-width="4"/>'+
- '<path d="M88 169 Q120 189 152 169" fill="none" stroke="#fff" stroke-width="6" opacity=".32" stroke-linecap="round"/>'+
- heart+bone+head+
- '<g class="repair-placeholder" fill="none" stroke="#f3f6ff" stroke-width="4" stroke-dasharray="6 5" stroke-linecap="round" stroke-linejoin="round">'+markers[missing]+'</g>'+
- '<g class="repair-sparkles" fill="#ffe77e"><path d="M30 90 L35 104 L49 109 L35 114 L30 128 L25 114 L11 109 L25 104 Z"/><path d="M206 49 L210 60 L222 64 L210 68 L206 80 L202 68 L190 64 L202 60 Z"/><circle cx="215" cy="151" r="6"/><circle cx="32" cy="168" r="5"/></g>'+
- '</svg>';
+ return `<svg class="monster-svg" viewBox="0 0 240 250" role="img" aria-label="מפלצת כחולה, רכה וחמודה, עם איבר חסר" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <radialGradient id="pwBlueFur" cx="30%" cy="22%" r="85%"><stop stop-color="#b4f7ff"/><stop offset=".45" stop-color="#64d5fa"/><stop offset=".82" stop-color="#31b3ef"/><stop offset="1" stop-color="#2798d5"/></radialGradient>
+  <linearGradient id="pwPurplePaw" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d1a0ff"/><stop offset="1" stop-color="#8453cf"/></linearGradient>
+  <linearGradient id="pwPurpleFur" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d7a0ff"/><stop offset="1" stop-color="#9155cc"/></linearGradient>
+  <radialGradient id="pwIrisPurple"><stop stop-color="#28194e"/><stop offset=".6" stop-color="#8650c6"/><stop offset="1" stop-color="#a873e4"/></radialGradient>
+  <linearGradient id="pwHorn" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff7b4"/><stop offset=".45" stop-color="#ffda5a"/><stop offset="1" stop-color="#ee9c29"/></linearGradient>
+ </defs>
+ <ellipse cx="120" cy="241" rx="91" ry="6" fill="#8565ab" opacity=".18"/>
+ <!-- cute yellow horns behind head -->
+ <path d="M75 58 Q55 37 64 9 Q82 18 91 51 Z M151 51 Q159 16 179 10 Q188 36 168 58 Z" fill="url(#pwHorn)" stroke="#d99b38" stroke-width="2.5"/>
+ <path d="M70 23 L80 30 M171 25 L163 32" stroke="#fff1a3" stroke-width="3" stroke-linecap="round"/>
+ <!-- fuzzy round body -->
+ <path d="M64 146 Q55 155 59 168 Q47 182 59 192 Q52 211 70 216 Q78 233 98 224 Q118 238 136 227 Q157 234 168 217 Q190 211 182 192 Q195 181 181 165 Q181 144 163 136 Q117 124 75 137 Z" fill="url(#pwBlueFur)" stroke="#329dd7" stroke-width="2.5"/>
+ <path d="M75 157 Q86 145 105 143" stroke="#e3faff" stroke-width="7" stroke-linecap="round" opacity=".4" fill="none"/>
+ <g fill="#a676e1" opacity=".95"><ellipse cx="80" cy="182" rx="12" ry="15" transform="rotate(-18 80 182)"/><ellipse cx="164" cy="178" rx="13" ry="15" transform="rotate(20 164 178)"/><circle cx="91" cy="209" r="5"/></g>
+ <!-- left arm, left foot, repairable right limbs -->
+ <path d="M68 145 Q47 144 34 163 Q24 180 36 191 Q49 197 59 183 L76 166 Z" fill="url(#pwBlueFur)" stroke="#40a7e1" stroke-width="2"/>
+ <path d="M39 175 Q25 176 24 188 Q20 201 35 204 Q50 208 54 194" fill="url(#pwBlueFur)" stroke="#40a7e1" stroke-width="2"/>
+ ${arm}
+ <ellipse cx="93" cy="225" rx="27" ry="14" fill="url(#pwPurplePaw)" stroke="#8450a9" stroke-width="2"/>
+ <path d="M83 219 L81 231 M93 218 L93 232 M104 219 L105 231" stroke="#b787e4" stroke-width="3" stroke-linecap="round"/>
+ ${leg}
+ ${heart}${bone}${head}
+ <g class="repair-placeholder" fill="none" stroke="#fffefa" stroke-width="3.6" stroke-dasharray="6 5" stroke-linecap="round" stroke-linejoin="round">${markers[missing]}</g>
+ <g class="repair-sparkles" fill="#ffed8b"><path d="M29 84 L35 98 L49 104 L35 110 L29 125 L23 110 L9 104 L23 98 Z"/><path d="M206 39 L211 52 L224 57 L211 62 L206 76 L201 62 L188 57 L201 52 Z"/><circle cx="220" cy="150" r="6"/><circle cx="24" cy="161" r="5"/></g>
+ </svg>`;
 }
-function renderCase(){caseLocked=false;const w=caseList[caseIndex],colors=['#b78beb','#85d9c5','#f4a4b2','#f5c87b','#91baf0'];const color=colors[caseIndex%colors.length];const wrong=shuffle(ALL.filter(x=>x!==w&&x[0]!==w[0])).slice(0,2),choices=shuffle([w,...wrong]);$('activity').innerHTML=heading(caseFinal?'🏆 אתגר הסיום הגדול':'🏥 בית החולים הקסום',caseFinal?'מצילים את כל המפלצות!':'מצילים את המפלצות!','למפלצת באמת חסר איבר בגוף! הקשיבו למילה באנגלית, בחרו את התמונה הנכונה וראו איך האיבר חוזר אליה בקסם!')+'<div class="hospital-hud"><span>💗 מטופל <b>'+(caseIndex+1)+' / '+caseList.length+'</b></span><span>⭐ כוכבים <b>'+caseStars+'</b></span></div><div class="hospital-room"><div class="hospital-decoration">🪟　🌈　🧪　💊　✨</div><div class="monster-wrap"><div class="monster monster-illustrated" id="monster" data-missing="'+w[0]+'" style="--monster:'+color+'" aria-label="מפלצת שחסר לה '+w[1]+'">'+monsterIllustration(w)+'</div><div class="monster-speech" lang="en">Oh no! My '+w[0]+'!</div></div><div class="case-prompt">איזה איבר חסר למפלצת? <button class="listen-case" id="listenCase" type="button">🔊 לשמוע שוב</button></div><div class="case-choices" id="caseChoices">'+choices.map((v,i)=>'<button type="button" class="case-choice" data-choice="'+i+'" aria-label="תמונה '+(i+1)+'" title="בחרו תמונה">'+v[2]+'</button>').join('')+'</div><div class="case-feedback" id="caseFeedback" aria-live="polite">בחרו את התמונה הנכונה — וראו מה יקרה למפלצת! ✨</div></div>';$('listenCase').onclick=()=>speak(w[0]);$('caseChoices').querySelectorAll('[data-choice]').forEach(b=>b.onclick=()=>chooseCase(choices[Number(b.dataset.choice)],w,b));speak(w[0])}
+function renderCase(){caseLocked=false;const w=caseList[caseIndex],colors=['#66d2f9','#67cbf5','#7edcf9','#53c4f4','#78d6ff'];const color=colors[caseIndex%colors.length];const wrong=shuffle(ALL.filter(x=>x!==w&&x[0]!==w[0])).slice(0,2),choices=shuffle([w,...wrong]);$('activity').innerHTML=heading(caseFinal?'🏆 אתגר הסיום הגדול':'🏥 בית החולים הקסום',caseFinal?'מצילים את כל המפלצות!':'מצילים את המפלצות!','למפלצת באמת חסר איבר בגוף! הקשיבו למילה באנגלית, בחרו את התמונה הנכונה וראו איך האיבר חוזר אליה בקסם!')+'<div class="hospital-hud"><span>💗 מטופל <b>'+(caseIndex+1)+' / '+caseList.length+'</b></span><span>⭐ כוכבים <b>'+caseStars+'</b></span></div><div class="hospital-room"><div class="hospital-decoration">🪟　🌈　🧪　💊　✨</div><div class="monster-wrap"><div class="monster monster-illustrated" id="monster" data-missing="'+w[0]+'" style="--monster:'+color+'" aria-label="מפלצת שחסר לה '+w[1]+'">'+monsterIllustration(w)+'</div><div class="monster-speech" lang="en">Oh no! My '+w[0]+'!</div></div><div class="case-prompt">איזה איבר חסר למפלצת? <button class="listen-case" id="listenCase" type="button">🔊 לשמוע שוב</button></div><div class="case-choices" id="caseChoices">'+choices.map((v,i)=>'<button type="button" class="case-choice" data-choice="'+i+'" aria-label="תמונה '+(i+1)+'" title="בחרו תמונה">'+v[2]+'</button>').join('')+'</div><div class="case-feedback" id="caseFeedback" aria-live="polite">בחרו את התמונה הנכונה — וראו מה יקרה למפלצת! ✨</div></div>';$('listenCase').onclick=()=>speak(w[0]);$('caseChoices').querySelectorAll('[data-choice]').forEach(b=>b.onclick=()=>chooseCase(choices[Number(b.dataset.choice)],w,b));speak(w[0])}
 function chooseCase(choice,correct,button){if(caseLocked)return;if(choice!==correct){button.classList.add('wrong');$('caseFeedback').textContent='כמעט! הקשיבו שוב ונסו תמונה אחרת 💜';$('caseFeedback').className='case-feedback bad';speak(correct[0]);return}caseLocked=true;caseStars++;button.classList.add('right');$('monster').classList.add('repaired','happy');$('monster').setAttribute('aria-label','מפלצת שמחה — הוספנו לה '+correct[1]);$('caseFeedback').textContent='✨ קסם! '+correct[0]+' = '+correct[1]+' · האיבר הופיע על המפלצת!';$('caseFeedback').className='case-feedback good';speak(correct[0]);setTimeout(()=>{caseIndex++;if(caseIndex<caseList.length)renderCase();else finishHospital()},1850)}
 function finishHospital(){if(caseFinal){awards.final=true;saveAwards();try{localStorage.setItem(COMPLETE,'complete')}catch(e){}phase='worldDone';render();return}awards.chapters[chapter]=true;saveAwards();phase='done';render()}
 function renderDone(){const c=CHAPTERS[chapter];$('activity').innerHTML='<div class="celebration"><div class="big-trophy">🏆🎉</div><h2>הצלתם את המפלצות!</h2><p>למדתם '+c.words.length+' מילים באנגלית, חיברתם אותן לגוף ועזרתם למפלצות! מדהימים!</p><div class="celebration-stars">⭐ ⭐ ⭐</div><button class="big-button" id="goNext">'+(chapter===2?'👑 לאתגר הסיום הגדול!':'✨ לפרק הבא')+'</button><button class="soft-button" id="replayChapter">🔄 לשחק בפרק שוב</button></div>';$('goNext').onclick=()=>{if(chapter===2){phase='final';render()}else openChapter(chapter+1)};$('replayChapter').onclick=()=>openChapter(chapter)}
