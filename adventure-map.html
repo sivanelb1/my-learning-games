@@ -1,231 +1,43 @@
-
-<!DOCTYPE html>
-<html lang="he" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>מפת 13 עולמות הקסם | PLAYWISE · Adventure Map</title>
-
-<style>
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #16082f;
-  color: white;
-  overflow-x: hidden;
-}
-
-header {
-  display:none;
-  position: fixed;
-  top: 10px;
-  left: 0;
-  right: 0;
-  z-index: 10;
-  text-align: center;
-  pointer-events: none;
-}
-
-header h1 {
-  display: inline-block;
-  background: #54218b;
-  border: 2px solid #e5b95c;
-  border-radius: 20px;
-  padding: 10px 22px;
-  margin: 0;
-  font-size: 23px;
-  box-shadow: 0 0 20px #a34bff;
-}
-
-header p {
-  margin: 7px;
-  text-shadow: 0 2px 5px black;
-}
-
-.home {
-  position: fixed;
-  top: 15px;
-  right: 12px;
-  z-index: 20;
-  background: #54218b;
-  color: white;
-  padding: 10px 14px;
-  border-radius: 15px;
-  text-decoration: none;
-}
-
-.map-window {
-  width: 100%;
-  height: 100vh;
-  height: 100dvh;
-  overflow-x: hidden;
-  overflow-y: auto;
-  position: relative;
-  scroll-behavior: smooth;
-  touch-action: pan-y;
-  overscroll-behavior: contain;
-  scrollbar-width: none;
-}
-
-.map-window::-webkit-scrollbar { display: none; }
-
-.world {
-  width: 100%;
-  max-width: none;
-  margin: 0;
-  position: relative;
-  min-height: 0;
-  aspect-ratio: 1672 / 941;
-  background-image: url("ממלכת הפנטזיה הזוהרת והטירה הקסומה.png");
-  background-size: 100% auto;
-  background-position: center top;
-  background-repeat: no-repeat;
-  transform-origin: center center;
-}
-
-@keyframes arrive {
-  from { transform: scale(0.85); }
-  to { transform: scale(1.18); }
-}
-
-.level {
-  position: absolute;
-  z-index: 3;
-  width: 5.1%;
-  aspect-ratio: 1;
-  transform: translate(-50%,-50%);
-  border-radius: 50%;
-  border: 3px solid #ffd76a;
-  background: radial-gradient(circle, #a45bff, #45117e);
-  color: white;
-  font-size: clamp(16px, 2.3vw, 32px);
-  font-weight: bold;
-  box-shadow: 0 0 15px #e6aaff;
-  cursor: pointer;
-}
-
-.level.current {
-  animation: glow 1.5s infinite alternate;
-  background: radial-gradient(circle, #ffda72, #8d36d8);
-  color: #32104e;
-}
-
-.level.locked {
-  filter: grayscale(0.7);
-  opacity: 0.75;
-}
-
-@keyframes glow {
-  from { box-shadow: 0 0 10px #ffdf7a; }
-  to { box-shadow: 0 0 30px #ffdf7a, 0 0 45px #bd6aff; }
-}
-
-.level-name {
-  position: absolute;
-  z-index: 5;
-  background: #fff0c9;
-  color: #38174e;
-  border: 2px solid #d8a94d;
-  border-radius: 12px;
-  padding: 7px 9px;
-  width: 14%;
-  font-size: clamp(10px, 2.5vw, 14px);
-  font-weight: bold;
-  line-height: 1.4;
-  text-align: center;
-  box-shadow: 0 3px 8px #16082f;
-  transform: translateY(-50%);
-  pointer-events: none;
-}
-
-.level-name small {
-  display: block;
-  direction: ltr;
-}
-
-.message {
-  display:none;
-  position: fixed;
-  bottom: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  background: #54218b;
-  border: 2px solid #e5b95c;
-  padding: 10px 16px;
-  border-radius: 18px;
-  text-align: center;
-  width: max-content;
-  max-width: 90%;
-}
-
-@media (max-width: 600px) {.home{font-size:12px;padding:7px 10px}.level-name{padding:4px 5px;font-size:clamp(9px,2.2vw,12px)}.level{border-width:2px}}
-@media (min-width: 700px) {
-  .world { width: 100%; max-width: none; margin: 0; }
-  .level { font-size: clamp(20px, 2.3vw, 36px); border-width: 4px; }
-  .level-name { font-size: clamp(13px, 1.1vw, 19px); padding: 10px 12px; width: 14%; }
-}
-@media (min-width: 1100px) {
-  .world { width: 100%; min-width: 0; }
-  .level { width: 5%; }
-}
- .level{width:4.4%;font-size:clamp(13px,1.9vw,26px)}.level-name{width:12%;padding:5px;font-size:clamp(9px,1.1vw,15px)}@media(max-width:650px){.level-name{width:15%;font-size:9px}.level{width:5.2%}}
-/* Bubble Magic: optional central arcade adventure, not a stage navigation bar */
-.bubble-portal{position:fixed;left:12px;bottom:14px;z-index:28;display:flex;align-items:center;gap:7px;direction:rtl;text-decoration:none;color:#fff8dc;background:linear-gradient(115deg,#7436a7,#3b1b73);border:3px solid #ffe0a0;border-radius:21px;padding:12px 16px;font:bold clamp(13px,1.6vw,18px) Arial,sans-serif;box-shadow:0 0 22px #ca85ff99,0 6px 15px #16082faa;animation:bubblePortalGlow 2.4s ease-in-out infinite alternate}.bubble-portal:hover,.bubble-portal:focus-visible{background:#a05bd3;outline:3px solid #fff}.bubble-portal .bubble-emoji{font-size:clamp(20px,2.8vw,31px)}@keyframes bubblePortalGlow{to{box-shadow:0 0 32px #ffddaab0,0 6px 15px #16082faa}}@media(max-width:600px){.bubble-portal{left:6px;bottom:7px;padding:8px 10px;border-width:2px;border-radius:14px;font-size:11px}.bubble-portal .bubble-emoji{font-size:19px}}
-</style>
-<link rel="stylesheet" href="adventure-map-sky.css?v=worlds13-v1">
-</head>
-
+<!doctype html>
+<html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#b8dfbb"><meta name="description" content="PLAYWISE · 13 עולמות קסומים ללימוד אנגלית במשחק"><title>מפת 13 עולמות הקסם | PLAYWISE · Magical World Map</title><link rel="stylesheet" href="adventure-map-garden.css?v=garden-map-1"></head>
 <body>
-
-<a class="home" href="index.html">🏠 חזרה | Home</a>
-
-<header>
-  <h1>🌌 המסע הקוסמי | Cosmic Adventure</h1>
-  <p>בחרו שלב והתחילו לשחק | Choose a level and play</p>
-</header>
-
-<div class="map-window" id="mapWindow">
-  <main class="world" id="world">
-    <section class="map-sky" id="newWorlds" aria-label="חמשת העולמות החדשים · New Worlds 9–13">
-      <div class="sky-heading">✨ העולמות החדשים · NEW WORLDS 9–13 ✨</div>
-      <svg class="sky-route" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true"><path d="M 500 1000 Q 860 900 700 820 T 300 660 T 700 490 T 300 320 T 500 130" stroke="#fff0bf" stroke-width="8" stroke-linecap="round" stroke-dasharray="4 24" fill="none"/></svg>
-      <a class="sky-stop final" style="--x:50%;--y:15%" href="level2-world-bubbles.html" aria-label="שלב 13: בועות הקסם, עולם הסיכום"><span class="sky-island"><span class="sky-symbol">🫧</span><span class="sky-num">13</span></span><span class="sky-label">בועות הקסם <small>Bubble Magic · Review</small></span></a>
-      <a class="sky-stop" style="--x:30%;--y:32%" href="level2-world-toys.html" aria-label="שלב 12: עולם הצעצועים"><span class="sky-island"><span class="sky-symbol">🧸</span><span class="sky-num">12</span></span><span class="sky-label">ממלכת הצעצועים <small>Toy Wonderland</small></span></a>
-      <a class="sky-stop" style="--x:70%;--y:49%" href="level2-world-school.html" aria-label="שלב 11: עולם בית הספר"><span class="sky-island"><span class="sky-symbol">🏫</span><span class="sky-num">11</span></span><span class="sky-label">אקדמיית בית הספר <small>School Academy</small></span></a>
-      <a class="sky-stop" style="--x:30%;--y:66%" href="level2-world-food.html" aria-label="שלב 10: עולם האוכל"><span class="sky-island"><span class="sky-symbol">🍎</span><span class="sky-num">10</span></span><span class="sky-label">ארץ המאכלים <small>Magical Food Land</small></span></a>
-      <a class="sky-stop" style="--x:70%;--y:83%" href="level2-world-body.html" aria-label="שלב 9: עולם גוף האדם"><span class="sky-island"><span class="sky-symbol">🧠</span><span class="sky-num">9</span></span><span class="sky-label">ממלכת גוף האדם <small>Human Body Kingdom</small></span></a>
-      <a class="sky-hint" href="#originalMap">⬇️ לתחנות 1–8 · EARLIER WORLDS</a>
-    </section>
-    <section class="map-land" id="originalMap" aria-label="מפת העולמות 1 עד 8">
-
-  
-<button class="level current" style="top:76%;left:44%" onclick="window.location.href='level2-letter-gate.html'" aria-label="תחנה 1: שער האותיות">1</button><div class="level-name" style="top:76%;left:49%">שער האותיות <small>Fairy Letters</small></div>
-<button class="level " style="top:68%;left:31%" onclick="window.location.href='level2-knight-shields.html'" aria-label="תחנה 2: מגיני האבירים">2</button><div class="level-name" style="top:68%;left:36%">מגיני האבירים <small>Knight Sounds</small></div>
-<button class="level " style="top:61%;left:46%" onclick="window.location.href='level2-rhyming-forest.html'" aria-label="תחנה 3: יער החרוזים">3</button><div class="level-name" style="top:61%;left:28%">יער החרוזים <small>Rhyming Forest</small></div>
-<button class="level " style="top:55%;left:65%" onclick="window.location.href='level2-vowel-gems.html'" aria-label="תחנה 4: מראת התנועות">4</button><div class="level-name" style="top:55%;left:73%">מראת התנועות <small>Vowel Mirror</small></div>
-<button class="level " style="top:47%;left:53%" onclick="window.location.href='level2-dragon-sounds.html'" aria-label="תחנה 5: מערת הדרקון">5</button><div class="level-name" style="top:47%;left:59%">מערת הדרקון <small>Dragon Digraphs</small></div>
-<button class="level " style="top:42%;left:31%" onclick="window.location.href='level2-numbers-intro.html'" aria-label="תחנה 6: ממלכת המספרים והצבעים">6</button><div class="level-name" style="top:42%;left:19%">ממלכת הצבעים והמספרים <small>Numbers & Colors</small></div>
-<button class="level " style="top:36%;left:69%" onclick="window.location.href='level2-animals-family-intro.html'" aria-label="תחנה 7: ממלכת החיות">7</button><div class="level-name" style="top:36%;left:77%">ממלכת החיות <small>Animal Kingdom</small></div>
-<button class="level " style="top:32%;left:50%" onclick="window.location.href='level2-family-gate.html'" aria-label="תחנה 8: ממלכת המשפחה">8</button><div class="level-name" style="top:32%;left:30%">ממלכת המשפחה <small>Family Kingdom</small></div>
-
-
-    </section>
-  </main>
+<nav class="topbar" aria-label="ניווט"><a href="index.html">🏠 דף הבית · HOME</a></nav>
+<header class="map-intro"><div class="brand">✨ PLAYWISE · LEARNING ADVENTURE ✨</div><h1>🌈 ארץ 13 עולמות הקסם</h1><h2 lang="en">The Magical Learning World</h2><p>כל עולם הוא הרפתקה חדשה באנגלית! טיילו בין הממלכות הקטנות, לחצו על העולם שמסקרן אתכם — והקסם מתחיל!</p><div class="hint">👆 לחצו על כל עולם כדי להיכנס · Tap an island to explore</div></header>
+<main class="landscape" aria-label="מפת 13 העולמות על אדמה אחת">
+<span class="land-decor d1" aria-hidden="true">🌳 🌼 🦋</span><span class="land-decor d2" aria-hidden="true">🌲 🌸</span><span class="land-decor d3" aria-hidden="true">🌷 🦋 🌳</span><span class="land-decor d4" aria-hidden="true">🌻 🌿</span><span class="land-decor d5" aria-hidden="true">🌳 🍄</span><span class="land-decor d6" aria-hidden="true">🌼 🐞 🌷</span><span class="land-decor d7" aria-hidden="true">🌲 🌺</span>
+<div class="map-area">
+<svg class="trail" viewBox="0 0 1200 1575" preserveAspectRatio="none" aria-hidden="true"><path class="edge" d="M600 157 Q350 270 200 472 Q380 470 600 472 Q830 475 1000 472 L1000 787 Q800 787 600 787 Q400 787 200 787 L200 1102 Q400 1102 600 1102 Q800 1102 1000 1102 L1000 1417 Q800 1417 600 1417 Q400 1417 200 1417"/><path class="wide" d="M600 157 Q350 270 200 472 Q380 470 600 472 Q830 475 1000 472 L1000 787 Q800 787 600 787 Q400 787 200 787 L200 1102 Q400 1102 600 1102 Q800 1102 1000 1102 L1000 1417 Q800 1417 600 1417 Q400 1417 200 1417"/><path class="stitches" d="M600 157 Q350 270 200 472 Q380 470 600 472 Q830 475 1000 472 L1000 787 Q800 787 600 787 Q400 787 200 787 L200 1102 Q400 1102 600 1102 Q800 1102 1000 1102 L1000 1417 Q800 1417 600 1417 Q400 1417 200 1417"/></svg>
+<div class="island-grid"><a class="island" data-theme="letters" data-number="1" href="level2-letter-gate.html" style="grid-column:2;grid-row:1" aria-label="עולם 1: שער האותיות. לחצו כדי להיכנס"><span class="stage-number">1</span><span class="done">✓ הושלם</span><span class="scene" aria-hidden="true"><span class="ground-shadow"></span><span class="ground"></span><span class="scene-tag">ABC</span><span class="props"><span class="prop" style="--left:19%;--top:63%;--size:48px" aria-hidden="true">🍄</span><span class="prop" style="--left:50%;--top:35%;--size:64px" aria-hidden="true">🧚‍♀️</span><span class="prop" style="--left:77%;--top:66%;--size:48px" aria-hidden="true">🔤</span><span class="prop" style="--left:9%;--top:85%;--size:26px" aria-hidden="true">🌷</span><span class="prop" style="--left:90%;--top:60%;--size:41px" aria-hidden="true">🌳</span></span></span><span class="sign"><strong>שער האותיות</strong><small lang="en">Fairy Letters</small></span></a>
+<a class="island" data-theme="knights" data-number="2" href="level2-knight-shields.html" style="grid-column:1;grid-row:2" aria-label="עולם 2: מגיני האבירים. לחצו כדי להיכנס"><span class="stage-number">2</span><span class="done">✓ הושלם</span><span class="scene" aria-hidden="true"><span class="ground-shadow"></span><span class="ground"></span><span class="scene-tag">KNIGHTS</span><span class="props"><span class="prop" style="--left:50%;--top:42%;--size:78px" aria-hidden="true">🏰</span><span class="prop" style="--left:25%;--top:64%;--size:47px" aria-hidden="true">🛡️</span><span class="prop" style="--left:77%;--top:62%;--size:46px" aria-hidden="true">⚔️</span><span class="prop" style="--left:10%;--top:56%;--size:36px" aria-hidden="true">🌲</span><span class="prop" style="--left:91%;--top:56%;--size:36px" aria-hidden="true">🌲</span></span></span><span class="sign"><strong>מגיני האבירים</strong><small lang="en">Knight Sounds</small></span></a>
+<a class="island" data-theme="rhymes" data-number="3" href="level2-rhyming-forest.html" style="grid-column:2;grid-row:2" aria-label="עולם 3: יער החרוזים. לחצו כדי להיכנס"><span class="stage-number">3</span><span class="done">✓ הושלם</span><span class="scene" aria-hidden="true"><span class="ground-shadow"></span><span class="ground"></span><span class="scene-tag">RHYMES</span><span class="props"><span class="prop" style="--left:22%;--top:50%;--size:75px" aria-hidden="true">🌳</span><span class="prop" style="--left:50%;--top:66%;--size:52px" aria-hidden="true">🦊</span><span class="prop" style="--left:78%;--top:48%;--size:74px" aria-hidden="true">🌲</span><span class="prop" style="--left:12%;--top:81%;--size:30px" aria-hidden="true">🍄</span><span class="prop" style="--left:67%;--top:30%;--size:31px" aria-hidden="true">🐦</span></span></span><span class="sign"><strong>יער החרוזים</strong><small lang="en">Rhyming Forest</small></span></a>
+<a class="island" data-theme="vowels" data-number="4" href="level2-vowel-gems.html" style="grid-column:3;grid-row:2" aria-label="עולם 4: מראת התנועות. לחצו כדי להיכנס"><span class="stage-number">4</span><span class="done">✓ הושלם</span><span class="scene" aria-hidden="true"><span class="ground-shadow"></span><span class="ground"></span><span class="scene-tag">AEIOU</span><span class="props"><span class="prop" style="--left:49%;--top:42%;--size:78px" aria-hidden="true">🔮</span><span class="prop" style="--left:22%;--top:71%;--size:48px" aria-hidden="true">💎</span><span class="prop" style="--left:77%;--top:62%;--size:57px" aria-hidden="true">🪞</span><span class="prop" style="--left:10%;--top:35%;--size:33px" aria-hidden="true">✨</span><span class="prop" style="--left:91%;--top:40%;--size:33px" aria-hidden="true">✨</span></span></span><span class="sign"><strong>מראת התנועות</strong><small lang="en">Vowel Mirror</small></span></a>
+<a class="island" data-theme="dragon" data-number="5" href="level2-dragon-sounds.html" style="grid-column:3;grid-row:3" aria-label="עולם 5: מערת הדרקון. לחצו כדי להיכנס"><span class="stage-number">5</span><span class="done">✓ הושלם</span><span class="scene" aria-hidden="true"><span class="ground-shadow"></span><span class="ground"></span><span class="scene-tag">DRAGON</span><span class="props"><span class="prop" style="--left:50%;--top:49%;--size:89px" aria-hidden="true">⛰️</span><span class="prop" style="--left:52%;--top:50%;--size:75px" aria-hidden="true">🐉</span><span class="prop" style="--left:24%;--top:76%;--size:45px" aria-hidden="true">🔥</span><span class="prop" style="--left:83%;--top:71%;--size:34px" aria-hidden="true">💎</span><span class="prop" style="--left:89%;--top:43%;--size:36px" aria-hidden="true">🌋</span></span></span><span class="sign"><strong>מערת הדרקון</strong><small lang="en">Dragon Digraphs</small></span></a>
+<a class="island" data-theme="colors" data-number="6" href="level2-numbers-intro.html" style="grid-column:2;grid-row:3" aria-label="עולם 6: צבעים ומספרים. לחצו כדי להיכנס"><span class="stage-number">6</span><span class="done">✓ הושלם</span><span class="scene" aria-hidden="true"><span class="ground-shadow"></span><span class="ground"></span><span class="scene-tag">1 · 2 · 3</span><span class="props"><span class="prop" style="--left:50%;--top:35%;--size:93px" aria-hidden="true">🌈</span><span class="prop" style="--left:24%;--top:70%;--size:52px" aria-hidden="true">🎨</span><span class="prop" style="--left:75%;--top:67%;--size:52px" aria-hidden="true">🔢</span><span class="prop" style="--left:89%;--top:38%;--size:34px" aria-hidden="true">🎈</span><span class="prop" style="--left:10%;--top:80%;--size:28px" aria-hidden="true">🌼</span></span></span><span class="sign"><strong>צבעים ומספרים</strong><small lang="en">Numbers &amp; Colors</small></span></a>
+<a class="island" data-theme="animals" data-number="7" href="level2-animals-family-intro.html" style="grid-column:1;grid-row:3" aria-label="עולם 7: ממלכת החיות. לחצו כדי להיכנס"><span class="stage-number">7</span><span class="done">✓ הושלם</span><span class="scene" aria-hidden="true"><span class="ground-shadow"></span><span class="ground"></span><span class="scene-tag">ZOO</span><span class="fence"></span><span class="props"><span class="prop" style="--left:13%;--top:48%;--size:56px" aria-hidden="true">🌳</span><span class="prop" style="--left:35%;--top:48%;--size:67px" aria-hidden="true">🦒</span><span class="prop" style="--left:55%;--top:68%;--size:51px" aria-hidden="true">🦁</span><span class="prop" style="--left:79%;--top:61%;--size:56px" aria-hidden="true">🐘</span><span class="prop" style="--left:94%;--top:48%;--size:52px" aria-hidden="true">🌴</span></span></span><span class="sign"><strong>ממלכת החיות</strong><small lang="en">Animal Kingdom</small></span></a>
+<a class="island" data-theme="family" data-number="8" href="level2-family-gate.html" style="grid-column:1;grid-row:4" aria-label="עולם 8: ממלכת המשפחה. לחצו כדי להיכנס"><span class="stage-number">8</span><span class="done">✓ הושלם</span><span class="scene" aria-hidden="true"><span class="ground-shadow"></span><span class="ground"></span><span class="scene-tag">FAMILY</span><span class="props"><span class="prop" style="--left:50%;--top:43%;--size:90px" aria-hidden="true">🏡</span><span class="prop" style="--left:49%;--top:73%;--size:50px" aria-hidden="true">👨‍👩‍👧</span><span class="prop" style="--left:13%;--top:55%;--size:53px" aria-hidden="true">🌳</span><span class="prop" style="--left:85%;--top:70%;--size:38px" aria-hidden="true">🌸</span><span class="prop" style="--left:83%;--top:47%;--size:30px" aria-hidden="true">🎁</span></span></span><span class="sign"><strong>ממלכת המשפחה</strong><small lang="en">Family Kingdom</small></span></a>
+<a class="island" data-theme="body" data-number="9" href="level2-world-body.html" style="grid-column:2;grid-row:4" aria-label="עולם 9: ממלכת גוף האדם. לחצו כדי להיכנס"><span class="stage-number">9</span><span class="done">✓ הושלם</span><span class="scene" aria-hidden="true"><span class="ground-shadow"></span><span class="ground"></span><span class="scene-tag">BODY</span><span class="props"><span class="prop" style="--left:49%;--top:35%;--size:71px" aria-hidden="true">🧠</span><span class="prop" style="--left:25%;--top:70%;--size:51px" aria-hidden="true">🫀</span><span class="prop" style="--left:77%;--top:67%;--size:49px" aria-hidden="true">🦴</span><span class="prop" style="--left:85%;--top:35%;--size:37px" aria-hidden="true">👀</span><span class="prop" style="--left:13%;--top:40%;--size:35px" aria-hidden="true">💪</span></span></span><span class="sign"><strong>ממלכת גוף האדם</strong><small lang="en">Human Body</small></span></a>
+<a class="island" data-theme="food" data-number="10" href="level2-world-food.html" style="grid-column:3;grid-row:4" aria-label="עולם 10: ארץ המאכלים. לחצו כדי להיכנס"><span class="stage-number">10</span><span class="done">✓ הושלם</span><span class="scene" aria-hidden="true"><span class="ground-shadow"></span><span class="ground"></span><span class="scene-tag">FOOD</span><span class="props"><span class="prop" style="--left:22%;--top:47%;--size:69px" aria-hidden="true">🍭</span><span class="prop" style="--left:50%;--top:47%;--size:75px" aria-hidden="true">🍰</span><span class="prop" style="--left:78%;--top:66%;--size:50px" aria-hidden="true">🍎</span><span class="prop" style="--left:17%;--top:80%;--size:38px" aria-hidden="true">🥕</span><span class="prop" style="--left:86%;--top:43%;--size:42px" aria-hidden="true">🍓</span></span></span><span class="sign"><strong>ארץ המאכלים</strong><small lang="en">Magical Food</small></span></a>
+<a class="island" data-theme="school" data-number="11" href="level2-world-school.html" style="grid-column:3;grid-row:5" aria-label="עולם 11: אקדמיית בית הספר. לחצו כדי להיכנס"><span class="stage-number">11</span><span class="done">✓ הושלם</span><span class="scene" aria-hidden="true"><span class="ground-shadow"></span><span class="ground"></span><span class="scene-tag">SCHOOL</span><span class="props"><span class="prop" style="--left:50%;--top:42%;--size:93px" aria-hidden="true">🏫</span><span class="prop" style="--left:23%;--top:72%;--size:46px" aria-hidden="true">🎒</span><span class="prop" style="--left:78%;--top:65%;--size:50px" aria-hidden="true">✏️</span><span class="prop" style="--left:85%;--top:37%;--size:37px" aria-hidden="true">📚</span><span class="prop" style="--left:11%;--top:54%;--size:43px" aria-hidden="true">🌳</span></span></span><span class="sign"><strong>אקדמיית בית הספר</strong><small lang="en">School Academy</small></span></a>
+<a class="island" data-theme="toys" data-number="12" href="level2-world-toys.html" style="grid-column:2;grid-row:5" aria-label="עולם 12: ממלכת הצעצועים. לחצו כדי להיכנס"><span class="stage-number">12</span><span class="done">✓ הושלם</span><span class="scene" aria-hidden="true"><span class="ground-shadow"></span><span class="ground"></span><span class="scene-tag">TOYS</span><span class="props"><span class="prop" style="--left:50%;--top:41%;--size:84px" aria-hidden="true">🎠</span><span class="prop" style="--left:25%;--top:72%;--size:49px" aria-hidden="true">🧸</span><span class="prop" style="--left:75%;--top:72%;--size:49px" aria-hidden="true">🚂</span><span class="prop" style="--left:88%;--top:32%;--size:44px" aria-hidden="true">🎈</span><span class="prop" style="--left:12%;--top:37%;--size:45px" aria-hidden="true">🪁</span></span></span><span class="sign"><strong>ממלכת הצעצועים</strong><small lang="en">Toy Wonderland</small></span></a>
+<a class="island" data-theme="bubbles" data-number="13" href="level2-world-bubbles.html" style="grid-column:1;grid-row:5" aria-label="עולם 13: בועות הקסם. לחצו כדי להיכנס"><span class="stage-number">13</span><span class="done">✓ הושלם</span><span class="scene" aria-hidden="true"><span class="ground-shadow"></span><span class="ground"></span><span class="scene-tag">GRAND FINALE</span><span class="props"><span class="prop" style="--left:50%;--top:33%;--size:94px" aria-hidden="true">🫧</span><span class="prop" style="--left:28%;--top:64%;--size:53px" aria-hidden="true">🔮</span><span class="prop" style="--left:76%;--top:63%;--size:57px" aria-hidden="true">🪄</span><span class="prop" style="--left:8%;--top:45%;--size:40px" aria-hidden="true">✨</span><span class="prop" style="--left:86%;--top:38%;--size:50px" aria-hidden="true">🌈</span></span></span><span class="sign"><strong>בועות הקסם</strong><small lang="en">Bubble Magic · Review</small></span></a></div>
 </div>
-
-<div class="message">
-  ⭐ אוספים כוכבים ומתקדמים! | Collect stars and progress!
-</div>
-
+<div class="map-finale">✨ 13 עולמות, מסע אחד גדול!<span>From ABC to Bubble Magic · לומדים, משחקים ומגלים</span></div>
+</main><footer class="map-footer">PLAYWISE 💜 כל עולם הוא התחלה של הרפתקה · Every world is an adventure</footer>
 <script>
-function openLevel(level) {
-  alert("שלב " + level + " עדיין בהכנה ⭐");
-}
-window.addEventListener("load",()=>{const pane=document.getElementById("mapWindow");pane.scrollTop=0;["body","food","school","toys","bubbles"].forEach(key=>{try{if(localStorage.getItem("playwise-world-"+key+"-complete-v1")==="complete")document.querySelector('.sky-stop[href="level2-world-'+key+'.html"]')?.classList.add("done")}catch(e){}})});
-</script>
-
-<script src="treasure-progress.js"></script><a class="map-jump" href="#newWorlds">✨ לעולמות 9–13</a></body>
-</html>
+(function(){
+  const keys={9:'body',10:'food',11:'school',12:'toys',13:'bubbles'};
+  document.querySelectorAll('.island').forEach(function(island){
+    const n=Number(island.dataset.number);
+    let done=false;
+    try{
+      if(keys[n])done=localStorage.getItem('playwise-world-'+keys[n]+'-complete-v1')==='complete';
+      if(n===8)done=localStorage.getItem('playwise-family-tree-complete-v3')==='complete'||!!JSON.parse(localStorage.getItem('playwise-family-tree-achievements-v1')||'{}').final;
+      if(n===7)done=localStorage.getItem('playwise-animals-rescue-v1')==='complete';
+      if(n===6)done=localStorage.getItem('playwise-hidden-wonders-rainbow-bridge-finale-v1')==='complete';
+      if(n===2)done=localStorage.getItem('playwise-level2-knight-shields-v1')==='complete';
+      if(n===3)done=localStorage.getItem('playwise-level2-rhyming-forest-v1')==='complete';
+    }catch(e){}
+    if(done)island.classList.add('completed');
+  });
+})();
+</script></body></html>
