@@ -163,3 +163,7 @@ body{background:radial-gradient(ellipse at 12% 18%,#f8d7f7 0,transparent 35%),ra
  .clinic-window{width:52px;height:66px}
  .case-choice{min-height:86px;font-size:40px}
 }
+
+/* Keep the selected anatomy pointer visibly golden after the visual refresh. */
+.diagram-board .diagram-lines .diagram-arrow.arrow-active path{stroke:#ffb341;stroke-width:6}
+.diagram-board .diagram-lines .diagram-arrow.arrow-active circle{fill:#ffb341;stroke:#fff}
