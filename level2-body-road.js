@@ -74,7 +74,7 @@ function mount(opts){
    if(obj.hit||obj.lane!==lane)return;
    obj.hit=true;
    if(obj.type==='word'){
-     if(!collected.has(obj.wi)){collected.add(obj.wi);const w=words[obj.wi];message('✨ '+w.en+' · '+w.he,'#fff4a4');say(w.en);updateHud();if(collected.size===words.length)winTimer=.9;}
+     if(!collected.has(obj.wi)){collected.add(obj.wi);const w=words[obj.wi];message('✨ '+w.en+' · '+w.he,'#fff4a4');say(w.en);updateHud();if(collected.size===words.length){winTimer=.9;shieldUntil=now+2;}}
    }else if(obj.type==='ramp'){
      jumpUntil=now+1.55;message('🌈 קפיצה קסומה!','#ffffff');say('Jump!');
    }else if(obj.type==='hazard'&&now>jumpUntil&&now>shieldUntil){
