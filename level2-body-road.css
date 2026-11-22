@@ -4,7 +4,7 @@
 .road-hearts,.road-score{background:#fff8ff;border:3px solid #dbb4f5;border-radius:20px;padding:9px 16px;min-height:48px;display:flex;align-items:center;justify-content:center;font-size:clamp(15px,2.4vw,23px);font-weight:1000;color:#66348f;box-shadow:0 4px 0 #c69fe3}
 .road-hearts{direction:ltr;letter-spacing:2px;white-space:nowrap}
 .road-pause{border:3px solid #fff;border-radius:17px;background:linear-gradient(135deg,#eac9ff,#c9b7ff);color:#633b95;min-width:56px;min-height:51px;font-size:26px;box-shadow:0 4px 0 #b493db;cursor:pointer}
-.road-screen{width:min(100%,660px);aspect-ratio:480/610;max-height:690px;position:relative;overflow:hidden;border:7px solid #e6b9ff;border-radius:33px;margin:0 auto;background:#a9e7ff;box-shadow:0 8px 0 #b791df,0 15px 32px #7b58ad35;isolation:isolate;touch-action:none}
+.road-screen{width:min(100%,535px);aspect-ratio:480/610;position:relative;overflow:hidden;border:7px solid #e6b9ff;border-radius:33px;margin:0 auto;background:#a9e7ff;box-shadow:0 8px 0 #b791df,0 15px 32px #7b58ad35;isolation:isolate;touch-action:none}
 .road-screen canvas{display:block;width:100%;height:100%;object-fit:fill;touch-action:none;user-select:none;-webkit-user-select:none}
 .road-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(145deg,#e7d3ffdd,#ffd9f2e8);backdrop-filter:blur(5px);z-index:3;direction:rtl}
 .road-overlay[hidden]{display:none!important}
