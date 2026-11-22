@@ -11,7 +11,6 @@
 <button role="tab" id="tab-vocab" data-topic="vocab" aria-selected="false" aria-controls="lesson-vocab"><span class="emoji">🎒</span>אוצר מילים<br><span class="en">Vocabulary</span></button>
 <button role="tab" id="tab-reading" data-topic="reading" aria-selected="false" aria-controls="lesson-reading"><span class="emoji">📖</span>הבנת הנקרא<br><span class="en">Reading</span></button>
 <button role="tab" id="tab-there" data-topic="there" aria-selected="false" aria-controls="lesson-there"><span class="emoji">🏡</span><span class="en">There is / are</span><br>דקדוק</button>
-<button role="tab" id="tab-bonus" data-topic="bonus" aria-selected="false" aria-controls="lesson-bonus"><span class="emoji">🌙</span>תרגול בונוס<br><span class="en">Am / Is / Are</span></button>
 <button role="tab" id="tab-articles" data-topic="articles" aria-selected="false" aria-controls="lesson-articles"><span class="emoji">🍎</span><span class="en">a / an / the</span><br>דקדוק</button>
 </nav>
 <section class="lesson active" id="lesson-letters" role="tabpanel" aria-labelledby="tab-letters">
@@ -56,21 +55,15 @@
 <div class="rule"><h3>🎯 <span class="en">the</span> — הדבר המסוים</h3>כשיודעים על איזה דבר מדברים, למשל תיק שכבר הזכרנו.<span class="sample">I have a bag. The bag is red.</span>יש לי תיק. התיק אדום. <button class="sound" data-say="I have a bag. The bag is red.">🔊 לשמוע</button></div>
 <div class="tip">💡 <strong>איך לזכור?</strong> <span class="en">a / an</span> = אחד לא מסוים; <span class="en">the</span> = הדבר המסוים. ההבדל בין <span class="en">a</span> ל־<span class="en">an</span> נקבע לפי <strong>הצליל</strong> בתחילת המילה.</div>
 <div class="quiz"><h3>✨ השלימי את המשפט</h3><p class="eng">I see _____ animal.</p><div class="choices"><button data-answer="0">a</button><button data-answer="1">an</button><button data-answer="0">the</button></div><div class="feedback" aria-live="polite"></div></div>
-<div class="tip">🚀 <strong>עולם A / An / The המקורי:</strong> כל ההסברים, האתגרים ומשימת הסיום של המשחק מהגלקסיה, באותו עיצוב ובאותה משחקיות.</div>
-<a class="game-launch" href="grammar-planet-4.html" target="_blank" rel="noopener">🌎 פתיחת המשחק במסך מלא ↗</a>
-<iframe class="game-embed" src="grammar-planet-4.html" title="Article World – כל השלבים של A / An / The" loading="lazy" allow="fullscreen" referrerpolicy="same-origin"></iframe>
+<div class="tip">🎮 <strong>משחקי הכנה חדשים:</strong> משחק בחירה של A / AN / THE ומשחק התאמת סוכריות. בכל שלב אוספים ארבעה צבעים, עונים על ארבע שאלות ומתקדמים לרמה קשה יותר!</div>
+<a class="game-launch" href="exam-articles-games.html" target="_blank" rel="noopener">🍬 פתיחת המשחקים במסך מלא ↗</a>
+<iframe class="game-embed" src="exam-articles-games.html" title="משחקי הכנה למבחן A AN THE: בחירה וסוכריות" loading="lazy" allow="fullscreen"></iframe>
 </section>
-<section class="lesson" id="lesson-bonus" role="tabpanel" aria-labelledby="tab-bonus">
-<div class="heading"><div class="icon">🌙</div><div><h2>ירח Am / Is / Are</h2><p>To Be Moon · תרגול בונוס</p></div></div>
-<div class="lead">✨ <strong>בונוס ללמידה:</strong> הנושא הזה אינו מופיע ברשימת חומר המבחן שצורפה, ולכן הוא מופרד מהנושאים למבחן. כאן נמצא המשחק המקורי, עם כל השלבים והמשימות שלו.</div>
-<a class="game-launch" href="grammar-planet-3.html" target="_blank" rel="noopener">🌙 פתיחת המשחק במסך מלא ↗</a>
-<iframe class="game-embed" src="grammar-planet-3.html" title="To Be Moon – כל השלבים של Am / Is / Are" loading="lazy" allow="fullscreen" referrerpolicy="same-origin"></iframe>
-</section>
-<div class="bottom"><button id="prev">→ לנושא הקודם</button><button id="next">לנושא הבא ←</button></div><div class="footer">💜 PLAYWISE · לומדים אנגלית ביחד<br>הסברים ומשחקי דקדוק מקוריים</div>
+<div class="bottom"><button id="prev">→ לנושא הקודם</button><button id="next">לנושא הבא ←</button></div><div class="footer">💜 PLAYWISE · לומדים אנגלית ביחד<br>הסברים ומשחקי הכנה למבחן</div>
 </main>
 <script>
 (function(){"use strict";
-var topics=["letters","vocab","reading","there","articles","bonus"];
+var topics=["letters","vocab","reading","there","articles"];
 var groups=[["🔤 A a","Meet A a",[["animal","בעל חיים","🐶"],["bag","תיק","🎒"],["car","מכונית","🚗"]]],["🔤 M m","Meet M m",[["mother","אמא","👩"],["family","משפחה","👨‍👩‍👧"],["room","חדר","🛏️"]]],["🔤 S s","Meet S s",[["school","בית ספר","🏫"],["sister","אחות","👧"],["bus","אוטובוס","🚌"]]],["🔤 H h","Meet H h",[["hair","שיער","💇"],["chair","כיסא","🪑"],["mouth","פה","👄"]]],["🔤 P p","Meet P p",[["pencil","עיפרון","✏️"],["open","לפתוח","🚪"],["help","לעזור","🤝"]]],["🔤 T t","Meet T t",[["tea","תה","🍵"],["water","מים","💧"],["cat","חתול","🐈"]]],["🔤 I i","Meet I i",[["in","בתוך","📥"],["igloo","איגלו","🧊"],["Internet","אינטרנט","🌐"],["Indian","יליד אמריקאי","🌎"],["ink","דיו","🖋️"],["Italy","איטליה","🇮🇹"]]],["📅 ימות השבוע","Days of the Week",[["Sunday","יום ראשון","☀️"],["Monday","יום שני","🌼"],["Tuesday","יום שלישי","🌸"],["Wednesday","יום רביעי","⭐"],["Thursday","יום חמישי","🌈"],["Friday","יום שישי","🎉"],["Saturday","יום שבת","💜"]]],["🌷 עונות השנה","Seasons",[["spring","אביב","🌷"],["summer","קיץ","☀️"],["autumn / fall","סתיו","🍂"],["winter","חורף","⛄"]]],["🗓️ חודשי השנה","Months of the Year",[["January","ינואר","❄️"],["February","פברואר","💗"],["March","מרץ","🌷"],["April","אפריל","🌸"],["May","מאי","🌼"],["June","יוני","☀️"],["July","יולי","🏖️"],["August","אוגוסט","🍉"],["September","ספטמבר","🍎"],["October","אוקטובר","🍂"],["November","נובמבר","☁️"],["December","דצמבר","🎁"]]]];
 function speak(t){if(!("speechSynthesis" in window))return;window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang="en-US";u.rate=.8;var voices=window.speechSynthesis.getVoices();u.voice=voices.find(function(v){return /^en/i.test(v.lang)})||null;window.speechSynthesis.speak(u)}
 "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").forEach(function(c){var b=document.createElement("button");b.type="button";b.className="letter";b.innerHTML=c+" "+c.toLowerCase()+"<small>🔊</small>";b.setAttribute("aria-label","לשמוע "+c);b.onclick=function(){speak(c)};document.getElementById("letters").appendChild(b)});
