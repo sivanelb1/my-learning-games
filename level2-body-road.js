@@ -20,12 +20,12 @@ function round(ctx,x,y,w,h,r){ctx.beginPath();ctx.roundRect(x,y,w,h,r)}
 function poly(ctx,pts){ctx.beginPath();ctx.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<pts.length;i++)ctx.lineTo(pts[i][0],pts[i][1]);ctx.closePath()}
 function mount(opts){
  const root=opts.element,words=opts.words.map(w=>({en:w[0],he:w[1],emoji:w[2]}));
- root.innerHTML='<div class="activity-heading"><div class="mini-pill">🏎️ מירוץ המכונית הקסומה · MAGIC ROAD RALLY</div><h2>יוצאים למירוץ הקסום!</h2><p>המכונית נוסעת לבד לעבר האופק! בחרו נתיב בטוח, קפצו על הרמפות ואספו מילים. יש 3 לבבות — אחרי שלוש פגיעות מתחילים את המסלול מחדש. 🚧🏎️</p></div>'+
+ root.innerHTML='<div class="activity-heading"><div class="mini-pill">🏎️ מירוץ המכונית הקסומה · MAGIC ROAD RALLY</div><h2>יוצאים למירוץ הקסום!</h2><p>עכשיו אתם ממש בתוך המכונית! הביטו דרך השמשה, בחרו נתיב בטוח, קפצו על הרמפות ואספו מילים. יש 3 לבבות — אחרי שלוש פגיעות מתחילים את המסלול מחדש. 🚧🏎️</p></div>'+
  '<section class="road-game" aria-label="משחק נהיגה בשלושה נתיבים">'+
  '<div class="road-hud"><div class="road-hearts" id="roadHearts" aria-label="לבבות">❤️ ❤️ ❤️</div><div class="road-score">🧩 <b id="roadScore">0 / '+words.length+'</b></div><div class="road-timer" aria-label="זמן נסיעה">⏱️ <b id="roadTimer">0:00</b></div><button class="road-pause" type="button" id="roadPause" aria-label="השהיית המשחק">⏸️</button></div>'+
- '<div class="road-screen"><canvas id="roadCanvas" width="720" height="540" role="img" aria-label="כביש מנקודת מבט נמוכה מאחורי המכונית, שלושה נתיבים, איברי גוף לאיסוף, מכשולים ורמפות קופצות"></canvas>'+
+ '<div class="road-screen"><canvas id="roadCanvas" width="720" height="540" role="img" aria-label="מבט מתוך השמשה הקדמית של מכונית קסומה: כביש עם שלושה נתיבים, מכשולים, איברי גוף ורמפות קפיצה"></canvas>'+
  '<div class="road-float" id="roadFloat" aria-live="polite"></div>'+
- '<div class="road-overlay" id="roadOverlay"><div class="road-overlay-inner"><div class="road-overlay-emoji">🚙🌈⭐</div><h3 id="roadOverlayTitle">מוכנים להרפתקה?</h3><p id="roadOverlayText">התכוננו למסלול ארוך ומאתגר! לא בכל שורה יש מילה. מצאו את הנתיב הפנוי והתחמקו ממכשולים. רמפה ורודה מקפיצה את המכונית גבוה באוויר! יש 3 לבבות, ואם הם נגמרים מתחילים מחדש.</p><button class="road-primary" type="button" id="roadAction">🚦 יוצאים לדרך!</button></div></div></div>'+
+ '<div class="road-overlay" id="roadOverlay"><div class="road-overlay-inner"><div class="road-overlay-emoji">🚙🌈⭐</div><h3 id="roadOverlayTitle">מוכנים להרפתקה?</h3><p id="roadOverlayText">מוכנים לנהוג מתוך המכונית? הסתכלו דרך השמשה, התחמקו ממכשולים ואספו את המילים! רמפה ורודה מקפיצה את המכונית. יש 3 לבבות — כשכולם נגמרים מתחילים מחדש.</p><button class="road-primary" type="button" id="roadAction">🚦 יוצאים לדרך!</button></div></div></div>'+
  '<div class="road-controls" dir="ltr"><button class="road-steer" id="roadLeft" type="button" aria-label="לנתיב השמאלי">⬅️ <span>שמאלה</span></button><div class="road-control-tip">🎯 אוספים מילים<br>🚧 מתחמקים<br>🌈 קופצים!</div><button class="road-steer" id="roadRight" type="button" aria-label="לנתיב הימני"><span>ימינה</span> ➡️</button></div>'+
  '<div class="road-inventory"><h3>🎒 האיברים שאספנו · <span lang="en">BODY WORDS</span></h3><div class="road-word-list" id="roadWords"></div></div>'+
  '<div class="road-help">💡 מחשב: ← → או A / D · טלפון: לחצו על החצים או החליקו על הכביש</div></section>';
@@ -209,54 +209,66 @@ function mount(opts){
    ctx.strokeStyle='#fff6c5';ctx.lineWidth=6;ctx.stroke();
    ctx.shadowBlur=0;ctx.fillStyle='#fff6a4';ctx.font='bold 45px system-ui';ctx.textAlign='center';ctx.fillText('↑',0,19);ctx.restore();
  }
- function car(){
-   // Very low rear chase view: close to the bumper, almost riding in the car.
-   const x=laneX(visualLane,COLLISION_Y);
-   const duration=1.65;
-   const progress=clamp((now-jumpStart)/duration,0,1);
+ function cockpit(){
+   // First-person windshield view. The road and horizon stay FIXED to avoid nausea.
+   // All vehicle trim is anchored to the screen, not the world.
    const airborne=now<jumpUntil&&now>=jumpStart;
-   // Parabolic flight: the car visibly takes off, soars and lands.
-   const lift=airborne?Math.sin(Math.PI*progress)*65:0;
-   const grow=airborne?1+Math.sin(Math.PI*progress)*.07:1;
-   // Low chase camera: the car fills the bottom foreground, partly out of frame.
-   const y=506-lift;
+   const jumpProgress=clamp((now-jumpStart)/1.65,0,1);
+   const lift=airborne?Math.sin(Math.PI*jumpProgress):0;
    ctx.save();
-   // The car stays visually steady even when a heart is lost.
-   // The shadow stays ON THE ROAD as the car rises above it.
-   ctx.fillStyle='rgba(58,37,94,'+(.32-lift/700)+')';
-   ctx.beginPath();ctx.ellipse(x,537,57-lift*.17,12-lift*.025,0,0,Math.PI*2);ctx.fill();
-   if(airborne&&lift>12){
-     ctx.save();ctx.textAlign='center';ctx.font='23px system-ui';
-     ctx.globalAlpha=.8;ctx.fillText('✨',x-38,y+80);ctx.fillText('✨',x+38,y+105);
-     ctx.globalAlpha=.55;ctx.fillText('💨',x,y+105);ctx.restore();
+   ctx.fillStyle='rgba(233,247,255,.045)';ctx.fillRect(18,18,W-36,469);
+   // Roof lining / top edge of the front windshield.
+   ctx.fillStyle='#7252a1';
+   poly(ctx,[[0,0],[W,0],[W,30],[655,18],[65,18],[0,30]]);ctx.fill();
+   ctx.fillStyle='#c6a5ef';
+   poly(ctx,[[0,0],[W,0],[W,10],[653,7],[67,7],[0,10]]);ctx.fill();
+   ctx.fillStyle='#4e3978';
+   poly(ctx,[[0,0],[39,0],[26,483],[0,503]]);ctx.fill();
+   poly(ctx,[[W,0],[W-39,0],[W-26,483],[W,503]]);ctx.fill();
+   ctx.strokeStyle='#bd9ce6';ctx.lineWidth=7;ctx.lineCap='round';
+   ctx.beginPath();ctx.moveTo(39,18);ctx.lineTo(27,474);
+   ctx.moveTo(W-39,18);ctx.lineTo(W-27,474);ctx.stroke();
+   // Rear-view mirror.
+   ctx.fillStyle='#7c5baf';round(ctx,352,12,16,27,5);ctx.fill();
+   ctx.fillStyle='#5a3d86';round(ctx,294,31,132,33,12);ctx.fill();
+   ctx.fillStyle='#b6d8f5';round(ctx,301,37,118,21,9);ctx.fill();
+   ctx.fillStyle='#e8f8ff';ctx.globalAlpha=.48;round(ctx,312,39,37,6,3);ctx.fill();ctx.globalAlpha=1;
+   // Windscreen base and plush curved dashboard.
+   ctx.fillStyle='#5d428a';
+   ctx.beginPath();ctx.moveTo(0,479);
+   ctx.quadraticCurveTo(360,502,W,479);ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.closePath();ctx.fill();
+   ctx.fillStyle='#9b73d2';
+   ctx.beginPath();ctx.moveTo(0,484);
+   ctx.quadraticCurveTo(360,504,W,484);ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.closePath();ctx.fill();
+   ctx.strokeStyle='#e9d3ff';ctx.lineWidth=5;
+   ctx.beginPath();ctx.moveTo(0,483);ctx.quadraticCurveTo(360,505,W,483);ctx.stroke();
+   // Center console.
+   ctx.fillStyle='#6a4d9d';round(ctx,427,505,178,37,16);ctx.fill();
+   ctx.fillStyle='#c9b3ee';round(ctx,435,509,162,26,12);ctx.fill();
+   ctx.fillStyle='#5d438c';ctx.font='bold 15px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+   ctx.fillText('⭐ PLAYWISE ⭐',516,522);
+   // Steering wheel rotates slightly with lane choice; the camera stays still.
+   const turn=(visualLane-1)*.12;
+   ctx.save();ctx.translate(177,538);ctx.rotate(turn);
+   ctx.strokeStyle='#392958';ctx.lineWidth=17;ctx.beginPath();ctx.arc(0,0,61,0,Math.PI*2);ctx.stroke();
+   ctx.strokeStyle='#b28ae4';ctx.lineWidth=8;ctx.beginPath();ctx.arc(0,0,61,Math.PI*1.08,Math.PI*1.93);ctx.stroke();
+   ctx.strokeStyle='#644796';ctx.lineWidth=14;ctx.beginPath();ctx.moveTo(-54,-10);ctx.lineTo(0,8);ctx.lineTo(54,-10);ctx.moveTo(0,8);ctx.lineTo(0,57);ctx.stroke();
+   ctx.fillStyle='#e3c8ff';ctx.beginPath();ctx.arc(0,8,21,0,Math.PI*2);ctx.fill();
+   ctx.fillStyle='#7653ad';ctx.font='24px system-ui';ctx.fillText('★',0,9);ctx.restore();
+   // Gentle jump feedback, with NO camera tilt, shake or zoom.
+   if(airborne&&lift>.08){
+     ctx.globalAlpha=.72;
+     ctx.fillStyle='#fff8d7';round(ctx,290,453,141,31,15);ctx.fill();
+     ctx.globalAlpha=1;ctx.fillStyle='#8655b4';ctx.font='bold 17px system-ui';
+     ctx.textAlign='center';ctx.fillText('🌈 JUMP! ✨',360,469);
    }
-   ctx.translate(x,y);ctx.scale(1.23*grow,1.23*grow);
-   // Keep the vehicle upright throughout the jump (no camera tilt).
-   if(now<shieldUntil){
-     ctx.strokeStyle='#d1ffff';ctx.lineWidth=4;ctx.setLineDash([9,6]);
-     ctx.beginPath();ctx.ellipse(0,8,58,79,0,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
-   }
-   // Side wheels, rounded body and bright back window.
-   ctx.fillStyle='#44375c';
-   for(const xx of [-51,37])for(const yy of [-32,34]){round(ctx,xx,yy,14,31,6);ctx.fill()}
-   ctx.shadowColor='#59348688';ctx.shadowBlur=12;ctx.shadowOffsetY=7;
-   ctx.fillStyle='#7d4fc5';round(ctx,-47,-59,94,123,27);ctx.fill();
-   ctx.shadowBlur=0;ctx.shadowOffsetY=0;
-   ctx.fillStyle='#c987f2';round(ctx,-40,-54,80,111,23);ctx.fill();
-   ctx.fillStyle='#895bc3';round(ctx,-34,-50,68,65,20);ctx.fill();
-   ctx.fillStyle='#a7e8ff';round(ctx,-30,-43,60,33,13);ctx.fill();
-   ctx.fillStyle='#e4b7fb';round(ctx,-28,-1,56,30,13);ctx.fill();
-   ctx.fillStyle='#ffdf72';ctx.font='30px system-ui';ctx.textAlign='center';ctx.fillText('⭐',0,47);
-   ctx.fillStyle='#fff2a1';round(ctx,-37,-56,20,11,5);ctx.fill();round(ctx,17,-56,20,11,5);ctx.fill();
-   ctx.fillStyle='#ff8cb8';round(ctx,-36,52,20,9,4);ctx.fill();round(ctx,16,52,20,9,4);ctx.fill();
-   if(airborne&&lift>25){ctx.font='25px system-ui';ctx.fillText('✦',-61,-38);ctx.fillText('✦',55,26)}
    ctx.restore();
  }
  function paint(){
    if(!ctx)return;
    ctx.clearRect(0,0,W,H);backdrop();road();
    items.sort((a,b)=>a.y-b.y).forEach(o=>{if(o.type==='word')drawWord(o);else if(o.type==='ramp')drawRamp(o);else drawHazard(o)});
-   car();
+   cockpit();
    if(state==='running'&&flashUntil>now){ctx.save();ctx.globalAlpha=Math.min(1,(flashUntil-now)*2);ctx.textAlign='center';ctx.font='900 26px system-ui';ctx.shadowColor='#613e93';ctx.shadowBlur=8;ctx.fillStyle=flashColor;ctx.fillText(flashText,W/2,176);ctx.restore();}
  }
  function frame(t){if(disposed)return;if(!last)last=t;const dt=clamp((t-last)/1000,0,MAX_DT);last=t;if(!document.hidden)update(dt);paint();anim=requestAnimationFrame(frame)}
