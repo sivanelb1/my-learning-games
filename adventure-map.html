@@ -175,6 +175,7 @@ header p {
 /* Bubble Magic: optional central arcade adventure, not a stage navigation bar */
 .bubble-portal{position:fixed;left:12px;bottom:14px;z-index:28;display:flex;align-items:center;gap:7px;direction:rtl;text-decoration:none;color:#fff8dc;background:linear-gradient(115deg,#7436a7,#3b1b73);border:3px solid #ffe0a0;border-radius:21px;padding:12px 16px;font:bold clamp(13px,1.6vw,18px) Arial,sans-serif;box-shadow:0 0 22px #ca85ff99,0 6px 15px #16082faa;animation:bubblePortalGlow 2.4s ease-in-out infinite alternate}.bubble-portal:hover,.bubble-portal:focus-visible{background:#a05bd3;outline:3px solid #fff}.bubble-portal .bubble-emoji{font-size:clamp(20px,2.8vw,31px)}@keyframes bubblePortalGlow{to{box-shadow:0 0 32px #ffddaab0,0 6px 15px #16082faa}}@media(max-width:600px){.bubble-portal{left:6px;bottom:7px;padding:8px 10px;border-width:2px;border-radius:14px;font-size:11px}.bubble-portal .bubble-emoji{font-size:19px}}
 </style>
+<link rel="stylesheet" href="adventure-map-sky.css?v=worlds13-v1">
 </head>
 
 <body>
@@ -188,6 +189,17 @@ header p {
 
 <div class="map-window" id="mapWindow">
   <main class="world" id="world">
+    <section class="map-sky" id="newWorlds" aria-label="חמשת העולמות החדשים · New Worlds 9–13">
+      <div class="sky-heading">✨ העולמות החדשים · NEW WORLDS 9–13 ✨</div>
+      <svg class="sky-route" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true"><path d="M 500 1000 Q 860 900 700 820 T 300 660 T 700 490 T 300 320 T 500 130" stroke="#fff0bf" stroke-width="8" stroke-linecap="round" stroke-dasharray="4 24" fill="none"/></svg>
+      <a class="sky-stop final" style="--x:50%;--y:15%" href="level2-world-bubbles.html" aria-label="שלב 13: בועות הקסם, עולם הסיכום"><span class="sky-island"><span class="sky-symbol">🫧</span><span class="sky-num">13</span></span><span class="sky-label">בועות הקסם <small>Bubble Magic · Review</small></span></a>
+      <a class="sky-stop" style="--x:30%;--y:32%" href="level2-world-toys.html" aria-label="שלב 12: עולם הצעצועים"><span class="sky-island"><span class="sky-symbol">🧸</span><span class="sky-num">12</span></span><span class="sky-label">ממלכת הצעצועים <small>Toy Wonderland</small></span></a>
+      <a class="sky-stop" style="--x:70%;--y:49%" href="level2-world-school.html" aria-label="שלב 11: עולם בית הספר"><span class="sky-island"><span class="sky-symbol">🏫</span><span class="sky-num">11</span></span><span class="sky-label">אקדמיית בית הספר <small>School Academy</small></span></a>
+      <a class="sky-stop" style="--x:30%;--y:66%" href="level2-world-food.html" aria-label="שלב 10: עולם האוכל"><span class="sky-island"><span class="sky-symbol">🍎</span><span class="sky-num">10</span></span><span class="sky-label">ארץ המאכלים <small>Magical Food Land</small></span></a>
+      <a class="sky-stop" style="--x:70%;--y:83%" href="level2-world-body.html" aria-label="שלב 9: עולם גוף האדם"><span class="sky-island"><span class="sky-symbol">🧠</span><span class="sky-num">9</span></span><span class="sky-label">ממלכת גוף האדם <small>Human Body Kingdom</small></span></a>
+      <a class="sky-hint" href="#originalMap">⬇️ לתחנות 1–8 · EARLIER WORLDS</a>
+    </section>
+    <section class="map-land" id="originalMap" aria-label="מפת העולמות 1 עד 8">
 
   
 <button class="level current" style="top:76%;left:44%" onclick="window.location.href='level2-letter-gate.html'" aria-label="תחנה 1: שער האותיות">1</button><div class="level-name" style="top:76%;left:49%">שער האותיות <small>Fairy Letters</small></div>
@@ -198,9 +210,10 @@ header p {
 <button class="level " style="top:42%;left:31%" onclick="window.location.href='level2-numbers-intro.html'" aria-label="תחנה 6: ממלכת המספרים והצבעים">6</button><div class="level-name" style="top:42%;left:19%">ממלכת הצבעים והמספרים <small>Numbers & Colors</small></div>
 <button class="level " style="top:36%;left:69%" onclick="window.location.href='level2-animals-family-intro.html'" aria-label="תחנה 7: ממלכת החיות">7</button><div class="level-name" style="top:36%;left:77%">ממלכת החיות <small>Animal Kingdom</small></div>
 <button class="level " style="top:32%;left:50%" onclick="window.location.href='level2-family-gate.html'" aria-label="תחנה 8: ממלכת המשפחה">8</button><div class="level-name" style="top:32%;left:30%">ממלכת המשפחה <small>Family Kingdom</small></div>
-<button class="level " style="top:23%;left:37%" onclick="window.location.href='level2-quest.html?stage=9'" aria-label="תחנה 9: מפתחות האוצר">9</button><div class="level-name" style="top:23%;left:19%">מפתחות האוצר <small>Treasure Keys</small></div>
-<button class="level " style="top:17%;left:55%" onclick="window.location.href='level2-quest.html?stage=10'" aria-label="תחנה 10: הכתר האבוד">10</button><div class="level-name" style="top:17%;left:63%">הכתר האבוד <small>Royal Challenge</small></div>
-    </main>
+
+
+    </section>
+  </main>
 </div>
 
 <div class="message">
@@ -211,8 +224,8 @@ header p {
 function openLevel(level) {
   alert("שלב " + level + " עדיין בהכנה ⭐");
 }
-window.addEventListener("load",()=>{const pane=document.getElementById("mapWindow");pane.scrollTop=0;});
+window.addEventListener("load",()=>{const pane=document.getElementById("mapWindow");pane.scrollTop=0;["body","food","school","toys","bubbles"].forEach(key=>{try{if(localStorage.getItem("playwise-world-"+key+"-complete-v1")==="complete")document.querySelector('.sky-stop[href="level2-world-'+key+'.html"]')?.classList.add("done")}catch(e){}})});
 </script>
 
-<script src="treasure-progress.js"></script><div id="treasure-story" style="position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:25;max-width:calc(100vw - 110px);width:450px;text-align:center;background:#2b1258e8;color:#fff;border:2px solid #efc96c;border-radius:16px;padding:8px 12px;font:bold clamp(11px,2vw,15px) Arial,sans-serif;box-shadow:0 4px 15px #0008">🏰 סוד האוצר בארמון הקסום · השלימו 10 תחנות ואספו עשר אבני קסם! ✨</div><a class="bubble-portal" href="level2-bubble-magic.html" aria-label="משחק ההרפתקה הראשי: בועות הקסם"><span class="bubble-emoji">🫧🪄</span><span>בועות הקסם<br><small>משחק ההרפתקה</small></span></a></body>
+<script src="treasure-progress.js"></script><a class="map-jump" href="#newWorlds">✨ לעולמות 9–13</a></body>
 </html>
