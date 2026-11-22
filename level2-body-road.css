@@ -1,0 +1,49 @@
+/* PLAYWISE · Monster Road Rally · a playful, readable mini racing game */
+.road-game{max-width:790px;margin:0 auto;direction:rtl;font-family:inherit}
+.road-hud{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 auto 10px;max-width:660px}
+.road-hearts,.road-score{background:#fff8ff;border:3px solid #dbb4f5;border-radius:20px;padding:9px 16px;min-height:48px;display:flex;align-items:center;justify-content:center;font-size:clamp(15px,2.4vw,23px);font-weight:1000;color:#66348f;box-shadow:0 4px 0 #c69fe3}
+.road-hearts{direction:ltr;letter-spacing:2px;white-space:nowrap}
+.road-pause{border:3px solid #fff;border-radius:17px;background:linear-gradient(135deg,#eac9ff,#c9b7ff);color:#633b95;min-width:56px;min-height:51px;font-size:26px;box-shadow:0 4px 0 #b493db;cursor:pointer}
+.road-screen{width:min(100%,660px);aspect-ratio:480/610;max-height:690px;position:relative;overflow:hidden;border:7px solid #e6b9ff;border-radius:33px;margin:0 auto;background:#a9e7ff;box-shadow:0 8px 0 #b791df,0 15px 32px #7b58ad35;isolation:isolate;touch-action:none}
+.road-screen canvas{display:block;width:100%;height:100%;object-fit:fill;touch-action:none;user-select:none;-webkit-user-select:none}
+.road-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(145deg,#e7d3ffdd,#ffd9f2e8);backdrop-filter:blur(5px);z-index:3;direction:rtl}
+.road-overlay[hidden]{display:none!important}
+.road-overlay-inner{background:#fffafeee;border:4px solid #fff;outline:3px solid #d9a5f4;border-radius:32px;padding:clamp(20px,4vw,35px) clamp(16px,4vw,32px);max-width:410px;text-align:center;box-shadow:0 13px 28px #7a4ca444}
+.road-overlay-emoji{font-size:clamp(42px,7vw,64px);margin-bottom:10px;filter:drop-shadow(0 6px 6px #9161b92c)}
+.road-overlay h3{font-size:clamp(23px,4vw,34px);color:#673a9b;font-weight:1000;line-height:1.25;margin:6px 0 12px}
+.road-overlay p{font-size:clamp(15px,2.6vw,19px);line-height:1.6;color:#704e87;font-weight:800;margin:0 0 20px}
+.road-primary{background:linear-gradient(#ffe992,#ffbd46);color:#60367e;border:3px solid #fff;border-radius:26px;padding:13px 23px;font-size:clamp(17px,2.8vw,23px);font-weight:1000;box-shadow:0 6px 0 #e49c37,0 10px 15px #96674c32;cursor:pointer;transition:transform .15s}
+.road-primary:hover{transform:translateY(-3px)}
+.road-primary:active{transform:translateY(3px);box-shadow:0 2px 0 #e49c37}
+.road-float{position:absolute;left:50%;top:18%;transform:translateX(-50%);z-index:2;white-space:nowrap;text-shadow:0 2px 3px #633a9a,0 0 10px #8c61be;pointer-events:none;font-size:clamp(16px,3vw,25px);font-weight:1000;opacity:0;transition:opacity .3s}
+.road-float.visible{animation:road-toast 1.4s ease-out both}
+@keyframes road-toast{0%{opacity:0;transform:translate(-50%,16px) scale(.85)}25%{opacity:1;transform:translate(-50%,0) scale(1.08)}75%{opacity:1}100%{opacity:0;transform:translate(-50%,-18px)}}
+.road-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:17px auto 15px;max-width:660px}
+.road-steer{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:135px;min-height:76px;border-radius:25px;border:4px solid #fff;background:linear-gradient(#e9c9ff,#c8a6fa);color:#63388b;font-size:27px;font-weight:1000;box-shadow:0 6px 0 #a987d7,0 10px 15px #7352a733;cursor:pointer;touch-action:manipulation;user-select:none}
+.road-steer span{font-size:15px}
+.road-steer:hover{background:linear-gradient(#f6dcff,#e4bbff)}
+.road-steer:active{transform:translateY(4px);box-shadow:0 2px 0 #a987d7}
+.road-control-tip{text-align:center;color:#7a529e;font-weight:900;line-height:1.55;font-size:clamp(13px,2vw,17px);direction:rtl}
+.road-inventory{background:#fff9fe;border:2px solid #e5c5f4;border-radius:28px;padding:17px;margin:15px auto 10px;max-width:730px;text-align:center}
+.road-inventory h3{font-size:clamp(17px,2.4vw,21px);font-weight:1000;color:#7b51a0;margin:0 0 14px}
+.road-inventory h3 span{font-size:12px;color:#9a78b3}
+.road-word-list{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px}
+.road-word{font-size:clamp(13px,2.2vw,17px);font-weight:1000;color:#9e8cae;background:#f1eaf6;border:2px dashed #d9c4e6;border-radius:16px;padding:8px 11px;transition:background .3s,color .3s,transform .3s}
+.road-word.found{background:linear-gradient(#ddfff0,#baffd7);border:2px solid #6dd8a4;color:#28866a;transform:scale(1.03)}
+.road-help{font-size:14px;text-align:center;color:#7e62a0;font-weight:800;line-height:1.7;padding:7px}
+@media(max-width:610px){
+ .road-screen{border-width:5px;border-radius:23px}
+ .road-hud{gap:5px}.road-hearts,.road-score{font-size:16px;padding:6px 9px;border-width:2px;min-height:42px}
+ .road-pause{min-width:44px;min-height:43px;font-size:21px}
+ .road-controls{gap:6px;margin-top:12px}
+ .road-steer{min-width:93px;min-height:65px;border-width:3px;border-radius:19px;font-size:23px}
+ .road-steer span{font-size:13px}
+ .road-control-tip{font-size:12px}
+ .road-inventory{padding:12px 8px;border-radius:19px}
+ .road-word-list{gap:6px}
+ .road-word{padding:6px 8px}
+ .road-overlay-inner{padding:18px 14px;border-radius:23px}
+ .road-overlay p{line-height:1.5}
+}
+@media(max-width:365px){.road-steer{min-width:75px}.road-control-tip{font-size:10px}.road-hearts,.road-score{font-size:13px}}
+@media(prefers-reduced-motion:reduce){.road-float.visible{animation:none;opacity:1}.road-primary,.road-word{transition:none}}
