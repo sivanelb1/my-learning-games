@@ -20,41 +20,63 @@ const stages=['learn','match','hospital'];
 function saveAwards(){try{localStorage.setItem(AWARDS,JSON.stringify(awards))}catch(e){}}
 function speak(word){if(!sound||!('speechSynthesis' in window))return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(word);u.lang='en-US';u.rate=.79;u.pitch=1.07;speechSynthesis.speak(u)}catch(e){}}
 function shuffle(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function avatarSvg(){return '<svg viewBox="0 0 320 460" role="img" aria-label="דמות מצוירת חמודה עם חלקי גוף" xmlns="http://www.w3.org/2000/svg">'+
-'<defs><linearGradient id="shirt" x2="1" y2="1"><stop stop-color="#a9a0ef"/><stop offset="1" stop-color="#7567be"/></linearGradient><linearGradient id="skin" x2="0" y2="1"><stop stop-color="#ffe1b7"/><stop offset="1" stop-color="#f1b18e"/></linearGradient></defs>'+
-'<ellipse cx="159" cy="443" rx="91" ry="13" fill="#ae91ba" opacity=".23"/>'+
-'<path d="M128 301 L125 393 Q128 410 143 409 L157 320 Z" fill="#668dbd" stroke="#6559a5" stroke-width="5"/>'+
-'<path d="M165 313 L175 407 Q195 413 200 396 L194 297 Z" fill="#668dbd" stroke="#6559a5" stroke-width="5"/>'+
-'<path d="M122 403 Q102 402 98 418 Q97 432 117 434 L148 433 Q157 420 143 405 Z" fill="#f4a6a8" stroke="#8d648d" stroke-width="4"/>'+
-'<path d="M180 404 Q199 401 214 416 Q226 432 207 435 L176 435 Q164 420 180 404 Z" fill="#f4a6a8" stroke="#8d648d" stroke-width="4"/>'+
-'<path d="M115 213 Q83 217 75 259 L53 312 Q43 324 56 332 Q69 338 80 322 L109 269 Z" fill="url(#skin)" stroke="#bb7c85" stroke-width="5"/>'+
-'<path d="M203 213 Q237 220 244 259 L266 312 Q275 326 261 332 Q247 339 239 323 L207 271 Z" fill="url(#skin)" stroke="#bb7c85" stroke-width="5"/>'+
-'<path d="M48 309 Q29 314 34 335 Q39 350 55 349 Q72 347 75 331 Q71 313 61 311 Z" fill="url(#skin)" stroke="#bb7c85" stroke-width="4"/>'+
-'<path d="M258 308 Q280 313 283 335 Q280 350 264 350 Q247 346 244 331 Z" fill="url(#skin)" stroke="#bb7c85" stroke-width="4"/>'+
-'<path d="M108 205 Q159 189 212 206 L228 302 Q205 330 159 332 Q111 329 91 302 Z" fill="url(#shirt)" stroke="#6256a6" stroke-width="5"/>'+
-'<path d="M143 187 L142 215 Q160 229 178 213 L176 186" fill="url(#skin)" stroke="#bb7c85" stroke-width="4"/>'+
-'<path d="M107 110 Q85 99 87 123 Q89 149 110 147 M212 110 Q232 101 230 125 Q228 150 209 148" fill="url(#skin)" stroke="#bc7d84" stroke-width="5"/>'+
-'<path d="M106 81 Q114 43 157 44 Q211 43 216 92 L211 150 Q197 189 159 194 Q120 192 108 153 Z" fill="url(#skin)" stroke="#bc7d84" stroke-width="5"/>'+
-'<path d="M102 102 Q85 57 115 43 Q130 17 158 29 Q197 18 218 55 Q229 77 216 105 Q201 82 200 68 Q179 91 152 75 Q133 99 104 96 Z" fill="#654a8e" stroke="#5b3f7d" stroke-width="4"/>'+
-'<path d="M115 62 Q142 32 167 47" fill="none" stroke="#8e70a8" stroke-width="7" stroke-linecap="round"/>'+
-'<ellipse cx="137" cy="120" rx="10" ry="13" fill="#fff"/><ellipse cx="182" cy="120" rx="10" ry="13" fill="#fff"/>'+
-'<ellipse cx="139" cy="121" rx="5" ry="8" fill="#59447a"/><ellipse cx="184" cy="121" rx="5" ry="8" fill="#59447a"/>'+
-'<circle cx="141" cy="117" r="2.5" fill="#fff"/><circle cx="186" cy="117" r="2.5" fill="#fff"/>'+
-'<path d="M159 128 Q152 143 162 145" stroke="#c27e83" stroke-width="4" fill="none" stroke-linecap="round"/>'+
-'<path d="M145 156 Q159 174 174 155" fill="#fff9f3" stroke="#b26d7d" stroke-width="3" stroke-linecap="round"/>'+
-'<ellipse cx="120" cy="149" rx="10" ry="5" fill="#f39fa9" opacity=".65"/><ellipse cx="198" cy="149" rx="10" ry="5" fill="#f39fa9" opacity=".65"/>'+
-'<path d="M152 243 Q160 232 169 243 Q178 255 159 271 Q141 253 152 243 Z" fill="#ffb8cb" stroke="#fff2df" stroke-width="4"/>'+
-'<path d="M114 291 Q158 306 206 290" fill="none" stroke="#b6a5ef" stroke-width="4" stroke-linecap="round"/>'+
-'</svg>'}
+function avatarSvg(){return `<svg viewBox="0 0 320 460" role="img" aria-label="ילד מצויר חייכן עם גוף מאוזן ואיברים ברורים" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="pwSkin" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#ffe6c6"/><stop offset="1" stop-color="#f5b995"/></linearGradient>
+<linearGradient id="pwShirt" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a2e5d9"/><stop offset="1" stop-color="#65c5ba"/></linearGradient>
+<linearGradient id="pwHair" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#79558d"/><stop offset="1" stop-color="#4c386b"/></linearGradient>
+</defs>
+<ellipse cx="160" cy="440" rx="98" ry="11" fill="#9b80bd" opacity=".2"/>
+<!-- legs: matching lengths and natural width -->
+<path d="M122 307 L122 391 Q122 404 135 407 L148 407 Q156 402 157 389 L159 335 L164 335 L165 389 Q167 405 179 408 L193 407 Q204 401 202 389 L199 307 Z" fill="url(#pwSkin)" stroke="#d69b92" stroke-width="3" stroke-linejoin="round"/>
+<path d="M121 308 Q158 301 200 308 L202 344 Q184 350 166 346 L160 331 L154 346 Q135 350 120 344 Z" fill="#8272d1" stroke="#6c5eb7" stroke-width="3" stroke-linejoin="round"/>
+<path d="M121 341 Q139 348 155 344 M166 345 Q184 348 202 342" stroke="#b3a8ee" stroke-width="3" fill="none"/>
+<!-- socks and friendly sneakers -->
+<path d="M123 391 L155 391 L155 408 L121 408 Z M167 391 L199 391 L199 408 L166 408 Z" fill="#fff8e9"/>
+<path d="M122 402 Q112 402 107 418 Q106 429 124 432 L155 432 Q165 427 158 414 L152 405 Z" fill="#ffb2b8" stroke="#c87d9b" stroke-width="3"/>
+<path d="M167 414 Q166 427 175 432 L206 432 Q223 429 215 417 Q210 405 198 402 L173 405 Z" fill="#ffb2b8" stroke="#c87d9b" stroke-width="3"/>
+<path d="M111 423 L157 423 M171 423 L213 423" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+<!-- arms behind shirt, slightly outstretched -->
+<path d="M116 205 Q96 205 88 224 L61 289 Q55 304 68 310 Q81 314 88 300 L119 247 Z" fill="url(#pwSkin)" stroke="#d69b92" stroke-width="3"/>
+<path d="M205 205 Q225 205 233 224 L259 289 Q266 305 252 310 Q239 314 232 300 L201 247 Z" fill="url(#pwSkin)" stroke="#d69b92" stroke-width="3"/>
+<!-- open mitten hands with small visible fingers -->
+<path d="M63 289 Q50 285 47 294 L45 309 Q42 320 49 324 Q54 327 58 318 Q58 333 66 333 Q72 333 73 323 Q76 333 82 327 Q87 323 83 313 Q90 315 91 307 Q89 299 78 297 Z" fill="url(#pwSkin)" stroke="#d69b92" stroke-width="3" stroke-linejoin="round"/>
+<path d="M257 289 Q270 285 273 294 L275 309 Q278 320 271 324 Q266 327 262 318 Q262 333 254 333 Q248 333 247 323 Q244 333 238 327 Q233 323 237 313 Q230 315 229 307 Q231 299 242 297 Z" fill="url(#pwSkin)" stroke="#d69b92" stroke-width="3" stroke-linejoin="round"/>
+<!-- balanced T-shirt -->
+<path d="M125 198 Q140 190 159 191 Q181 190 197 198 L218 217 L204 253 L195 247 L202 314 Q160 326 118 314 L125 247 L116 253 L101 217 Z" fill="url(#pwShirt)" stroke="#4baca6" stroke-width="3" stroke-linejoin="round"/>
+<path d="M145 194 Q158 215 177 194" fill="none" stroke="#fff8e6" stroke-width="7" stroke-linecap="round"/>
+<path d="M158 249 L164 259 L176 260 L167 269 L170 281 L159 275 L148 281 L151 269 L142 260 L154 259 Z" fill="#fff5ad" stroke="#e8c66d" stroke-width="2"/>
+<!-- neck and ears -->
+<path d="M146 178 L146 202 Q160 212 175 202 L174 178 Z" fill="url(#pwSkin)" stroke="#d69b92" stroke-width="3"/>
+<ellipse cx="100" cy="128" rx="15" ry="21" fill="url(#pwSkin)" stroke="#d69b92" stroke-width="3"/>
+<ellipse cx="220" cy="128" rx="15" ry="21" fill="url(#pwSkin)" stroke="#d69b92" stroke-width="3"/>
+<path d="M98 126 Q108 118 107 137 M223 126 Q214 119 213 138" stroke="#e5a59c" stroke-width="3" fill="none" stroke-linecap="round"/>
+<!-- smaller, rounded face; soft expression -->
+<path d="M104 99 Q105 55 159 52 Q213 54 216 99 L213 143 Q207 181 162 188 Q115 183 108 146 Z" fill="url(#pwSkin)" stroke="#d69b92" stroke-width="3"/>
+<!-- soft side-parted hair, no heavy scary eyebrows -->
+<path d="M104 119 Q93 84 109 63 Q120 45 144 43 Q160 28 179 43 Q207 40 218 68 Q231 92 216 116 L210 94 Q201 76 189 76 Q160 94 136 76 Q120 93 109 92 Z" fill="url(#pwHair)" stroke="#584270" stroke-width="3" stroke-linejoin="round"/>
+<path d="M130 57 Q156 68 179 54" stroke="#9b7bad" stroke-width="6" fill="none" stroke-linecap="round" opacity=".65"/>
+<!-- friendly eyes, balanced with head -->
+<path d="M125 118 Q137 111 149 118 M173 118 Q185 111 197 118" fill="none" stroke="#694c79" stroke-width="2.5" stroke-linecap="round"/>
+<ellipse cx="138" cy="131" rx="10" ry="12" fill="#fffdf7"/>
+<ellipse cx="184" cy="131" rx="10" ry="12" fill="#fffdf7"/>
+<ellipse cx="139" cy="133" rx="5.7" ry="7.4" fill="#5e8d9f"/>
+<ellipse cx="185" cy="133" rx="5.7" ry="7.4" fill="#5e8d9f"/>
+<circle cx="141" cy="130" r="2.5" fill="#fff"/><circle cx="187" cy="130" r="2.5" fill="#fff"/>
+<ellipse cx="120" cy="150" rx="11" ry="5" fill="#f4a3ab" opacity=".5"/>
+<ellipse cx="202" cy="150" rx="11" ry="5" fill="#f4a3ab" opacity=".5"/>
+<path d="M160 139 Q157 146 162 148" fill="none" stroke="#d69290" stroke-width="2.5" stroke-linecap="round"/>
+<path d="M146 160 Q161 173 177 160" fill="none" stroke="#ac6b83" stroke-width="3.5" stroke-linecap="round"/>
+</svg>`}
 /* Each arrow begins at the actual illustrated body part and ends at a label OUTSIDE the figure.
    The 600 × 460 diagram scales as one unit on phones and desktop. */
 const ARROWS={
- HAIR:[159,48,78,56], HEAD:[204,96,524,60], EYES:[185,122,524,157],
- EARS:[110,125,78,166], NOSE:[162,143,524,255], MOUTH:[160,164,78,263],
- HAND:[262,329,524,313], ARM:[235,254,524,196], FINGER:[49,337,78,305],
- LEG:[143,365,78,395], FOOT:[194,420,524,405],
- TEETH:[155,164,78,260], TONGUE:[166,172,524,265],
- HEART:[159,253,78,350], BRAIN:[159,87,524,65], BONE:[190,375,524,395]
+ HAIR:[157,61,78,56], HEAD:[204,94,524,60], EYES:[184,132,524,157],
+ EARS:[100,128,78,166], NOSE:[160,144,524,255], MOUTH:[161,164,78,263],
+ HAND:[259,310,524,313], ARM:[235,253,524,196], FINGER:[53,318,78,305],
+ LEG:[143,367,78,395], FOOT:[192,422,524,405],
+ TEETH:[160,162,78,260], TONGUE:[162,167,524,265],
+ HEART:[160,253,78,350], BRAIN:[160,79,524,65], BONE:[189,371,524,395]
 };
 function diagramLines(mode){
  return '<svg class="diagram-lines" viewBox="0 0 600 460" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">'+
