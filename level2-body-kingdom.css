@@ -83,7 +83,7 @@ body{background:radial-gradient(ellipse at 12% 18%,#f8d7f7 0,transparent 35%),ra
 .diagram-board .spot.diagram-label:hover,.diagram-board .spot.diagram-label.active{background:linear-gradient(#fff8d9,#ffedb5);border-color:#f4b54c;transform:translate(-50%,-50%) scale(1.06);box-shadow:0 5px 0 #c99542,0 10px 15px #e9ae4550}
 .diagram-board .spot.diagram-label.matched{background:linear-gradient(#effff4,#c9ffe1);border-color:#54c7a2;box-shadow:0 5px 0 #43ad85}
 .spoken{max-width:750px;margin:2px auto 12px;border:2px solid #d4b2f7;border-radius:18px;background:linear-gradient(90deg,#fff8d9,#fff4d2);color:#5d348b;box-shadow:0 2px 0 #d4b2f7;font-size:17px}
-.diagram-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 auto;padding:12px 8px 3px;max-width:880px;direction:ltr}
+.diagram-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 auto;padding:12px 8px 3px;max-width:880px;direction:rtl}
 .diagram-back,.diagram-next{font-weight:1000;border-radius:27px;border:3px solid #fff;min-width:135px;min-height:52px;padding:10px 16px;font-size:clamp(15px,2vw,20px);text-decoration:none;text-align:center;box-shadow:0 5px 0 #b38bd6,0 8px 10px #745b9e3a;cursor:pointer}
 .diagram-back{background:linear-gradient(#f8dcff,#ebc8ff);color:#62339a}
 .diagram-next{background:linear-gradient(#fff2a7,#ffcd4e);color:#61358b;box-shadow:0 5px 0 #e6a532,0 8px 10px #a982453a}
