@@ -19,7 +19,7 @@ button,a{font:inherit}button{cursor:pointer}.wrap{width:min(1130px,97%);margin:a
 .chapter-heading{font:bold clamp(22px,3vw,32px) Georgia,serif;text-align:center;color:#ffe6ad;margin:18px auto 6px}.chapter-instruction{text-align:center;line-height:1.6;color:#def5f0;margin:8px auto 15px}
 .lesson-progress{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:16px auto 8px}.progress-text{font-weight:900;color:#ffe5ad}.bar{height:16px;background:#122b47;border:2px solid #96d8cf;border-radius:20px;overflow:hidden;margin:8px auto 17px}.bar-fill{height:100%;width:0;background:linear-gradient(90deg,#65dfb7,#ffe4a4);transition:width .3s}
 .lesson-cards{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:11px}.lesson-card{position:relative;min-width:0;min-height:188px;background:linear-gradient(160deg,#fffef0,#e3f6ea);border:3px solid #bde4da;border-radius:21px;padding:14px 5px;color:#294765;box-shadow:0 7px 0 #7294a7,0 10px 18px #100e3240;transition:transform .17s}.lesson-card:hover{transform:translateY(-4px);border-color:#ffdda1}.lesson-card:focus-visible,.chapter-btn:focus-visible,.next:focus-visible,.mute:focus-visible{outline:4px solid #ffe4a1;outline-offset:3px}.lesson-card .emoji{display:block;font-size:clamp(42px,5.5vw,63px);line-height:1.2;margin-bottom:9px}.lesson-card .english{display:block;font-size:clamp(15px,1.8vw,20px);font-weight:1000;direction:ltr;overflow-wrap:anywhere}.lesson-card .hebrew{display:block;font-size:15px;color:#5d7380;margin:8px auto}.lesson-card .sound{display:inline-block;background:#d3e9e2;border-radius:11px;padding:5px 8px;font-size:12px;font-weight:900}.lesson-card.learned{border-color:#66d9a5;background:linear-gradient(155deg,#f7ffe5,#cef2dc)}.lesson-card .tick{position:absolute;top:5px;left:6px;font-size:20px;opacity:0}.lesson-card.learned .tick{opacity:1}
-.next-area{text-align:center;margin:23px auto 5px}.next{display:inline-block;border:3px solid #fff0c6;background:linear-gradient(#ffe9a9,#f4c778);color:#3e376a;border-radius:18px;padding:14px 27px;font-size:18px;font-weight:900;box-shadow:0 6px 0 #a56f5b;cursor:pointer}.next:disabled{opacity:.58;cursor:not-allowed;filter:grayscale(.4)}.lesson-message{font-size:15px;text-align:center;line-height:1.7;color:#e3f4ee;margin:13px auto}.mute{background:#294c69;color:#fff2d5;border:2px solid #b0e0d7;border-radius:13px;padding:9px 12px;font-weight:900}.finish{display:none;text-align:center;padding:23px;border:3px solid #ffdf9e;border-radius:25px;background:linear-gradient(120deg,#4d3878,#327a7b);margin:23px auto;box-shadow:0 0 25px #ffebad55}.finish.visible{display:block}.finish h2{color:#ffe3a2;font-size:clamp(26px,4vw,40px)}.finish p{line-height:1.8}.finish a{display:inline-block;margin:10px;padding:14px 20px;border:3px solid #fff5cd;border-radius:17px;background:#ffe3a2;color:#3b396a;font-weight:900;text-decoration:none}
+.next-area{text-align:center;margin:23px auto 5px}.next{display:inline-block;border:3px solid #fff0c6;background:linear-gradient(#ffe9a9,#f4c778);color:#3e376a;border-radius:18px;padding:14px 27px;font-size:18px;font-weight:900;box-shadow:0 6px 0 #a56f5b;cursor:pointer}.next:disabled{opacity:.58;cursor:not-allowed;filter:grayscale(.4)}.lesson-message{font-size:15px;text-align:center;line-height:1.7;color:#e3f4ee;margin:13px auto}.mute{background:#294c69;color:#fff2d5;border:2px solid #b0e0d7;border-radius:13px;padding:9px 12px;font-weight:900}
 @media(max-width:750px){.lesson-cards{grid-template-columns:repeat(3,minmax(0,1fr))}.lesson-card{min-height:163px}}
 @media(max-width:500px){.lesson-panel{padding:14px 10px}.chapter-btn{min-width:110px;flex:1 1 120px;font-size:13px}.lesson-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.lesson-card{min-height:150px}.lesson-card .emoji{font-size:48px}.lesson-card .english{font-size:17px}}
 
@@ -89,9 +89,6 @@ body{background:radial-gradient(ellipse at 50% 0,#8155a3 0,#59418e 31%,#31275f 7
 .family-popup.family-lesson-modal .lesson-card{min-height:185px}
 .family-popup.family-lesson-modal .lesson-progress{margin:12px auto 8px}
 .family-popup.family-lesson-modal .chapter-track{margin:18px auto}
-.family-popup.family-lesson-modal .finish{margin:15px auto;padding:14px 10px}
-.family-popup.family-lesson-modal .finish h2{color:#ffe5ac}
-.family-popup.family-lesson-modal .finish p{color:#fff3df}
 .family-popup.family-lesson-modal .next-area{margin:20px auto 8px}
 .family-lesson-modal-actions{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin:10px auto 4px}
 .family-prev-house{background:#fff0d0;color:#514071;border:3px solid #ffdfaa;border-radius:16px;padding:11px 18px;font-weight:900;box-shadow:0 4px 0 #ab8caa}
@@ -157,7 +154,7 @@ body{background:radial-gradient(ellipse at 50% 0,#8155a3 0,#59418e 31%,#31275f 7
 <p class="lesson-message" id="message" aria-live="polite"></p>
 <div class="next-area"><button type="button" class="next" id="next" disabled>🔒 קודם לומדים את המילים</button></div>
 </section>
-<section class="finish" id="finish" aria-live="polite"><div style="font-size:65px">🎉👑✨</div><h2>אלופי המשפחה המלכותית!</h2><p>הכרתם את המשפחה באנגלית! עכשיו מחכים לכם ארבעה עצים זוהרים, שני מגדלי מתנות ועץ משפחה גדול לסיום!</p><a href="level2-family-tree.html?activity=close" aria-label="מתחילים במשחק הראשון: עץ המשפחה הקרובה">🌳 מתחילים לשחק! · עץ המשפחה הקרובה · CLOSE FAMILY</a></section>
+
 
 <div class="family-lesson-modal-actions">
 <button type="button" class="family-prev-house" id="familyPrevHouse">🏠 לבית הקודם</button>
@@ -181,7 +178,7 @@ const firstIncomplete=()=>{const i=CHAPTERS.findIndex((_,j)=>!completed(j));retu
 chapter=firstIncomplete();
 function save(){try{localStorage.setItem(STORAGE,JSON.stringify(learned))}catch(e){}}
 function speak(word){if(muted||!('speechSynthesis' in window))return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(word);u.lang='en-US';u.rate=.8;u.pitch=1.03;const voices=speechSynthesis.getVoices();u.voice=voices.find(v=>v.lang.toLowerCase()==='en-us')||voices.find(v=>v.lang.toLowerCase().startsWith('en'))||null;speechSynthesis.speak(u)}catch(e){}}
-function progress(){const n=words().filter(w=>seen().has(w)).length;$('overall').textContent='✨ '+n+' / '+TOTAL+' מילים שנלמדו';$('barFill').style.width=n/TOTAL*100+'%';$('progressBar').setAttribute('aria-valuenow',String(n));const done=n===TOTAL;$('finish').classList.toggle('visible',done);if(done)try{localStorage.setItem(COMPLETE,'complete')}catch(e){}}
+function progress(){const n=words().filter(w=>seen().has(w)).length;$('overall').textContent='✨ '+n+' / '+TOTAL+' מילים שנלמדו';$('barFill').style.width=n/TOTAL*100+'%';$('progressBar').setAttribute('aria-valuenow',String(n));const done=n===TOTAL;if(done)try{localStorage.setItem(COMPLETE,'complete')}catch(e){}}
 function render(){const canLearn=unlocked(chapter);const track=$('chapters');track.innerHTML='';CHAPTERS.forEach((c,i)=>{const b=document.createElement('button');b.type='button';b.className='chapter-btn'+(i===chapter?' active':'')+(completed(i)?' complete':'');b.disabled=!unlocked(i);b.setAttribute('aria-current',i===chapter?'step':'false');b.textContent=(completed(i)?'✓ ':unlocked(i)?'🚪 ':'🔒 ')+'חדר '+(i+1);const sm=document.createElement('small');sm.textContent=c.short;b.append(sm);b.onclick=()=>{chapter=i;render()};track.append(b)});
 $('chapterTitle').textContent='חדר '+(chapter+1)+' מתוך '+CHAPTERS.length+' · '+CHAPTERS[chapter].title;
 const root=$('cards');root.innerHTML='';
@@ -193,8 +190,8 @@ const sound=document.createElement('span');sound.className='sound';sound.textCon
 const tick=document.createElement('span');tick.className='tick';tick.textContent='✓';
 b.append(e,en,tr,sound,tick);b.onclick=()=>{speak(word);if(!unlocked(chapter))return;if(!seen().has(word)){learned[TYPE].push(word);save();render()}};root.append(b)}
 const done=completed(chapter),last=chapter===CHAPTERS.length-1,btn=$('next');
-btn.disabled=!done||!canLearn;btn.textContent=done?(last?'🌳 למשחק הראשון · עץ המשפחה הקרובה':'✨ לחדר הבא · NEXT ROOM'):'🔒 למדו את כל '+CHAPTERS[chapter].words.length+' המילים כדי לפתוח את החדר הבא';
-$('message').textContent=!canLearn?'🔒 הבית הזה עדיין נעול. אפשר להאזין למילים, אבל כדי לסמן ✓ וללמוד צריך להשלים קודם את הבית הקודם.':done?(last?'🎉 למדתם את כל 16 המילים! לחצו על הכפתור כדי להתחיל את המשחק הראשון: עץ המשפחה הקרובה.':'🎉 נהדר! כל המילים בחדר נלמדו. הדלת לחדר הבא נפתחה!'):'🐾 '+CHAPTERS[chapter].words.filter(w=>seen().has(w[0])).length+' מתוך '+CHAPTERS[chapter].words.length+' מילים נלמדו בחדר הזה';
+btn.disabled=!done||!canLearn;btn.textContent=done?(last?'🎉 סיימנו! בואו נתחיל לשחק 🌳':'✨ לחדר הבא · NEXT ROOM'):'🔒 למדו את כל '+CHAPTERS[chapter].words.length+' המילים כדי לפתוח את החדר הבא';
+$('message').textContent=!canLearn?'🔒 הבית הזה עדיין נעול. אפשר להאזין למילים, אבל כדי לסמן ✓ וללמוד צריך להשלים קודם את הבית הקודם.':done?(last?'🎉 כל הכבוד! למדתם את כל המילים. לחצו על הכפתור כדי להתחיל את עץ המשפחה הקרובה!':'🎉 נהדר! כל המילים בחדר נלמדו. הדלת לחדר הבא נפתחה!'):'🐾 '+CHAPTERS[chapter].words.filter(w=>seen().has(w[0])).length+' מתוך '+CHAPTERS[chapter].words.length+' מילים נלמדו בחדר הזה';
 $('instruction').textContent=canLearn?'✨ לחצו על כל תמונה כדי לשמוע באנגלית ולסמן ✓ שנלמדה. ארבע מילים בכל בית!':'🔒 אפשר להקשיב למילים בבית הזה, אך כדי ללמוד ולסמן ✓ צריך להשלים את הבתים הקודמים.';
 $('familyPrevHouse').disabled=chapter===0;
 $('familyHouseStatus').textContent=completed(chapter)?'✓ הבית הושלם':canLearn?'❤️ הבית פתוח ללמידה':'🔒 הבית נעול ללמידה';
