@@ -20,71 +20,7 @@ const stages=['learn','match','hospital'];
 function saveAwards(){try{localStorage.setItem(AWARDS,JSON.stringify(awards))}catch(e){}}
 function speak(word){if(!sound||!('speechSynthesis' in window))return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(word);u.lang='en-US';u.rate=.79;u.pitch=1.07;speechSynthesis.speak(u)}catch(e){}}
 function shuffle(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function avatarSvg(){return `<svg class="pw-boy" viewBox="0 0 320 460" role="img" aria-label="ילד מצויר וחייכן, עם ראש עגול, גוף פרופורציונלי, ידיים פתוחות, חולצה כחולה ונעלי ספורט" xmlns="http://www.w3.org/2000/svg">
-<defs>
- <radialGradient id="kidSkin" cx="37%" cy="25%" r="83%"><stop stop-color="#fff1d4"/><stop offset=".56" stop-color="#ffd5aa"/><stop offset="1" stop-color="#f3a47e"/></radialGradient>
- <linearGradient id="kidShirt" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fffefa"/><stop offset=".75" stop-color="#e9f5ff"/><stop offset="1" stop-color="#c9dff8"/></linearGradient>
- <linearGradient id="kidBlue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#53baff"/><stop offset=".5" stop-color="#288de7"/><stop offset="1" stop-color="#285fc2"/></linearGradient>
- <linearGradient id="kidHair" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b66a34"/><stop offset=".46" stop-color="#8c471e"/><stop offset="1" stop-color="#5a2c20"/></linearGradient>
- <linearGradient id="kidShorts" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#2c98ee"/><stop offset="1" stop-color="#225cbd"/></linearGradient>
- <radialGradient id="kidIris"><stop stop-color="#184c9b"/><stop offset=".65" stop-color="#218ad6"/><stop offset="1" stop-color="#12426f"/></radialGradient>
- <filter id="kidShadow" x="-30%" y="-30%" width="160%" height="170%"><feGaussianBlur stdDeviation="4"/></filter>
-</defs>
-<ellipse cx="161" cy="442" rx="104" ry="11" fill="#7c6ba6" opacity=".24" filter="url(#kidShadow)"/>
-<!-- symmetrical, child-sized legs -->
-<path d="M124 315 L123 382 Q126 398 140 398 L149 397 Q158 392 158 381 L160 334 L166 334 L168 382 Q169 396 181 398 L192 397 Q204 392 202 381 L198 314 Z" fill="url(#kidSkin)" stroke="#e8a285" stroke-width="2.3"/>
-<path d="M125 379 L157 380 L157 408 L124 408 Z M169 380 L201 380 L201 408 L168 408 Z" fill="#f8f8ff"/>
-<path d="M126 382 L156 382 M170 383 L199 383" stroke="#83a5ec" stroke-width="3"/>
-<!-- shoes: balanced, blue, white rubber soles -->
-<path d="M122 402 Q112 401 102 415 Q97 430 114 434 L157 434 Q166 428 159 415 L150 406 Z" fill="url(#kidBlue)" stroke="#3773c1" stroke-width="2.5"/>
-<path d="M171 405 Q163 419 171 433 L210 434 Q226 431 218 417 Q208 402 198 402 Z" fill="url(#kidBlue)" stroke="#3773c1" stroke-width="2.5"/>
-<path d="M103 425 Q132 432 160 426 M169 427 Q194 433 220 425" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"/>
-<path d="M125 410 L151 413 M124 417 L153 420 M177 413 L202 410 M175 421 L206 417" stroke="#e9f7ff" stroke-width="4" stroke-linecap="round"/>
-<!-- blue shorts -->
-<path d="M117 292 Q160 287 205 293 L207 344 Q185 353 165 347 L160 327 L155 347 Q135 353 114 343 Z" fill="url(#kidShorts)" stroke="#2865ba" stroke-width="2.5"/>
-<path d="M117 337 Q135 345 154 340 M168 340 Q186 346 205 338" fill="none" stroke="#8ccaff" stroke-width="2.5" stroke-linecap="round"/>
-<!-- arms proportionate to torso, palms open -->
-<path d="M119 207 Q104 205 94 223 L66 279 Q59 289 66 298 Q75 305 83 294 L119 249 Z" fill="url(#kidSkin)" stroke="#e8a285" stroke-width="2.4"/>
-<path d="M204 207 Q219 205 229 223 L258 279 Q265 289 257 298 Q248 305 241 294 L203 249 Z" fill="url(#kidSkin)" stroke="#e8a285" stroke-width="2.4"/>
-<path d="M67 278 Q57 273 50 279 L42 287 Q34 293 39 299 Q43 303 49 297 L43 305 Q39 312 45 315 Q51 317 55 309 Q52 321 60 321 Q66 321 68 311 Q70 323 77 318 Q82 315 78 305 Q89 308 91 300 Q93 293 79 289 Z" fill="url(#kidSkin)" stroke="#e8a285" stroke-width="2.3" stroke-linejoin="round"/>
-<path d="M256 278 Q266 273 273 279 L281 287 Q289 293 284 299 Q280 303 274 297 L280 305 Q284 312 278 315 Q272 317 268 309 Q271 321 263 321 Q257 321 255 311 Q253 323 246 318 Q241 315 245 305 Q234 308 232 300 Q230 293 244 289 Z" fill="url(#kidSkin)" stroke="#e8a285" stroke-width="2.3" stroke-linejoin="round"/>
-<path d="M48 289 L56 283 M270 284 L277 290" stroke="#fff3d9" stroke-width="2.5" stroke-linecap="round"/>
-<!-- T-shirt with bright blue sleeves and golden star -->
-<path d="M126 201 Q142 193 161 195 Q182 193 199 201 L223 226 L208 249 L198 242 L202 298 Q161 309 118 298 L124 242 L112 249 L98 226 Z" fill="url(#kidShirt)" stroke="#a9c6eb" stroke-width="2.6" stroke-linejoin="round"/>
-<path d="M126 201 L111 212 Q101 219 98 226 L112 249 L130 238 Z" fill="url(#kidBlue)" stroke="#377dc7" stroke-width="2"/>
-<path d="M199 201 L213 211 Q220 219 223 226 L208 249 L193 238 Z" fill="url(#kidBlue)" stroke="#377dc7" stroke-width="2"/>
-<path d="M145 196 Q161 213 178 196" fill="none" stroke="#368ad3" stroke-width="6" stroke-linecap="round"/>
-<path d="M160 238 L169 256 L190 259 L175 272 L178 292 L160 283 L141 292 L145 272 L129 259 L151 256 Z" fill="#ffd44d" stroke="#f3a829" stroke-width="2.5"/>
-<path d="M157 248 L160 242 L163 249" stroke="#fff7bb" stroke-width="3" stroke-linecap="round"/>
-<!-- neck, ears and very round friendly face -->
-<path d="M146 174 L146 200 Q161 212 176 199 L176 175" fill="url(#kidSkin)" stroke="#e8a285" stroke-width="2.3"/>
-<ellipse cx="97" cy="123" rx="16" ry="22" fill="url(#kidSkin)" stroke="#e6a080" stroke-width="2.5"/>
-<ellipse cx="225" cy="123" rx="16" ry="22" fill="url(#kidSkin)" stroke="#e6a080" stroke-width="2.5"/>
-<path d="M93 122 Q102 114 103 132 M230 122 Q220 114 219 132" fill="none" stroke="#e5a28a" stroke-width="3" stroke-linecap="round"/>
-<path d="M101 99 Q103 48 160 43 Q218 46 220 101 L216 143 Q206 185 163 193 Q117 187 106 144 Z" fill="url(#kidSkin)" stroke="#e6a080" stroke-width="2.7"/>
-<ellipse cx="121" cy="151" rx="15" ry="8" fill="#ff9da0" opacity=".55"/>
-<ellipse cx="201" cy="151" rx="15" ry="8" fill="#ff9da0" opacity=".55"/>
-<!-- soft, thick auburn locks -->
-<path d="M103 117 Q89 95 96 68 Q100 45 120 42 Q118 24 145 29 Q151 10 177 26 Q197 16 207 40 Q233 43 228 69 Q239 87 217 116 L214 90 Q205 78 194 78 Q177 95 157 78 Q137 100 116 89 L105 109 Z" fill="url(#kidHair)" stroke="#774123" stroke-width="2.7" stroke-linejoin="round"/>
-<path d="M106 83 Q120 57 149 59 Q155 33 182 38 M148 64 Q171 73 198 51 M191 64 Q213 68 220 83" fill="none" stroke="#d99558" stroke-width="7" stroke-linecap="round" opacity=".68"/>
-<path d="M126 37 Q120 25 128 18 Q142 14 150 26 M171 31 Q178 17 193 23" fill="none" stroke="#a76335" stroke-width="9" stroke-linecap="round"/>
-<!-- warm eyebrows, big round blue eyes -->
-<path d="M120 117 Q132 107 147 115 M176 115 Q190 107 203 117" fill="none" stroke="#83482b" stroke-width="5" stroke-linecap="round"/>
-<ellipse cx="136" cy="132" rx="16" ry="20" fill="#fffdfa" stroke="#e4b3a3" stroke-width="1.5"/>
-<ellipse cx="187" cy="132" rx="16" ry="20" fill="#fffdfa" stroke="#e4b3a3" stroke-width="1.5"/>
-<ellipse cx="138" cy="135" rx="10" ry="14" fill="url(#kidIris)"/>
-<ellipse cx="189" cy="135" rx="10" ry="14" fill="url(#kidIris)"/>
-<ellipse cx="140" cy="136" rx="5.7" ry="9" fill="#14263e"/>
-<ellipse cx="191" cy="136" rx="5.7" ry="9" fill="#14263e"/>
-<circle cx="142" cy="128" r="4.5" fill="#fff"/><circle cx="193" cy="128" r="4.5" fill="#fff"/>
-<circle cx="133" cy="143" r="2.3" fill="#d1f1ff"/><circle cx="184" cy="143" r="2.3" fill="#d1f1ff"/>
-<path d="M159 138 Q155 145 161 148" stroke="#e09a80" stroke-width="2.7" fill="none" stroke-linecap="round"/>
-<!-- happy open smile, teeth and pink tongue -->
-<path d="M139 161 Q160 180 182 160 Q178 184 161 184 Q146 184 139 161 Z" fill="#77344b" stroke="#ae5b65" stroke-width="2"/>
-<path d="M143 164 Q161 173 179 164 L175 170 Q160 175 146 169 Z" fill="#fff"/>
-<ellipse cx="161" cy="180" rx="10" ry="4" fill="#f58a9a"/>
-<g fill="#cb805f" opacity=".65"><circle cx="117" cy="151" r="1.5"/><circle cx="124" cy="155" r="1.5"/><circle cx="204" cy="151" r="1.5"/><circle cx="197" cy="155" r="1.5"/></g>
-</svg>`}
+function avatarSvg(){return '<img class="pw-boy-3d" src="assets/playwise-body-boy-3d.svg?v=boy1" alt="ילד תלת־ממדי מחייך עם שיער חום, עיניים כחולות, חולצה עם כוכב ומכנסיים כחולים" draggable="false" decoding="async" />'}
 /* Each arrow begins at the actual illustrated body part and ends at a label OUTSIDE the figure.
    The 600 × 460 diagram scales as one unit on phones and desktop. */
 const ARROWS={
