@@ -212,35 +212,45 @@ function mount(opts){
    ctx.shadowBlur=0;ctx.fillStyle='#fff6a4';ctx.font='bold 45px system-ui';ctx.textAlign='center';ctx.fillText('↑',0,19);ctx.restore();
  }
  function car(){
-   // Closed-roof toy car, viewed from DIRECTLY overhead. No front-facing character.
-   const x=laneX(visualLane,492);
-   const jump=now<jumpUntil?Math.sin(Math.PI*clamp((jumpUntil-now)/1.55,0,1))*42:0;
-   const y=490-jump;
+   // Cheerful purple rear-view car, facing forward toward the horizon.
+   const x=laneX(visualLane,505);
+   const duration=1.65;
+   const progress=clamp((now-jumpStart)/duration,0,1);
+   const airborne=now<jumpUntil&&now>=jumpStart;
+   // Parabolic flight: the car visibly takes off, soars and lands.
+   const lift=airborne?Math.sin(Math.PI*progress)*122:0;
+   const grow=airborne?1+Math.sin(Math.PI*progress)*.29:1;
+   const y=501-lift;
    ctx.save();
    if(now<shakeUntil)ctx.translate(Math.sin(now*80)*7,0);
-   ctx.fillStyle='#3e2f6655';ctx.beginPath();ctx.ellipse(x,508,42-jump*.15,72-jump*.2,0,0,Math.PI*2);ctx.fill();
-   ctx.translate(x,y);
-   if(now<shieldUntil){ctx.strokeStyle='#b5ffff';ctx.lineWidth=4;ctx.setLineDash([9,6]);ctx.beginPath();ctx.ellipse(0,0,54,86,0,0,Math.PI*2);ctx.stroke();ctx.setLineDash([])}
-   // Four symmetric wheels.
-   ctx.fillStyle='#41345e';
-   for(const xx of [-47,35])for(const yy of [-51,35]){round(ctx,xx,yy,12,36,6);ctx.fill()}
-   ctx.shadowColor='#513b8d77';ctx.shadowBlur=13;ctx.shadowOffsetY=6;
-   ctx.fillStyle='#8052c7';round(ctx,-42,-74,84,148,28);ctx.fill();
+   // The shadow stays ON THE ROAD as the car rises above it.
+   ctx.fillStyle='rgba(58,37,94,'+(.32-lift/700)+')';
+   ctx.beginPath();ctx.ellipse(x,564,48-lift*.17,14-lift*.035,0,0,Math.PI*2);ctx.fill();
+   if(airborne&&lift>12){
+     ctx.save();ctx.textAlign='center';ctx.font='23px system-ui';
+     ctx.globalAlpha=.8;ctx.fillText('✨',x-38,y+80);ctx.fillText('✨',x+38,y+105);
+     ctx.globalAlpha=.55;ctx.fillText('💨',x,y+105);ctx.restore();
+   }
+   ctx.translate(x,y);ctx.scale(grow,grow);
+   if(airborne)ctx.rotate(Math.sin(progress*Math.PI)*-.055);
+   if(now<shieldUntil){
+     ctx.strokeStyle='#d1ffff';ctx.lineWidth=4;ctx.setLineDash([9,6]);
+     ctx.beginPath();ctx.ellipse(0,8,58,79,0,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+   }
+   // Side wheels, rounded body and bright back window.
+   ctx.fillStyle='#44375c';
+   for(const xx of [-51,37])for(const yy of [-32,34]){round(ctx,xx,yy,14,31,6);ctx.fill()}
+   ctx.shadowColor='#59348688';ctx.shadowBlur=12;ctx.shadowOffsetY=7;
+   ctx.fillStyle='#7d4fc5';round(ctx,-47,-59,94,123,27);ctx.fill();
    ctx.shadowBlur=0;ctx.shadowOffsetY=0;
-   ctx.fillStyle='#d6a1fb';round(ctx,-36,-69,72,138,25);ctx.fill();
-   // Front bonnet and headlights at the TOP of the car.
-   ctx.fillStyle='#ecb9fa';round(ctx,-32,-66,64,34,12);ctx.fill();
-   ctx.fillStyle='#fff5a6';round(ctx,-33,-64,16,10,4);ctx.fill();round(ctx,17,-64,16,10,4);ctx.fill();
-   // Windshield, roof, and rear window: unmistakable bird's-eye silhouette.
-   ctx.fillStyle='#7550b5';round(ctx,-33,-30,66,87,21);ctx.fill();
-   ctx.fillStyle='#99e6ff';round(ctx,-29,-27,58,29,10);ctx.fill();
-   ctx.fillStyle='#d6a1fb';round(ctx,-28,6,56,34,13);ctx.fill();
-   ctx.fillStyle='#fff2b1';ctx.font='26px system-ui';ctx.textAlign='center';ctx.fillText('⭐',0,33);
-   ctx.fillStyle='#a3e6fb';round(ctx,-27,43,54,15,7);ctx.fill();
-   ctx.fillStyle='#ff86b3';round(ctx,-32,62,17,8,3);ctx.fill();round(ctx,15,62,17,8,3);ctx.fill();
-   // Highlights along both sides add depth without tilting the view.
-   ctx.strokeStyle='#fff0ff';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-34,-48);ctx.lineTo(-34,41);ctx.moveTo(34,-48);ctx.lineTo(34,41);ctx.stroke();
-   if(jump>0){ctx.font='27px system-ui';ctx.fillText('✨',-55,-26);ctx.fillText('✨',49,36)}
+   ctx.fillStyle='#c987f2';round(ctx,-40,-54,80,111,23);ctx.fill();
+   ctx.fillStyle='#895bc3';round(ctx,-34,-50,68,65,20);ctx.fill();
+   ctx.fillStyle='#a7e8ff';round(ctx,-30,-43,60,33,13);ctx.fill();
+   ctx.fillStyle='#e4b7fb';round(ctx,-28,-1,56,30,13);ctx.fill();
+   ctx.fillStyle='#ffdf72';ctx.font='30px system-ui';ctx.textAlign='center';ctx.fillText('⭐',0,47);
+   ctx.fillStyle='#fff2a1';round(ctx,-37,-56,20,11,5);ctx.fill();round(ctx,17,-56,20,11,5);ctx.fill();
+   ctx.fillStyle='#ff8cb8';round(ctx,-36,52,20,9,4);ctx.fill();round(ctx,16,52,20,9,4);ctx.fill();
+   if(airborne&&lift>25){ctx.font='25px system-ui';ctx.fillText('✦',-61,-38);ctx.fillText('✦',55,26)}
    ctx.restore();
  }
  function paint(){
