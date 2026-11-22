@@ -1,0 +1,21 @@
+/* PLAYWISE · Sky extension to original illustrated adventure map */
+.world{display:flex;flex-direction:column;aspect-ratio:auto!important;background:none!important}
+.map-land{position:relative;width:100%;aspect-ratio:1672 / 941;background-image:url("ממלכת הפנטזיה הזוהרת והטירה הקסומה.png");background-size:100% 100%;background-position:center;background-repeat:no-repeat;flex:none}
+.map-sky{position:relative;isolation:isolate;width:100%;height:clamp(800px,78vw,1040px);overflow:hidden;flex:none;background:radial-gradient(ellipse at 70% 22%,#fce9ffad 0%,transparent 27%),radial-gradient(ellipse at 15% 65%,#c5f9ffc0 0%,transparent 34%),linear-gradient(180deg,#29246c 0%,#6b5fa6 37%,#b1c5d9 75%,#bbecdd 100%)}
+.map-sky:before{content:"✨     ☁️       ✨       ☁️         ⭐       ☁️       ✨";position:absolute;inset:3% 0 auto;text-align:center;font-size:clamp(22px,4vw,54px);letter-spacing:3vw;opacity:.65;pointer-events:none}
+.map-sky:after{content:"";position:absolute;left:-15%;right:-15%;bottom:-4%;height:19%;border-radius:50% 50% 0 0;background:linear-gradient(0deg,#6fc6a0,#b7ead3);opacity:.85;pointer-events:none}
+.sky-route{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.75}
+.sky-heading{position:absolute;top:1.4%;left:50%;transform:translateX(-50%);z-index:3;width:min(520px,86%);padding:9px 14px;text-align:center;border:2px solid #ffe4b7;border-radius:22px;background:#30265ca8;color:#fff0bd;font-size:clamp(13px,2vw,22px);font-weight:900;text-shadow:0 2px #24133c}
+.sky-stop{position:absolute;z-index:2;left:var(--x);top:var(--y);transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:5px;width:clamp(125px,18vw,218px);text-align:center;text-decoration:none;color:#3a2258;transition:transform .2s}
+.sky-stop:hover,.sky-stop:focus-visible{transform:translate(-50%,-54%) scale(1.045);outline:none}.sky-stop:focus-visible .sky-island{outline:4px solid #fff;outline-offset:3px}
+.sky-island{position:relative;display:flex;align-items:center;justify-content:center;width:clamp(83px,10vw,133px);height:clamp(68px,8vw,105px);border:3px solid #ffe7ad;border-radius:46% 54% 42% 58%;background:radial-gradient(ellipse at 30% 17%,#ffffffcc,#b7b1ff 60%,#8277bb);box-shadow:0 12px 0 #62588e,0 18px 25px #251d588c,inset 0 0 18px #ffffff8c}
+.sky-island:after{content:"";position:absolute;bottom:-21px;left:22%;right:22%;height:21px;background:#69639b;clip-path:polygon(0 0,100% 0,50% 100%);opacity:.85}
+.sky-symbol{font-size:clamp(35px,5vw,63px);filter:drop-shadow(0 4px 4px #3a286b80)}
+.sky-num{position:absolute;top:-14px;right:-14px;border:3px solid #fff0b4;border-radius:50%;background:#5735a4;color:#fff7d9;display:grid;place-items:center;min-width:42px;height:42px;padding:3px;font:bold 21px Arial;box-shadow:0 3px 8px #1d123e8a}
+.sky-label{display:block;width:100%;border:2px solid #ffe3aa;border-radius:16px;padding:7px 5px;background:#fff3d6;box-shadow:0 5px 0 #8c72a2,0 9px 14px #281a4773;font-weight:900;font-size:clamp(13px,1.5vw,19px);line-height:1.35}.sky-label small{display:block;direction:ltr;font-size:.78em;color:#765485}
+.sky-stop.final .sky-island{background:radial-gradient(ellipse at 32% 20%,#fff,#ffd3ff 40%,#a26ce0 83%);box-shadow:0 0 36px #ffe6ff,0 11px 0 #67488e}.sky-stop.final .sky-num{background:#cf629b}
+.sky-stop.done .sky-label{border-color:#88f4c7;background:#e1fff1}.sky-stop.done .sky-num{background:#208b6c}
+.sky-hint{position:absolute;bottom:2%;left:50%;transform:translateX(-50%);z-index:4;border:2px solid #ffe6aa;background:#372e68d9;color:#fff4cf;border-radius:16px;padding:10px 20px;text-decoration:none;font-weight:900;font-size:clamp(12px,1.5vw,16px);white-space:nowrap}
+.map-jump{position:fixed;left:12px;bottom:14px;z-index:28;display:block;padding:10px 15px;background:#4c2b87eb;color:#fff6d7;border:2px solid #ffdf9c;border-radius:17px;text-decoration:none;font-weight:900;box-shadow:0 5px 18px #1a0c3f88}.map-jump:hover{background:#7651ae}
+.bubble-portal{display:none!important}
+@media(max-width:650px){.map-sky{height:820px}.sky-stop{width:133px}.sky-label{font-size:12px}.sky-num{min-width:36px;height:36px;font-size:17px}.sky-island{width:89px;height:76px}.sky-symbol{font-size:39px}.map-jump{left:6px;bottom:7px;font-size:11px;padding:8px 10px}.sky-heading{font-size:13px}}
