@@ -22,8 +22,8 @@
 <div class="quiz"><h3>✨ בואי נבדוק!</h3><p>מהי האות הקטנה של <strong class="en">G</strong>?</p><div class="choices"><button data-answer="0">q</button><button data-answer="1">g</button><button data-answer="0">j</button></div><div class="feedback" aria-live="polite"></div></div>
 </section>
 <section class="lesson" id="lesson-vocab" role="tabpanel" aria-labelledby="tab-vocab">
-<div class="heading"><div class="icon">🎒</div><div><h2>אוצר מילים למבחן</h2><p>Vocabulary · 47 מילים וביטויים</p></div></div>
-<div class="lead">כל המילים מקובץ אוצר המילים שצורף נמצאות כאן, מחולקות לקטגוריות. <strong>לחצי על כל כרטיס</strong> כדי לשמוע את המילה באנגלית. מתחתיה מופיע התרגום לעברית.</div>
+<div class="heading"><div class="icon">🎒</div><div><h2>אוצר מילים למבחן</h2><p>Vocabulary · 53 מילים וביטויים</p></div></div>
+<div class="lead">כל המילים מקובץ אוצר המילים שצורף נמצאות כאן, מחולקות בדיוק לפי קבוצות האותיות והנושאים שבקובץ, ובאותו סדר. <strong>לחצי על כל כרטיס</strong> כדי לשמוע את המילה באנגלית. מתחתיה מופיע התרגום לעברית.</div>
 <div class="tabs" id="groups"></div><div id="vocabPanel"></div>
 <div class="tip">⭐ <strong>שיטת למידה:</strong> מסתכלים על התמונה → שומעים את המילה → אומרים בקול → מנסים לזכור בלי להסתכל בתרגום.</div>
 </section>
@@ -61,19 +61,7 @@
 <script>
 (function(){"use strict";
 var topics=["letters","vocab","reading","there","articles"];
-var groups=[
-["👨‍👩‍👧 משפחה","Family",[["mother","אמא","👩"],["family","משפחה","👨‍👩‍👧"],["sister","אחות","👧"]]],
-["🏫 בית ובית ספר","Home & School",[["bag","תיק","🎒"],["school","בית ספר","🏫"],["room","חדר","🛏️"],["chair","כיסא","🪑"],["pencil","עיפרון","✏️"]]],
-["🚗 תחבורה","Transport",[["car","מכונית","🚗"],["bus","אוטובוס","🚌"]]],
-["🐈 בעלי חיים","Animals",[["animal","בעל חיים","🐶"],["cat","חתול","🐈"]]],
-["💇 חלקי גוף","Body",[["hair","שיער","💇"],["mouth","פה","👄"]]],
-["🤝 פעולות","Actions",[["open","לפתוח","🚪"],["help","לעזור","🤝"]]],
-["🫖 שתייה","Drinks",[["tea","תה","🍵"],["water","מים","💧"]]],
-["🌍 מילים ומקומות","Other Words & Places",[["in","בתוך","📥"],["igloo","איגלו","🧊"],["Internet","אינטרנט","🌐"],["Indian","יליד אמריקאי","🌎"],["ink","דיו","🖋️"],["Italy","איטליה","🇮🇹"]]],
-["📅 ימות השבוע","Days of the Week",[["Sunday","יום ראשון","☀️"],["Monday","יום שני","🌼"],["Tuesday","יום שלישי","🌸"],["Wednesday","יום רביעי","⭐"],["Thursday","יום חמישי","🌈"],["Friday","יום שישי","🎉"],["Saturday","יום שבת","💜"]]],
-["🌷 עונות השנה","Seasons",[["spring","אביב","🌷"],["summer","קיץ","☀️"],["autumn / fall","סתיו","🍂"],["winter","חורף","⛄"]]],
-["🗓️ חודשי השנה","Months of the Year",[["January","ינואר","❄️"],["February","פברואר","💗"],["March","מרץ","🌷"],["April","אפריל","🌸"],["May","מאי","🌼"],["June","יוני","☀️"],["July","יולי","🏖️"],["August","אוגוסט","🍉"],["September","ספטמבר","🍎"],["October","אוקטובר","🍂"],["November","נובמבר","☁️"],["December","דצמבר","🎁"]]]
-];
+var groups=[["🔤 A a","Meet A a",[["animal","בעל חיים","🐶"],["bag","תיק","🎒"],["car","מכונית","🚗"]]],["🔤 M m","Meet M m",[["mother","אמא","👩"],["family","משפחה","👨‍👩‍👧"],["room","חדר","🛏️"]]],["🔤 S s","Meet S s",[["school","בית ספר","🏫"],["sister","אחות","👧"],["bus","אוטובוס","🚌"]]],["🔤 H h","Meet H h",[["hair","שיער","💇"],["chair","כיסא","🪑"],["mouth","פה","👄"]]],["🔤 P p","Meet P p",[["pencil","עיפרון","✏️"],["open","לפתוח","🚪"],["help","לעזור","🤝"]]],["🔤 T t","Meet T t",[["tea","תה","🍵"],["water","מים","💧"],["cat","חתול","🐈"]]],["🔤 I i","Meet I i",[["in","בתוך","📥"],["igloo","איגלו","🧊"],["Internet","אינטרנט","🌐"],["Indian","יליד אמריקאי","🌎"],["ink","דיו","🖋️"],["Italy","איטליה","🇮🇹"]]],["📅 ימות השבוע","Days of the Week",[["Sunday","יום ראשון","☀️"],["Monday","יום שני","🌼"],["Tuesday","יום שלישי","🌸"],["Wednesday","יום רביעי","⭐"],["Thursday","יום חמישי","🌈"],["Friday","יום שישי","🎉"],["Saturday","יום שבת","💜"]]],["🌷 עונות השנה","Seasons",[["spring","אביב","🌷"],["summer","קיץ","☀️"],["autumn / fall","סתיו","🍂"],["winter","חורף","⛄"]]],["🗓️ חודשי השנה","Months of the Year",[["January","ינואר","❄️"],["February","פברואר","💗"],["March","מרץ","🌷"],["April","אפריל","🌸"],["May","מאי","🌼"],["June","יוני","☀️"],["July","יולי","🏖️"],["August","אוגוסט","🍉"],["September","ספטמבר","🍎"],["October","אוקטובר","🍂"],["November","נובמבר","☁️"],["December","דצמבר","🎁"]]]];
 function speak(t){if(!("speechSynthesis" in window))return;window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang="en-US";u.rate=.8;var voices=window.speechSynthesis.getVoices();u.voice=voices.find(function(v){return /^en/i.test(v.lang)})||null;window.speechSynthesis.speak(u)}
 "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").forEach(function(c){var b=document.createElement("button");b.type="button";b.className="letter";b.innerHTML=c+" "+c.toLowerCase()+"<small>🔊</small>";b.setAttribute("aria-label","לשמוע "+c);b.onclick=function(){speak(c)};document.getElementById("letters").appendChild(b)});
 function renderGroup(i){var tabs=document.getElementById("groups");tabs.innerHTML="";groups.forEach(function(g,j){var b=document.createElement("button");b.textContent=g[0]+" ("+g[2].length+")";b.className=i===j?"active":"";b.setAttribute("aria-pressed",String(i===j));b.onclick=function(){renderGroup(j)};tabs.appendChild(b)});var panel=document.getElementById("vocabPanel");panel.innerHTML="";var h=document.createElement("h3");h.className="sub";h.textContent=groups[i][0]+" · "+groups[i][1];panel.appendChild(h);var grid=document.createElement("div");grid.className="words";groups[i][2].forEach(function(w){var b=document.createElement("button");b.type="button";b.className="word";b.setAttribute("aria-label","לשמוע "+w[0]+", "+w[1]);var pic=document.createElement("span");pic.className="pic";pic.textContent=w[2];var en=document.createElement("strong");en.className="en";en.textContent=w[0];var he=document.createElement("small");he.textContent=w[1];var play=document.createElement("span");play.className="play";play.textContent="🔊 לשמוע באנגלית";b.append(pic,en,he,play);b.onclick=function(){speak(w[0].replace(" / "," or "))};grid.appendChild(b)});panel.appendChild(grid)}
