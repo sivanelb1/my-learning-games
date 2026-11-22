@@ -157,7 +157,7 @@ body{background:radial-gradient(ellipse at 50% 0,#8155a3 0,#59418e 31%,#31275f 7
 <p class="lesson-message" id="message" aria-live="polite"></p>
 <div class="next-area"><button type="button" class="next" id="next" disabled>🔒 קודם לומדים את המילים</button></div>
 </section>
-<section class="finish" id="finish" aria-live="polite"><div style="font-size:65px">🎉👑✨</div><h2>אלופי המשפחה המלכותית!</h2><p>הכרתם את המשפחה באנגלית! עכשיו מחכים לכם ארבעה עצים זוהרים, שני מגדלי מתנות ועץ משפחה גדול לסיום!</p><a href="#family-games" onclick="document.getElementById('family-games').scrollIntoView({behavior:'smooth'});return false;">🎮 לכל שבעת המשחקים!</a></section>
+<section class="finish" id="finish" aria-live="polite"><div style="font-size:65px">🎉👑✨</div><h2>אלופי המשפחה המלכותית!</h2><p>הכרתם את המשפחה באנגלית! עכשיו מחכים לכם ארבעה עצים זוהרים, שני מגדלי מתנות ועץ משפחה גדול לסיום!</p><a href="level2-family-tree.html?activity=close" aria-label="מתחילים במשחק הראשון: עץ המשפחה הקרובה">🌳 מתחילים לשחק! · עץ המשפחה הקרובה · CLOSE FAMILY</a></section>
 
 <div class="family-lesson-modal-actions">
 <button type="button" class="family-prev-house" id="familyPrevHouse">🏠 לבית הקודם</button>
@@ -193,14 +193,14 @@ const sound=document.createElement('span');sound.className='sound';sound.textCon
 const tick=document.createElement('span');tick.className='tick';tick.textContent='✓';
 b.append(e,en,tr,sound,tick);b.onclick=()=>{speak(word);if(!unlocked(chapter))return;if(!seen().has(word)){learned[TYPE].push(word);save();render()}};root.append(b)}
 const done=completed(chapter),last=chapter===CHAPTERS.length-1,btn=$('next');
-btn.disabled=!done||!canLearn;btn.textContent=done?(last?'🏆 סיימנו! כל הכבוד!':'✨ לחדר הבא · NEXT ROOM'):'🔒 למדו את כל '+CHAPTERS[chapter].words.length+' המילים כדי לפתוח את החדר הבא';
-$('message').textContent=!canLearn?'🔒 הבית הזה עדיין נעול. אפשר להאזין למילים, אבל כדי לסמן ✓ וללמוד צריך להשלים קודם את הבית הקודם.':done?(last?'🎉 כל החדרים הושלמו! אפשר לחזור ולתרגל כל מילה.':'🎉 נהדר! כל המילים בחדר נלמדו. הדלת לחדר הבא נפתחה!'):'🐾 '+CHAPTERS[chapter].words.filter(w=>seen().has(w[0])).length+' מתוך '+CHAPTERS[chapter].words.length+' מילים נלמדו בחדר הזה';
+btn.disabled=!done||!canLearn;btn.textContent=done?(last?'🌳 למשחק הראשון · עץ המשפחה הקרובה':'✨ לחדר הבא · NEXT ROOM'):'🔒 למדו את כל '+CHAPTERS[chapter].words.length+' המילים כדי לפתוח את החדר הבא';
+$('message').textContent=!canLearn?'🔒 הבית הזה עדיין נעול. אפשר להאזין למילים, אבל כדי לסמן ✓ וללמוד צריך להשלים קודם את הבית הקודם.':done?(last?'🎉 למדתם את כל 16 המילים! לחצו על הכפתור כדי להתחיל את המשחק הראשון: עץ המשפחה הקרובה.':'🎉 נהדר! כל המילים בחדר נלמדו. הדלת לחדר הבא נפתחה!'):'🐾 '+CHAPTERS[chapter].words.filter(w=>seen().has(w[0])).length+' מתוך '+CHAPTERS[chapter].words.length+' מילים נלמדו בחדר הזה';
 $('instruction').textContent=canLearn?'✨ לחצו על כל תמונה כדי לשמוע באנגלית ולסמן ✓ שנלמדה. ארבע מילים בכל בית!':'🔒 אפשר להקשיב למילים בבית הזה, אך כדי ללמוד ולסמן ✓ צריך להשלים את הבתים הקודמים.';
 $('familyPrevHouse').disabled=chapter===0;
 $('familyHouseStatus').textContent=completed(chapter)?'✓ הבית הושלם':canLearn?'❤️ הבית פתוח ללמידה':'🔒 הבית נעול ללמידה';
 document.querySelectorAll('.family-house-hotspot').forEach(b=>{const i=Number(b.dataset.house);b.dataset.complete=String(completed(i));b.dataset.locked=String(!unlocked(i));b.setAttribute('aria-label',HOUSE_LABELS[i].he+' · '+HOUSE_LABELS[i].en+' · '+(completed(i)?'הבית הושלם':unlocked(i)?'פתוח ללמידה':'אפשר להציץ במילים, נעול ללמידה'))});
 progress()}
-$('next').onclick=()=>{if(!completed(chapter))return;if(chapter<CHAPTERS.length-1){chapter++;render();$('familyPopup').scrollTop=0;$('chapterTitle').scrollIntoView({behavior:'smooth',block:'nearest'})}else{$('finish').scrollIntoView({behavior:'smooth',block:'nearest'})}};
+$('next').onclick=()=>{if(!completed(chapter))return;if(chapter<CHAPTERS.length-1){chapter++;render();$('familyPopup').scrollTop=0;$('chapterTitle').scrollIntoView({behavior:'smooth',block:'nearest'})}else{location.href='level2-family-tree.html?activity=close'}};
 function muteView(){$('mute').textContent=muted?'🔇 הקול מושתק · להפעלה':'🔊 השמעה פעילה · להשתקה';$('mute').setAttribute('aria-pressed',String(muted))}
 $('mute').onclick=()=>{muted=!muted;if(muted&&'speechSynthesis' in window)speechSynthesis.cancel();try{localStorage.setItem('playwise-animals-family-muted',String(muted))}catch(e){}muteView()};
 
@@ -221,4 +221,4 @@ $('familyPopup').addEventListener('click',e=>{if(e.target===$('familyPopup'))clo
 document.addEventListener('keydown',e=>{if($('familyPopup').hidden)return;if(e.key==='Escape'){closeHouse();return}if(e.key==='Tab'){const modal=$('familyPopup');const controls=[...modal.querySelectorAll('button:not(:disabled)')];const first=controls[0],last=controls[controls.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}});
 muteView();render();
 })();
-</script><script src="level2-world-navigation.js?v=family-games-1" defer></script></body></html>
+</script><script src="level2-world-navigation.js?v=family-route-9-achievements" defer></script></body></html>
