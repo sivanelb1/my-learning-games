@@ -1,0 +1,165 @@
+<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PLAYWISE | A An The Games</title><style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:radial-gradient(circle at 15% 0%,#e9d5ff,#f6f2ff 48%,#e1f8f1);color:#342354}main{max-width:790px;margin:auto;padding:18px 14px 45px}h1{text-align:center;color:#6941a4;margin:8px}h2{text-align:center}p{line-height:1.6}.tabs{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:20px 0}.tabs button,.btn{border:0;border-radius:16px;background:#7450b6;color:#fff;font-size:17px;font-weight:bold;padding:13px 18px;cursor:pointer}.tabs button.on{background:#1b927b}.card{background:white;border:2px solid #e1d5f4;border-radius:23px;padding:20px;box-shadow:0 10px 26px #34235416}.hidden{display:none!important}.center{text-align:center}.question{font-size:clamp(24px,5vw,35px);direction:ltr;text-align:center;font-weight:bold;margin:22px 0}.choices{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}.choices button{border:2px solid #a58bd5;border-radius:16px;background:#f4ecff;padding:15px 23px;font-size:23px;font-weight:bold;color:#3b285b;cursor:pointer}.choices button:disabled{opacity:.65}.status{text-align:center;min-height:48px;font-weight:bold;margin:14px 0}.progress{height:12px;background:#eee4f7;border-radius:20px;overflow:hidden;margin:15px 0}.fill{height:100%;background:#39b999;width:0;transition:width .25s}.board{direction:ltr;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px;max-width:470px;margin:20px auto;padding:10px;background:#574088;border:5px solid #a58be1;border-radius:22px}.gem{aspect-ratio:1;border:2px solid #ffffff88;border-radius:19px;box-shadow:inset 0 -6px 0 #0002,0 3px 5px #0002;cursor:pointer;font-size:clamp(20px,5vw,36px);display:grid;place-items:center;touch-action:manipulation}.gem[data-special="stripeH"],.gem[data-special="stripeV"]{border:3px dashed white;box-shadow:inset 0 0 0 3px #ffffff77,0 0 14px #fff}.gem[data-special="wrap"]{border:4px double #fff;box-shadow:0 0 17px #fff}.gem[data-special="bomb"]{background:linear-gradient(135deg,#ff80bb,#a86aff,#53dce9,#ffdc65);border:3px solid white}.gem[data-special="fish"]{border:3px dotted white;box-shadow:0 0 13px #fff}.gem.pop{animation:fruitPop .22s ease-in forwards}.gem.falling{animation:fruitFall .38s cubic-bezier(.2,.75,.28,1.05) both;animation-delay:var(--delay,0ms)}@keyframes fruitPop{to{opacity:0;transform:scale(.1) rotate(35deg)}}@keyframes fruitFall{from{transform:translateY(var(--fall,-100px));opacity:.6}to{transform:translateY(0);opacity:1}}@media(prefers-reduced-motion:reduce){.gem.pop,.gem.falling{animation:none}}.gem.sel{outline:4px solid #ffce56;transform:scale(.93)}.gem[data-c="0"]{background:#ff7b9c}.gem[data-c="1"]{background:#5bc9f3}.gem[data-c="2"]{background:#ffc75d}.gem[data-c="3"]{background:#8bdc9a}.targets{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.target{background:#f3edff;border-radius:12px;padding:9px 3px;text-align:center;font-size:14px;font-weight:bold}.target.done{background:#c9f5df}.modal{position:fixed;inset:0;background:#181334b9;display:grid;place-items:center;padding:16px;z-index:9}.dialog{background:#fff;color:#342354;border-radius:23px;padding:25px 16px;max-width:520px;width:100%;box-shadow:0 20px 70px #0006}.note{text-align:center;color:#675681}.score{text-align:center;font-weight:bold;color:#6745a3}@media(max-width:440px){.card{padding:12px}.board{gap:3px;padding:6px}.gem{border-radius:12px}.targets{gap:4px}.target{font-size:12px}}</style></head><body><main><h1>🎮 PLAYWISE · THERE IS / THERE ARE</h1><p class="center">שני משחקים חדשים להכנה למבחן ✨</p><div class="tabs"><button id="tab1" class="on" onclick="showGame(1)">🏡 משחק 1 · בחירה</button><button id="tab2" onclick="showGame(2)">🍬 משחק 2 · סוכריות</button></div>
+<section class="card" style="margin-bottom:16px"><h2>🏡 There is / There are</h2><p><strong>There is</strong> = יש דבר אחד. למשל: <b dir="ltr">There is a bag.</b></p><p><strong>There are</strong> = יש כמה דברים. למשל: <b dir="ltr">There are two bags.</b></p><p>✨ במשחק הבחירה משלימים משפטים, ואז ממשיכים לארבעה שלבים של משחק הפירות.</p></section><section id="game1" class="card"><h2>🍎 בוחרים THERE IS / THERE ARE</h2><p class="center">בחרו את המילה המתאימה למשפט. בכל שאלה יש תשובה אחת נכונה.</p><div class="score" id="choiceCount"></div><div class="progress"><div class="fill" id="choiceBar"></div></div><div class="question" id="choiceSentence"></div><p class="center" id="choiceHebrew"></p><div class="choices" id="choiceButtons"></div><div class="status" id="choiceFeedback" aria-live="polite"></div><p class="center"><button class="btn hidden" id="choiceNext" onclick="nextChoice()">ממשיכים ✨</button> <button class="btn hidden" id="choiceToCandy" onclick="showGame(2)">🍬 ממשיכים לשלב הבא — משחק הסוכריות 🚀</button></p></section>
+<section id="game2" class="card hidden"><h2>🍬 Candy Grammar</h2><p class="center">החליפו בין שתי סוכריות שכנות כדי ליצור רצף של 3 ומעלה מאותו צבע. בשלב הראשון אספו 10 פירות מכל צבע. בכל שלב היעד גדל בהדרגה עד 20. השלמת יעד צבע פותחת שאלה באנגלית! ענו על ארבע השאלות כדי לעבור לשלב הבא.</p><div class="score" id="levelText"></div><div class="score" id="gameStats" aria-live="polite"></div><div class="targets" id="targets"></div><div class="board" id="board" aria-label="לוח סוכריות"></div><div class="status" id="boardStatus" aria-live="polite"></div><p class="note">לחצו על שני פירות שכנים. 🍭 ארבעה ברצף יוצרים פרי מפוספס, 💥 צורת T/L יוצרת פרי עטוף, 🌈 חמישה ברצף יוצרים פצצת צבע, 🐟 ריבוע 2×2 יוצר דג מיוחד.</p><p class="center"><button class="btn" onclick="restartLevel()">↻ מתחילים את השלב מחדש</button></p></section></main>
+<div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="dialog"><h2 id="modalTitle"></h2><p id="modalHelp" class="center"></p><div class="question" id="modalSentence"></div><p class="center" id="modalHebrew"></p><div class="choices" id="modalChoices"></div><div class="status" id="modalFeedback" aria-live="polite"></div><p class="center"><button class="btn hidden" id="modalNext" onclick="finishQuestion()">ממשיכים 🚀</button></p></div></div>
+<script>
+const $=id=>document.getElementById(id);
+const easy=[["___ a bag in the room.","יש תיק אחד בחדר.","There is","bag הוא דבר אחד."],["___ two pencils.","יש שני עפרונות.","There are","two הוא יותר מאחד."],["___ a cat on the chair.","יש חתול אחד על הכיסא.","There is","cat הוא יחיד."],["___ three cars.","יש שלוש מכוניות.","There are","three מציין רבים."],["___ one animal.","יש בעל חיים אחד.","There is","one מציין יחיד."],["___ four chairs.","יש ארבעה כיסאות.","There are","four מציין רבים."],["___ a sister in the room.","יש אחות אחת בחדר.","There is","sister היא יחיד."],["___ five bags.","יש חמישה תיקים.","There are","five מציין רבים."]];
+const medium=[["___ a pencil and a bag on the table.","יש עיפרון ותיק על השולחן.","There is","מתחילים בשם עצם יחיד: a pencil."],["___ two buses near the school.","יש שני אוטובוסים ליד בית הספר.","There are","buses הוא רבים."],["___ some water in the glass.","יש קצת מים בכוס.","There is","water הוא שם עצם בלתי ספיר."],["___ three rooms in the house.","יש שלושה חדרים בבית.","There are","rooms הוא רבים."],["___ a chair next to the door.","יש כיסא ליד הדלת.","There is","a chair הוא יחיד."],["___ many animals at the zoo.","יש הרבה בעלי חיים בגן החיות.","There are","many animals מציין רבים."],["___ some tea in the cup.","יש קצת תה בספל.","There is","tea הוא שם עצם בלתי ספיר."],["___ two sisters in the family.","יש שתי אחיות במשפחה.","There are","two sisters מציין רבים."]];
+const hard=[["___ any pencils in the bag?","האם יש עפרונות בתיק?","Are there","בשאלה עם רבים מתחילים ב־Are there."],["___ a cat under the chair?","האם יש חתול מתחת לכיסא?","Is there","בשאלה עם יחיד מתחילים ב־Is there."],["___ no water in the bottle.","אין מים בבקבוק.","There is","water הוא בלתי ספיר."],["___ many people in the room.","יש הרבה אנשים בחדר.","There are","people הוא רבים."],["___ any tea in the cup?","האם יש תה בספל?","Is there","tea הוא בלתי ספיר."],["___ three pencils on the desk?","האם יש שלושה עפרונות על השולחן?","Are there","three pencils הוא רבים."],["___ an animal behind the door.","יש בעל חיים מאחורי הדלת.","There is","an animal הוא יחיד."],["___ a lot of cars near the school.","יש הרבה מכוניות ליד בית הספר.","There are","cars הוא רבים."]];
+function pool(l){return l===1?easy:l===2?medium:hard}
+function mix(a){a=a.slice();for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function buttons(el,cb){el.replaceChildren();["There is","There are","Is there","Are there"].forEach(v=>{let b=document.createElement("button");b.textContent=v;b.onclick=()=>cb(v);el.appendChild(b)})}
+let choiceList=mix(easy.concat(medium)).slice(0,10),ci=0,choiceCorrect=0;
+function showGame(n){$("game1").classList.toggle("hidden",n!==1);$("game2").classList.toggle("hidden",n!==2);$("tab1").classList.toggle("on",n===1);$("tab2").classList.toggle("on",n===2);if(n===2)renderBoard()}
+function renderChoice(){if(ci>=choiceList.length){$("choiceCount").textContent="🏆 סיימתם! "+choiceCorrect+" מתוך "+choiceList.length+" תשובות נכונות";$("choiceSentence").textContent="כל הכבוד! 🌟";$("choiceHebrew").textContent="אפשר לשחק שוב ולתרגל שאלות אחרות.";$("choiceButtons").replaceChildren();$("choiceNext").textContent="🔁 משחק חדש";$("choiceNext").classList.remove("hidden");$("choiceToCandy").classList.remove("hidden");$("choiceFeedback").textContent="";$("choiceBar").style.width="100%";return}let q=choiceList[ci];$("choiceCount").textContent="שאלה "+(ci+1)+" מתוך "+choiceList.length;$("choiceBar").style.width=(ci/choiceList.length*100)+"%";$("choiceSentence").textContent=q[0];$("choiceHebrew").textContent=q[1];$("choiceFeedback").textContent="";$("choiceNext").classList.add("hidden");buttons($("choiceButtons"),v=>{if(v!==q[2]){$("choiceFeedback").textContent="💜 נסו שוב!";return}choiceCorrect++;$("choiceFeedback").textContent="🌟 נכון! "+q[3];[...$("choiceButtons").children].forEach(b=>b.disabled=true);$("choiceNext").classList.remove("hidden")})}
+function nextChoice(){if(ci>=choiceList.length){choiceList=mix(easy.concat(medium)).slice(0,10);ci=0;choiceCorrect=0;$("choiceToCandy").classList.add("hidden")}else ci++;renderChoice()}
+const colors=["🍓","🫐","🍋","🍏"];const N=6;let level=1,grid=[],selected=-1,counts=[0,0,0,0],asked=[false,false,false,false],busy=false,pending=[],activeColor=-1,special={},moves=0,points=0,lives=5,lastLife=Date.now();
+function target(){return [10,15,20,20][Math.min(level-1,3)]}
+function idx(r,c){return r*N+c}
+function matches(){let found=new Set();for(let r=0;r<N;r++)for(let c=0;c<N;c++){let k=idx(r,c),v=grid[k];if(v===null)continue;if(c<=N-3&&grid[k+1]===v&&grid[k+2]===v){let x=c;while(x<N&&grid[idx(r,x)]===v)found.add(idx(r,x++))}if(r<=N-3&&grid[k+N]===v&&grid[k+2*N]===v){let x=r;while(x<N&&grid[idx(x,c)]===v)found.add(idx(x++,c))}}return [...found]}
+function randomGem(){return Math.floor(Math.random()*4)}
+function initGrid(){grid=Array.from({length:N*N},randomGem);for(let i=0;i<50&&matches().length;i++)grid=Array.from({length:N*N},randomGem);if(matches().length){for(let i=0;i<N*N;i++){let tries=0;while(matches().includes(i)&&tries++<20)grid[i]=randomGem()}}}
+function hasMove(){for(let i=0;i<N*N;i++)for(let j of [i+1,i+N]){if(j>=N*N||(j===i+1&&Math.floor(i/N)!==Math.floor(j/N)))continue;[grid[i],grid[j]]=[grid[j],grid[i]];let ok=matches().length>0;[grid[i],grid[j]]=[grid[j],grid[i]];if(ok)return true}return false}
+function ensureMove(){let t=0;while(!hasMove()&&t++<50)initGrid()}
+function maxMoves(){return [36,40,44,48][Math.min(level-1,3)]}
+function updateLives(){let now=Date.now(),gained=Math.floor((now-lastLife)/1800000);if(gained>0){lives=Math.min(5,lives+gained);lastLife+=gained*1800000}try{localStorage.setItem("pw_there_fruit_lives",JSON.stringify({lives,lastLife}))}catch(e){}}
+try{let v=JSON.parse(localStorage.getItem("pw_fruit_lives")||"null");if(v){lives=v.lives;lastLife=v.lastLife;updateLives()}}catch(e){}
+function stars(){let t=target()*4*10;return points>=t*2.5?"⭐⭐⭐":points>=t*1.7?"⭐⭐":"⭐"}
+function restartLevel(){updateLives();if(lives<=0){$("boardStatus").textContent="❤️ ממתינים לחיים שיתחדש בעוד 30 דקות.";renderBoard();return}moves=maxMoves();points=0;special={};counts=[0,0,0,0];asked=[false,false,false,false];pending=[];activeColor=-1;busy=false;selected=-1;initGrid();ensureMove();$("boardStatus").textContent="אספו "+target()+" פירות מכל צבע כדי לפתוח שאלה! 🍓🫐🍋🍏";renderBoard()}
+function renderBoard(){updateLives();$("gameStats").textContent="🎯 מהלכים: "+moves+" · ✨ נקודות: "+points+" · "+stars()+" · ❤️ חיים: "+lives+"/5";$("levelText").textContent="שלב "+level+" · אספו "+target()+" מכל צבע · "+asked.filter(Boolean).length+"/4 שאלות";$("targets").replaceChildren();colors.forEach((e,i)=>{let d=document.createElement("div");d.className="target"+(asked[i]?" done":"");d.textContent=e+" "+Math.min(counts[i],target())+"/"+target()+(asked[i]?" ✓":"");$("targets").appendChild(d)});$("board").replaceChildren();grid.forEach((v,i)=>{let b=document.createElement("button");b.className="gem"+(selected===i?" sel":"");b.dataset.c=v;b.textContent=special[i]==="bomb"?"🌈":special[i]==="fish"?"🐟":special[i]==="wrap"?"💥":special[i]?"🍭":colors[v];if(special[i])b.dataset.special=special[i];b.setAttribute("aria-label",colors[v]+" שורה "+(Math.floor(i/N)+1)+" עמודה "+(i%N+1));b.onclick=()=>selectGem(i);$("board").appendChild(b)})}
+function adjacent(a,b){return Math.abs(Math.floor(a/N)-Math.floor(b/N))+Math.abs(a%N-b%N)===1}
+const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+
+function linesAndSquares(){
+ let lines=[],squares=[];
+ for(let r=0;r<N;r++)for(let c=0;c<N;){
+  let k=idx(r,c),v=grid[k],end=c+1;
+  while(end<N&&grid[idx(r,end)]===v)end++;
+  if(v!==null&&end-c>=3)lines.push({cells:Array.from({length:end-c},(_,j)=>idx(r,c+j)),dir:"H"});
+  c=end;
+ }
+ for(let c=0;c<N;c++)for(let r=0;r<N;){
+  let k=idx(r,c),v=grid[k],end=r+1;
+  while(end<N&&grid[idx(end,c)]===v)end++;
+  if(v!==null&&end-r>=3)lines.push({cells:Array.from({length:end-r},(_,j)=>idx(r+j,c)),dir:"V"});
+  r=end;
+ }
+ for(let r=0;r<N-1;r++)for(let c=0;c<N-1;c++){
+  let k=idx(r,c),v=grid[k];
+  if(v!==null&&grid[k+1]===v&&grid[k+N]===v&&grid[k+N+1]===v)squares.push([k,k+1,k+N,k+N+1]);
+ }
+ return {lines,squares};
+}
+function choosePowers(swap){
+ let {lines,squares}=linesAndSquares(),made={};
+ let priority={fish:1,stripeH:2,stripeV:2,wrap:3,bomb:4};
+ function add(k,type){if(!made[k]||priority[type]>priority[made[k]])made[k]=type}
+ for(let l of lines)if(l.cells.length>=5)add(l.cells.includes(swap[1])?swap[1]:l.cells[2],"bomb");
+ else if(l.cells.length===4)add(l.cells.includes(swap[1])?swap[1]:l.cells[1],l.dir==="H"?"stripeH":"stripeV");
+ for(let i=0;i<lines.length;i++)for(let j=i+1;j<lines.length;j++){
+  if(lines[i].dir===lines[j].dir)continue;
+  let intersection=lines[i].cells.find(k=>lines[j].cells.includes(k));
+  if(intersection!==undefined)add(intersection,"wrap");
+ }
+ for(let sq of squares)add(sq.includes(swap[1])?swap[1]:sq[0],"fish");
+ return made;
+}
+function effect(k,type,otherColor,depth=0){
+ let cells=new Set(),r=Math.floor(k/N),c=k%N;
+ if(type==="stripeH")for(let j=0;j<N;j++)cells.add(idx(r,j));
+ if(type==="stripeV")for(let j=0;j<N;j++)cells.add(idx(j,c));
+ if(type==="wrap")for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){let rr=r+dr,cc=c+dc;if(rr>=0&&rr<N&&cc>=0&&cc<N)cells.add(idx(rr,cc))}
+ if(type==="fish"){let options=grid.map((v,i)=>({v,i})).filter(x=>x.v!==null&&x.i!==k);for(let z=0;z<3&&options.length;z++){let n=Math.floor(Math.random()*options.length);cells.add(options.splice(n,1)[0].i)}}
+ if(type==="bomb")grid.forEach((v,i)=>{if(v===otherColor)cells.add(i)});
+ return cells;
+}
+function expandSpecials(hit,otherColor){
+ let todo=[...hit],done=new Set();
+ while(todo.length){
+  let k=todo.shift();
+  if(done.has(k))continue;
+  done.add(k);
+  if(special[k]){
+   let type=special[k];delete special[k];
+   for(let t of effect(k,type,otherColor))if(!hit.has(t)){hit.add(t);todo.push(t)}
+   if(type==="wrap"){let r=Math.floor(k/N),c=k%N;for(let dr=-2;dr<=2;dr++)for(let dc=-2;dc<=2;dc++){let rr=r+dr,cc=c+dc;if(rr>=0&&rr<N&&cc>=0&&cc<N)hit.add(idx(rr,cc))}}
+  }
+ }
+}
+async function removeAndFall(hit,created={}){
+ let cells=[...$("board").children],removed=[...hit].filter(k=>grid[k]!==null&&!created[k]);
+ removed.forEach(k=>{cells[k]?.classList.add("pop");counts[grid[k]]++;points+=10});
+ await sleep(230);
+ removed.forEach(k=>{grid[k]=null;delete special[k]});
+ let nextSpecial={};
+ let fallDistances=Array(N*N).fill(0);
+ for(let c=0;c<N;c++){
+  let survivors=[];
+  for(let r=N-1;r>=0;r--)if(grid[idx(r,c)]!==null)survivors.push({value:grid[idx(r,c)],oldRow:r,power:special[idx(r,c)]});
+  for(let r=N-1;r>=0;r--){
+   let n=N-1-r,k=idx(r,c);
+   if(n<survivors.length){let item=survivors[n];grid[k]=item.value;fallDistances[k]=r-item.oldRow;if(item.power)nextSpecial[k]=item.power}
+   else{grid[k]=randomGem();fallDistances[k]=r+1+survivors.length-n}
+  }
+ }
+ special=nextSpecial;
+ renderBoard();
+ let height=$("board").children[0]?.getBoundingClientRect().height||60,gap=parseFloat(getComputedStyle($("board")).rowGap)||5;
+ [...$("board").children].forEach((b,i)=>{if(fallDistances[i]>0){b.classList.add("falling");b.style.setProperty("--fall",(-fallDistances[i]*(height+gap))+"px");b.style.setProperty("--delay",(i%N*24)+"ms")}});
+ await sleep(460);
+ [...$("board").children].forEach(b=>b.classList.remove("falling"));
+}
+async function animateCascade(swap,initialHit=null,otherColor=null){
+ let loops=0;
+ while((initialHit||matches().length)&&loops++<40){
+  let hit=initialHit||new Set(matches());if(!(hit instanceof Set))hit=new Set(hit);
+  let made=choosePowers(swap);if(initialHit&&swap[0]<0)made={};
+  for(let k of Object.keys(made)){let i=Number(k);hit.delete(i);special[i]=made[k];points+=50}
+  expandSpecials(hit,otherColor);
+  if(!hit.size)break;
+  renderBoard();await removeAndFall(hit,made);
+  initialHit=null;swap=[-1,-1];
+ }
+ if(!hasMove()){initGrid();special={};ensureMove();renderBoard();$("boardStatus").textContent="✨ ערבבנו פירות כדי שיהיו מהלכים חדשים!"}
+}
+function endFailed(){busy=true;lives=Math.max(0,lives-1);lastLife=Date.now();updateLives();renderBoard();$("boardStatus").textContent="💜 נגמרו המהלכים! איבדתם חיים אחד. אפשר לנסות שוב.";if(lives>0){let b=document.createElement("button");b.className="btn";b.textContent="🔁 לנסות שוב";b.onclick=()=>restartLevel();$("boardStatus").append(document.createElement("br"),b)}else{$("boardStatus").textContent="❤️ נגמרו החיים. חיים אחד יתחדש בעוד 30 דקות."}}
+async function selectGem(i){
+ updateLives();if(busy||lives<=0)return;
+ if(selected<0){selected=i;renderBoard();return}
+ let a=selected;selected=-1;
+ if(a===i){renderBoard();return}
+ if(!adjacent(a,i)){$("boardStatus").textContent="בחרו שני פירות שכנים.";selected=i;renderBoard();return}
+ let first=special[a],second=special[i],powerSwap=!!first||!!second;
+ [grid[a],grid[i]]=[grid[i],grid[a]];
+ [special[a],special[i]]=[second,first];if(!special[a])delete special[a];if(!special[i])delete special[i];
+ let squareMove=linesAndSquares().squares.some(sq=>sq.includes(a)||sq.includes(i));
+ if(!matches().length&&!powerSwap&&!squareMove){
+  [grid[a],grid[i]]=[grid[i],grid[a]];
+  [special[a],special[i]]=[first,second];if(!special[a])delete special[a];if(!special[i])delete special[i];
+  $("boardStatus").textContent="אין רצף של 3. נסו החלפה אחרת 💜";renderBoard();return;
+ }
+ moves--;busy=true;renderBoard();
+ let forced=null;
+ if(powerSwap){
+  forced=new Set([a,i]);let color=first==="bomb"?grid[a]:second==="bomb"?grid[i]:null;
+  if(first==="bomb"&&second==="bomb"){grid.forEach((v,k)=>forced.add(k))}
+  else if(first==="bomb"||second==="bomb"){let bombAt=first==="bomb"?i:a;let fruitAt=first==="bomb"?a:i;grid.forEach((v,k)=>{if(v===grid[fruitAt])forced.add(k)});forced.add(bombAt)}
+  else if(first&&second){for(let k of effect(a,first))forced.add(k);for(let k of effect(i,second))forced.add(k)}
+  else{let at=first?i:a;for(let k of effect(at,special[at]))forced.add(k)}
+  if(first&&second)points+=150;
+ }
+ await animateCascade([a,i],forced||(!matches().length&&squareMove?new Set(linesAndSquares().squares.flat()):null));
+ $("boardStatus").textContent="✨ פירות נעלמו, והשאר נפלו למטה!";
+ renderBoard();
+ for(let c=0;c<4;c++)if(counts[c]>=target()&&!asked[c]&&!pending.includes(c))pending.push(c);
+ if(pending.length)openQuestion();
+ else if(moves<=0&&!asked.every(Boolean))endFailed();
+ else busy=false;
+}
+
+function openQuestion(){if(!pending.length){busy=false;if(asked.every(Boolean)){let earned=stars();if(level>=4){busy=true;$("boardStatus").innerHTML="🏆 "+earned+" כל הכבוד! סיימתם את כל ארבעת השלבים! <button class=\"btn\" onclick=\"level=1;restartLevel()\">🔁 משחק חדש</button>";renderBoard();$("boardStatus").innerHTML="🏆 "+earned+" כל הכבוד! סיימתם את כל ארבעת השלבים! <button class=\"btn\" onclick=\"level=1;restartLevel()\">🔁 משחק חדש</button>"}else{level++;restartLevel();$("boardStatus").textContent="🏆 "+earned+" עברתם לשלב "+level+"!";renderBoard()}}else if(moves<=0)endFailed();else renderBoard();return}activeColor=pending.shift();let q=pool(level)[(activeColor+(level-1)*3)%pool(level).length];$("modalTitle").textContent=colors[activeColor]+" שאלת צבע "+(activeColor+1)+" מתוך 4 · היעד הושלם!";$("modalHelp").textContent="ענו נכון כדי להשלים את משימת הצבע.";$("modalSentence").textContent=q[0];$("modalHebrew").textContent=q[1];$("modalFeedback").textContent="";$("modalNext").classList.add("hidden");buttons($("modalChoices"),v=>{if(v!==q[2]){$("modalFeedback").textContent="💜 כמעט! נסו שוב.";return}$("modalFeedback").textContent="🌟 מצוין! "+q[3];asked[activeColor]=true;[...$("modalChoices").children].forEach(b=>b.disabled=true);$("modalNext").classList.remove("hidden")});$("modal").classList.remove("hidden")}
+function finishQuestion(){$("modal").classList.add("hidden");activeColor=-1;openQuestion()}
+renderChoice();restartLevel();
+</script></body></html>
