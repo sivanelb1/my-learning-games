@@ -1,7 +1,7 @@
 /* PLAYWISE · Monster Road Rally · a playful, readable mini racing game */
 .road-game{max-width:790px;margin:0 auto;direction:rtl;font-family:inherit}
 .road-hud{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 auto 10px;max-width:660px}
-.road-hearts,.road-score{background:#fff8ff;border:3px solid #dbb4f5;border-radius:20px;padding:9px 16px;min-height:48px;display:flex;align-items:center;justify-content:center;font-size:clamp(15px,2.4vw,23px);font-weight:1000;color:#66348f;box-shadow:0 4px 0 #c69fe3}
+.road-hearts,.road-score,.road-timer{background:#fff8ff;border:3px solid #dbb4f5;border-radius:20px;padding:9px 16px;min-height:48px;display:flex;align-items:center;justify-content:center;font-size:clamp(15px,2.4vw,23px);font-weight:1000;color:#66348f;box-shadow:0 4px 0 #c69fe3}
 .road-hearts{direction:ltr;letter-spacing:2px;white-space:nowrap}
 .road-pause{border:3px solid #fff;border-radius:17px;background:linear-gradient(135deg,#eac9ff,#c9b7ff);color:#633b95;min-width:56px;min-height:51px;font-size:26px;box-shadow:0 4px 0 #b493db;cursor:pointer}
 .road-screen{width:min(100%,535px);aspect-ratio:480/610;position:relative;overflow:hidden;border:7px solid #e6b9ff;border-radius:33px;margin:0 auto;background:#a9e7ff;box-shadow:0 8px 0 #b791df,0 15px 32px #7b58ad35;isolation:isolate;touch-action:none}
@@ -47,3 +47,8 @@
 }
 @media(max-width:365px){.road-steer{min-width:75px}.road-control-tip{font-size:10px}.road-hearts,.road-score{font-size:13px}}
 @media(prefers-reduced-motion:reduce){.road-float.visible{animation:none;opacity:1}.road-primary,.road-word{transition:none}}
+
+/* Elapsed-time indicator: clear on desktop and compact on phones. */
+.road-timer{direction:ltr;white-space:nowrap;background:#fff8ff;border:3px solid #dbb4f5;border-radius:20px;padding:9px 13px;min-height:48px;display:flex;align-items:center;justify-content:center;font-size:clamp(14px,2.3vw,21px);font-weight:1000;color:#66348f;box-shadow:0 4px 0 #c69fe3}
+@media(max-width:610px){.road-timer{font-size:14px;min-height:42px;border-width:2px;padding:6px 7px}.road-hearts,.road-score{font-size:14px;padding:6px 7px}}
+@media(max-width:365px){.road-timer{font-size:12px;padding:6px 4px}.road-hearts,.road-score{font-size:12px;padding:6px 4px}}
