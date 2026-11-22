@@ -142,7 +142,7 @@ async function animateCascade(swap,initialHit=null,otherColor=null){
  let loops=0;
  while((initialHit||matches().length)&&loops++<40){
   let hit=initialHit||new Set(matches());if(!(hit instanceof Set))hit=new Set(hit);
-  let made=initialHit?{}:choosePowers(swap);
+  let made=choosePowers(swap);if(initialHit&&swap[0]<0)made={};
   for(let k of Object.keys(made)){let i=Number(k);hit.delete(i);special[i]=made[k];points+=50}
   expandSpecials(hit,otherColor);
   if(!hit.size)break;
@@ -161,7 +161,8 @@ async function selectGem(i){
  let first=special[a],second=special[i],powerSwap=!!first||!!second;
  [grid[a],grid[i]]=[grid[i],grid[a]];
  [special[a],special[i]]=[second,first];if(!special[a])delete special[a];if(!special[i])delete special[i];
- if(!matches().length&&!powerSwap){
+ let squareMove=linesAndSquares().squares.some(sq=>sq.includes(a)||sq.includes(i));
+ if(!matches().length&&!powerSwap&&!squareMove){
   [grid[a],grid[i]]=[grid[i],grid[a]];
   [special[a],special[i]]=[first,second];if(!special[a])delete special[a];if(!special[i])delete special[i];
   $("boardStatus").textContent="אין רצף של 3. נסו החלפה אחרת 💜";renderBoard();return;
@@ -176,7 +177,7 @@ async function selectGem(i){
   else{let at=first?i:a;for(let k of effect(at,special[at]))forced.add(k)}
   if(first&&second)points+=150;
  }
- await animateCascade([a,i],forced);
+ await animateCascade([a,i],forced||(!matches().length&&squareMove?new Set(linesAndSquares().squares.flat()):null));
  $("boardStatus").textContent="✨ פירות נעלמו, והשאר נפלו למטה!";
  renderBoard();
  for(let c=0;c<4;c++)if(counts[c]>=target()&&!asked[c]&&!pending.includes(c))pending.push(c);
