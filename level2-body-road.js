@@ -9,9 +9,11 @@ const ROW_PATTERNS=['single-clear','double-clear','double-ramp','single-ramp','d
 const rand=(a,b)=>a+Math.random()*(b-a);
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const $=(root,sel)=>root.querySelector(sel);
-// True overhead view: equal-width lanes and objects at every depth.
-const ROAD_LEFT=51,ROAD_RIGHT=429,LANE_WIDTH=(ROAD_RIGHT-ROAD_LEFT)/3;
-function laneX(lane,y){return ROAD_LEFT+LANE_WIDTH*(lane+.5)}
+// Perspective road narrows toward the visible horizon.
+const HORIZON=143;
+function roadHalf(y){return 73+159*clamp((y-HORIZON)/(H-HORIZON),0,1)}
+function laneX(lane,y){return W/2+(lane-1)*roadHalf(y)*2/3}
+function objectScale(y){return .35+.62*clamp((y-HORIZON)/(H-HORIZON),0,1)}
 function round(ctx,x,y,w,h,r){ctx.beginPath();ctx.roundRect(x,y,w,h,r)}
 function poly(ctx,pts){ctx.beginPath();ctx.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<pts.length;i++)ctx.lineTo(pts[i][0],pts[i][1]);ctx.closePath()}
 function mount(opts){
@@ -19,7 +21,7 @@ function mount(opts){
  root.innerHTML='<div class="activity-heading"><div class="mini-pill">🏎️ מירוץ המכונית הקסומה · MAGIC ROAD RALLY</div><h2>יוצאים למירוץ הקסום!</h2><p>המכונית נוסעת לבד! בחרו את הנתיב הבטוח: לפעמים יש שני מכשולים, לפעמים רמפה, ורק מדי כמה שורות מופיעה מילה לאיסוף. 🚧🏎️</p></div>'+
  '<section class="road-game" aria-label="משחק נהיגה בשלושה נתיבים">'+
  '<div class="road-hud"><div class="road-hearts" id="roadHearts" aria-label="לבבות">❤️ ❤️ ❤️</div><div class="road-score">🧩 <b id="roadScore">0 / '+words.length+'</b></div><div class="road-timer" aria-label="זמן נסיעה">⏱️ <b id="roadTimer">0:00</b></div><button class="road-pause" type="button" id="roadPause" aria-label="השהיית המשחק">⏸️</button></div>'+
- '<div class="road-screen"><canvas id="roadCanvas" width="480" height="610" role="img" aria-label="כביש במבט מלמעלה עם מכונית סגולה, נתיבים בטוחים, איברי גוף לאיסוף, מכשולים ורמפות"></canvas>'+
+ '<div class="road-screen"><canvas id="roadCanvas" width="480" height="610" role="img" aria-label="כביש עם אופק, מכונית סגולה, שלושה נתיבים, איברי גוף לאיסוף, מכשולים ורמפות קופצות"></canvas>'+
  '<div class="road-float" id="roadFloat" aria-live="polite"></div>'+
  '<div class="road-overlay" id="roadOverlay"><div class="road-overlay-inner"><div class="road-overlay-emoji">🚙🌈⭐</div><h3 id="roadOverlayTitle">מוכנים להרפתקה?</h3><p id="roadOverlayText">התכוננו למסלול ארוך ומאתגר! לא בכל שורה יש מילה. הסתכלו קדימה, מצאו את הנתיב הפנוי, התחמקו משני מכשולים וקפצו על רמפות ורודות. אספו את כל איברי הגוף!</p><button class="road-primary" type="button" id="roadAction">🚦 יוצאים לדרך!</button></div></div></div>'+
  '<div class="road-controls" dir="ltr"><button class="road-steer" id="roadLeft" type="button" aria-label="לנתיב השמאלי">⬅️ <span>שמאלה</span></button><div class="road-control-tip">🎯 אוספים מילים<br>🚧 מתחמקים<br>🌈 קופצים!</div><button class="road-steer" id="roadRight" type="button" aria-label="לנתיב הימני"><span>ימינה</span> ➡️</button></div>'+
@@ -31,7 +33,7 @@ function mount(opts){
  const action=$(root,'#roadAction'),pause=$(root,'#roadPause'),float=$(root,'#roadFloat');
  const left=$(root,'#roadLeft'),right=$(root,'#roadRight');
  let state='ready',lane=1,visualLane=1,lives=3,items=[],collected=new Set(),spawnCount=words.map(()=>0),rowIndex=0;
- let roadTime=0,spawnTimer=.5,anim=0,last=0,now=0,jumpUntil=0,shieldUntil=0,shakeUntil=0,flashUntil=0,flashText='',flashColor='#fff',disposed=false,winTimer=0;
+ let roadTime=0,spawnTimer=.5,anim=0,last=0,now=0,jumpUntil=0,jumpStart=0,shieldUntil=0,shakeUntil=0,flashUntil=0,flashText='',flashColor='#fff',disposed=false,winTimer=0,restartCountdown=0;
  function updateHud(){
    hearts.textContent='❤️ '.repeat(lives)+'🤍 '.repeat(3-lives);
    score.textContent=collected.size+' / '+words.length;
@@ -48,7 +50,7 @@ function mount(opts){
    const pattern=ROW_PATTERNS[rowIndex++%ROW_PATTERNS.length];
    const all=[0,1,2],main=Math.floor(rand(0,LANES));
    const other=all.filter(l=>l!==main);
-   const y=-75;
+   const y=HORIZON+3;
    const obstacle=l=>items.push({type:'hazard',lane:l,y,variant:Math.floor(rand(0,3)),hit:false});
    const ramp=l=>items.push({type:'ramp',lane:l,y,hit:false});
    if(pattern==='single-clear'){obstacle(main);return}
@@ -65,29 +67,43 @@ function mount(opts){
      items.push({type:'word',lane:main,y,wi,hit:false});
    }
  }
- function resetTraffic(){items=[];lane=1;visualLane=1;spawnTimer=.25;jumpUntil=0;shieldUntil=now+1.5;winTimer=0}
- function start(){
-   if(state==='lost'){lives=3;resetTraffic();message('💜 ממשיכים לאסוף!','#fff');}
-   else if(state==='ready'){lives=3;resetTraffic();}
-   state='running';pause.textContent='⏸️';pause.setAttribute('aria-label','השהיית המשחק');hideOverlay();last=0;updateHud();
+ function resetTraffic(){
+   items=[];lane=1;visualLane=1;spawnTimer=.4;jumpUntil=0;jumpStart=0;
+   shieldUntil=now+1.6;shakeUntil=0;winTimer=0;
  }
- function pauseGame(){if(state==='running'){state='paused';pause.textContent='▶️';showOverlay('עצירה קטנה 💜','המפלצת מחכה לכם! מוכנים להמשיך בנסיעה?','▶️ ממשיכים לנסוע');}else if(state==='paused'){state='running';pause.textContent='⏸️';hideOverlay();last=0}}
+ function resetRun(){
+   // Third hit means a fresh attempt: reset words, row pattern, distance and timer.
+   collected=new Set();spawnCount=words.map(()=>0);rowIndex=0;
+   roadTime=0;now=0;restartCountdown=0;flashUntil=0;
+   lives=3;timer.textContent='0:00';resetTraffic();updateHud();
+ }
+ function start(){
+   if(state==='ready')resetRun();
+   state='running';pause.textContent='⏸️';pause.setAttribute('aria-label','השהיית המשחק');
+   hideOverlay();last=0;updateHud();
+ }
+ function pauseGame(){if(state==='running'){state='paused';pause.textContent='▶️';showOverlay('עצירה קטנה 💜','המכונית מחכה לכם! מוכנים להמשיך בנסיעה?','▶️ ממשיכים לנסוע');}else if(state==='paused'){state='running';pause.textContent='⏸️';hideOverlay();last=0}}
  function won(){
    state='won';items=[];say('Great job!');showOverlay('🏆 אספנו את כל האיברים!','איזו נהיגה נהדרת! עכשיו המפלצת מוכנה לבית החולים הקסום, שבו נחזיר את האיברים החסרים.','👾 לבית החולים הקסום!');
  }
- function lost(){state='lost';showOverlay('💜 אופס, נגמרו הלבבות!','אל דאגה! כל המילים שאספתם נשמרו. אפשר להמשיך מהן עם שלושה לבבות חדשים.','🔄 ממשיכים לנסוע!')}
+ function lost(){state='restarting';restartCountdown=2.6;showOverlay('💜 נגמרו שלושת הלבבות!','מתחילים מחדש: כל המילים, הזמן והמסלול מתאפסים. יוצאים שוב לדרך בעוד רגע!','🔄 מתחילים מחדש עכשיו!')}
  function collision(obj){
    if(obj.hit||obj.lane!==lane)return;
    obj.hit=true;
    if(obj.type==='word'){
      if(!collected.has(obj.wi)){collected.add(obj.wi);const w=words[obj.wi];message('✨ '+w.en+' · '+w.he,'#fff4a4');say(w.en);updateHud();if(collected.size===words.length){shieldUntil=now+1.5;}}
    }else if(obj.type==='ramp'){
-     jumpUntil=now+1.55;message('🌈 קפיצה קסומה!','#ffffff');say('Jump!');
+     jumpStart=now;jumpUntil=now+1.65;shieldUntil=Math.max(shieldUntil,jumpUntil);message('🌈 וואו! המכונית קופצת!','#ffffff');say('Jump!');
    }else if(obj.type==='hazard'&&now>jumpUntil&&now>shieldUntil){
      lives--;shieldUntil=now+1.5;shakeUntil=now+.4;message('💗 זהירות!','#ffe8a1');updateHud();if(lives<=0)lost();
    }
  }
  function update(dt){
+   if(state==='restarting'){
+     restartCountdown-=dt;
+     if(restartCountdown<=0){resetRun();start()}
+     return;
+   }
    if(state!=='running')return;
    now+=dt;roadTime+=dt;
    visualLane+=(lane-visualLane)*Math.min(1,dt*11);
@@ -158,7 +174,7 @@ function mount(opts){
    ctx.globalAlpha=1;
  }
  function drawWord(o){
-   const scale=.84,x=laneX(o.lane,o.y),y=o.y;
+   const scale=objectScale(o.y),x=laneX(o.lane,o.y),y=o.y;
    ctx.save();ctx.translate(x,y);ctx.scale(scale,scale);
    ctx.shadowColor='#ffef86';ctx.shadowBlur=22;
    ctx.fillStyle='#fff1a9';ctx.beginPath();ctx.ellipse(0,0,58,48,0,0,Math.PI*2);ctx.fill();
@@ -169,7 +185,7 @@ function mount(opts){
    ctx.restore();
  }
  function drawHazard(o){
-   const scale=.84,x=laneX(o.lane,o.y);
+   const scale=objectScale(o.y),x=laneX(o.lane,o.y);
    ctx.save();ctx.translate(x,o.y);ctx.scale(scale,scale);
    ctx.shadowColor='#4d36547a';ctx.shadowBlur=10;ctx.shadowOffsetY=6;
    if(o.variant===0){
@@ -184,7 +200,7 @@ function mount(opts){
    ctx.restore();
  }
  function drawRamp(o){
-   const scale=.84,x=laneX(o.lane,o.y);
+   const scale=objectScale(o.y),x=laneX(o.lane,o.y);
    ctx.save();ctx.translate(x,o.y);ctx.scale(scale,scale);ctx.shadowColor='#b355e9';ctx.shadowBlur=15;
    ctx.fillStyle='#ed8bfa';poly(ctx,[[-50,34],[-34,-25],[34,-25],[50,34]]);ctx.fill();
    ctx.strokeStyle='#fff6c5';ctx.lineWidth=6;ctx.stroke();
@@ -235,13 +251,13 @@ function mount(opts){
  function pointerStart(e){startTouch={x:e.clientX,y:e.clientY}}
  function pointerEnd(e){if(!startTouch)return;const dx=e.clientX-startTouch.x;startTouch=null;if(state!=='running')return;if(Math.abs(dx)>20)steer(dx<0?-1:1);else{const rect=canvas.getBoundingClientRect();steer(e.clientX<rect.left+rect.width/2?-1:1)}}
  function visibility(){if(document.hidden&&state==='running')pauseGame()}
- function actionClick(){if(state==='won'){if(typeof opts.onComplete==='function')opts.onComplete();return}if(state==='paused')pauseGame();else start()}
+ function actionClick(){if(state==='won'){if(typeof opts.onComplete==='function')opts.onComplete();return}if(state==='restarting'){resetRun();start();return}if(state==='paused')pauseGame();else start()}
  function destroy(){disposed=true;cancelAnimationFrame(anim);document.removeEventListener('keydown',onKey);document.removeEventListener('visibilitychange',visibility);canvas.removeEventListener('pointerdown',pointerStart);canvas.removeEventListener('pointerup',pointerEnd);left.onclick=null;right.onclick=null;action.onclick=null;pause.onclick=null}
  action.onclick=actionClick;pause.onclick=pauseGame;left.onclick=()=>steer(-1);right.onclick=()=>steer(1);
  canvas.addEventListener('pointerdown',pointerStart);canvas.addEventListener('pointerup',pointerEnd);
  document.addEventListener('keydown',onKey);document.addEventListener('visibilitychange',visibility);
  updateHud();anim=requestAnimationFrame(frame);
- return {destroy,getState:()=>({state,lane,lives,collected:collected.size,total:words.length,rowIndex,roadTime,items:items.map(o=>({type:o.type,lane:o.lane,wi:o.wi,y:o.y}))})};
+ return {destroy,getState:()=>({state,lane,lives,collected:collected.size,total:words.length,rowIndex,roadTime,jumpRemaining:Math.max(0,jumpUntil-now),items:items.map(o=>({type:o.type,lane:o.lane,wi:o.wi,y:o.y}))})};
 }
 window.PlaywiseBodyRoad={mount};
 })();
