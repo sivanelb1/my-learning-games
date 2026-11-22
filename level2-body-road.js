@@ -123,55 +123,60 @@ function mount(opts){
    }
  }
  function backdrop(){
-   // Bird's-eye parkland: no horizon, no shrinking scenery.
-   ctx.fillStyle='#8ddf98';ctx.fillRect(0,0,W,H);
-   ctx.fillStyle='#69c985';ctx.fillRect(0,0,ROAD_LEFT,H);
-   ctx.fillRect(ROAD_RIGHT,0,W-ROAD_RIGHT,H);
-   ctx.fillStyle='#c4efaa';
-   for(let i=0;i<14;i++){
-     const y=(i*68+roadTime*140)%760-75;
-     const x=i%2?26:453;
-     ctx.save();ctx.translate(x,y);
+   // Wide sunny horizon, clouds, rolling hills and roadside flowers.
+   ctx.fillStyle='#8bd8ff';ctx.fillRect(0,0,W,H);
+   ctx.fillStyle='#f7fdff';ctx.globalAlpha=.85;
+   for(const [x,y,w] of [[50,45,44],[155,78,34],[372,54,47],[440,99,35]]){
+     ctx.beginPath();ctx.ellipse(x,y,w,14,0,0,Math.PI*2);ctx.fill();
+     ctx.beginPath();ctx.ellipse(x-10,y-8,w*.48,17,0,Math.PI*2);ctx.fill();
+   }
+   ctx.globalAlpha=1;
+   ctx.fillStyle='#b5eab7';
+   ctx.beginPath();ctx.moveTo(0,HORIZON+32);
+   ctx.bezierCurveTo(75,88,123,92,185,HORIZON+26);
+   ctx.bezierCurveTo(263,81,324,100,374,HORIZON+25);
+   ctx.bezierCurveTo(431,101,470,116,W,HORIZON+20);
+   ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.fill();
+   ctx.fillStyle='#72cc89';ctx.fillRect(0,HORIZON+45,W,H-HORIZON-45);
+   // Roadside scenery becomes larger as it approaches the camera.
+   for(let i=0;i<12;i++){
+     const y=HORIZON+((i*88+roadTime*180)%(H-HORIZON+70));
+     const t=clamp((y-HORIZON)/(H-HORIZON),0,1),edge=roadHalf(y)+15+t*12;
+     const x=i%2?W/2+edge+14:W/2-edge-14;
+     ctx.save();ctx.translate(x,y);ctx.scale(.4+t*.85,.4+t*.85);
      if(i%3===0){
-       ctx.fillStyle='#4ab876';ctx.beginPath();ctx.arc(0,0,19,0,Math.PI*2);ctx.fill();
-       ctx.fillStyle='#83e5a2';ctx.beginPath();ctx.arc(-6,-6,11,0,Math.PI*2);ctx.fill();
-       ctx.fillStyle='#f8f3a7';ctx.beginPath();ctx.arc(4,-3,3.5,0,Math.PI*2);ctx.fill();
+       ctx.fillStyle='#3ba779';round(ctx,-4,-4,8,40,4);ctx.fill();
+       ctx.fillStyle='#43c98b';ctx.beginPath();ctx.arc(0,-20,23,0,Math.PI*2);ctx.fill();
+       ctx.fillStyle='#a5edb5';ctx.beginPath();ctx.arc(-7,-28,12,0,Math.PI*2);ctx.fill();
      }else{
-       ctx.font='22px system-ui';ctx.textAlign='center';
-       ctx.fillText(i%3===1?'🌼':'🌸',0,8);
+       ctx.font='26px system-ui';ctx.textAlign='center';ctx.fillText(i%2?'🌷':'🌼',0,5);
      }
      ctx.restore();
    }
-   // Repeated ground dashes reinforce the car's forward movement.
-   ctx.fillStyle='#e7ffe3';ctx.globalAlpha=.58;
-   for(let i=0;i<16;i++){
-     const y=(i*63+roadTime*250)%670-30;
-     ctx.fillRect(7,y,4,23);ctx.fillRect(W-11,y,4,23);
-   }
-   ctx.globalAlpha=1;
  }
  function road(){
-   // Parallel borders and parallel lane dividers: fully top-down track.
-   ctx.fillStyle='#ffe4a1';ctx.fillRect(ROAD_LEFT-7,0,ROAD_RIGHT-ROAD_LEFT+14,H);
-   ctx.fillStyle='#8e86ad';ctx.fillRect(ROAD_LEFT,0,ROAD_RIGHT-ROAD_LEFT,H);
-   ctx.fillStyle='#9e95b9';ctx.fillRect(ROAD_LEFT+8,0,ROAD_RIGHT-ROAD_LEFT-16,H);
-   ctx.fillStyle='#eab7f4';ctx.fillRect(ROAD_LEFT+1,0,5,H);ctx.fillRect(ROAD_RIGHT-6,0,5,H);
-   // Flat road markings scroll at the same speed as pickups and hazards.
-   const offset=(roadTime*280)%104;
-   ctx.fillStyle='#fff6d9';
-   for(let y=-104+offset;y<H;y+=104){
-     for(let k=1;k<=2;k++){
-       round(ctx,ROAD_LEFT+LANE_WIDTH*k-3,y,6,51,3);ctx.fill();
+   const top=roadHalf(HORIZON),bottom=roadHalf(H);
+   ctx.fillStyle='#fff2b3';
+   poly(ctx,[[W/2-top-6,HORIZON],[W/2+top+6,HORIZON],[W/2+bottom+8,H],[W/2-bottom-8,H]]);ctx.fill();
+   ctx.fillStyle='#948cac';
+   poly(ctx,[[W/2-top,HORIZON],[W/2+top,HORIZON],[W/2+bottom,H],[W/2-bottom,H]]);ctx.fill();
+   ctx.fillStyle='#8a82a6';
+   poly(ctx,[[W/2-top+5,HORIZON],[W/2+top-5,HORIZON],[W/2+bottom-7,H],[W/2-bottom+7,H]]);ctx.fill();
+   ctx.strokeStyle='#f5b5eb';ctx.lineWidth=4;
+   ctx.beginPath();ctx.moveTo(W/2-top,HORIZON);ctx.lineTo(W/2-bottom,H);
+   ctx.moveTo(W/2+top,HORIZON);ctx.lineTo(W/2+bottom,H);ctx.stroke();
+   // Lane markers follow perspective and stream toward the player.
+   const offset=(roadTime*255)%125;
+   ctx.strokeStyle='#fff6db';ctx.lineCap='round';
+   for(let y=HORIZON-125+offset;y<H;y+=125){
+     const y1=Math.max(HORIZON,y),y2=Math.min(H,y+63);
+     if(y2<=HORIZON)continue;
+     for(let k of [-1,1]){
+       ctx.lineWidth=2+4*clamp((y2-HORIZON)/(H-HORIZON),0,1);
+       ctx.beginPath();ctx.moveTo(W/2+k*roadHalf(y1)/3,y1);
+       ctx.lineTo(W/2+k*roadHalf(y2)/3,y2);ctx.stroke();
      }
    }
-   // Little speed flecks on the tarmac, intentionally subtle.
-   ctx.fillStyle='#d7c7ee';ctx.globalAlpha=.33;
-   for(let i=0;i<17;i++){
-     const y=(i*57+roadTime*280)%670-30;
-     const x=ROAD_LEFT+17+(i*71)%(ROAD_RIGHT-ROAD_LEFT-34);
-     round(ctx,x,y,3,15,2);ctx.fill();
-   }
-   ctx.globalAlpha=1;
  }
  function drawWord(o){
    const scale=objectScale(o.y),x=laneX(o.lane,o.y),y=o.y;
