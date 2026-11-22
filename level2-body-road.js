@@ -128,7 +128,7 @@ function mount(opts){
    ctx.fillStyle='#f7fdff';ctx.globalAlpha=.85;
    for(const [x,y,w] of [[50,45,44],[155,78,34],[372,54,47],[440,99,35]]){
      ctx.beginPath();ctx.ellipse(x,y,w,14,0,0,Math.PI*2);ctx.fill();
-     ctx.beginPath();ctx.ellipse(x-10,y-8,w*.48,17,0,Math.PI*2);ctx.fill();
+     ctx.beginPath();ctx.ellipse(x-10,y-8,w*.48,17,0,0,Math.PI*2);ctx.fill();
    }
    ctx.globalAlpha=1;
    ctx.fillStyle='#b5eab7';
