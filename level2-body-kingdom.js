@@ -20,63 +20,80 @@ const stages=['learn','match','hospital'];
 function saveAwards(){try{localStorage.setItem(AWARDS,JSON.stringify(awards))}catch(e){}}
 function speak(word){if(!sound||!('speechSynthesis' in window))return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(word);u.lang='en-US';u.rate=.79;u.pitch=1.07;speechSynthesis.speak(u)}catch(e){}}
 function shuffle(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function avatarSvg(){return `<svg viewBox="0 0 320 460" role="img" aria-label="ילד מצויר חייכן עם גוף מאוזן ואיברים ברורים" xmlns="http://www.w3.org/2000/svg">
+function avatarSvg(){return `<svg class="pw-boy" viewBox="0 0 320 460" role="img" aria-label="ילד מצויר וחייכן, עם ראש עגול, גוף פרופורציונלי, ידיים פתוחות, חולצה כחולה ונעלי ספורט" xmlns="http://www.w3.org/2000/svg">
 <defs>
-<linearGradient id="pwSkin" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#ffe6c6"/><stop offset="1" stop-color="#f5b995"/></linearGradient>
-<linearGradient id="pwShirt" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a2e5d9"/><stop offset="1" stop-color="#65c5ba"/></linearGradient>
-<linearGradient id="pwHair" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#79558d"/><stop offset="1" stop-color="#4c386b"/></linearGradient>
+ <radialGradient id="kidSkin" cx="37%" cy="25%" r="83%"><stop stop-color="#fff1d4"/><stop offset=".56" stop-color="#ffd5aa"/><stop offset="1" stop-color="#f3a47e"/></radialGradient>
+ <linearGradient id="kidShirt" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fffefa"/><stop offset=".75" stop-color="#e9f5ff"/><stop offset="1" stop-color="#c9dff8"/></linearGradient>
+ <linearGradient id="kidBlue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#53baff"/><stop offset=".5" stop-color="#288de7"/><stop offset="1" stop-color="#285fc2"/></linearGradient>
+ <linearGradient id="kidHair" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b66a34"/><stop offset=".46" stop-color="#8c471e"/><stop offset="1" stop-color="#5a2c20"/></linearGradient>
+ <linearGradient id="kidShorts" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#2c98ee"/><stop offset="1" stop-color="#225cbd"/></linearGradient>
+ <radialGradient id="kidIris"><stop stop-color="#184c9b"/><stop offset=".65" stop-color="#218ad6"/><stop offset="1" stop-color="#12426f"/></radialGradient>
+ <filter id="kidShadow" x="-30%" y="-30%" width="160%" height="170%"><feGaussianBlur stdDeviation="4"/></filter>
 </defs>
-<ellipse cx="160" cy="440" rx="98" ry="11" fill="#9b80bd" opacity=".2"/>
-<!-- legs: matching lengths and natural width -->
-<path d="M122 307 L122 391 Q122 404 135 407 L148 407 Q156 402 157 389 L159 335 L164 335 L165 389 Q167 405 179 408 L193 407 Q204 401 202 389 L199 307 Z" fill="url(#pwSkin)" stroke="#d69b92" stroke-width="3" stroke-linejoin="round"/>
-<path d="M121 308 Q158 301 200 308 L202 344 Q184 350 166 346 L160 331 L154 346 Q135 350 120 344 Z" fill="#8272d1" stroke="#6c5eb7" stroke-width="3" stroke-linejoin="round"/>
-<path d="M121 341 Q139 348 155 344 M166 345 Q184 348 202 342" stroke="#b3a8ee" stroke-width="3" fill="none"/>
-<!-- socks and friendly sneakers -->
-<path d="M123 391 L155 391 L155 408 L121 408 Z M167 391 L199 391 L199 408 L166 408 Z" fill="#fff8e9"/>
-<path d="M122 402 Q112 402 107 418 Q106 429 124 432 L155 432 Q165 427 158 414 L152 405 Z" fill="#ffb2b8" stroke="#c87d9b" stroke-width="3"/>
-<path d="M167 414 Q166 427 175 432 L206 432 Q223 429 215 417 Q210 405 198 402 L173 405 Z" fill="#ffb2b8" stroke="#c87d9b" stroke-width="3"/>
-<path d="M111 423 L157 423 M171 423 L213 423" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
-<!-- arms behind shirt, slightly outstretched -->
-<path d="M116 205 Q96 205 88 224 L61 289 Q55 304 68 310 Q81 314 88 300 L119 247 Z" fill="url(#pwSkin)" stroke="#d69b92" stroke-width="3"/>
-<path d="M205 205 Q225 205 233 224 L259 289 Q266 305 252 310 Q239 314 232 300 L201 247 Z" fill="url(#pwSkin)" stroke="#d69b92" stroke-width="3"/>
-<!-- open mitten hands with small visible fingers -->
-<path d="M63 289 Q50 285 47 294 L45 309 Q42 320 49 324 Q54 327 58 318 Q58 333 66 333 Q72 333 73 323 Q76 333 82 327 Q87 323 83 313 Q90 315 91 307 Q89 299 78 297 Z" fill="url(#pwSkin)" stroke="#d69b92" stroke-width="3" stroke-linejoin="round"/>
-<path d="M257 289 Q270 285 273 294 L275 309 Q278 320 271 324 Q266 327 262 318 Q262 333 254 333 Q248 333 247 323 Q244 333 238 327 Q233 323 237 313 Q230 315 229 307 Q231 299 242 297 Z" fill="url(#pwSkin)" stroke="#d69b92" stroke-width="3" stroke-linejoin="round"/>
-<!-- balanced T-shirt -->
-<path d="M125 198 Q140 190 159 191 Q181 190 197 198 L218 217 L204 253 L195 247 L202 314 Q160 326 118 314 L125 247 L116 253 L101 217 Z" fill="url(#pwShirt)" stroke="#4baca6" stroke-width="3" stroke-linejoin="round"/>
-<path d="M145 194 Q158 215 177 194" fill="none" stroke="#fff8e6" stroke-width="7" stroke-linecap="round"/>
-<path d="M158 249 L164 259 L176 260 L167 269 L170 281 L159 275 L148 281 L151 269 L142 260 L154 259 Z" fill="#fff5ad" stroke="#e8c66d" stroke-width="2"/>
-<!-- neck and ears -->
-<path d="M146 178 L146 202 Q160 212 175 202 L174 178 Z" fill="url(#pwSkin)" stroke="#d69b92" stroke-width="3"/>
-<ellipse cx="100" cy="128" rx="15" ry="21" fill="url(#pwSkin)" stroke="#d69b92" stroke-width="3"/>
-<ellipse cx="220" cy="128" rx="15" ry="21" fill="url(#pwSkin)" stroke="#d69b92" stroke-width="3"/>
-<path d="M98 126 Q108 118 107 137 M223 126 Q214 119 213 138" stroke="#e5a59c" stroke-width="3" fill="none" stroke-linecap="round"/>
-<!-- smaller, rounded face; soft expression -->
-<path d="M104 99 Q105 55 159 52 Q213 54 216 99 L213 143 Q207 181 162 188 Q115 183 108 146 Z" fill="url(#pwSkin)" stroke="#d69b92" stroke-width="3"/>
-<!-- soft side-parted hair, no heavy scary eyebrows -->
-<path d="M104 119 Q93 84 109 63 Q120 45 144 43 Q160 28 179 43 Q207 40 218 68 Q231 92 216 116 L210 94 Q201 76 189 76 Q160 94 136 76 Q120 93 109 92 Z" fill="url(#pwHair)" stroke="#584270" stroke-width="3" stroke-linejoin="round"/>
-<path d="M130 57 Q156 68 179 54" stroke="#9b7bad" stroke-width="6" fill="none" stroke-linecap="round" opacity=".65"/>
-<!-- friendly eyes, balanced with head -->
-<path d="M125 118 Q137 111 149 118 M173 118 Q185 111 197 118" fill="none" stroke="#694c79" stroke-width="2.5" stroke-linecap="round"/>
-<ellipse cx="138" cy="131" rx="10" ry="12" fill="#fffdf7"/>
-<ellipse cx="184" cy="131" rx="10" ry="12" fill="#fffdf7"/>
-<ellipse cx="139" cy="133" rx="5.7" ry="7.4" fill="#5e8d9f"/>
-<ellipse cx="185" cy="133" rx="5.7" ry="7.4" fill="#5e8d9f"/>
-<circle cx="141" cy="130" r="2.5" fill="#fff"/><circle cx="187" cy="130" r="2.5" fill="#fff"/>
-<ellipse cx="120" cy="150" rx="11" ry="5" fill="#f4a3ab" opacity=".5"/>
-<ellipse cx="202" cy="150" rx="11" ry="5" fill="#f4a3ab" opacity=".5"/>
-<path d="M160 139 Q157 146 162 148" fill="none" stroke="#d69290" stroke-width="2.5" stroke-linecap="round"/>
-<path d="M146 160 Q161 173 177 160" fill="none" stroke="#ac6b83" stroke-width="3.5" stroke-linecap="round"/>
+<ellipse cx="161" cy="442" rx="104" ry="11" fill="#7c6ba6" opacity=".24" filter="url(#kidShadow)"/>
+<!-- symmetrical, child-sized legs -->
+<path d="M124 315 L123 382 Q126 398 140 398 L149 397 Q158 392 158 381 L160 334 L166 334 L168 382 Q169 396 181 398 L192 397 Q204 392 202 381 L198 314 Z" fill="url(#kidSkin)" stroke="#e8a285" stroke-width="2.3"/>
+<path d="M125 379 L157 380 L157 408 L124 408 Z M169 380 L201 380 L201 408 L168 408 Z" fill="#f8f8ff"/>
+<path d="M126 382 L156 382 M170 383 L199 383" stroke="#83a5ec" stroke-width="3"/>
+<!-- shoes: balanced, blue, white rubber soles -->
+<path d="M122 402 Q112 401 102 415 Q97 430 114 434 L157 434 Q166 428 159 415 L150 406 Z" fill="url(#kidBlue)" stroke="#3773c1" stroke-width="2.5"/>
+<path d="M171 405 Q163 419 171 433 L210 434 Q226 431 218 417 Q208 402 198 402 Z" fill="url(#kidBlue)" stroke="#3773c1" stroke-width="2.5"/>
+<path d="M103 425 Q132 432 160 426 M169 427 Q194 433 220 425" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"/>
+<path d="M125 410 L151 413 M124 417 L153 420 M177 413 L202 410 M175 421 L206 417" stroke="#e9f7ff" stroke-width="4" stroke-linecap="round"/>
+<!-- blue shorts -->
+<path d="M117 292 Q160 287 205 293 L207 344 Q185 353 165 347 L160 327 L155 347 Q135 353 114 343 Z" fill="url(#kidShorts)" stroke="#2865ba" stroke-width="2.5"/>
+<path d="M117 337 Q135 345 154 340 M168 340 Q186 346 205 338" fill="none" stroke="#8ccaff" stroke-width="2.5" stroke-linecap="round"/>
+<!-- arms proportionate to torso, palms open -->
+<path d="M119 207 Q104 205 94 223 L66 279 Q59 289 66 298 Q75 305 83 294 L119 249 Z" fill="url(#kidSkin)" stroke="#e8a285" stroke-width="2.4"/>
+<path d="M204 207 Q219 205 229 223 L258 279 Q265 289 257 298 Q248 305 241 294 L203 249 Z" fill="url(#kidSkin)" stroke="#e8a285" stroke-width="2.4"/>
+<path d="M67 278 Q57 273 50 279 L42 287 Q34 293 39 299 Q43 303 49 297 L43 305 Q39 312 45 315 Q51 317 55 309 Q52 321 60 321 Q66 321 68 311 Q70 323 77 318 Q82 315 78 305 Q89 308 91 300 Q93 293 79 289 Z" fill="url(#kidSkin)" stroke="#e8a285" stroke-width="2.3" stroke-linejoin="round"/>
+<path d="M256 278 Q266 273 273 279 L281 287 Q289 293 284 299 Q280 303 274 297 L280 305 Q284 312 278 315 Q272 317 268 309 Q271 321 263 321 Q257 321 255 311 Q253 323 246 318 Q241 315 245 305 Q234 308 232 300 Q230 293 244 289 Z" fill="url(#kidSkin)" stroke="#e8a285" stroke-width="2.3" stroke-linejoin="round"/>
+<path d="M48 289 L56 283 M270 284 L277 290" stroke="#fff3d9" stroke-width="2.5" stroke-linecap="round"/>
+<!-- T-shirt with bright blue sleeves and golden star -->
+<path d="M126 201 Q142 193 161 195 Q182 193 199 201 L223 226 L208 249 L198 242 L202 298 Q161 309 118 298 L124 242 L112 249 L98 226 Z" fill="url(#kidShirt)" stroke="#a9c6eb" stroke-width="2.6" stroke-linejoin="round"/>
+<path d="M126 201 L111 212 Q101 219 98 226 L112 249 L130 238 Z" fill="url(#kidBlue)" stroke="#377dc7" stroke-width="2"/>
+<path d="M199 201 L213 211 Q220 219 223 226 L208 249 L193 238 Z" fill="url(#kidBlue)" stroke="#377dc7" stroke-width="2"/>
+<path d="M145 196 Q161 213 178 196" fill="none" stroke="#368ad3" stroke-width="6" stroke-linecap="round"/>
+<path d="M160 238 L169 256 L190 259 L175 272 L178 292 L160 283 L141 292 L145 272 L129 259 L151 256 Z" fill="#ffd44d" stroke="#f3a829" stroke-width="2.5"/>
+<path d="M157 248 L160 242 L163 249" stroke="#fff7bb" stroke-width="3" stroke-linecap="round"/>
+<!-- neck, ears and very round friendly face -->
+<path d="M146 174 L146 200 Q161 212 176 199 L176 175" fill="url(#kidSkin)" stroke="#e8a285" stroke-width="2.3"/>
+<ellipse cx="97" cy="123" rx="16" ry="22" fill="url(#kidSkin)" stroke="#e6a080" stroke-width="2.5"/>
+<ellipse cx="225" cy="123" rx="16" ry="22" fill="url(#kidSkin)" stroke="#e6a080" stroke-width="2.5"/>
+<path d="M93 122 Q102 114 103 132 M230 122 Q220 114 219 132" fill="none" stroke="#e5a28a" stroke-width="3" stroke-linecap="round"/>
+<path d="M101 99 Q103 48 160 43 Q218 46 220 101 L216 143 Q206 185 163 193 Q117 187 106 144 Z" fill="url(#kidSkin)" stroke="#e6a080" stroke-width="2.7"/>
+<ellipse cx="121" cy="151" rx="15" ry="8" fill="#ff9da0" opacity=".55"/>
+<ellipse cx="201" cy="151" rx="15" ry="8" fill="#ff9da0" opacity=".55"/>
+<!-- soft, thick auburn locks -->
+<path d="M103 117 Q89 95 96 68 Q100 45 120 42 Q118 24 145 29 Q151 10 177 26 Q197 16 207 40 Q233 43 228 69 Q239 87 217 116 L214 90 Q205 78 194 78 Q177 95 157 78 Q137 100 116 89 L105 109 Z" fill="url(#kidHair)" stroke="#774123" stroke-width="2.7" stroke-linejoin="round"/>
+<path d="M106 83 Q120 57 149 59 Q155 33 182 38 M148 64 Q171 73 198 51 M191 64 Q213 68 220 83" fill="none" stroke="#d99558" stroke-width="7" stroke-linecap="round" opacity=".68"/>
+<path d="M126 37 Q120 25 128 18 Q142 14 150 26 M171 31 Q178 17 193 23" fill="none" stroke="#a76335" stroke-width="9" stroke-linecap="round"/>
+<!-- warm eyebrows, big round blue eyes -->
+<path d="M120 117 Q132 107 147 115 M176 115 Q190 107 203 117" fill="none" stroke="#83482b" stroke-width="5" stroke-linecap="round"/>
+<ellipse cx="136" cy="132" rx="16" ry="20" fill="#fffdfa" stroke="#e4b3a3" stroke-width="1.5"/>
+<ellipse cx="187" cy="132" rx="16" ry="20" fill="#fffdfa" stroke="#e4b3a3" stroke-width="1.5"/>
+<ellipse cx="138" cy="135" rx="10" ry="14" fill="url(#kidIris)"/>
+<ellipse cx="189" cy="135" rx="10" ry="14" fill="url(#kidIris)"/>
+<ellipse cx="140" cy="136" rx="5.7" ry="9" fill="#14263e"/>
+<ellipse cx="191" cy="136" rx="5.7" ry="9" fill="#14263e"/>
+<circle cx="142" cy="128" r="4.5" fill="#fff"/><circle cx="193" cy="128" r="4.5" fill="#fff"/>
+<circle cx="133" cy="143" r="2.3" fill="#d1f1ff"/><circle cx="184" cy="143" r="2.3" fill="#d1f1ff"/>
+<path d="M159 138 Q155 145 161 148" stroke="#e09a80" stroke-width="2.7" fill="none" stroke-linecap="round"/>
+<!-- happy open smile, teeth and pink tongue -->
+<path d="M139 161 Q160 180 182 160 Q178 184 161 184 Q146 184 139 161 Z" fill="#77344b" stroke="#ae5b65" stroke-width="2"/>
+<path d="M143 164 Q161 173 179 164 L175 170 Q160 175 146 169 Z" fill="#fff"/>
+<ellipse cx="161" cy="180" rx="10" ry="4" fill="#f58a9a"/>
+<g fill="#cb805f" opacity=".65"><circle cx="117" cy="151" r="1.5"/><circle cx="124" cy="155" r="1.5"/><circle cx="204" cy="151" r="1.5"/><circle cx="197" cy="155" r="1.5"/></g>
 </svg>`}
 /* Each arrow begins at the actual illustrated body part and ends at a label OUTSIDE the figure.
    The 600 × 460 diagram scales as one unit on phones and desktop. */
 const ARROWS={
- HAIR:[157,61,78,56], HEAD:[204,94,524,60], EYES:[184,132,524,157],
- EARS:[100,128,78,166], NOSE:[160,144,524,255], MOUTH:[161,164,78,263],
- HAND:[259,310,524,313], ARM:[235,253,524,196], FINGER:[53,318,78,305],
- LEG:[143,367,78,395], FOOT:[192,422,524,405],
- TEETH:[160,162,78,260], TONGUE:[162,167,524,265],
- HEART:[160,253,78,350], BRAIN:[160,79,524,65], BONE:[189,371,524,395]
+ HAIR:[159,51,78,56], HEAD:[208,94,524,60], EYES:[188,135,524,157],
+ EARS:[97,123,78,166], NOSE:[160,145,524,255], MOUTH:[160,169,78,263],
+ HAND:[256,295,524,313], ARM:[225,250,524,196], FINGER:[53,301,78,305],
+ LEG:[143,369,78,395], FOOT:[194,422,524,405],
+ TEETH:[160,166,78,260], TONGUE:[160,178,524,265],
+ HEART:[160,260,78,350], BRAIN:[161,84,524,65], BONE:[185,370,524,395]
 };
 function diagramLines(mode){
  return '<svg class="diagram-lines" viewBox="0 0 600 460" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">'+
