@@ -80,9 +80,9 @@ function isDone(st,p){
  if(st===7){
   if(p===0)return localStorage.getItem('playwise-animals-family-family-complete-v1')==='complete';
   const x=JSON.parse(localStorage.getItem('playwise-family-magic-progress-v1')||'{}');
-  if(p===1||p===2||p===4||p===5){const idx=p<=2?p-1:p-2;return Array.isArray(x.awake)&&Array.isArray(x.awake[idx])&&x.awake[idx].length===4;}
+  if(p===1||p===2||p===4||p===5){const idx=p<=2?p-1:p-2;const awards=JSON.parse(localStorage.getItem('playwise-family-tree-achievements-v1')||'{}');return !!(Array.isArray(awards.trees)&&awards.trees[idx])||(Array.isArray(x.awake)&&Array.isArray(x.awake[idx])&&x.awake[idx].length===4);}
   if(p===3||p===6){const tower=JSON.parse(localStorage.getItem(p===3?'playwise-family-gift-tower-first-v1':'playwise-family-gift-tower-second-v1')||'[]');return Array.isArray(tower)&&tower.length===8;}
-  return localStorage.getItem('playwise-family-tree-complete-v3')==='complete';
+  const awards=JSON.parse(localStorage.getItem('playwise-family-tree-achievements-v1')||'{}');return !!awards.final||localStorage.getItem('playwise-family-tree-complete-v3')==='complete';
  }
  return royal.includes(st);
  }catch(e){return false}
