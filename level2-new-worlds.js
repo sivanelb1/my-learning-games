@@ -11,10 +11,20 @@ const CONFIG={
  food:{n:10,emoji:'🍎',name:'ארץ המאכלים הקסומה',en:'Magical Food Land',subtitle:'מסע טעים בין פירות, ירקות ומאכלים!',story:'השף הקסום צריך עזרה בהכנת סעודת הארמון. הכירו את המאכלים ובחרו את התמונה הנכונה.',next:'level2-world-school.html',nextName:'🏫 לעולם בית הספר',decor:['🍓','🥐','🍭','🥕','🍇']},
  school:{n:11,emoji:'🏫',name:'אקדמיית בית הספר',en:'School Academy',subtitle:'פותחים את תיק הקסמים של הכיתה!',story:'המורה הקסומה פיזרה את חפצי הכיתה. למדו את שמותיהם באנגלית והחזירו אותם למקומם.',next:'level2-world-toys.html',nextName:'🧸 לעולם הצעצועים',decor:['📚','✏️','🎒','🌟','🖍️']},
  toys:{n:12,emoji:'🧸',name:'ממלכת הצעצועים',en:'Toy Wonderland',subtitle:'כל צעצוע מתעורר לחיים!',story:'הצעצועים הקסומים יצאו להרפתקה. למדו את שמותיהם ועזרו להם לחזור אל ארגז האוצר.',next:'level2-world-bubbles.html',nextName:'🫧 לעולם הסיכום',decor:['🧸','🚂','🎈','🪁','🤖']},
- bubbles:{n:13,emoji:'🫧',name:'בועות הקסם',en:'Bubble Magic · Grand Review',subtitle:'עולם הסיכום הגדול של PLAYWISE!',story:'כל המילים שלמדנו חוזרות בתוך בועות קסומות! תרגלו מילים מכל העולמות והמשיכו למשחק בועות הקסם הגדול.',next:'adventure-map.html',nextName:'🗺️ חזרה למפת העולמות',decor:['🫧','✨','🔮','🌈','⭐']}
+ bubbles:{n:13,emoji:'🫧',name:'בועות הקסם',en:'Bubble Magic · Grand Review',subtitle:'עולם הסיכום הגדול של PLAYWISE!',story:'מילים מכל ההרפתקאות חוזרות בתוך בועות קסומות! חזרו על אותיות, צבעים, מספרים, חיות, משפחה וארבעת העולמות החדשים, ואז המשיכו למשחק הבועות הגדול.',next:'adventure-map.html',nextName:'🗺️ חזרה למפת העולמות',decor:['🫧','✨','🔮','🌈','⭐']}
 };
 const id=document.body.dataset.world;const cfg=CONFIG[id];if(!cfg)return;
-const words=id==='bubbles'?[WORDS.body[0],WORDS.body[2],WORDS.body[7],WORDS.body[12],WORDS.food[0],WORDS.food[4],WORDS.food[7],WORDS.food[15],WORDS.school[0],WORDS.school[3],WORDS.school[5],WORDS.school[9],WORDS.toys[0],WORDS.toys[2],WORDS.toys[3],WORDS.toys[4]]:WORDS[id];
+const words=id==='bubbles'?[
+ ['A','האות איי','🅰️'],['B','האות בי','🅱️'],
+ ['RED','אדום','🔴'],['BLUE','כחול','🔵'],
+ ['ONE','אחד','1️⃣'],['TWO','שתיים','2️⃣'],
+ ['LION','אריה','🦁'],['ZEBRA','זברה','🦓'],
+ ['MOTHER','אמא','👩'],['FATHER','אבא','👨'],
+ WORDS.body[0],WORDS.body[2],WORDS.body[7],WORDS.body[12],
+ WORDS.food[0],WORDS.food[4],WORDS.food[7],WORDS.food[15],
+ WORDS.school[0],WORDS.school[3],WORDS.school[5],
+ WORDS.toys[0],WORDS.toys[2],WORDS.toys[3]
+]:WORDS[id];
 const $=x=>document.getElementById(x);
 const key='playwise-world-'+id+'-complete-v1',learnKey='playwise-world-'+id+'-learned-v1';
 let learned=new Set(),questions=[],qIndex=0,correct=0,locked=false,soundOn=true;
