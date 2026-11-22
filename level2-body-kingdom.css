@@ -193,3 +193,33 @@ body{background:radial-gradient(ellipse at 12% 18%,#f8d7f7 0,transparent 35%),ra
 @media(max-width:430px){
  .match-layout .match-words-top .chip{min-width:72px;min-height:38px;font-size:14px;padding:6px 7px}
 }
+
+/* Actual 3D character art from the approved monster reference.
+   The picture remains intact on correct answers; only a masked body part
+   is temporarily hidden, then restored with a pop animation. */
+.monster-illustrated .monster-3d-svg{width:100%;height:100%;display:block;overflow:visible;filter:drop-shadow(0 12px 9px #7d4caf36)}
+.monster-3d-svg .monster-base-image{pointer-events:none}
+.monster-3d-svg .monster-part.needs-repair{opacity:0;transform-origin:50% 55%;transition:opacity .28s ease,transform .45s cubic-bezier(.15,1.4,.4,1)}
+.monster-illustrated.repaired .monster-3d-svg .monster-part.needs-repair{opacity:1;animation:pw-3d-restore .8s cubic-bezier(.2,1.5,.35,1) both}
+.monster-3d-svg .repair-placeholder{opacity:1;transition:opacity .2s ease;filter:drop-shadow(0 2px 2px #8b65bb33)}
+.monster-illustrated.repaired .monster-3d-svg .repair-placeholder{opacity:0}
+.monster-3d-svg .repair-sparkles{opacity:.85;transform-origin:50% 50%;animation:pw-sparkle-float 3s ease-in-out infinite}
+.monster-illustrated.repaired .monster-3d-svg .repair-sparkles{animation:pw-sparkle-burst .75s ease-out both}
+@keyframes pw-3d-restore{0%{opacity:0;transform:scale(.88)}55%{opacity:1;transform:scale(1.055)}100%{opacity:1;transform:scale(1)}}
+@keyframes pw-sparkle-float{0%,100%{opacity:.55;transform:translateY(0)}50%{opacity:1;transform:translateY(-5px)}}
+@keyframes pw-sparkle-burst{0%{opacity:.4;transform:scale(.8)}55%{opacity:1;transform:scale(1.3)}100%{opacity:0;transform:scale(1.6)}}
+.hospital-room{background:linear-gradient(180deg,#dfc2ff 0%,#f4d8ff 51%,#fff0f6 78%,#dfb9ed 79%,#d5aee8 100%);border-color:#c7a1f0;box-shadow:inset 0 6px 25px #fff,0 8px 0 #ae82d5}
+.hospital-room .monster-wrap{width:min(100%,365px);height:360px;margin:0 auto 10px}
+.hospital-room .monster.monster-illustrated{width:365px;height:360px;max-width:100%;left:50%;bottom:0;filter:none}
+.hospital-room .monster-speech{font-weight:1000;border:3px solid #b77ce7;border-radius:30px 30px 30px 8px;background:linear-gradient(#fff,#fffaff);box-shadow:0 6px 0 #c79add,0 10px 16px #7b53a42b;color:#55258d}
+.hospital-room .case-choice{border:3px solid #c796f0;background:linear-gradient(#fff,#fff7ff);box-shadow:0 6px 0 #b68bd6,0 11px 16px #7651a52b}
+.hospital-room .case-choice:hover{border-color:#efc259;background:#fff7e2}
+.hospital-room .case-feedback{background:#ffffffa8;border:2px solid #d9b9f4;border-radius:24px;padding:9px 14px}
+@media(max-width:740px){
+ .hospital-room .monster-wrap{width:285px;height:295px}
+ .hospital-room .monster.monster-illustrated{width:285px;height:295px}
+}
+@media(max-width:430px){
+ .hospital-room .monster-wrap{width:235px;height:260px}
+ .hospital-room .monster.monster-illustrated{width:235px;height:260px}
+}
