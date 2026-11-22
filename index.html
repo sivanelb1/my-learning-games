@@ -320,6 +320,44 @@
   .levels .card{height:218px}
   .levels .emoji-link{width:86px;height:86px;font-size:51px}
 }
+
+/* Special exam island opposite the music island — balanced around the PLAYWISE logo. */
+.hero-top .exam-corner{
+  grid-column:3;grid-row:1;justify-self:start;
+  width:clamp(185px,18vw,238px);min-height:0;aspect-ratio:1;
+  margin:0;padding:18px;border-radius:50%;
+  border:3px solid #ffe6c9d9;
+  background:radial-gradient(circle at 30% 23%,#ffffff38,#e0a87e40 65%,#3d33587a);
+  box-shadow:0 8px 32px #0b213477,inset 0 0 22px #ffffff18;
+  backdrop-filter:blur(5px);display:flex;flex-direction:column;
+  justify-content:center;align-items:center;gap:4px;
+  color:#fffaf1;text-shadow:0 2px 9px #081f30,0 1px 3px #081f30;
+}
+.hero-top .exam-corner .emoji-link{width:76px;height:76px;margin:0 auto 5px;background:#fff0d9;border:3px solid #ffd3a1;border-radius:21px;font-size:43px;box-shadow:0 6px 0 #d9bbbd,0 10px 20px #0002;text-shadow:none}
+.hero-top .exam-corner h2{font-size:18px;line-height:1.2;margin:2px 0;color:#fffaf1}
+.hero-top .exam-corner p{font-size:13px;line-height:1.35;margin:2px 0;color:#fffaf1}
+@media(min-width:1001px){
+  .hero-top .exam-corner{width:165px;min-height:165px;padding:15px;gap:3px}
+  .hero-top .exam-corner .emoji-link{width:56px;height:56px;font-size:32px;border-radius:17px;margin:0 auto 3px;box-shadow:0 5px 0 #d9bbbd}
+  .hero-top .exam-corner h2{font-size:15px;margin:1px 0}
+  .hero-top .exam-corner p{font-size:12px;line-height:1.28}
+}
+@media(max-width:800px){
+  .hero-top{grid-template-columns:minmax(110px,1fr) minmax(0,2fr) minmax(110px,1fr)}
+  .hero-top .exam-corner{width:clamp(128px,25vw,185px);padding:12px}
+  .hero-top .exam-corner .emoji-link{width:55px;height:55px;font-size:31px}
+  .hero-top .exam-corner h2{font-size:15px}
+  .hero-top .exam-corner p{font-size:11px}
+}
+@media(max-width:520px){
+  .hero-top{grid-template-columns:90px minmax(0,1fr) 90px;gap:5px}
+  .hero-top .bonus-corner,.hero-top .exam-corner{width:90px!important;min-height:90px;padding:6px!important;border-width:2px!important}
+  .hero-top .bonus-corner .emoji-link,.hero-top .exam-corner .emoji-link{width:35px;height:35px;font-size:21px;border-radius:11px;margin:0;box-shadow:0 3px 0 #d8c6eb}
+  .hero-top .bonus-corner h2,.hero-top .exam-corner h2{font-size:10px;line-height:1.1}
+  .hero-top .bonus-corner p,.hero-top .exam-corner p{font-size:8px;line-height:1.15}
+  .hero-logo .brand-mark{padding:12px 5px}
+  .hero-logo h1{font-size:clamp(22px,6.4vw,32px)}
+}
 </style>
 </head>
 
@@ -332,7 +370,7 @@
       <div class="brand-icon" aria-hidden="true">💡</div>
       <h1><span class="brand-play">PLAY</span><span class="brand-wise">WISE</span></h1>
       <div class="brand-tagline">מיומנות · ביטחון · חיבור</div>
-    </div></div><div class="hero-balance" aria-hidden="true"></div></div>
+    </div></div><section class="exam-corner" aria-label="פינת ההכנה למבחן"><a class="emoji-link" href="exam-prep.html" aria-label="בואו נלמד למבחן - כניסה לפינת ההכנה" title="בואו נלמד למבחן">📚</a><h2>בואו נלמד למבחן!</h2><p><strong>Exam Adventure</strong> · לומדים ומצליחים ✨</p></section></div>
     <div class="welcome-heading" style="font-size:clamp(16px,2vw,20px);font-weight:500;margin-top:4px">ברוכים הבאים לעולם של למידה ומשחק!</div>
   </header>
 
