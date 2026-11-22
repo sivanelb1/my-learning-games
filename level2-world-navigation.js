@@ -93,7 +93,7 @@ function isDone(st,p){
   if(p===3||p===6){const tower=JSON.parse(localStorage.getItem(p===3?'playwise-family-gift-tower-first-v1':'playwise-family-gift-tower-second-v1')||'[]');return Array.isArray(tower)&&tower.length===8;}
   const awards=JSON.parse(localStorage.getItem('playwise-family-tree-achievements-v1')||'{}');return !!awards.final||localStorage.getItem('playwise-family-tree-complete-v3')==='complete';
  }
- if(st>=8){const keys=['body','food','school','toys','bubbles'];if(st===12&&p===1)return localStorage.getItem('playwise-bubble-magic-completed-v1')==='complete';return localStorage.getItem('playwise-world-'+keys[st-8]+'-complete-v1')==='complete';}
+ if(st>=8){const keys=['body','food','school','toys','bubbles'];if(st===12&&p===1){const record=JSON.parse(localStorage.getItem('playwise-level2-bubble-magic-v1')||'{}');return record.completed===true;}return localStorage.getItem('playwise-world-'+keys[st-8]+'-complete-v1')==='complete';}
  return royal.includes(st);
  }catch(e){return false}
 }
