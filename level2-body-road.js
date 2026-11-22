@@ -3,17 +3,19 @@
    Obstacles cost hearts; pink ramps launch the car into a safe jump. */
 (function(){
 'use strict';
-const W=480,H=610,LANES=3,MAX_DT=.045,MIN_DRIVE_SECONDS=43;
+const W=720,H=540,LANES=3,MAX_DT=.045,MIN_DRIVE_SECONDS=43;
+// Comfort-first camera: stationary landscape, fixed horizon, even road speed.
+const DRIVE_SPEED=195,ROW_INTERVAL=1.34,COLLISION_Y=432;
 // A five-row cycle keeps pickups special: most rows require a safe-lane decision.
 const ROW_PATTERNS=['single-clear','double-clear','double-ramp','single-ramp','double-word'];
 const rand=(a,b)=>a+Math.random()*(b-a);
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const $=(root,sel)=>root.querySelector(sel);
 // Perspective road narrows toward the visible horizon.
-const HORIZON=143;
-function roadHalf(y){return 73+159*clamp((y-HORIZON)/(H-HORIZON),0,1)}
+const HORIZON=128;
+function roadHalf(y){return 105+202*clamp((y-HORIZON)/(H-HORIZON),0,1)}
 function laneX(lane,y){return W/2+(lane-1)*roadHalf(y)*2/3}
-function objectScale(y){return .35+.62*clamp((y-HORIZON)/(H-HORIZON),0,1)}
+function objectScale(y){return .43+.62*clamp((y-HORIZON)/(H-HORIZON),0,1)}
 function round(ctx,x,y,w,h,r){ctx.beginPath();ctx.roundRect(x,y,w,h,r)}
 function poly(ctx,pts){ctx.beginPath();ctx.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<pts.length;i++)ctx.lineTo(pts[i][0],pts[i][1]);ctx.closePath()}
 function mount(opts){
@@ -21,7 +23,7 @@ function mount(opts){
  root.innerHTML='<div class="activity-heading"><div class="mini-pill">🏎️ מירוץ המכונית הקסומה · MAGIC ROAD RALLY</div><h2>יוצאים למירוץ הקסום!</h2><p>המכונית נוסעת לבד לעבר האופק! בחרו נתיב בטוח, קפצו על הרמפות ואספו מילים. יש 3 לבבות — אחרי שלוש פגיעות מתחילים את המסלול מחדש. 🚧🏎️</p></div>'+
  '<section class="road-game" aria-label="משחק נהיגה בשלושה נתיבים">'+
  '<div class="road-hud"><div class="road-hearts" id="roadHearts" aria-label="לבבות">❤️ ❤️ ❤️</div><div class="road-score">🧩 <b id="roadScore">0 / '+words.length+'</b></div><div class="road-timer" aria-label="זמן נסיעה">⏱️ <b id="roadTimer">0:00</b></div><button class="road-pause" type="button" id="roadPause" aria-label="השהיית המשחק">⏸️</button></div>'+
- '<div class="road-screen"><canvas id="roadCanvas" width="480" height="610" role="img" aria-label="כביש עם אופק, מכונית סגולה, שלושה נתיבים, איברי גוף לאיסוף, מכשולים ורמפות קופצות"></canvas>'+
+ '<div class="road-screen"><canvas id="roadCanvas" width="720" height="540" role="img" aria-label="כביש עם אופק, מכונית סגולה, שלושה נתיבים, איברי גוף לאיסוף, מכשולים ורמפות קופצות"></canvas>'+
  '<div class="road-float" id="roadFloat" aria-live="polite"></div>'+
  '<div class="road-overlay" id="roadOverlay"><div class="road-overlay-inner"><div class="road-overlay-emoji">🚙🌈⭐</div><h3 id="roadOverlayTitle">מוכנים להרפתקה?</h3><p id="roadOverlayText">התכוננו למסלול ארוך ומאתגר! לא בכל שורה יש מילה. מצאו את הנתיב הפנוי והתחמקו ממכשולים. רמפה ורודה מקפיצה את המכונית גבוה באוויר! יש 3 לבבות, ואם הם נגמרים מתחילים מחדש.</p><button class="road-primary" type="button" id="roadAction">🚦 יוצאים לדרך!</button></div></div></div>'+
  '<div class="road-controls" dir="ltr"><button class="road-steer" id="roadLeft" type="button" aria-label="לנתיב השמאלי">⬅️ <span>שמאלה</span></button><div class="road-control-tip">🎯 אוספים מילים<br>🚧 מתחמקים<br>🌈 קופצים!</div><button class="road-steer" id="roadRight" type="button" aria-label="לנתיב הימני"><span>ימינה</span> ➡️</button></div>'+
@@ -95,7 +97,7 @@ function mount(opts){
    }else if(obj.type==='ramp'){
      jumpStart=now;jumpUntil=now+1.65;shieldUntil=Math.max(shieldUntil,jumpUntil);message('🌈 וואו! המכונית קופצת!','#ffffff');say('Jump!');
    }else if(obj.type==='hazard'&&now>jumpUntil&&now>shieldUntil){
-     lives--;shieldUntil=now+1.5;shakeUntil=now+.4;message('💗 זהירות!','#ffe8a1');updateHud();if(lives<=0)lost();
+     lives--;shieldUntil=now+1.5;shakeUntil=0;message('💗 זהירות!','#ffe8a1');updateHud();if(lives<=0)lost();
    }
  }
  function update(dt){
@@ -106,73 +108,69 @@ function mount(opts){
    }
    if(state!=='running')return;
    now+=dt;roadTime+=dt;
-   visualLane+=(lane-visualLane)*Math.min(1,dt*11);
+   // Smooth lane change, with a stable camera and no sideways screen movement.
+   visualLane+=(lane-visualLane)*Math.min(1,dt*8);
    spawnTimer-=dt;
    if(spawnTimer<=0&&(collected.size<words.length||roadTime<MIN_DRIVE_SECONDS)){
-     spawnRow();spawnTimer=1.26+rand(0,.12);
+     spawnRow();spawnTimer=ROW_INTERVAL;
    }
    const seconds=Math.floor(roadTime);
    const clock=Math.floor(seconds/60)+':'+String(seconds%60).padStart(2,'0');
    if(timer.textContent!==clock)timer.textContent=clock;
-   const speed=265+Math.min(45,roadTime*.8);
-   for(const obj of items){obj.y+=speed*dt;if(!obj.hit&&obj.y>=472&&obj.y<=505)collision(obj);}
-   items=items.filter(obj=>obj.y<650&&!obj.hit);
+   // Constant velocity: no acceleration, pulses, or zooming of the camera.
+   for(const obj of items){obj.y+=DRIVE_SPEED*dt;if(!obj.hit&&obj.y>=COLLISION_Y-12&&obj.y<=COLLISION_Y+13)collision(obj);}
+   items=items.filter(obj=>obj.y<H+75&&!obj.hit);
    if(collected.size===words.length&&roadTime>=MIN_DRIVE_SECONDS){
      if(!winTimer){winTimer=1.1;message('🏁 קו הסיום!','#fff4a4')}
      else{winTimer-=dt;if(winTimer<=0&&state==='running')won()}
    }
  }
  function backdrop(){
-   // Wide sunny horizon, clouds, rolling hills and roadside flowers.
-   ctx.fillStyle='#8bd8ff';ctx.fillRect(0,0,W,H);
-   ctx.fillStyle='#f7fdff';ctx.globalAlpha=.85;
-   for(const [x,y,w] of [[50,45,44],[155,78,34],[372,54,47],[440,99,35]]){
-     ctx.beginPath();ctx.ellipse(x,y,w,14,0,0,Math.PI*2);ctx.fill();
-     ctx.beginPath();ctx.ellipse(x-10,y-8,w*.48,17,0,0,Math.PI*2);ctx.fill();
+   // Completely STATIONARY scenery: no flowers/trees rushing at the player.
+   ctx.fillStyle='#a5e4ff';ctx.fillRect(0,0,W,H);
+   ctx.fillStyle='#f8fdff';ctx.globalAlpha=.85;
+   for(const [x,y,w] of [[95,47,52],[242,83,38],[535,51,52],[666,94,38]]){
+     ctx.beginPath();ctx.ellipse(x,y,w,13,0,0,Math.PI*2);ctx.fill();
+     ctx.beginPath();ctx.ellipse(x-10,y-8,w*.47,16,0,0,Math.PI*2);ctx.fill();
    }
    ctx.globalAlpha=1;
    ctx.fillStyle='#b5eab7';
-   ctx.beginPath();ctx.moveTo(0,HORIZON+32);
-   ctx.bezierCurveTo(75,88,123,92,185,HORIZON+26);
-   ctx.bezierCurveTo(263,81,324,100,374,HORIZON+25);
-   ctx.bezierCurveTo(431,101,470,116,W,HORIZON+20);
+   ctx.beginPath();ctx.moveTo(0,HORIZON+34);
+   ctx.bezierCurveTo(100,94,177,95,270,HORIZON+26);
+   ctx.bezierCurveTo(388,83,466,96,548,HORIZON+25);
+   ctx.bezierCurveTo(626,102,675,114,W,HORIZON+20);
    ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.fill();
-   ctx.fillStyle='#72cc89';ctx.fillRect(0,HORIZON+45,W,H-HORIZON-45);
-   // Roadside scenery becomes larger as it approaches the camera.
-   for(let i=0;i<12;i++){
-     const y=HORIZON+((i*88+roadTime*180)%(H-HORIZON+70));
-     const t=clamp((y-HORIZON)/(H-HORIZON),0,1),edge=roadHalf(y)+15+t*12;
-     const x=i%2?W/2+edge+14:W/2-edge-14;
-     ctx.save();ctx.translate(x,y);ctx.scale(.4+t*.85,.4+t*.85);
-     if(i%3===0){
-       ctx.fillStyle='#3ba779';round(ctx,-4,-4,8,40,4);ctx.fill();
-       ctx.fillStyle='#43c98b';ctx.beginPath();ctx.arc(0,-20,23,0,Math.PI*2);ctx.fill();
-       ctx.fillStyle='#a5edb5';ctx.beginPath();ctx.arc(-7,-28,12,0,Math.PI*2);ctx.fill();
-     }else{
-       ctx.font='26px system-ui';ctx.textAlign='center';ctx.fillText(i%2?'🌷':'🌼',0,5);
-     }
+   ctx.fillStyle='#83d69a';ctx.fillRect(0,HORIZON+45,W,H-HORIZON-45);
+   // Static garden ornaments beside the track. Never wrap, bob, or scroll.
+   for(const [x,y,kind,size] of [[38,245,0,.85],[678,270,0,.8],[24,460,0,1.15],[692,465,0,1.15],[78,354,1,.8],[647,380,2,.85],[95,196,2,.58],[628,207,1,.65]]){
+     ctx.save();ctx.translate(x,y);ctx.scale(size,size);
+     if(kind===0){
+       ctx.fillStyle='#448e66';round(ctx,-4,-1,8,35,4);ctx.fill();
+       ctx.fillStyle='#49b978';ctx.beginPath();ctx.arc(0,-17,22,0,Math.PI*2);ctx.fill();
+       ctx.fillStyle='#91e9a7';ctx.beginPath();ctx.arc(-6,-24,10,0,Math.PI*2);ctx.fill();
+     }else{ctx.font='28px system-ui';ctx.textAlign='center';ctx.fillText(kind===1?'🌷':'🌼',0,8)}
      ctx.restore();
    }
  }
  function road(){
    const top=roadHalf(HORIZON),bottom=roadHalf(H);
-   ctx.fillStyle='#fff2b3';
-   poly(ctx,[[W/2-top-6,HORIZON],[W/2+top+6,HORIZON],[W/2+bottom+8,H],[W/2-bottom-8,H]]);ctx.fill();
-   ctx.fillStyle='#948cac';
+   ctx.fillStyle='#fff0b5';
+   poly(ctx,[[W/2-top-7,HORIZON],[W/2+top+7,HORIZON],[W/2+bottom+8,H],[W/2-bottom-8,H]]);ctx.fill();
+   ctx.fillStyle='#9b92b5';
    poly(ctx,[[W/2-top,HORIZON],[W/2+top,HORIZON],[W/2+bottom,H],[W/2-bottom,H]]);ctx.fill();
-   ctx.fillStyle='#8a82a6';
+   ctx.fillStyle='#8f87aa';
    poly(ctx,[[W/2-top+5,HORIZON],[W/2+top-5,HORIZON],[W/2+bottom-7,H],[W/2-bottom+7,H]]);ctx.fill();
-   ctx.strokeStyle='#f5b5eb';ctx.lineWidth=4;
+   ctx.strokeStyle='#eab2ee';ctx.lineWidth=4;
    ctx.beginPath();ctx.moveTo(W/2-top,HORIZON);ctx.lineTo(W/2-bottom,H);
    ctx.moveTo(W/2+top,HORIZON);ctx.lineTo(W/2+bottom,H);ctx.stroke();
-   // Lane markers follow perspective and stream toward the player.
-   const offset=(roadTime*255)%125;
-   ctx.strokeStyle='#fff6db';ctx.lineCap='round';
-   for(let y=HORIZON-125+offset;y<H;y+=125){
-     const y1=Math.max(HORIZON,y),y2=Math.min(H,y+63);
+   // Only a few lane dashes, scrolling gently at exactly the same speed as objects.
+   const gap=142,dash=65,offset=(roadTime*DRIVE_SPEED)%gap;
+   ctx.strokeStyle='#fff8e5';ctx.lineCap='round';
+   for(let y=HORIZON-gap+offset;y<H;y+=gap){
+     const y1=Math.max(HORIZON,y),y2=Math.min(H,y+dash);
      if(y2<=HORIZON)continue;
-     for(let k of [-1,1]){
-       ctx.lineWidth=2+4*clamp((y2-HORIZON)/(H-HORIZON),0,1);
+     for(const k of [-1,1]){
+       ctx.lineWidth=3+2*clamp((y2-HORIZON)/(H-HORIZON),0,1);
        ctx.beginPath();ctx.moveTo(W/2+k*roadHalf(y1)/3,y1);
        ctx.lineTo(W/2+k*roadHalf(y2)/3,y2);ctx.stroke();
      }
@@ -213,26 +211,26 @@ function mount(opts){
  }
  function car(){
    // Cheerful purple rear-view car, facing forward toward the horizon.
-   const x=laneX(visualLane,505);
+   const x=laneX(visualLane,COLLISION_Y);
    const duration=1.65;
    const progress=clamp((now-jumpStart)/duration,0,1);
    const airborne=now<jumpUntil&&now>=jumpStart;
    // Parabolic flight: the car visibly takes off, soars and lands.
-   const lift=airborne?Math.sin(Math.PI*progress)*122:0;
-   const grow=airborne?1+Math.sin(Math.PI*progress)*.29:1;
-   const y=501-lift;
+   const lift=airborne?Math.sin(Math.PI*progress)*68:0;
+   const grow=airborne?1+Math.sin(Math.PI*progress)*.09:1;
+   const y=448-lift;
    ctx.save();
-   if(now<shakeUntil)ctx.translate(Math.sin(now*80)*7,0);
+   // The car stays visually steady even when a heart is lost.
    // The shadow stays ON THE ROAD as the car rises above it.
    ctx.fillStyle='rgba(58,37,94,'+(.32-lift/700)+')';
-   ctx.beginPath();ctx.ellipse(x,564,48-lift*.17,14-lift*.035,0,0,Math.PI*2);ctx.fill();
+   ctx.beginPath();ctx.ellipse(x,503,48-lift*.17,14-lift*.035,0,0,Math.PI*2);ctx.fill();
    if(airborne&&lift>12){
      ctx.save();ctx.textAlign='center';ctx.font='23px system-ui';
      ctx.globalAlpha=.8;ctx.fillText('✨',x-38,y+80);ctx.fillText('✨',x+38,y+105);
      ctx.globalAlpha=.55;ctx.fillText('💨',x,y+105);ctx.restore();
    }
    ctx.translate(x,y);ctx.scale(grow,grow);
-   if(airborne)ctx.rotate(Math.sin(progress*Math.PI)*-.055);
+   // Keep the vehicle upright throughout the jump (no camera tilt).
    if(now<shieldUntil){
      ctx.strokeStyle='#d1ffff';ctx.lineWidth=4;ctx.setLineDash([9,6]);
      ctx.beginPath();ctx.ellipse(0,8,58,79,0,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
@@ -258,7 +256,7 @@ function mount(opts){
    ctx.clearRect(0,0,W,H);backdrop();road();
    items.sort((a,b)=>a.y-b.y).forEach(o=>{if(o.type==='word')drawWord(o);else if(o.type==='ramp')drawRamp(o);else drawHazard(o)});
    car();
-   if(state==='running'&&flashUntil>now){ctx.save();ctx.globalAlpha=Math.min(1,(flashUntil-now)*2);ctx.textAlign='center';ctx.font='900 27px system-ui';ctx.shadowColor='#613e93';ctx.shadowBlur=8;ctx.fillStyle=flashColor;ctx.fillText(flashText,W/2,183);ctx.restore();}
+   if(state==='running'&&flashUntil>now){ctx.save();ctx.globalAlpha=Math.min(1,(flashUntil-now)*2);ctx.textAlign='center';ctx.font='900 26px system-ui';ctx.shadowColor='#613e93';ctx.shadowBlur=8;ctx.fillStyle=flashColor;ctx.fillText(flashText,W/2,176);ctx.restore();}
  }
  function frame(t){if(disposed)return;if(!last)last=t;const dt=clamp((t-last)/1000,0,MAX_DT);last=t;if(!document.hidden)update(dt);paint();anim=requestAnimationFrame(frame)}
  function onKey(e){if(!root.isConnected||state!=='running')return;const k=e.key;if(['ArrowLeft','ArrowRight','a','A','d','D'].includes(k)){e.preventDefault();steer(k==='ArrowLeft'||k==='a'||k==='A'?-1:1)}}
