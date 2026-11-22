@@ -5,17 +5,17 @@
 'use strict';
 const W=720,H=540,LANES=3,MAX_DT=.045,MIN_DRIVE_SECONDS=43;
 // Comfort-first camera: stationary landscape, fixed horizon, even road speed.
-const DRIVE_SPEED=195,ROW_INTERVAL=1.34,COLLISION_Y=432;
+const DRIVE_SPEED=195,ROW_INTERVAL=1.34,COLLISION_Y=459;
 // A five-row cycle keeps pickups special: most rows require a safe-lane decision.
 const ROW_PATTERNS=['single-clear','double-clear','double-ramp','single-ramp','double-word'];
 const rand=(a,b)=>a+Math.random()*(b-a);
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const $=(root,sel)=>root.querySelector(sel);
 // Perspective road narrows toward the visible horizon.
-const HORIZON=128;
-function roadHalf(y){return 105+202*clamp((y-HORIZON)/(H-HORIZON),0,1)}
+const HORIZON=178;
+function roadHalf(y){return 55+320*clamp((y-HORIZON)/(H-HORIZON),0,1)}
 function laneX(lane,y){return W/2+(lane-1)*roadHalf(y)*2/3}
-function objectScale(y){return .43+.62*clamp((y-HORIZON)/(H-HORIZON),0,1)}
+function objectScale(y){return .35+.88*clamp((y-HORIZON)/(H-HORIZON),0,1)}
 function round(ctx,x,y,w,h,r){ctx.beginPath();ctx.roundRect(x,y,w,h,r)}
 function poly(ctx,pts){ctx.beginPath();ctx.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<pts.length;i++)ctx.lineTo(pts[i][0],pts[i][1]);ctx.closePath()}
 function mount(opts){
@@ -23,7 +23,7 @@ function mount(opts){
  root.innerHTML='<div class="activity-heading"><div class="mini-pill">🏎️ מירוץ המכונית הקסומה · MAGIC ROAD RALLY</div><h2>יוצאים למירוץ הקסום!</h2><p>המכונית נוסעת לבד לעבר האופק! בחרו נתיב בטוח, קפצו על הרמפות ואספו מילים. יש 3 לבבות — אחרי שלוש פגיעות מתחילים את המסלול מחדש. 🚧🏎️</p></div>'+
  '<section class="road-game" aria-label="משחק נהיגה בשלושה נתיבים">'+
  '<div class="road-hud"><div class="road-hearts" id="roadHearts" aria-label="לבבות">❤️ ❤️ ❤️</div><div class="road-score">🧩 <b id="roadScore">0 / '+words.length+'</b></div><div class="road-timer" aria-label="זמן נסיעה">⏱️ <b id="roadTimer">0:00</b></div><button class="road-pause" type="button" id="roadPause" aria-label="השהיית המשחק">⏸️</button></div>'+
- '<div class="road-screen"><canvas id="roadCanvas" width="720" height="540" role="img" aria-label="כביש עם אופק, מכונית סגולה, שלושה נתיבים, איברי גוף לאיסוף, מכשולים ורמפות קופצות"></canvas>'+
+ '<div class="road-screen"><canvas id="roadCanvas" width="720" height="540" role="img" aria-label="כביש מנקודת מבט נמוכה מאחורי המכונית, שלושה נתיבים, איברי גוף לאיסוף, מכשולים ורמפות קופצות"></canvas>'+
  '<div class="road-float" id="roadFloat" aria-live="polite"></div>'+
  '<div class="road-overlay" id="roadOverlay"><div class="road-overlay-inner"><div class="road-overlay-emoji">🚙🌈⭐</div><h3 id="roadOverlayTitle">מוכנים להרפתקה?</h3><p id="roadOverlayText">התכוננו למסלול ארוך ומאתגר! לא בכל שורה יש מילה. מצאו את הנתיב הפנוי והתחמקו ממכשולים. רמפה ורודה מקפיצה את המכונית גבוה באוויר! יש 3 לבבות, ואם הם נגמרים מתחילים מחדש.</p><button class="road-primary" type="button" id="roadAction">🚦 יוצאים לדרך!</button></div></div></div>'+
  '<div class="road-controls" dir="ltr"><button class="road-steer" id="roadLeft" type="button" aria-label="לנתיב השמאלי">⬅️ <span>שמאלה</span></button><div class="road-control-tip">🎯 אוספים מילים<br>🚧 מתחמקים<br>🌈 קופצים!</div><button class="road-steer" id="roadRight" type="button" aria-label="לנתיב הימני"><span>ימינה</span> ➡️</button></div>'+
@@ -126,7 +126,7 @@ function mount(opts){
    }
  }
  function backdrop(){
-   // Completely STATIONARY scenery: no flowers/trees rushing at the player.
+   // Completely STATIONARY scenery: low camera and no flowers/trees rushing at the player.
    ctx.fillStyle='#a5e4ff';ctx.fillRect(0,0,W,H);
    ctx.fillStyle='#f8fdff';ctx.globalAlpha=.85;
    for(const [x,y,w] of [[95,47,52],[242,83,38],[535,51,52],[666,94,38]]){
@@ -163,7 +163,7 @@ function mount(opts){
    ctx.strokeStyle='#eab2ee';ctx.lineWidth=4;
    ctx.beginPath();ctx.moveTo(W/2-top,HORIZON);ctx.lineTo(W/2-bottom,H);
    ctx.moveTo(W/2+top,HORIZON);ctx.lineTo(W/2+bottom,H);ctx.stroke();
-   // Only a few lane dashes, scrolling gently at exactly the same speed as objects.
+   // Wide near-ground road with a small vanishing point; calm, constant-speed lane dashes.
    const gap=142,dash=65,offset=(roadTime*DRIVE_SPEED)%gap;
    ctx.strokeStyle='#fff8e5';ctx.lineCap='round';
    for(let y=HORIZON-gap+offset;y<H;y+=gap){
@@ -210,26 +210,27 @@ function mount(opts){
    ctx.shadowBlur=0;ctx.fillStyle='#fff6a4';ctx.font='bold 45px system-ui';ctx.textAlign='center';ctx.fillText('↑',0,19);ctx.restore();
  }
  function car(){
-   // Cheerful purple rear-view car, facing forward toward the horizon.
+   // Very low rear chase view: close to the bumper, almost riding in the car.
    const x=laneX(visualLane,COLLISION_Y);
    const duration=1.65;
    const progress=clamp((now-jumpStart)/duration,0,1);
    const airborne=now<jumpUntil&&now>=jumpStart;
    // Parabolic flight: the car visibly takes off, soars and lands.
-   const lift=airborne?Math.sin(Math.PI*progress)*68:0;
-   const grow=airborne?1+Math.sin(Math.PI*progress)*.09:1;
-   const y=448-lift;
+   const lift=airborne?Math.sin(Math.PI*progress)*65:0;
+   const grow=airborne?1+Math.sin(Math.PI*progress)*.07:1;
+   // Low chase camera: the car fills the bottom foreground, partly out of frame.
+   const y=506-lift;
    ctx.save();
    // The car stays visually steady even when a heart is lost.
    // The shadow stays ON THE ROAD as the car rises above it.
    ctx.fillStyle='rgba(58,37,94,'+(.32-lift/700)+')';
-   ctx.beginPath();ctx.ellipse(x,503,48-lift*.17,14-lift*.035,0,0,Math.PI*2);ctx.fill();
+   ctx.beginPath();ctx.ellipse(x,537,57-lift*.17,12-lift*.025,0,0,Math.PI*2);ctx.fill();
    if(airborne&&lift>12){
      ctx.save();ctx.textAlign='center';ctx.font='23px system-ui';
      ctx.globalAlpha=.8;ctx.fillText('✨',x-38,y+80);ctx.fillText('✨',x+38,y+105);
      ctx.globalAlpha=.55;ctx.fillText('💨',x,y+105);ctx.restore();
    }
-   ctx.translate(x,y);ctx.scale(grow,grow);
+   ctx.translate(x,y);ctx.scale(1.23*grow,1.23*grow);
    // Keep the vehicle upright throughout the jump (no camera tilt).
    if(now<shieldUntil){
      ctx.strokeStyle='#d1ffff';ctx.lineWidth=4;ctx.setLineDash([9,6]);
